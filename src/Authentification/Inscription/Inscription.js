@@ -64,6 +64,7 @@ const Inscription = () => {
             const position = await geocoder(donnees);
             // corrigé : on fusionne direct les coordonnées GPS avec le reste pour pas devoir recalculer plus tard
             const donneesCompletes = { ...donnees, ...position };
+            localStorage.setItem("inscriptionEnCours", JSON.stringify(donneesCompletes));
             const resultat = await envoyerLien(donneesCompletes.email);
             // corrigé : on stocke le tout avec latitude et longitude pour la suite de l'inscription
             localStorage.setItem("inscriptionEnCours", JSON.stringify(donneesCompletes));

@@ -7,8 +7,14 @@ const table = (col) => supabase().from(TABLES[col] || col);
 const doc = (ligne) => (ligne ? { id: ligne.id, ...ligne.data } : null);
 const nouvelId = () => (window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
 
+const traduire = (message) => {
+    if (/rate limit|too many/i.test(message)) return "Trop d'e-mails envoyés pour le moment. Réessayez dans quelques minutes.";
+    if (/expired|link is invalid/i.test(message)) return "Le lien n'est plus valide. Demandez un nouveau lien.";
+    return message;
+};
+
 const verifier = ({ data, error }) => {
-    if (error) throw new Error(error.message);
+    if (error) throw new Error(traduire(error.message));
     return data;
 };
 
@@ -36,10 +42,24 @@ export const televerserPhoto = async (uid, fichier) => {
     return `${data.publicUrl}?v=${Date.now()}`;
 };
 
+const inscriptionLocale = (email) => {
+    try {
+        const brut = JSON.parse(localStorage.getItem("inscriptionEnCours") || "null");
+        return brut && brut.email === email ? brut : null;
+    } catch (e) {
+        return null;
+    }
+};
+
 export const envoyerLien = async (email) => {
+    const inscription = inscriptionLocale(email);
     verifier(await supabase().auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: `${window.location.origin}/reussite-inscription`, shouldCreateUser: true }
+        options: {
+            emailRedirectTo: `${window.location.origin}/reussite-inscription?email=${encodeURIComponent(email)}`,
+            shouldCreateUser: true,
+            data: inscription ? { inscription } : undefined
+        }
     }));
     return {};
 };
@@ -54,7 +74,13 @@ export const validerLien = async (href) => {
     if (code) verifier(await supabase().auth.exchangeCodeForSession(code));
     const { data } = await supabase().auth.getSession();
     if (!data.session) throw new Error("Le lien n'est plus valide.");
-    return data.session.user.id;
+    const { user } = data.session;
+    const enAttente = user.user_metadata && user.user_metadata.inscription;
+    if (enAttente && !inscriptionLocale(user.email) && !(await lire("users", user.id))) {
+        localStorage.setItem("inscriptionEnCours", JSON.stringify(enAttente));
+        localStorage.setItem("emailForSignIn", user.email);
+    }
+    return user.id;
 };
 
 export const deconnecter = async () => {
