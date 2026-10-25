@@ -1,0 +1,78 @@
+classDiagram
+    direction TB
+
+    class Utilisateur {
+        +UUID id
+        +String prenom
+        +String nom
+        +Date dateNaissance
+        +String email
+        +String telephone
+        +String adresse
+        +String codePostal
+        +String ville
+        +String photoProfil
+        +String description
+        +StatutUtilisateur statut
+        +RoleUtilisateur role
+        +DateTime creeAt
+    }
+
+    class Service {
+        +UUID id
+        +String nom
+        +CategorieService categorie
+        +String description
+        +Boolean isActif
+        +DateTime creeAt
+    }
+
+    class Disponibilite {
+        +UUID id
+        +UUID userId
+        +JourSemaine jour
+        +Time heureDebut
+        +Time heureFin
+        +DateTime creeAt
+    }
+
+    class DemandeService {
+        +UUID id
+        +UUID rendezVousId
+        +UUID beneficiaireId
+        +UUID serviceId
+        +String description
+        +Date dateDemande
+        +StatutDemande statut
+        +DateTime creeAt
+    }
+
+    class ServiceUtilisateur {
+        +UUID id
+        +UUID userId
+        +UUID serviceId
+        +TypeServiceUtilisateur type
+        +DateTime creeAt
+    }
+
+    class RendezVous {
+        +UUID id
+        +UUID demandeServiceId
+        +UUID jeuneId
+        +UUID seniorId
+        +UUID serviceId
+        +Date date
+        +Time heureDebut
+        +Time heureFin
+        +StatutRendezVous statut
+        +UUID annulePar
+        +DateTime annuleLe
+        +String raisonAnnulation
+        +DateTime creeAt
+    }
+
+    Utilisateur "1" --> "0..*" Disponibilite : possede
+    Utilisateur "1" --> "0..*" DemandeService : cree
+    Utilisateur "1" --> "0..*" ServiceUtilisateur : propose ou demande
+    Service "1" --> "0..*" ServiceUtilisateur : concerne
+    DemandeService "1" --> "0..1" RendezVous : genere

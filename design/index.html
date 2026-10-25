@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voisin d’Or - Petits services. Grands liens.</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo-voisin-dor-icone.svg?v=favicon-3">
+  <link rel="shortcut icon" type="image/svg+xml" href="assets/logo-voisin-dor-icone.svg?v=favicon-3">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="styles.css?v=po-j3">
+</head>
+<body>
+  <header class="studio-header">
+    <a class="studio-brand" href="#accueil" aria-label="Voisin d’Or">
+      <img src="assets/logo-voisin-dor.svg?v=4" alt="Voisin d’Or">
+    </a>
+    <nav aria-label="Dossier de conception">
+      <button class="studio-tab active" data-panel="accueil" aria-pressed="true">Accueil</button>
+      <button class="studio-tab" data-panel="maquettes" aria-pressed="false">Maquette</button>
+      <button class="studio-tab" data-panel="charte" aria-pressed="false">Charte graphique</button>
+      <button class="studio-tab" data-panel="parcours" aria-pressed="false">Parcours utilisateurs</button>
+      <button class="studio-tab" data-panel="produit" aria-pressed="false">PO</button>
+      <button class="studio-tab" data-panel="dev" aria-pressed="false">DEV</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="accueil" class="studio-panel">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">VOISIN D’OR</p>
+          <h1>Petits services.<br><em>Grands liens.</em></h1>
+          <p class="lead">Voisin d’Or rapproche les jeunes, les personnes âgées et leurs accompagnateurs autour de petits services du quotidien : courses, ménage, bricolage, informatique, jardinage et cuisine.</p>
+          <div class="actions">
+            <button class="home-primary" data-panel="maquettes">Voir la maquette</button>
+            <a class="home-secondary" href="../landing/index.html" style="text-decoration:none;display:inline-flex;align-items:center">Voir le site vitrine</a>
+          </div>
+        </div>
+        <figure class="hero-art">
+          <video class="hero-video" src="assets/video-presentation-voisin-dor.mp4" autoplay muted loop playsinline controls aria-label="Vidéo de présentation Voisin d’Or"></video>
+        </figure>
+      </div>
+
+      <section class="home-band reveal">
+        <div>
+          <h2>L’idée en une phrase</h2>
+          <p>Une personne âgée, ou un proche qui l’accompagne, peut trouver un jeune disponible près de chez elle pour un petit service du quotidien.</p>
+        </div>
+        <div class="home-mini-grid">
+          <article><strong>Proche</strong><span>Une aide dans le quartier.</span></article>
+          <article><strong>Simple</strong><span>Un besoin clair, un créneau, un échange.</span></article>
+          <article><strong>Humain</strong><span>Le service crée aussi du lien.</span></article>
+        </div>
+      </section>
+
+      <section class="home-band reveal" id="home-services">
+        <h2>Nos services</h2>
+        <p class="muted">Les petits besoins du quotidien.</p>
+        <div class="service-tiles">
+          <article class="service-tile" style="--tile-c:#FFC145">
+            <span class="service-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l1 12.5a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L6 8Z M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>
+            <strong>Courses</strong>
+            <span>Faire les courses ou récupérer un colis.</span>
+          </article>
+          <article class="service-tile" style="--tile-c:#1FAF98">
+            <span class="service-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 2h4v4h1a2 2 0 0 1 2 2v2.6l1.4 1.4a1 1 0 0 1 .6.9V20a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-9.1a1 1 0 0 1 .6-.9L8 8.6V6h1V2Z M8 6h8"/></svg></span>
+            <strong>Ménage</strong>
+            <span>Un coup de propre léger et régulier.</span>
+          </article>
+          <article class="service-tile" style="--tile-c:#FF8A65">
+            <span class="service-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L2 19l3 3 6.3-6.3a5 5 0 0 0 6.4-6.4L15 12l-3-3 2.7-2.7"/></svg></span>
+            <strong>Bricolage</strong>
+            <span>Petites réparations et objets à fixer.</span>
+          </article>
+          <article class="service-tile" style="--tile-c:#9B6BFF">
+            <span class="service-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3h16v13H4zM1 20h22l-3-4H4z"/></svg></span>
+            <strong>Informatique</strong>
+            <span>Téléphone, tablette et ordinateur expliqués simplement.</span>
+          </article>
+          <article class="service-tile" style="--tile-c:#4CAF7D">
+            <span class="service-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20C4 10 12 4 20 4c0 10-6 16-16 16Z M4 20c4-4 8-8 16-16"/></svg></span>
+            <strong>Jardinage</strong>
+            <span>Arroser, tailler, désherber un petit coin de verdure.</span>
+          </article>
+          <article class="service-tile" style="--tile-c:#FF6B5B">
+            <span class="service-tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11h16v6a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-6Z M2 11h20 M8 11V8a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/></svg></span>
+            <strong>Cuisine</strong>
+            <span>Préparer un repas ou cuisiner à plusieurs.</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="home-band reveal">
+        <h2>Les trois personnes au cœur du service</h2>
+        <div class="home-cards three">
+          <article><img class="home-photo" src="assets/personas/persona-lucas-storyboard.png" alt="Portrait illustré de Lucas"><h3>Lucas</h3><p>Étudiant en communication, il souhaite rendre service près de chez lui pendant ses temps libres.</p></article>
+          <article><img class="home-photo" src="assets/personas/persona-camille-storyboard.png" alt="Portrait illustré de Camille"><h3>Camille</h3><p>Accompagnatrice, elle organise une aide pour sa grand-mère sans décider à sa place.</p></article>
+          <article><img class="home-photo" src="assets/personas/persona-madeleine-storyboard.png" alt="Portrait illustré de Madeleine"><h3>Madeleine</h3><p>Bénéficiaire, elle veut rester autonome, être aidée simplement et garder un contact humain.</p></article>
+        </div>
+      </section>
+
+      <section class="home-band reveal">
+        <h2>Réalisation de l’application</h2>
+        <p>Le projet a été construit en équipe, avec une répartition claire entre design, produit et développement.</p>
+        <div class="team-grid">
+          <article>
+            <span>Design</span>
+            <strong>Sofiane</strong>
+          </article>
+          <article>
+            <span>PO</span>
+            <strong>Manel</strong>
+          </article>
+          <article>
+            <span>Développement</span>
+            <strong>Sara & Youmna</strong>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section id="maquettes" class="studio-panel" hidden>
+      <div class="intro">
+        <div>
+          <p class="eyebrow">L’ENTRAIDE, JUSTE À CÔTÉ.</p>
+          <h1>Petits services.<br><em>Grands liens.</em></h1>
+        </div>
+        <div class="intro-aside">
+          <p>Un coup de main pour le quotidien.<br>Une rencontre qui fait du bien.</p>
+          <p class="muted">Voisin d’Or rapproche les générations,<br>à l’échelle d’un quartier.</p>
+          <span class="handwritten">On a tous à s’apporter</span>
+        </div>
+      </div>
+      <div class="canvas-toolbar">
+        <div class="screen-picker" aria-label="Écran à explorer">
+          <button class="selected" data-screen="overview" aria-pressed="true">Vue d’ensemble</button>
+          <button data-screen="welcome" aria-pressed="false">Bienvenue</button>
+          <button data-screen="signup" aria-pressed="false">Inscription</button>
+          <button data-screen="login" aria-pressed="false">Connexion</button>
+          <button data-screen="home" aria-pressed="false">Accueil</button>
+          <button data-screen="setup" aria-pressed="false">Créer une annonce</button>
+          <button data-screen="browse" aria-pressed="false">Recherche</button>
+          <button data-screen="helper" aria-pressed="false">Profil d’un jeune</button>
+          <button data-screen="request" aria-pressed="false">Envoyer une demande</button>
+          <button data-screen="mission" aria-pressed="false">Demande reçue</button>
+        </div>
+        <span class="prototype-note">Prototype interactif · données fictives</span>
+      </div>
+      <div id="screens" class="screens"></div>
+      
+    </section>
+
+    <section id="charte" class="studio-panel" hidden></section>
+    <section id="parcours" class="studio-panel" hidden></section>
+    <section id="dev" class="studio-panel" hidden>
+      <section class="ux-block">
+        <p class="eyebrow">UML</p>
+        <h2>Modèle de données</h2>
+        <figure class="charter-board">
+          <img src="assets/uml-modele-donnees.png?v=j3" alt="UML du scénario cible Voisin d'Or">
+          <figcaption>Scénario minimal : utilisateurs géolocalisés, proches accompagnés, annonces des jeunes (services et créneaux), demandes et rendez-vous. Scénario cible (pointillés) : messages, avis et favoris.</figcaption>
+        </figure>
+      </section>
+
+      <section class="ux-block">
+        <p class="eyebrow">API</p>
+        <h2>Spécification OpenAPI</h2>
+        <article class="brand-card wide-card">
+          <p>Les routes du scénario minimal et du scénario cible.</p>
+          <div class="actions">
+            <a class="home-primary" href="../specs/openapi.yaml" style="text-decoration:none;display:inline-flex;align-items:center">Ouvrir le fichier YAML</a>
+          </div>
+        </article>
+      </section>
+    </section>
+
+    <section id="produit" class="studio-panel" hidden>
+      
+      <section class="ux-block" id="po-lean">
+        <p class="eyebrow">Lean Canvas</p>
+        <div class="lean-board" aria-label="Lean Canvas Voisin d'Or">
+          <article class="lean-cell lean-problem">
+            <h3>Problème</h3>
+            <ul>
+              <li>Les personnes âgées ont besoin d'aide pour de petites tâches du quotidien.</li>
+              <li>Les proches ne sont pas toujours disponibles.</li>
+              <li>Les jeunes volontaires ne savent pas où proposer leur aide.</li>
+            </ul>
+            <h4>Alternatives actuelles</h4>
+            <p>Famille, voisins, associations locales, ou absence d'aide.</p>
+          </article>
+
+          <article class="lean-cell lean-solution">
+            <h3>Solution</h3>
+            <ul>
+              <li>Mise en relation locale.</li>
+              <li>Les jeunes publient leurs services et leurs créneaux.</li>
+              <li>Recherche par service, distance et disponibilité.</li>
+              <li>Demande envoyée à un jeune, directement ou via un accompagnateur.</li>
+            </ul>
+          </article>
+
+          <article class="lean-cell lean-value">
+            <h3>Proposition de valeur</h3>
+            <strong>Petits services.<br>Grands liens.</strong>
+            <p>Une application simple pour trouver une aide locale, humaine et adaptée.</p>
+          </article>
+
+          <article class="lean-cell lean-advantage">
+            <h3>Avantage difficile à copier</h3>
+            <p>Un parcours pensé dès le départ pour les accompagnateurs et les personnes âgées sans smartphone.</p>
+          </article>
+
+          <article class="lean-cell lean-segments">
+            <h3>Segments clients</h3>
+            <ul>
+              <li>Personnes âgées autonomes.</li>
+              <li>Accompagnateurs familiaux ou associatifs.</li>
+              <li>Jeunes volontaires du quartier.</li>
+            </ul>
+            <h4>Premiers utilisateurs</h4>
+            <p>Accompagnateurs qui organisent l'aide pour un proche.</p>
+          </article>
+
+          <article class="lean-cell lean-metrics">
+            <h3>Indicateurs clés</h3>
+            <ul>
+              <li>Comptes créés.</li>
+              <li>Demandes envoyées.</li>
+              <li>Demandes acceptées.</li>
+              <li>Délai pour trouver une aide.</li>
+            </ul>
+          </article>
+
+          <article class="lean-cell lean-channels">
+            <h3>Canaux</h3>
+            <ul>
+              <li>Application web mobile.</li>
+              <li>Bouche-à-oreille local.</li>
+              <li>Familles, associations et structures d'accompagnement.</li>
+            </ul>
+          </article>
+
+          <article class="lean-cell lean-costs">
+            <h3>Coûts</h3>
+            <p> Maintenance, communication locale, support utilisateurs et évolution technique.</p>
+          </article>
+
+          <article class="lean-cell lean-revenue">
+            <h3>Revenus</h3>
+            <p>Partenariats avec des associations, des collectivités locales ou des structures d'accompagnement. (Le pourboire reste libre et se fait directement entre le jeune et la personne âgée.)</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="ux-block" id="po-roadmap">
+        <p class="eyebrow">Roadmap V2</p>
+        <h2>Les EPICs</h2>
+        <article class="brand-card wide-card">
+          <p><strong>Scénario minimal (MUST) :</strong> Lucas publie son annonce ; Camille cherche un jeune proche et disponible, consulte son profil et lui envoie une demande sur un de ses créneaux ; Lucas accepte et les numéros s'affichent.</p>
+          <p><strong>Scénario cible (SHOULD + COULD) :</strong> on ajoute la messagerie, la carte, le suivi des services, les avis, puis les demandes des clients : photos et vocal, annonce assistée par IA et infos locales.</p>
+          <p><strong>Arbitrages :</strong> les demandes des clients sont en COULD car elles ne bloquent pas le parcours principal. La carte passe après la liste : la distance est déjà calculée dans la recherche. Pas de paiement dans l'app, le pourboire reste libre.</p>
+          <p><strong>Validation :</strong> roadmap V2 relue et validée avec Sara et Youmna (DEV) le 28 septembre 2026.</p>
+          <div class="table-wrap">
+            <table class="roadmap-table">
+              <thead><tr><th>EPIC</th><th>Besoin</th><th>Hypothèse</th><th>Approche retenue</th><th>Scénario</th><th>Priorité</th></tr></thead>
+              <tbody>
+                <tr><th>🔐 Accès simple</th><td>Les utilisateurs veulent entrer vite dans l'app, sans mot de passe à retenir.</td><td>Si l'inscription tient sur un écran court, plus de personnes âgées et de proches iront jusqu'au bout.</td><td>Inscription avec prénom, nom, e-mail et téléphone. Connexion par lien reçu par e-mail. Déconnexion.</td><td>Minimal</td><td><span class="priority-pill must">MUST</span></td></tr>
+                <tr><th>👥 Rôles</th><td>Madeleine, Camille et Lucas n'ont pas le même parcours.</td><td>Choisir son rôle dès le début évite de montrer des écrans inutiles.</td><td>Trois rôles : personne âgée, proche accompagnateur, jeune volontaire. L'accueil change selon le rôle.</td><td>Minimal</td><td><span class="priority-pill must">MUST</span></td></tr>
+                <tr><th>🧓 Proche accompagné</th><td>Madeleine n'a pas toujours de smartphone ; Camille organise l'aide pour elle.</td><td>Les proches seront les premiers utilisateurs de l'app.</td><td>Camille ajoute le profil de Madeleine (prénom, adresse) avec son accord. Madeleine n'a pas besoin de compte.</td><td>Minimal</td><td><span class="priority-pill must">MUST</span></td></tr>
+                <tr><th>📍 Profil et localisation</th><td>Il faut savoir où habite chacun pour proposer de l'aide proche.</td><td>Une aide à moins de 2 km a plus de chances d'être acceptée.</td><td>Adresse, code postal et ville convertis en position. L'adresse exacte n'est jamais affichée. Modification du profil.</td><td>Minimal</td><td><span class="priority-pill must">MUST</span></td></tr>
+                <tr><th>📢 Annonce du jeune</th><td>Les jeunes veulent dire ce qu'ils savent faire et quand ils sont libres.</td><td>Un jeune qui publie ses créneaux reçoit des demandes plus adaptées.</td><td>Le jeune publie une annonce : services proposés, créneaux (jour, heure de début, heure de fin) et une courte présentation.</td><td>Minimal</td><td><span class="priority-pill must">MUST</span></td></tr>
+                <tr><th>🏠 Accueil</th><td>L'utilisateur doit comprendre tout de suite quoi faire.</td><td>Un accueil adapté au rôle réduit les abandons.</td><td>Rôle et ville visibles, bloc « Pour Madeleine », raccourcis vers les actions principales, barre de navigation en bas.</td><td>Minimal</td><td><span class="priority-pill must">MUST</span></td></tr>
+                <tr><th>🔎 Recherche</th><td>Camille ou Madeleine veut trouver un jeune proche et libre.</td><td>Trois filtres suffisent pour trouver une aide rapidement.</td><td>Filtres service, distance et disponibilité. Liste triée du plus proche au plus éloigné. Profil du jeune consultable.</td><td>Minimal</td><td><span class="priority-pill must">MUST</span></td></tr>
+                <tr><th>📨 Demande de service</th><td>Le jeune doit comprendre le besoin avant de dire oui.</td><td>Une demande claire liée à un créneau du jeune est plus souvent acceptée.</td><td>Le demandeur choisit un jeune, un de ses services et un de ses créneaux, puis ajoute des précisions. Il peut annuler tant que ce n'est pas accepté.</td><td>Minimal</td><td><span class="priority-pill must">MUST</span></td></tr>
+                <tr><th>✅ Réponse et rendez-vous</th><td>Chacun veut savoir si le service aura lieu, sans donner son numéro trop tôt.</td><td>Montrer le numéro seulement après acceptation rassure les familles.</td><td>Le jeune accepte ou refuse. Si c'est accepté, le rendez-vous est créé et les numéros deviennent visibles. Suivi des demandes dans « Mes services ».</td><td>Minimal</td><td><span class="priority-pill must">MUST</span></td></tr>
+                <tr><th>💬 Messagerie</th><td>Les deux personnes veulent régler les détails avant le rendez-vous.</td><td>Pouvoir écrire avant d'appeler met plus à l'aise les jeunes et les proches.</td><td>Conversation simple entre le demandeur et le jeune, liée à une demande.</td><td>Cible</td><td><span class="priority-pill should">SHOULD</span></td></tr>
+                <tr><th>🗺️ Carte</th><td>Voir où sont les jeunes aide à choisir.</td><td>La carte rend la proximité plus concrète que la liste.</td><td>Affichage des résultats de recherche sur une carte du quartier, en plus de la liste.</td><td>Cible</td><td><span class="priority-pill should">SHOULD</span></td></tr>
+                <tr><th>📋 Suivi des services</th><td>Il faut garder une trace des services passés et à venir.</td><td>Un historique donne envie de refaire appel au même jeune.</td><td>Rendez-vous terminés ou annulés, historique, possibilité de redemander au même jeune.</td><td>Cible</td><td><span class="priority-pill should">SHOULD</span></td></tr>
+                <tr><th>⭐ Confiance et avis</th><td>Les familles veulent être rassurées avant de faire entrer quelqu'un chez un proche.</td><td>Des avis après service augmentent la confiance.</td><td>Charte d'entraide à accepter, avis court après le service, profil enrichi du jeune.</td><td>Cible</td><td><span class="priority-pill could">COULD</span></td></tr>
+                <tr><th>📸 Photos et vocal</th><td>Demande des clients : pouvoir montrer ou dire le besoin plutôt que l'écrire.</td><td>Une photo ou un message vocal est plus simple pour une personne âgée.</td><td>Photo de profil, photo dans une demande (ex. l'objet à réparer), message vocal dans la messagerie.</td><td>Cible</td><td><span class="priority-pill could">COULD</span></td></tr>
+                <tr><th>🤖 Annonce assistée par IA</th><td>Demande des clients : certains jeunes ne savent pas quoi écrire.</td><td>Une présentation proposée par l'IA donne des annonces plus complètes.</td><td>Le jeune écrit quelques mots, l'IA propose une présentation qu'il peut modifier avant de publier.</td><td>Cible</td><td><span class="priority-pill could">COULD</span></td></tr>
+                <tr><th>🌤️ Infos locales</th><td>Demande des clients : avoir des infos utiles sur le quartier.</td><td>Des infos pratiques aident à préparer le service.</td><td>Météo du jour du rendez-vous, lieux utiles proches (supermarché, pharmacie), nom du quartier.</td><td>Cible</td><td><span class="priority-pill could">COULD</span></td></tr>
+                <tr><th>📰 Fil du quartier</th><td>On veut découvrir les jeunes du quartier sans faire une recherche précise.</td><td>Un fil avec des photos et des présentations donne envie de demander de l'aide.</td><td>Fil des annonces des jeunes proches, filtrable par service, avec un accès direct au profil et à la messagerie.</td><td>Cible</td><td><span class="priority-pill could">COULD</span></td></tr>
+                <tr><th>❤️ Favoris et préférences</th><td>On aime retrouver un jeune avec qui ça s'est bien passé.</td><td>Les favoris favorisent les services réguliers.</td><td>Jeunes favoris, services préférés et rayon de recherche enregistrés.</td><td>Cible</td><td><span class="priority-pill could">COULD</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="ux-block" id="po-backlog">
+        <p class="eyebrow">Backlog V2</p>
+        <h2>Le scénario minimal</h2>
+        <div class="table-wrap">
+          <table class="backlog-table">
+            <thead><tr><th>EPIC</th><th>Parcours</th><th>User story</th><th>Spécifications fonctionnelles</th><th>Critères d'acceptation</th><th>Spécifications techniques</th><th>Exclusions</th><th>Priorité</th></tr></thead>
+            <tbody>
+              <tr><td>Accès</td><th>🔐 Inscription</th><td>En tant qu'utilisateur, je veux créer mon compte afin d'accéder à l'app.</td><td>Après le choix du rôle, je remplis prénom, nom, e-mail et téléphone, puis je reçois un lien de connexion.</td><td>Compte non créé si un champ manque. E-mail au mauvais format refusé. Message si l'e-mail a déjà un compte.</td><td>POST /users</td><td>Pas de mot de passe, pas de connexion Google.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Accès</td><th>🔐 Connexion</th><td>En tant qu'utilisateur, je veux me connecter avec un lien reçu par e-mail afin de ne pas retenir de mot de passe.</td><td>Je saisis mon e-mail, je clique sur le lien reçu et j'arrive sur l'accueil.</td><td>Lien envoyé si le compte existe. Message « aucun compte » sinon. Le lien ouvre l'accueil.</td><td>POST /auth/lien-connexion</td><td>Pas de « se souvenir de moi ».</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Accès</td><th>🔐 Déconnexion</th><td>En tant qu'utilisateur, je veux me déconnecter afin de protéger mon compte sur un appareil partagé.</td><td>Depuis mon profil, je clique sur « Se déconnecter ».</td><td>Retour à l'écran de bienvenue. Les pages de l'app ne sont plus accessibles sans se reconnecter.</td><td>POST /auth/deconnexion</td><td>Pas de déconnexion à distance des autres appareils.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Rôles</td><th>👥 Choix du rôle</th><td>En tant qu'utilisateur, je veux choisir mon rôle afin d'avoir un parcours adapté.</td><td>Premier écran de l'inscription : trois cartes (personne âgée, proche, jeune).</td><td>Impossible de continuer sans rôle. Un seul rôle par compte. Le rôle est visible sur l'accueil.</td><td>Champ rôle : JEUNE, SENIOR, ACCOMPAGNANT</td><td>Pas de changement de rôle après l'inscription.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Proche</td><th>🧓 Ajouter un proche</th><td>En tant que proche, je veux ajouter le profil de la personne que j'accompagne afin d'organiser ses demandes.</td><td>Je saisis le prénom et l'adresse de Madeleine et je coche qu'elle est d'accord.</td><td>Prénom et adresse obligatoires. Case d'accord obligatoire.</td><td>POST /users/{id}/beneficiaires</td><td>Un seul proche par compte dans le scénario minimal.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Profil</td><th>📍 Mon adresse</th><td>En tant qu'utilisateur, je veux renseigner mon adresse afin de trouver de l'aide près de chez moi.</td><td>Je saisis adresse, code postal et ville ; l'app calcule ma position.</td><td>Champs obligatoires. Message si l'adresse est introuvable. L'adresse exacte n'est jamais montrée aux autres.</td><td>Géocodage de l'adresse → latitude, longitude</td><td>Pas de position GPS en temps réel pour l'instant</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Profil</td><th>📍 Modifier mon profil</th><td>En tant qu'utilisateur, je veux modifier mes informations afin de garder un profil à jour.</td><td>Depuis « Mon profil », les champs sont pré-remplis et je clique sur « Enregistrer ».</td><td>Changements visibles tout de suite</td><td>PATCH /users/{id}</td><td>Pas de suppression de compte dans le scénario minimal.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Annonce</td><th>📢 Publier mon annonce</th><td>En tant que jeune, je veux publier une annonce avec mes services et une présentation afin d'être trouvé.</td><td>Je choisis un ou plusieurs services, j'écris une courte présentation et je publie.</td><td>Au moins un service. Présentation de 180 caractères maximum. L'annonce apparaît dans la recherche.</td><td>POST /users/{id}/services</td><td>Pas de photos.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Annonce</td><th>📢 Ajouter mes créneaux</th><td>En tant que jeune, je veux ajouter mes créneaux afin qu'on sache quand je peux aider.</td><td>Pour chaque créneau, je choisis un jour, une heure de début et une heure de fin.</td><td>Au moins un créneau pour publier.</td><td>POST /users/{id}/disponibilites</td><td>Pas de calendrier avec des dates précises.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Annonce</td><th>📢 Voir mon annonce</th><td>En tant que jeune, je veux voir mon annonce comme les autres la voient afin de vérifier qu'elle est claire.</td><td>Depuis mon profil, j'ouvre l'aperçu de mon annonce.</td><td>Services, créneaux, présentation et distance affichés comme dans la recherche. Téléphone masqué.</td><td>GET /users/{id}</td><td>Pas de statistiques de vues.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Accueil</td><th>🏠 Mon contexte</th><td>En tant qu'utilisateur, je veux voir mon rôle et mon quartier afin de comprendre où je suis.</td><td>En arrivant sur l'accueil, je vois « Bonjour Camille », mon rôle et mon quartier.</td><td>Rôle, ville et quartier visibles. Le quartier se change en un clic.</td><td>Données du profil connecté</td><td>Pas de personnalisation des couleurs.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Accueil</td><th>🏠 Pour Camille &amp; Madeleine</th><td>En tant que proche, je veux voir le prénom de la personne aidée afin de savoir pour qui j'agis.</td><td>Un bloc « Pour Madeleine » est affiché en haut de l'accueil.</td><td>Bloc visible seulement pour le rôle proche. Les recherches utilisent l'adresse de Madeleine.</td><td>GET /users/{id}/beneficiaires</td><td>Pas de changement rapide entre plusieurs proches.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Accueil</td><th>🏠 Raccourcis</th><td>En tant qu'utilisateur, je veux des raccourcis vers les actions principales afin d'aller vite.</td><td>Bouton « Voir les jeunes disponibles » (demandeur) ou « Publier mon annonce » (jeune), et barre de navigation en bas.</td><td>Barre avec Accueil, Services, Messages et Profil. Chaque bouton mène au bon écran.</td><td>Front uniquement</td><td>Pas de menu personnalisable.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Accueil</td><th>🏠 Suggestions</th><td>En tant qu'utilisateur, je veux voir des suggestions sur l'accueil afin de ne pas tout chercher moi-même.</td><td>Le demandeur voit des jeunes proches ; le jeune voit les demandes reçues.</td><td>Suggestions triées par distance. Message si rien n'est disponible.</td><td>GET /jeunes, GET /demandes-service</td><td>Pas de recommandations intelligentes.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Recherche</td><th>🔎 Filtrer</th><td>En tant que demandeur, je veux filtrer les jeunes par service, distance et disponibilité afin de trouver une aide proche.</td><td>Je choisis un service, un rayon et un moment, puis je vois la liste des jeunes.</td><td>Liste triée du plus proche au plus éloigné. Message si aucun résultat. Les filtres restent choisis quand je reviens.</td><td>GET /jeunes</td><td>Pas de carte dans le scénario minimal, pas de recherche par texte.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Recherche</td><th>🔎 Profil d'un jeune</th><td>En tant que demandeur, je veux consulter le profil d'un jeune afin de choisir en confiance.</td><td>Je clique sur un jeune dans la liste et je vois son profil.</td><td>Prénom, âge, photo, services, distance et créneaux visibles. Téléphone masqué.</td><td>GET /users/{id}</td><td>Pas d'avis dans le scénario minimal.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Demande</td><th>📨 Envoyer une demande</th><td>En tant que demandeur, je veux envoyer une demande à un jeune sur un de ses créneaux afin qu'il comprenne mon besoin.</td><td>Depuis le profil du jeune, je choisis un service, un créneau, j'écris des précisions et j'envoie.</td><td>Impossible d'envoyer sans service, créneau et précisions. Pour un proche, Madeleine est pré-remplie. Écran « Demande envoyée ».</td><td>POST /demandes-service</td><td>Pas de demande à plusieurs jeunes à la fois.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Demande</td><th>📨 Annuler ma demande</th><td>En tant que demandeur, je veux annuler une demande afin de prévenir le jeune si je n'ai plus besoin d'aide.</td><td>Dans « Mes services », je clique sur « Annuler » sur une demande en attente.</td><td>Annulation possible seulement tant que la demande n'est pas acceptée. Statut « annulée » visible des deux côtés.</td><td>PATCH /demandes-service/{id} → ANNULEE</td><td>Pas d'annulation après acceptation.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Demande</td><th>📨 Demandes reçues</th><td>En tant que jeune, je veux voir les demandes reçues afin de savoir si je peux aider.</td><td>Je vois la liste de mes demandes et j'en ouvre une.</td><td>Service, personne aidée, distance, créneau et précisions visibles. Téléphone masqué.</td><td>GET /demandes-service</td><td>Pas de tri avancé.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Réponse</td><th>✅ Accepter</th><td>En tant que jeune, je veux accepter une demande afin de confirmer que je m'en occupe.</td><td>Sur la demande, je clique sur « Accepter la demande ».</td><td>Statut « acceptée ». Le rendez-vous est créé. Le demandeur voit le changement.</td><td>PATCH /demandes-service/{id} → ACCEPTEE</td><td>Pas de proposition d'un autre créneau.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Réponse</td><th>✅ Refuser</th><td>En tant que jeune, je veux refuser une demande afin de ne pas laisser la personne attendre.</td><td>Sur la demande, je clique sur « Refuser ».</td><td>Statut « refusée » visible par le demandeur, qui peut choisir un autre jeune.</td><td>PATCH /demandes-service/{id} → REFUSEE</td><td>Pas de motif de refus obligatoire.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Réponse</td><th>✅ Voir le numéro</th><td>En tant que demandeur ou jeune, je veux voir le numéro de l'autre une fois la demande acceptée afin de régler les détails.</td><td>Sur la demande acceptée, le numéro apparaît.</td><td>Numéro masqué tant que la demande est « envoyée ». Visible des deux côtés après acceptation.</td><td>GET /rendez-vous/{id}</td><td>Pas d'appel depuis l'app.</td><td><span class="priority-pill must">MUST</span></td></tr>
+              <tr><td>Réponse</td><th>✅ Mes services</th><td>En tant qu'utilisateur, je veux voir mes demandes et leur statut afin de savoir où j'en suis.</td><td>L'onglet « Services » liste mes demandes envoyées ou reçues.</td><td>Chaque demande affiche son statut : envoyée, acceptée, refusée ou annulée.</td><td>GET /demandes-service</td><td>Pas d'historique des services terminés</td><td><span class="priority-pill must">MUST</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="ux-block" id="po-backlog-cible">
+        <p class="eyebrow">Backlog V2</p>
+        <h2>Le scénario cible</h2>
+        <div class="table-wrap">
+          <table class="backlog-table">
+            <thead><tr><th>EPIC</th><th>Parcours</th><th>User story</th><th>Spécifications fonctionnelles</th><th>Critères d'acceptation</th><th>Spécifications techniques</th><th>Exclusions</th><th>Priorité</th></tr></thead>
+            <tbody>
+              <tr><td>Messagerie</td><th>💬 Écrire à un jeune</th><td>En tant que demandeur, je veux écrire au jeune avant le rendez-vous afin de régler les détails sans donner mon numéro.</td><td>Depuis le profil du jeune, le fil ou une demande, je clique sur « Échanger avec Lucas » et j'écris un message.</td><td>Message vide refusé. 500 caractères maximum. Le message apparaît avec l'heure d'envoi. Le numéro reste masqué tant que la demande n'est pas acceptée.</td><td>POST /messages</td><td>Pas de pièce jointe, pas de message de groupe.</td><td><span class="priority-pill should">SHOULD</span></td></tr>
+              <tr><td>Messagerie</td><th>💬 Mes conversations</th><td>En tant qu'utilisateur, je veux retrouver toutes mes conversations afin de reprendre un échange.</td><td>L'onglet « Messages » liste mes conversations avec le prénom de la personne et le dernier message.</td><td>Conversations triées de la plus récente à la plus ancienne. Message si je n'ai encore aucune conversation. Les nouveaux messages s'affichent sans recharger la page.</td><td>GET /messages</td><td>Pas de notification , pas d'indicateur « lu ».</td><td><span class="priority-pill should">SHOULD</span></td></tr>
+              <tr><td>Carte</td><th>🗺️ Voir les jeunes sur la carte</th><td>En tant que demandeur, je veux voir les jeunes disponibles sur une carte afin de me rendre compte de la distance.</td><td>Sur la recherche, je passe de « Liste » à « Carte ». Je vois ma position, le rayon choisi et les jeunes autour.</td><td>La carte suit les mêmes filtres que la liste. Le cercle correspond au rayon choisi. Pour un proche, la carte est centrée sur l'adresse de Madeleine.</td><td>GET /jeunes, carte Leaflet (OpenStreetMap)</td><td>Pas d'itinéraire</td><td><span class="priority-pill should">SHOULD</span></td></tr>
+              <tr><td>Carte</td><th>🗺️ Ouvrir un profil depuis la carte</th><td>En tant que demandeur, je veux cliquer sur un jeune de la carte afin de voir son profil.</td><td>Je clique sur un point de la carte, je vois le prénom et les services, puis j'ouvre le profil.</td><td>Le profil ouvert est bien celui du jeune choisi. Le retour ramène à la carte avec les mêmes filtres.</td><td>GET /users/{id}</td><td>Pas de demande envoyée directement depuis la carte.</td><td><span class="priority-pill should">SHOULD</span></td></tr>
+              <tr><td>Carte</td><th>🗺️ Position approximative</th><td>En tant que jeune, je veux que ma position sur la carte soit approximative afin que mon adresse reste privée.</td><td>Le point du jeune est placé à quelques centaines de mètres de son adresse réelle.</td><td>L'adresse exacte n'est jamais affichée. Le point reste au même endroit d'une visite à l'autre. La distance affichée reste juste.</td><td>Front uniquement</td><td>Pas de réglage de la précision par l'utilisateur.</td><td><span class="priority-pill should">SHOULD</span></td></tr>
+              <tr><td>Confiance</td><th>⭐ Charte d'entraide</th><td>En tant qu'utilisateur, je veux lire la charte d'entraide afin de connaître les règles avant un service.</td><td>Depuis mon profil, j'ouvre « La charte d'entraide » et je clique sur « J'ai compris ».</td><td>La charte est lisible depuis le profil. Elle rappelle le respect, l'accord du proche, l'échange du numéro après acceptation et le pourboire libre.</td><td>Front uniquement</td><td>Acceptation obligatoire à l'inscription pas encore en place.</td><td><span class="priority-pill could">COULD</span></td></tr>
+              <tr><td>Photos</td><th>📸 Photo de profil</th><td>En tant qu'utilisateur, je veux ajouter une photo de profil afin d'être reconnu et de mettre en confiance.</td><td>Dans « Modifier mon profil », je choisis une photo et je vois un aperçu.</td><td>Seulement des images. Taille limitée, sinon message d'erreur. Sans photo, l'initiale du prénom s'affiche.</td><td>PATCH /users/{id}</td><td>Pas de retouche ni de recadrage.</td><td><span class="priority-pill could">COULD</span></td></tr>
+              <tr><td>Fil</td><th>📰 Fil du quartier</th><td>En tant que demandeur, je veux parcourir les annonces des jeunes du quartier afin de découvrir qui peut m'aider.</td><td>Depuis l'accueil, j'ouvre « Le fil » et je vois les jeunes proches avec leur photo, leur présentation et leurs créneaux.</td><td>Jeunes à moins de 5 km, du plus proche au plus éloigné. Chaque annonce mène au profil et à la messagerie.</td><td>GET /jeunes</td><td>Pas de publication par les demandeurs, pas de commentaires.</td><td><span class="priority-pill could">COULD</span></td></tr>
+              <tr><td>Fil</td><th>📰 Filtrer le fil</th><td>En tant que demandeur, je veux filtrer le fil par service afin de voir seulement l'aide dont j'ai besoin.</td><td>Je touche un service en haut du fil (courses, ménage, bricolage…).</td><td>Seuls les jeunes qui proposent ce service restent. « Tous » remet le fil complet.</td><td>GET /jeunes?service=</td><td>Pas de filtre par créneau dans le fil.</td><td><span class="priority-pill could">COULD</span></td></tr>
+              <tr><td>Suivi</td><th>📋 Service terminé</th><td>En tant que jeune, je veux indiquer qu'un service a eu lieu afin de clore la demande.</td><td>Sur une demande acceptée, après le créneau, je clique sur « Service terminé ».</td><td>Bouton visible seulement sur une demande acceptée. Statut « terminée » visible des deux côtés.</td><td>PATCH /demandes-service/{id} → TERMINEE</td><td>Pas de validation automatique.</td><td><span class="priority-pill should">SHOULD</span></td></tr>
+              <tr><td>Suivi</td><th>📋 Historique</th><td>En tant qu'utilisateur, je veux voir mes services passés afin de garder une trace de l'aide reçue ou donnée.</td><td>Dans « Services », un onglet « Passés » liste les demandes terminées, refusées ou annulées.</td><td>Séparation claire entre services à venir et passés. Date, service et personne visibles.</td><td>GET /demandes-service?statut=</td><td>Pas d'export.</td><td><span class="priority-pill should">SHOULD</span></td></tr>
+              <tr><td>Suivi</td><th>📋 Redemander au même jeune</th><td>En tant que demandeur, je veux refaire une demande au même jeune afin de garder quelqu'un de confiance.</td><td>Sur un service terminé, je clique sur « Redemander » et le formulaire s'ouvre avec le même jeune et le même service.</td><td>Le jeune et le service sont pré-remplis. Je dois choisir un nouveau créneau.</td><td>POST /demandes-service</td><td>Pas de demande automatique.</td><td><span class="priority-pill should">SHOULD</span></td></tr>
+              <tr><td>Confiance</td><th>⭐ Laisser un avis</th><td>En tant que demandeur, je veux laisser un avis après le service afin d'aider les autres familles à choisir.</td><td>Sur un service terminé, je donne une note de 1 à 5 et un court commentaire.</td><td>Un seul avis par service. Avis visible sur le profil du jeune. Commentaire de 200 caractères maximum.</td><td>POST /avis</td><td>Pas d'avis du jeune sur le demandeur.</td><td><span class="priority-pill could">COULD</span></td></tr>
+              <tr><td>Favoris</td><th>❤️ Jeunes favoris</th><td>En tant que demandeur, je veux ajouter un jeune en favori afin de le retrouver facilement.</td><td>Sur le fil ou le profil, je touche le cœur. Mes favoris apparaissent dans mon profil.</td><td>Le favori est gardé après déconnexion. Un deuxième clic le retire.</td><td>POST /users/{id}/favoris</td><td>Le jeune n'est pas prévenu.</td><td><span class="priority-pill could">COULD</span></td></tr>
+              <tr><td>Photos</td><th>📸 Photo dans une demande</th><td>En tant que demandeur, je veux joindre une photo à ma demande afin de montrer le besoin.</td><td>Dans le formulaire de demande, j'ajoute une photo (ex. l'objet à réparer).</td><td>Une photo maximum. Visible par le jeune dans le détail de la demande.</td><td>POST /demandes-service (photo)</td><td>Pas de vidéo.</td><td><span class="priority-pill could">COULD</span></td></tr>
+              <tr><td>Photos et vocal</td><th>📸 Message vocal</th><td>En tant que personne âgée, je veux envoyer un message vocal afin de ne pas avoir à écrire.</td><td>Dans une conversation, je maintiens le micro, je parle et j'envoie.</td><td>1 minute maximum. Le jeune peut l'écouter dans la conversation.</td><td>POST /messages (audio)</td><td>Pas de transcription.</td><td><span class="priority-pill could">COULD</span></td></tr>
+              <tr><td>IA</td><th>🤖 Annonce assistée</th><td>En tant que jeune, je veux qu'une présentation me soit proposée afin d'écrire une annonce complète facilement.</td><td>J'écris quelques mots, je clique sur « Proposer un texte », je modifie la proposition puis je publie.</td><td>Le texte proposé respecte les 180 caractères. Je peux le modifier ou le refuser.</td><td>POST /annonce/suggestion</td><td>Pas de publication sans validation du jeune.</td><td><span class="priority-pill could">COULD</span></td></tr>
+              <tr><td>Infos locales</td><th>🌤️ Infos locales</th><td>En tant que jeune, je veux voir la météo et les lieux utiles près du rendez-vous afin de préparer le service.</td><td>Sur une demande acceptée, je vois la météo du jour et les commerces proches (supermarché, pharmacie).</td><td>Météo du jour du créneau. Lieux à moins de 1 km.</td><td>API météo, API lieux</td><td>Pas d'itinéraire.</td><td><span class="priority-pill could">COULD</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </section>
+  </main>
+
+  <footer class="studio-footer">
+    <span>Voisin d’Or - la solidarité commence au coin de la rue.</span>
+    <span>Petits services. Grands liens.</span>
+  </footer>
+
+  <script src="app.js?v=form-suggestions-1"></script>
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <script>
+    (function(){
+      var bar = document.getElementById('scroll-progress');
+      function updateBar(){
+        var doc = document.documentElement;
+        var scrolled = doc.scrollTop || document.body.scrollTop;
+        var height = (doc.scrollHeight - doc.clientHeight) || 1;
+        bar.style.width = Math.min(100, (scrolled / height) * 100) + '%';
+      }
+      document.addEventListener('scroll', updateBar, {passive:true});
+      updateBar();
+
+      var revealEls = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && revealEls.length){
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (entry.isIntersecting){
+              entry.target.classList.add('reveal-in');
+              io.unobserve(entry.target);
+            }
+          });
+        }, {threshold: 0.15});
+        revealEls.forEach(function(el){ io.observe(el); });
+      } else {
+        revealEls.forEach(function(el){ el.classList.add('reveal-in'); });
+      }
+    })();
+  </script>
+</body>
+</html>
+
+
+
+
+

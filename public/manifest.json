@@ -1,0 +1,15 @@
+{
+  "short_name": "Voisin d'Or",
+  "name": "Voisin d'Or - Petits services. Grands liens.",
+  "icons": [
+    {
+      "src": "assets/logo-voisin-dor-icone.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#FFC145",
+  "background_color": "#FFF8F0"
+}

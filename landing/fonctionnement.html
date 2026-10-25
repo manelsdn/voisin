@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fonctionnement - Voisin d’Or</title>
+  <meta name="description" content="Comment fonctionne Voisin d’Or, étape par étape.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo-voisin-dor-icone.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body class="theme-deck">
+  <span class="deco d1"></span><span class="deco d2"></span><span class="deco d3"></span>
+  <header class="studio-header sv-header">
+    <a class="studio-brand" href="index.html" aria-label="Voisin d’Or, accueil">
+      <img src="assets/logo-voisin-dor.svg" alt="Voisin d’Or">
+    </a>
+    <nav aria-label="Site vitrine">
+      <a class="studio-tab" href="index.html">Accueil</a>
+      <a class="studio-tab active" href="fonctionnement.html" aria-current="page">Fonctionnement</a>
+      <a class="studio-tab" href="faq.html">FAQ</a>
+      <a class="studio-tab" href="index.html#contact">Contact</a>
+    </nav>
+    <a class="home-primary sv-header-cta" href="https://voisin-dor-app.vercel.app/inscription">Ouvrir l’application</a>
+  </header>
+
+  <main>
+    <div class="band-hero">
+      <section class="studio-panel">
+        <div class="page-hero">
+          <div>
+            <p class="eyebrow">FONCTIONNEMENT</p>
+            <h1>S’entraider, <em>c’est simple.</em></h1>
+            <p class="lead">Voisin d’Or relie les personnes âgées, leurs proches et les jeunes d’un même quartier. Pas de dossier compliqué : on crée son accès, on trouve un voisin disponible et on se rencontre.</p>
+          </div>
+          <div class="hero-wide"><img src="assets/presentation/etapes.jpg" alt="Les trois étapes : choisir son besoin, trouver un jeune, confirmer le rendez-vous"></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="studio-panel home-band reveal">
+      <div class="center-title">
+        <h2>Comment ça marche ?</h2>
+        <p>Quatre étapes, pas plus.</p>
+      </div>
+    </section>
+
+    <section class="studio-panel home-band reveal">
+      <div class="split">
+        <div>
+          <p class="step-tag">ÉTAPE #1 · INSCRIPTION</p>
+          <h2>Créez votre accès</h2>
+          <p>Prénom, nom, e-mail et téléphone, puis un lien de connexion : pas de mot de passe. Vous agissez pour vous-même ou pour un proche, avec son accord.</p>
+        </div>
+        <div class="split-art phone-art"><div class="mock-phone"><img src="assets/ecrans/accueil.jpg" alt="Accueil de l’application"></div></div>
+      </div>
+    </section>
+
+    <section class="studio-panel home-band reveal">
+      <div class="split reverse">
+        <div>
+          <p class="step-tag">ÉTAPE #2 · RECHERCHE</p>
+          <h2>Trouvez un voisin disponible</h2>
+          <p>Filtrez par service, distance et jour. La liste va du plus proche au plus éloigné.</p>
+        </div>
+        <div class="split-art phone-art"><div class="mock-phone"><img src="assets/ecrans/recherche.jpg" alt="Écran de recherche"></div></div>
+      </div>
+    </section>
+
+    <section class="studio-panel home-band reveal">
+      <div class="split">
+        <div>
+          <p class="step-tag">ÉTAPE #3 · PROFIL</p>
+          <h2>Choisissez en confiance</h2>
+          <p>Le profil du jeune montre ses services, ses créneaux et la distance. Son numéro reste masqué.</p>
+        </div>
+        <div class="split-art phone-art"><div class="mock-phone"><img src="assets/ecrans/profil-jeune.jpg" alt="Profil d’un jeune"></div></div>
+      </div>
+    </section>
+
+    <section class="studio-panel home-band reveal">
+      <div class="split reverse">
+        <div>
+          <p class="step-tag">ÉTAPE #4 · DEMANDE</p>
+          <h2>Envoyez une demande</h2>
+          <p>Choisissez un créneau et ajoutez quelques précisions. Dès que le jeune accepte, les numéros s’affichent.</p>
+        </div>
+        <div class="split-art phone-art"><div class="mock-phone"><img src="assets/ecrans/demande.jpg" alt="Demande envoyée"></div></div>
+      </div>
+    </section>
+
+
+    <section class="studio-panel home-band reveal">
+      <div class="cta-band" style="margin:0">
+        <h2>Prêt à donner ou recevoir un coup de main ?</h2>
+        <p>L’inscription prend deux minutes.</p>
+        <div class="cta-band-actions"><a class="home-primary" href="https://voisin-dor-app.vercel.app/inscription" style="text-decoration:none;display:inline-flex;align-items:center">Je m’inscris</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="studio-footer">
+    <span>Voisin d’Or - la solidarité commence au coin de la rue.</span>
+    <span><a href="index.html#mentions">Mentions légales, CGV et confidentialité</a></span>
+  </footer>
+
+  <script>
+    (function(){
+      var revealEls = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && revealEls.length){
+        var io = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            if (entry.isIntersecting){
+              entry.target.classList.add('reveal-in');
+              io.unobserve(entry.target);
+            }
+          });
+        }, {threshold: 0.15});
+        revealEls.forEach(function(el){ io.observe(el); });
+      } else {
+        revealEls.forEach(function(el){ el.classList.add('reveal-in'); });
+      }
+    })();
+  </script>
+</body>
+</html>

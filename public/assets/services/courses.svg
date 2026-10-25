@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Courses">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFF8F0"/><stop offset="1" stop-color="#FFE19A"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="12" stdDeviation="9" flood-color="#2A2140" flood-opacity=".16"/></filter>
+  </defs>
+  <rect width="240" height="240" rx="38" fill="url(#bg)"/>
+  <circle cx="203" cy="39" r="44" fill="#fff" opacity=".48"/>
+  <circle cx="38" cy="205" r="56" fill="#1FAF98" opacity=".12"/>
+  <path d="M23 75c32-22 66-20 98 1 35 23 68 20 95-5" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" opacity=".62"/>
+  <g filter="url(#shadow)" stroke="#2A2140" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M58 90h124l11 80c2 13-8 24-21 24H68c-13 0-23-11-21-24l11-80Z" fill="#fffdf8"/>
+    <path d="M80 90V70c0-23 18-41 40-41s40 18 40 41v20" fill="none"/>
+    <circle cx="91" cy="134" r="17" fill="#FF6B5B"/>
+    <rect x="119" y="116" width="30" height="53" rx="11" fill="#1FAF98"/>
+    <path d="M157 143c15-20 29-18 35-11" fill="none" stroke="#FFC145"/>
+    <path d="M75 179c28-14 69-14 98 0" fill="none"/>
+  </g>
+</svg>

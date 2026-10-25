@@ -1,0 +1,2082 @@
+{
+  "users": {
+    "jeune-01": {
+      "prenom": "Lucas",
+      "nom": "Martin",
+      "email": "lucas.martin@exemple.fr",
+      "telephone": "06 74 37 14 21",
+      "role": "JEUNE",
+      "adresse": "57 rue Paul Bert",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75825,
+      "longitude": 4.84763,
+      "dateNaissance": "2006-07-02",
+      "description": "Étudiant, j'aime rendre service dans le quartier. Je peux aider pour les courses et l'informatique.",
+      "services": [
+        "COURSES",
+        "INFORMATIQUE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d1-1",
+          "jour": "SAMEDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d1-2",
+          "jour": "MERCREDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "/assets/personas/lucas.png",
+      "accompagnantId": null,
+      "creeAt": "2026-09-13T10:00:00.000Z"
+    },
+    "jeune-02": {
+      "prenom": "Inès",
+      "nom": "Benali",
+      "email": "ines.benali@exemple.fr",
+      "telephone": "06 16 38 15 81",
+      "role": "JEUNE",
+      "adresse": "111 cours Lafayette",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76017,
+      "longitude": 4.84815,
+      "dateNaissance": "2006-02-19",
+      "description": "Jeune active, j'aime rendre service dans le quartier. Je peux aider pour un peu de ménage, les courses et la cuisine.",
+      "services": [
+        "MENAGE",
+        "COURSES",
+        "CUISINE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d2-1",
+          "jour": "VENDREDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "/assets/personas/ines.png",
+      "accompagnantId": null,
+      "creeAt": "2026-09-19T10:00:00.000Z"
+    },
+    "jeune-03": {
+      "prenom": "Adam",
+      "nom": "Durand",
+      "email": "adam.durand@exemple.fr",
+      "telephone": "06 17 89 36 73",
+      "role": "JEUNE",
+      "adresse": "89 rue Moncey",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76005,
+      "longitude": 4.84622,
+      "dateNaissance": "2005-10-15",
+      "description": "Jeune actif, j'aime rendre service dans le quartier. Je peux aider pour les petites réparations, l'informatique et le jardin.",
+      "services": [
+        "BRICOLAGE",
+        "INFORMATIQUE",
+        "JARDINAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d3-1",
+          "jour": "SAMEDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d3-2",
+          "jour": "MARDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        },
+        {
+          "id": "d3-3",
+          "jour": "MERCREDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "/assets/personas/adam.png",
+      "accompagnantId": null,
+      "creeAt": "2026-09-21T10:00:00.000Z"
+    },
+    "jeune-04": {
+      "prenom": "Léa",
+      "nom": "Petit",
+      "email": "lea.petit@exemple.fr",
+      "telephone": "06 53 67 46 87",
+      "role": "JEUNE",
+      "adresse": "11 avenue Félix Faure",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75144,
+      "longitude": 4.85534,
+      "dateNaissance": "2008-06-05",
+      "description": "Jeune active, j'aime rendre service dans le quartier. Je peux aider pour un peu de ménage et la cuisine.",
+      "services": [
+        "MENAGE",
+        "CUISINE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d4-1",
+          "jour": "DIMANCHE",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        },
+        {
+          "id": "d4-2",
+          "jour": "MARDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        },
+        {
+          "id": "d4-3",
+          "jour": "LUNDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-25T10:00:00.000Z"
+    },
+    "jeune-05": {
+      "prenom": "Hugo",
+      "nom": "Moreau",
+      "email": "hugo.moreau@exemple.fr",
+      "telephone": "06 68 18 21 44",
+      "role": "JEUNE",
+      "adresse": "62 rue de Créqui",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.76658,
+      "longitude": 4.84302,
+      "dateNaissance": "2007-12-10",
+      "description": "Jeune actif, j'aime rendre service dans le quartier. Je peux aider pour les courses, la cuisine et les petites réparations.",
+      "services": [
+        "COURSES",
+        "CUISINE",
+        "BRICOLAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d5-1",
+          "jour": "SAMEDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        },
+        {
+          "id": "d5-2",
+          "jour": "MERCREDI",
+          "heureDebut": "10:00",
+          "heureFin": "12:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-24T10:00:00.000Z"
+    },
+    "jeune-06": {
+      "prenom": "Chloé",
+      "nom": "Lambert",
+      "email": "chloe.lambert@exemple.fr",
+      "telephone": "06 73 17 37 46",
+      "role": "JEUNE",
+      "adresse": "18 cours Vitton",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.77311,
+      "longitude": 4.85398,
+      "dateNaissance": "2008-08-03",
+      "description": "Étudiante, j'aime rendre service dans le quartier. Je peux aider pour la cuisine et l'informatique.",
+      "services": [
+        "CUISINE",
+        "INFORMATIQUE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d6-1",
+          "jour": "MERCREDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        },
+        {
+          "id": "d6-2",
+          "jour": "LUNDI",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        },
+        {
+          "id": "d6-3",
+          "jour": "JEUDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-15T10:00:00.000Z"
+    },
+    "jeune-07": {
+      "prenom": "Nathan",
+      "nom": "Roux",
+      "email": "nathan.roux@exemple.fr",
+      "telephone": "06 45 63 55 97",
+      "role": "JEUNE",
+      "adresse": "115 rue Garibaldi",
+      "codePostal": "69007",
+      "ville": "Lyon",
+      "latitude": 45.74954,
+      "longitude": 4.84935,
+      "dateNaissance": "2002-03-05",
+      "description": "Jeune actif, j'aime rendre service dans le quartier. Je peux aider pour l'informatique, le jardin et les petites réparations.",
+      "services": [
+        "INFORMATIQUE",
+        "JARDINAGE",
+        "BRICOLAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d7-1",
+          "jour": "DIMANCHE",
+          "heureDebut": "10:00",
+          "heureFin": "12:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-17T10:00:00.000Z"
+    },
+    "jeune-08": {
+      "prenom": "Emma",
+      "nom": "Fontaine",
+      "email": "emma.fontaine@exemple.fr",
+      "telephone": "06 57 88 82 50",
+      "role": "JEUNE",
+      "adresse": "18 avenue Jean Jaurès",
+      "codePostal": "69007",
+      "ville": "Lyon",
+      "latitude": 45.74602,
+      "longitude": 4.84212,
+      "dateNaissance": "2006-11-22",
+      "description": "Jeune active, j'aime rendre service dans le quartier. Je peux aider pour les courses et l'informatique.",
+      "services": [
+        "COURSES",
+        "INFORMATIQUE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d8-1",
+          "jour": "MARDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d8-2",
+          "jour": "MERCREDI",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        },
+        {
+          "id": "d8-3",
+          "jour": "SAMEDI",
+          "heureDebut": "10:00",
+          "heureFin": "12:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-11T10:00:00.000Z"
+    },
+    "jeune-09": {
+      "prenom": "Yanis",
+      "nom": "Chevalier",
+      "email": "yanis.chevalier@exemple.fr",
+      "telephone": "06 17 34 18 36",
+      "role": "JEUNE",
+      "adresse": "58 rue de la Part-Dieu",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.7573,
+      "longitude": 4.85172,
+      "dateNaissance": "2002-02-01",
+      "description": "Jeune actif, j'aime rendre service dans le quartier. Je peux aider pour la cuisine, le jardin et l'informatique.",
+      "services": [
+        "CUISINE",
+        "JARDINAGE",
+        "INFORMATIQUE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d9-1",
+          "jour": "JEUDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d9-2",
+          "jour": "DIMANCHE",
+          "heureDebut": "10:00",
+          "heureFin": "12:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-14T10:00:00.000Z"
+    },
+    "jeune-10": {
+      "prenom": "Sarah",
+      "nom": "Garnier",
+      "email": "sarah.garnier@exemple.fr",
+      "telephone": "06 54 87 56 70",
+      "role": "JEUNE",
+      "adresse": "17 rue Servient",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75792,
+      "longitude": 4.8424,
+      "dateNaissance": "2005-08-16",
+      "description": "Lycéenne, j'aime rendre service dans le quartier. Je peux aider pour les petites réparations.",
+      "services": [
+        "BRICOLAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d10-1",
+          "jour": "LUNDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        },
+        {
+          "id": "d10-2",
+          "jour": "DIMANCHE",
+          "heureDebut": "10:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d10-3",
+          "jour": "MARDI",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-19T10:00:00.000Z"
+    },
+    "jeune-11": {
+      "prenom": "Louis",
+      "nom": "Faure",
+      "email": "louis.faure@exemple.fr",
+      "telephone": "06 71 98 30 76",
+      "role": "JEUNE",
+      "adresse": "4 rue Duguesclin",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.76564,
+      "longitude": 4.84912,
+      "dateNaissance": "2004-03-23",
+      "description": "Lycéen, j'aime rendre service dans le quartier. Je peux aider pour un peu de ménage.",
+      "services": [
+        "MENAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d11-1",
+          "jour": "SAMEDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-27T10:00:00.000Z"
+    },
+    "jeune-12": {
+      "prenom": "Manon",
+      "nom": "Mercier",
+      "email": "manon.mercier@exemple.fr",
+      "telephone": "06 31 55 38 78",
+      "role": "JEUNE",
+      "adresse": "71 rue Mazenod",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75923,
+      "longitude": 4.84564,
+      "dateNaissance": "2003-10-26",
+      "description": "Lycéenne, j'aime rendre service dans le quartier. Je peux aider pour le jardin.",
+      "services": [
+        "JARDINAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d12-1",
+          "jour": "SAMEDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        },
+        {
+          "id": "d12-2",
+          "jour": "LUNDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-16T10:00:00.000Z"
+    },
+    "jeune-13": {
+      "prenom": "Rayan",
+      "nom": "Blanc",
+      "email": "rayan.blanc@exemple.fr",
+      "telephone": "06 13 13 45 70",
+      "role": "JEUNE",
+      "adresse": "35 rue Chaponnay",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75305,
+      "longitude": 4.84884,
+      "dateNaissance": "2004-08-26",
+      "description": "Lycéen, j'aime rendre service dans le quartier. Je peux aider pour l'informatique et un peu de ménage.",
+      "services": [
+        "INFORMATIQUE",
+        "MENAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d13-1",
+          "jour": "VENDREDI",
+          "heureDebut": "10:00",
+          "heureFin": "12:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-21T10:00:00.000Z"
+    },
+    "jeune-14": {
+      "prenom": "Camélia",
+      "nom": "Guerin",
+      "email": "camelia.guerin@exemple.fr",
+      "telephone": "06 53 36 71 89",
+      "role": "JEUNE",
+      "adresse": "117 rue Pierre Corneille",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.76688,
+      "longitude": 4.83902,
+      "dateNaissance": "2007-06-26",
+      "description": "Étudiante, j'aime rendre service dans le quartier. Je peux aider pour les courses et un peu de ménage.",
+      "services": [
+        "COURSES",
+        "MENAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d14-1",
+          "jour": "MARDI",
+          "heureDebut": "10:00",
+          "heureFin": "12:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-12T10:00:00.000Z"
+    },
+    "jeune-15": {
+      "prenom": "Théo",
+      "nom": "Boyer",
+      "email": "theo.boyer@exemple.fr",
+      "telephone": "06 60 69 61 20",
+      "role": "JEUNE",
+      "adresse": "94 rue Bossuet",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.76677,
+      "longitude": 4.85194,
+      "dateNaissance": "2002-03-19",
+      "description": "Étudiant, j'aime rendre service dans le quartier. Je peux aider pour l'informatique.",
+      "services": [
+        "INFORMATIQUE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d15-1",
+          "jour": "DIMANCHE",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        },
+        {
+          "id": "d15-2",
+          "jour": "MARDI",
+          "heureDebut": "10:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d15-3",
+          "jour": "JEUDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-24T10:00:00.000Z"
+    },
+    "jeune-16": {
+      "prenom": "Jade",
+      "nom": "Girard",
+      "email": "jade.girard@exemple.fr",
+      "telephone": "06 26 12 11 93",
+      "role": "JEUNE",
+      "adresse": "15 rue Sébastien Gryphe",
+      "codePostal": "69007",
+      "ville": "Lyon",
+      "latitude": 45.75221,
+      "longitude": 4.84747,
+      "dateNaissance": "2005-04-27",
+      "description": "Jeune active, j'aime rendre service dans le quartier. Je peux aider pour le jardin et la cuisine.",
+      "services": [
+        "JARDINAGE",
+        "CUISINE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d16-1",
+          "jour": "SAMEDI",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        },
+        {
+          "id": "d16-2",
+          "jour": "MERCREDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-16T10:00:00.000Z"
+    },
+    "jeune-17": {
+      "prenom": "Mehdi",
+      "nom": "André",
+      "email": "mehdi.andré@exemple.fr",
+      "telephone": "06 85 51 43 79",
+      "role": "JEUNE",
+      "adresse": "55 rue Villeroy",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76067,
+      "longitude": 4.84199,
+      "dateNaissance": "2007-06-15",
+      "description": "Étudiant, j'aime rendre service dans le quartier. Je peux aider pour les petites réparations.",
+      "services": [
+        "BRICOLAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d17-1",
+          "jour": "MERCREDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-26T10:00:00.000Z"
+    },
+    "jeune-18": {
+      "prenom": "Zoé",
+      "nom": "Lefèvre",
+      "email": "zoe.lefevre@exemple.fr",
+      "telephone": "06 32 28 70 89",
+      "role": "JEUNE",
+      "adresse": "94 rue Rabelais",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75446,
+      "longitude": 4.83949,
+      "dateNaissance": "2007-09-17",
+      "description": "Étudiante, j'aime rendre service dans le quartier. Je peux aider pour le jardin, un peu de ménage et la cuisine.",
+      "services": [
+        "JARDINAGE",
+        "MENAGE",
+        "CUISINE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d18-1",
+          "jour": "VENDREDI",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        },
+        {
+          "id": "d18-2",
+          "jour": "LUNDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        },
+        {
+          "id": "d18-3",
+          "jour": "JEUDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-27T10:00:00.000Z"
+    },
+    "jeune-19": {
+      "prenom": "Enzo",
+      "nom": "Bonnet",
+      "email": "enzo.bonnet@exemple.fr",
+      "telephone": "06 22 74 67 81",
+      "role": "JEUNE",
+      "adresse": "5 avenue Lacassagne",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75808,
+      "longitude": 4.8733,
+      "dateNaissance": "2005-06-20",
+      "description": "Étudiant, j'aime rendre service dans le quartier. Je peux aider pour les courses, le jardin et la cuisine.",
+      "services": [
+        "COURSES",
+        "JARDINAGE",
+        "CUISINE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d19-1",
+          "jour": "MARDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-26T10:00:00.000Z"
+    },
+    "jeune-20": {
+      "prenom": "Lina",
+      "nom": "Dupont",
+      "email": "lina.dupont@exemple.fr",
+      "telephone": "06 99 76 43 81",
+      "role": "JEUNE",
+      "adresse": "116 rue Saint-Maximin",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76255,
+      "longitude": 4.86472,
+      "dateNaissance": "2003-07-04",
+      "description": "Étudiante, j'aime rendre service dans le quartier. Je peux aider pour la cuisine et les petites réparations.",
+      "services": [
+        "CUISINE",
+        "BRICOLAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d20-1",
+          "jour": "VENDREDI",
+          "heureDebut": "10:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d20-2",
+          "jour": "DIMANCHE",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-22T10:00:00.000Z"
+    },
+    "jeune-21": {
+      "prenom": "Tom",
+      "nom": "Martin",
+      "email": "tom.martin@exemple.fr",
+      "telephone": "06 92 94 56 28",
+      "role": "JEUNE",
+      "adresse": "34 rue Paul Bert",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76196,
+      "longitude": 4.85344,
+      "dateNaissance": "2003-12-04",
+      "description": "Étudiant, j'aime rendre service dans le quartier. Je peux aider pour les petites réparations, les courses et un peu de ménage.",
+      "services": [
+        "BRICOLAGE",
+        "COURSES",
+        "MENAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d21-1",
+          "jour": "LUNDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        },
+        {
+          "id": "d21-2",
+          "jour": "MARDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-22T10:00:00.000Z"
+    },
+    "jeune-22": {
+      "prenom": "Alice",
+      "nom": "Benali",
+      "email": "alice.benali@exemple.fr",
+      "telephone": "06 50 21 56 12",
+      "role": "JEUNE",
+      "adresse": "45 cours Lafayette",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76353,
+      "longitude": 4.84832,
+      "dateNaissance": "2002-07-11",
+      "description": "Lycéenne, j'aime rendre service dans le quartier. Je peux aider pour un peu de ménage, la cuisine et le jardin.",
+      "services": [
+        "MENAGE",
+        "CUISINE",
+        "JARDINAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d22-1",
+          "jour": "JEUDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        },
+        {
+          "id": "d22-2",
+          "jour": "VENDREDI",
+          "heureDebut": "10:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d22-3",
+          "jour": "DIMANCHE",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-26T10:00:00.000Z"
+    },
+    "jeune-23": {
+      "prenom": "Samir",
+      "nom": "Durand",
+      "email": "samir.durand@exemple.fr",
+      "telephone": "06 20 43 44 15",
+      "role": "JEUNE",
+      "adresse": "117 rue Moncey",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76203,
+      "longitude": 4.84216,
+      "dateNaissance": "2003-07-28",
+      "description": "Étudiant, j'aime rendre service dans le quartier. Je peux aider pour le jardin et les courses.",
+      "services": [
+        "JARDINAGE",
+        "COURSES"
+      ],
+      "disponibilites": [
+        {
+          "id": "d23-1",
+          "jour": "DIMANCHE",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-18T10:00:00.000Z"
+    },
+    "jeune-24": {
+      "prenom": "Clara",
+      "nom": "Petit",
+      "email": "clara.petit@exemple.fr",
+      "telephone": "06 44 12 91 21",
+      "role": "JEUNE",
+      "adresse": "104 avenue Félix Faure",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75258,
+      "longitude": 4.85687,
+      "dateNaissance": "2003-02-09",
+      "description": "Étudiante, j'aime rendre service dans le quartier. Je peux aider pour un peu de ménage, le jardin et l'informatique.",
+      "services": [
+        "MENAGE",
+        "JARDINAGE",
+        "INFORMATIQUE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d24-1",
+          "jour": "MERCREDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d24-2",
+          "jour": "LUNDI",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        },
+        {
+          "id": "d24-3",
+          "jour": "DIMANCHE",
+          "heureDebut": "10:00",
+          "heureFin": "12:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-13T10:00:00.000Z"
+    },
+    "jeune-25": {
+      "prenom": "Noah",
+      "nom": "Moreau",
+      "email": "noah.moreau@exemple.fr",
+      "telephone": "06 24 30 43 16",
+      "role": "JEUNE",
+      "adresse": "25 rue de Créqui",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.76261,
+      "longitude": 4.845,
+      "dateNaissance": "2004-09-25",
+      "description": "Étudiant, j'aime rendre service dans le quartier. Je peux aider pour les courses, les petites réparations et l'informatique.",
+      "services": [
+        "COURSES",
+        "BRICOLAGE",
+        "INFORMATIQUE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d25-1",
+          "jour": "VENDREDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d25-2",
+          "jour": "MARDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-16T10:00:00.000Z"
+    },
+    "jeune-26": {
+      "prenom": "Anaïs",
+      "nom": "Lambert",
+      "email": "anais.lambert@exemple.fr",
+      "telephone": "06 12 74 80 34",
+      "role": "JEUNE",
+      "adresse": "67 cours Vitton",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.771,
+      "longitude": 4.85828,
+      "dateNaissance": "2002-11-27",
+      "description": "Étudiante, j'aime rendre service dans le quartier. Je peux aider pour l'informatique et le jardin.",
+      "services": [
+        "INFORMATIQUE",
+        "JARDINAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d26-1",
+          "jour": "MARDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d26-2",
+          "jour": "MERCREDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        },
+        {
+          "id": "d26-3",
+          "jour": "SAMEDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-23T10:00:00.000Z"
+    },
+    "jeune-27": {
+      "prenom": "Bilal",
+      "nom": "Roux",
+      "email": "bilal.roux@exemple.fr",
+      "telephone": "06 16 26 11 19",
+      "role": "JEUNE",
+      "adresse": "82 rue Garibaldi",
+      "codePostal": "69007",
+      "ville": "Lyon",
+      "latitude": 45.75243,
+      "longitude": 4.84954,
+      "dateNaissance": "2003-01-03",
+      "description": "Lycéen, j'aime rendre service dans le quartier. Je peux aider pour le jardin, l'informatique et les petites réparations.",
+      "services": [
+        "JARDINAGE",
+        "INFORMATIQUE",
+        "BRICOLAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d27-1",
+          "jour": "MARDI",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        },
+        {
+          "id": "d27-2",
+          "jour": "DIMANCHE",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        },
+        {
+          "id": "d27-3",
+          "jour": "MERCREDI",
+          "heureDebut": "10:00",
+          "heureFin": "12:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-22T10:00:00.000Z"
+    },
+    "jeune-28": {
+      "prenom": "Julie",
+      "nom": "Fontaine",
+      "email": "julie.fontaine@exemple.fr",
+      "telephone": "06 10 43 56 52",
+      "role": "JEUNE",
+      "adresse": "72 avenue Jean Jaurès",
+      "codePostal": "69007",
+      "ville": "Lyon",
+      "latitude": 45.74309,
+      "longitude": 4.83828,
+      "dateNaissance": "2004-04-12",
+      "description": "Jeune active, j'aime rendre service dans le quartier. Je peux aider pour le jardin et un peu de ménage.",
+      "services": [
+        "JARDINAGE",
+        "MENAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d28-1",
+          "jour": "MERCREDI",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        },
+        {
+          "id": "d28-2",
+          "jour": "LUNDI",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        },
+        {
+          "id": "d28-3",
+          "jour": "JEUDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-15T10:00:00.000Z"
+    },
+    "jeune-29": {
+      "prenom": "Maxime",
+      "nom": "Chevalier",
+      "email": "maxime.chevalier@exemple.fr",
+      "telephone": "06 41 74 10 21",
+      "role": "JEUNE",
+      "adresse": "35 rue de la Part-Dieu",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76254,
+      "longitude": 4.85015,
+      "dateNaissance": "2006-01-13",
+      "description": "Étudiant, j'aime rendre service dans le quartier. Je peux aider pour les petites réparations.",
+      "services": [
+        "BRICOLAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d29-1",
+          "jour": "LUNDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        },
+        {
+          "id": "d29-2",
+          "jour": "JEUDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-10T10:00:00.000Z"
+    },
+    "jeune-30": {
+      "prenom": "Nour",
+      "nom": "Garnier",
+      "email": "nour.garnier@exemple.fr",
+      "telephone": "06 94 86 59 51",
+      "role": "JEUNE",
+      "adresse": "94 rue Servient",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76488,
+      "longitude": 4.8397,
+      "dateNaissance": "2007-10-21",
+      "description": "Étudiante, j'aime rendre service dans le quartier. Je peux aider pour les petites réparations et un peu de ménage.",
+      "services": [
+        "BRICOLAGE",
+        "MENAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d30-1",
+          "jour": "VENDREDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-14T10:00:00.000Z"
+    },
+    "jeune-31": {
+      "prenom": "Paul",
+      "nom": "Faure",
+      "email": "paul.faure@exemple.fr",
+      "telephone": "06 12 97 84 97",
+      "role": "JEUNE",
+      "adresse": "90 rue Duguesclin",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.76914,
+      "longitude": 4.84218,
+      "dateNaissance": "2002-03-21",
+      "description": "Jeune actif, j'aime rendre service dans le quartier. Je peux aider pour la cuisine.",
+      "services": [
+        "CUISINE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d31-1",
+          "jour": "SAMEDI",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        },
+        {
+          "id": "d31-2",
+          "jour": "JEUDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        },
+        {
+          "id": "d31-3",
+          "jour": "VENDREDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-21T10:00:00.000Z"
+    },
+    "jeune-32": {
+      "prenom": "Élise",
+      "nom": "Mercier",
+      "email": "elise.mercier@exemple.fr",
+      "telephone": "06 72 43 10 68",
+      "role": "JEUNE",
+      "adresse": "104 rue Mazenod",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75356,
+      "longitude": 4.85046,
+      "dateNaissance": "2006-02-22",
+      "description": "Étudiante, j'aime rendre service dans le quartier. Je peux aider pour l'informatique.",
+      "services": [
+        "INFORMATIQUE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d32-1",
+          "jour": "VENDREDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d32-2",
+          "jour": "LUNDI",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-26T10:00:00.000Z"
+    },
+    "jeune-33": {
+      "prenom": "Karim",
+      "nom": "Blanc",
+      "email": "karim.blanc@exemple.fr",
+      "telephone": "06 93 68 73 58",
+      "role": "JEUNE",
+      "adresse": "11 rue Chaponnay",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75533,
+      "longitude": 4.84947,
+      "dateNaissance": "2008-01-20",
+      "description": "Étudiant, j'aime rendre service dans le quartier. Je peux aider pour la cuisine.",
+      "services": [
+        "CUISINE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d33-1",
+          "jour": "JEUDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        },
+        {
+          "id": "d33-2",
+          "jour": "MERCREDI",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        },
+        {
+          "id": "d33-3",
+          "jour": "LUNDI",
+          "heureDebut": "14:00",
+          "heureFin": "17:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-16T10:00:00.000Z"
+    },
+    "jeune-34": {
+      "prenom": "Margaux",
+      "nom": "Guerin",
+      "email": "margaux.guerin@exemple.fr",
+      "telephone": "06 89 82 27 11",
+      "role": "JEUNE",
+      "adresse": "63 rue Pierre Corneille",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.76249,
+      "longitude": 4.84115,
+      "dateNaissance": "2007-02-23",
+      "description": "Lycéenne, j'aime rendre service dans le quartier. Je peux aider pour le jardin.",
+      "services": [
+        "JARDINAGE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d34-1",
+          "jour": "MERCREDI",
+          "heureDebut": "17:00",
+          "heureFin": "19:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-16T10:00:00.000Z"
+    },
+    "jeune-35": {
+      "prenom": "Axel",
+      "nom": "Boyer",
+      "email": "axel.boyer@exemple.fr",
+      "telephone": "06 49 20 70 12",
+      "role": "JEUNE",
+      "adresse": "39 rue Bossuet",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.76917,
+      "longitude": 4.85056,
+      "dateNaissance": "2005-05-13",
+      "description": "Étudiant, j'aime rendre service dans le quartier. Je peux aider pour les petites réparations, le jardin et la cuisine.",
+      "services": [
+        "BRICOLAGE",
+        "JARDINAGE",
+        "CUISINE"
+      ],
+      "disponibilites": [
+        {
+          "id": "d35-1",
+          "jour": "JEUDI",
+          "heureDebut": "09:00",
+          "heureFin": "12:00"
+        },
+        {
+          "id": "d35-2",
+          "jour": "DIMANCHE",
+          "heureDebut": "18:00",
+          "heureFin": "20:00"
+        }
+      ],
+      "annoncePubliee": true,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-16T10:00:00.000Z"
+    },
+    "proche-01": {
+      "prenom": "Camille",
+      "nom": "Moreau",
+      "email": "camille.moreau@exemple.fr",
+      "telephone": "06 36 19 84 21",
+      "role": "ACCOMPAGNANT",
+      "adresse": "20 cours Lafayette",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76508,
+      "longitude": 4.84689,
+      "description": "",
+      "services": [],
+      "disponibilites": [],
+      "annoncePubliee": false,
+      "photoProfil": "/assets/personas/camille.png",
+      "accompagnantId": null,
+      "creeAt": "2026-09-20T09:00:00.000Z"
+    },
+    "senior-01": {
+      "prenom": "Madeleine",
+      "nom": "Moreau",
+      "email": null,
+      "telephone": "",
+      "role": "SENIOR",
+      "adresse": "48 rue Paul Bert",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75596,
+      "longitude": 4.85226,
+      "accompagnantId": "proche-01",
+      "creeAt": "2026-09-20T09:05:00.000Z",
+      "photoProfil": "/assets/personas/madeleine.png"
+    },
+    "proche-02": {
+      "prenom": "Sophie",
+      "nom": "Bernard",
+      "email": "sophie.bernard@exemple.fr",
+      "telephone": "06 75 45 24 56",
+      "role": "ACCOMPAGNANT",
+      "adresse": "31 rue de Créqui",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.76498,
+      "longitude": 4.84951,
+      "description": "",
+      "services": [],
+      "disponibilites": [],
+      "annoncePubliee": false,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-20T09:00:00.000Z"
+    },
+    "senior-02": {
+      "prenom": "Jeanne",
+      "nom": "Bernard",
+      "email": null,
+      "telephone": "",
+      "role": "SENIOR",
+      "adresse": "52 rue Moncey",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.756,
+      "longitude": 4.84003,
+      "accompagnantId": "proche-02",
+      "creeAt": "2026-09-20T09:05:00.000Z"
+    },
+    "proche-03": {
+      "prenom": "Karim",
+      "nom": "Haddad",
+      "email": "karim.haddad@exemple.fr",
+      "telephone": "06 72 97 67 61",
+      "role": "ACCOMPAGNANT",
+      "adresse": "40 avenue Jean Jaurès",
+      "codePostal": "69007",
+      "ville": "Lyon",
+      "latitude": 45.74632,
+      "longitude": 4.84133,
+      "description": "",
+      "services": [],
+      "disponibilites": [],
+      "annoncePubliee": false,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-20T09:00:00.000Z"
+    },
+    "senior-03": {
+      "prenom": "Fatima",
+      "nom": "Haddad",
+      "email": null,
+      "telephone": "",
+      "role": "SENIOR",
+      "adresse": "50 rue de Créqui",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.76353,
+      "longitude": 4.84922,
+      "accompagnantId": "proche-03",
+      "creeAt": "2026-09-20T09:05:00.000Z"
+    },
+    "proche-04": {
+      "prenom": "Julien",
+      "nom": "Rey",
+      "email": "julien.rey@exemple.fr",
+      "telephone": "06 10 51 53 60",
+      "role": "ACCOMPAGNANT",
+      "adresse": "17 rue Duguesclin",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.77152,
+      "longitude": 4.84307,
+      "description": "",
+      "services": [],
+      "disponibilites": [],
+      "annoncePubliee": false,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-20T09:00:00.000Z"
+    },
+    "senior-04": {
+      "prenom": "Robert",
+      "nom": "Rey",
+      "email": null,
+      "telephone": "",
+      "role": "SENIOR",
+      "adresse": "3 rue Garibaldi",
+      "codePostal": "69007",
+      "ville": "Lyon",
+      "latitude": 45.75371,
+      "longitude": 4.84982,
+      "accompagnantId": "proche-04",
+      "creeAt": "2026-09-20T09:05:00.000Z"
+    },
+    "proche-05": {
+      "prenom": "Nadia",
+      "nom": "Colin",
+      "email": "nadia.colin@exemple.fr",
+      "telephone": "06 57 18 60 59",
+      "role": "ACCOMPAGNANT",
+      "adresse": "113 rue Pierre Corneille",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.76671,
+      "longitude": 4.84189,
+      "description": "",
+      "services": [],
+      "disponibilites": [],
+      "annoncePubliee": false,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-20T09:00:00.000Z"
+    },
+    "senior-05": {
+      "prenom": "Simone",
+      "nom": "Colin",
+      "email": null,
+      "telephone": "",
+      "role": "SENIOR",
+      "adresse": "56 rue de la Part-Dieu",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76205,
+      "longitude": 4.85583,
+      "accompagnantId": "proche-05",
+      "creeAt": "2026-09-20T09:05:00.000Z"
+    },
+    "proche-06": {
+      "prenom": "Thomas",
+      "nom": "Perrin",
+      "email": "thomas.perrin@exemple.fr",
+      "telephone": "06 45 23 16 94",
+      "role": "ACCOMPAGNANT",
+      "adresse": "38 rue Villeroy",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75908,
+      "longitude": 4.84269,
+      "description": "",
+      "services": [],
+      "disponibilites": [],
+      "annoncePubliee": false,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-20T09:00:00.000Z"
+    },
+    "senior-06": {
+      "prenom": "Georges",
+      "nom": "Perrin",
+      "email": null,
+      "telephone": "",
+      "role": "SENIOR",
+      "adresse": "36 rue Duguesclin",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.76749,
+      "longitude": 4.84402,
+      "accompagnantId": "proche-06",
+      "creeAt": "2026-09-20T09:05:00.000Z"
+    },
+    "proche-07": {
+      "prenom": "Laura",
+      "nom": "Vidal",
+      "email": "laura.vidal@exemple.fr",
+      "telephone": "06 57 64 13 90",
+      "role": "ACCOMPAGNANT",
+      "adresse": "53 rue Saint-Maximin",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76231,
+      "longitude": 4.86553,
+      "description": "",
+      "services": [],
+      "disponibilites": [],
+      "annoncePubliee": false,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-20T09:00:00.000Z"
+    },
+    "senior-07": {
+      "prenom": "Monique",
+      "nom": "Vidal",
+      "email": null,
+      "telephone": "",
+      "role": "SENIOR",
+      "adresse": "72 rue Chaponnay",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75313,
+      "longitude": 4.84464,
+      "accompagnantId": "proche-07",
+      "creeAt": "2026-09-20T09:05:00.000Z"
+    },
+    "proche-08": {
+      "prenom": "Mehdi",
+      "nom": "Saïdi",
+      "email": "mehdi.saidi@exemple.fr",
+      "telephone": "06 62 67 88 27",
+      "role": "ACCOMPAGNANT",
+      "adresse": "84 rue Moncey",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.76276,
+      "longitude": 4.84388,
+      "description": "",
+      "services": [],
+      "disponibilites": [],
+      "annoncePubliee": false,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-20T09:00:00.000Z"
+    },
+    "senior-08": {
+      "prenom": "Yvette",
+      "nom": "Saïdi",
+      "email": null,
+      "telephone": "",
+      "role": "SENIOR",
+      "adresse": "118 rue Bossuet",
+      "codePostal": "69006",
+      "ville": "Lyon",
+      "latitude": 45.77291,
+      "longitude": 4.84502,
+      "accompagnantId": "proche-08",
+      "creeAt": "2026-09-20T09:05:00.000Z"
+    },
+    "senior-09": {
+      "prenom": "Henri",
+      "nom": "Lacroix",
+      "email": "henri.lacroix@exemple.fr",
+      "telephone": "06 70 63 53 46",
+      "role": "SENIOR",
+      "adresse": "40 rue Moncey",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75785,
+      "longitude": 4.84591,
+      "description": "",
+      "services": [],
+      "disponibilites": [],
+      "annoncePubliee": false,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-21T09:00:00.000Z"
+    },
+    "senior-10": {
+      "prenom": "Odette",
+      "nom": "Marchand",
+      "email": "odette.marchand@exemple.fr",
+      "telephone": "06 93 43 61 93",
+      "role": "SENIOR",
+      "adresse": "32 avenue Jean Jaurès",
+      "codePostal": "69007",
+      "ville": "Lyon",
+      "latitude": 45.74291,
+      "longitude": 4.84246,
+      "description": "",
+      "services": [],
+      "disponibilites": [],
+      "annoncePubliee": false,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-21T09:00:00.000Z"
+    },
+    "senior-11": {
+      "prenom": "Paulette",
+      "nom": "Brun",
+      "email": "paulette.brun@exemple.fr",
+      "telephone": "06 60 25 31 92",
+      "role": "SENIOR",
+      "adresse": "22 rue Chaponnay",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.7521,
+      "longitude": 4.848,
+      "description": "",
+      "services": [],
+      "disponibilites": [],
+      "annoncePubliee": false,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-21T09:00:00.000Z"
+    },
+    "senior-12": {
+      "prenom": "Marcel",
+      "nom": "Gauthier",
+      "email": "marcel.gauthier@exemple.fr",
+      "telephone": "06 73 80 38 67",
+      "role": "SENIOR",
+      "adresse": "118 rue Rabelais",
+      "codePostal": "69003",
+      "ville": "Lyon",
+      "latitude": 45.75616,
+      "longitude": 4.84507,
+      "description": "",
+      "services": [],
+      "disponibilites": [],
+      "annoncePubliee": false,
+      "photoProfil": "",
+      "accompagnantId": null,
+      "creeAt": "2026-09-21T09:00:00.000Z"
+    }
+  },
+  "demandes": {
+    "demande-01": {
+      "demandeurId": "proche-01",
+      "demandeurPrenom": "Camille",
+      "beneficiaireId": "senior-01",
+      "beneficiairePrenom": "Madeleine",
+      "jeuneId": "jeune-01",
+      "jeunePrenom": "Lucas",
+      "service": "COURSES",
+      "disponibiliteId": "d1-1",
+      "creneau": {
+        "jour": "SAMEDI",
+        "heureDebut": "09:00",
+        "heureFin": "12:00"
+      },
+      "dateSouhaitee": "2026-10-10",
+      "description": "Les courses de la semaine au marché, environ une heure.",
+      "distanceKm": 0.44,
+      "statut": "ENVOYEE",
+      "creeAt": "2026-09-20T10:00:00.000Z"
+    },
+    "demande-02": {
+      "demandeurId": "proche-02",
+      "demandeurPrenom": "Sophie",
+      "beneficiaireId": "senior-02",
+      "beneficiairePrenom": "Jeanne",
+      "jeuneId": "jeune-04",
+      "jeunePrenom": "Léa",
+      "service": "MENAGE",
+      "disponibiliteId": "d4-1",
+      "creneau": {
+        "jour": "DIMANCHE",
+        "heureDebut": "18:00",
+        "heureFin": "20:00"
+      },
+      "dateSouhaitee": "2026-10-11",
+      "description": "Passer l'aspirateur et ranger la cuisine.",
+      "distanceKm": 1.29,
+      "statut": "ACCEPTEE",
+      "creeAt": "2026-09-21T11:00:00.000Z"
+    },
+    "demande-03": {
+      "demandeurId": "proche-03",
+      "demandeurPrenom": "Karim",
+      "beneficiaireId": "senior-03",
+      "beneficiairePrenom": "Fatima",
+      "jeuneId": "jeune-07",
+      "jeunePrenom": "Nathan",
+      "service": "INFORMATIQUE",
+      "disponibiliteId": "d7-1",
+      "creneau": {
+        "jour": "DIMANCHE",
+        "heureDebut": "10:00",
+        "heureFin": "12:00"
+      },
+      "dateSouhaitee": "2026-10-11",
+      "description": "Apprendre à faire un appel vidéo sur la tablette.",
+      "distanceKm": 1.56,
+      "statut": "ACCEPTEE",
+      "creeAt": "2026-09-22T12:00:00.000Z"
+    },
+    "demande-04": {
+      "demandeurId": "proche-04",
+      "demandeurPrenom": "Julien",
+      "beneficiaireId": "senior-04",
+      "beneficiairePrenom": "Robert",
+      "jeuneId": "jeune-10",
+      "jeunePrenom": "Sarah",
+      "service": "BRICOLAGE",
+      "disponibiliteId": "d10-1",
+      "creneau": {
+        "jour": "LUNDI",
+        "heureDebut": "18:00",
+        "heureFin": "20:00"
+      },
+      "dateSouhaitee": "2026-10-05",
+      "description": "Fixer une étagère et changer une ampoule.",
+      "distanceKm": 0.74,
+      "statut": "REFUSEE",
+      "creeAt": "2026-09-23T13:00:00.000Z"
+    },
+    "demande-05": {
+      "demandeurId": "proche-05",
+      "demandeurPrenom": "Nadia",
+      "beneficiaireId": "senior-05",
+      "beneficiairePrenom": "Simone",
+      "jeuneId": "jeune-13",
+      "jeunePrenom": "Rayan",
+      "service": "INFORMATIQUE",
+      "disponibiliteId": "d13-1",
+      "creneau": {
+        "jour": "VENDREDI",
+        "heureDebut": "10:00",
+        "heureFin": "12:00"
+      },
+      "dateSouhaitee": "2026-10-09",
+      "description": "Apprendre à faire un appel vidéo sur la tablette.",
+      "distanceKm": 1.14,
+      "statut": "ENVOYEE",
+      "creeAt": "2026-09-24T14:00:00.000Z"
+    },
+    "demande-06": {
+      "demandeurId": "proche-06",
+      "demandeurPrenom": "Thomas",
+      "beneficiaireId": "senior-06",
+      "beneficiairePrenom": "Georges",
+      "jeuneId": "jeune-16",
+      "jeunePrenom": "Jade",
+      "service": "JARDINAGE",
+      "disponibiliteId": "d16-1",
+      "creneau": {
+        "jour": "SAMEDI",
+        "heureDebut": "14:00",
+        "heureFin": "17:00"
+      },
+      "dateSouhaitee": "2026-10-10",
+      "description": "Arroser les plantes du balcon et tailler le rosier.",
+      "distanceKm": 1.72,
+      "statut": "ACCEPTEE",
+      "creeAt": "2026-09-25T15:00:00.000Z"
+    },
+    "demande-07": {
+      "demandeurId": "proche-07",
+      "demandeurPrenom": "Laura",
+      "beneficiaireId": "senior-07",
+      "beneficiairePrenom": "Monique",
+      "jeuneId": "jeune-19",
+      "jeunePrenom": "Enzo",
+      "service": "COURSES",
+      "disponibiliteId": "d19-1",
+      "creneau": {
+        "jour": "MARDI",
+        "heureDebut": "17:00",
+        "heureFin": "19:00"
+      },
+      "dateSouhaitee": "2026-10-06",
+      "description": "Les courses de la semaine au marché, environ une heure.",
+      "distanceKm": 2.29,
+      "statut": "ANNULEE",
+      "creeAt": "2026-09-26T16:00:00.000Z"
+    },
+    "demande-08": {
+      "demandeurId": "proche-08",
+      "demandeurPrenom": "Mehdi",
+      "beneficiaireId": "senior-08",
+      "beneficiairePrenom": "Yvette",
+      "jeuneId": "jeune-22",
+      "jeunePrenom": "Alice",
+      "service": "MENAGE",
+      "disponibiliteId": "d22-1",
+      "creneau": {
+        "jour": "JEUDI",
+        "heureDebut": "17:00",
+        "heureFin": "19:00"
+      },
+      "dateSouhaitee": "2026-10-08",
+      "description": "Passer l'aspirateur et ranger la cuisine.",
+      "distanceKm": 1.07,
+      "statut": "ACCEPTEE",
+      "creeAt": "2026-09-27T17:00:00.000Z"
+    },
+    "demande-09": {
+      "demandeurId": "senior-09",
+      "demandeurPrenom": "Henri",
+      "beneficiaireId": "senior-09",
+      "beneficiairePrenom": "Henri",
+      "jeuneId": "jeune-25",
+      "jeunePrenom": "Noah",
+      "service": "COURSES",
+      "disponibiliteId": "d25-1",
+      "creneau": {
+        "jour": "VENDREDI",
+        "heureDebut": "09:00",
+        "heureFin": "12:00"
+      },
+      "dateSouhaitee": "2026-10-09",
+      "description": "Les courses de la semaine au marché, environ une heure.",
+      "distanceKm": 0.53,
+      "statut": "ENVOYEE",
+      "creeAt": "2026-09-28T18:00:00.000Z"
+    },
+    "demande-10": {
+      "demandeurId": "senior-10",
+      "demandeurPrenom": "Odette",
+      "beneficiaireId": "senior-10",
+      "beneficiairePrenom": "Odette",
+      "jeuneId": "jeune-28",
+      "jeunePrenom": "Julie",
+      "service": "JARDINAGE",
+      "disponibiliteId": "d28-1",
+      "creneau": {
+        "jour": "MERCREDI",
+        "heureDebut": "14:00",
+        "heureFin": "17:00"
+      },
+      "dateSouhaitee": "2026-10-07",
+      "description": "Arroser les plantes du balcon et tailler le rosier.",
+      "distanceKm": 0.32,
+      "statut": "ACCEPTEE",
+      "creeAt": "2026-09-20T19:00:00.000Z"
+    },
+    "demande-11": {
+      "demandeurId": "senior-11",
+      "demandeurPrenom": "Paulette",
+      "beneficiaireId": "senior-11",
+      "beneficiairePrenom": "Paulette",
+      "jeuneId": "jeune-31",
+      "jeunePrenom": "Paul",
+      "service": "CUISINE",
+      "disponibiliteId": "d31-1",
+      "creneau": {
+        "jour": "SAMEDI",
+        "heureDebut": "14:00",
+        "heureFin": "17:00"
+      },
+      "dateSouhaitee": "2026-10-10",
+      "description": "Préparer un gratin ensemble pour le déjeuner.",
+      "distanceKm": 1.95,
+      "statut": "ACCEPTEE",
+      "creeAt": "2026-09-21T10:00:00.000Z"
+    },
+    "demande-12": {
+      "demandeurId": "senior-12",
+      "demandeurPrenom": "Marcel",
+      "beneficiaireId": "senior-12",
+      "beneficiairePrenom": "Marcel",
+      "jeuneId": "jeune-34",
+      "jeunePrenom": "Margaux",
+      "service": "JARDINAGE",
+      "disponibiliteId": "d34-1",
+      "creneau": {
+        "jour": "MERCREDI",
+        "heureDebut": "17:00",
+        "heureFin": "19:00"
+      },
+      "dateSouhaitee": "2026-10-07",
+      "description": "Arroser les plantes du balcon et tailler le rosier.",
+      "distanceKm": 0.77,
+      "statut": "ENVOYEE",
+      "creeAt": "2026-09-22T11:00:00.000Z"
+    },
+    "demande-13": {
+      "demandeurId": "proche-01",
+      "demandeurPrenom": "Camille",
+      "beneficiaireId": "senior-01",
+      "beneficiairePrenom": "Madeleine",
+      "jeuneId": "jeune-02",
+      "jeunePrenom": "Inès",
+      "service": "MENAGE",
+      "disponibiliteId": "d2-1",
+      "creneau": {
+        "jour": "VENDREDI",
+        "heureDebut": "18:00",
+        "heureFin": "20:00"
+      },
+      "dateSouhaitee": "2026-10-09",
+      "description": "Passer l'aspirateur et ranger la cuisine.",
+      "distanceKm": 0.57,
+      "statut": "ACCEPTEE",
+      "creeAt": "2026-09-23T12:00:00.000Z"
+    },
+    "demande-14": {
+      "demandeurId": "proche-02",
+      "demandeurPrenom": "Sophie",
+      "beneficiaireId": "senior-02",
+      "beneficiairePrenom": "Jeanne",
+      "jeuneId": "jeune-05",
+      "jeunePrenom": "Hugo",
+      "service": "COURSES",
+      "disponibiliteId": "d5-1",
+      "creneau": {
+        "jour": "SAMEDI",
+        "heureDebut": "18:00",
+        "heureFin": "20:00"
+      },
+      "dateSouhaitee": "2026-10-10",
+      "description": "Les courses de la semaine au marché, environ une heure.",
+      "distanceKm": 1.2,
+      "statut": "REFUSEE",
+      "creeAt": "2026-09-24T13:00:00.000Z"
+    },
+    "demande-15": {
+      "demandeurId": "proche-03",
+      "demandeurPrenom": "Karim",
+      "beneficiaireId": "senior-03",
+      "beneficiairePrenom": "Fatima",
+      "jeuneId": "jeune-08",
+      "jeunePrenom": "Emma",
+      "service": "COURSES",
+      "disponibiliteId": "d8-1",
+      "creneau": {
+        "jour": "MARDI",
+        "heureDebut": "09:00",
+        "heureFin": "12:00"
+      },
+      "dateSouhaitee": "2026-10-06",
+      "description": "Les courses de la semaine au marché, environ une heure.",
+      "distanceKm": 2.02,
+      "statut": "ACCEPTEE",
+      "creeAt": "2026-09-25T14:00:00.000Z"
+    },
+    "demande-16": {
+      "demandeurId": "proche-04",
+      "demandeurPrenom": "Julien",
+      "beneficiaireId": "senior-04",
+      "beneficiairePrenom": "Robert",
+      "jeuneId": "jeune-11",
+      "jeunePrenom": "Louis",
+      "service": "MENAGE",
+      "disponibiliteId": "d11-1",
+      "creneau": {
+        "jour": "SAMEDI",
+        "heureDebut": "17:00",
+        "heureFin": "19:00"
+      },
+      "dateSouhaitee": "2026-10-10",
+      "description": "Passer l'aspirateur et ranger la cuisine.",
+      "distanceKm": 1.33,
+      "statut": "ACCEPTEE",
+      "creeAt": "2026-09-26T15:00:00.000Z"
+    }
+  },
+  "rendezVous": {
+    "demande-02": {
+      "demandeServiceId": "demande-02",
+      "jeuneId": "jeune-04",
+      "demandeurId": "proche-02",
+      "beneficiaireId": "senior-02",
+      "service": "MENAGE",
+      "date": "2026-10-11",
+      "heureDebut": "18:00",
+      "heureFin": "20:00",
+      "statut": "CONFIRME",
+      "telephoneJeune": "06 53 67 46 87",
+      "telephoneDemandeur": "06 75 45 24 56",
+      "creeAt": "2026-09-21T11:00:00.000Z"
+    },
+    "demande-03": {
+      "demandeServiceId": "demande-03",
+      "jeuneId": "jeune-07",
+      "demandeurId": "proche-03",
+      "beneficiaireId": "senior-03",
+      "service": "INFORMATIQUE",
+      "date": "2026-10-11",
+      "heureDebut": "10:00",
+      "heureFin": "12:00",
+      "statut": "CONFIRME",
+      "telephoneJeune": "06 45 63 55 97",
+      "telephoneDemandeur": "06 72 97 67 61",
+      "creeAt": "2026-09-22T12:00:00.000Z"
+    },
+    "demande-06": {
+      "demandeServiceId": "demande-06",
+      "jeuneId": "jeune-16",
+      "demandeurId": "proche-06",
+      "beneficiaireId": "senior-06",
+      "service": "JARDINAGE",
+      "date": "2026-10-10",
+      "heureDebut": "14:00",
+      "heureFin": "17:00",
+      "statut": "CONFIRME",
+      "telephoneJeune": "06 26 12 11 93",
+      "telephoneDemandeur": "06 45 23 16 94",
+      "creeAt": "2026-09-25T15:00:00.000Z"
+    },
+    "demande-08": {
+      "demandeServiceId": "demande-08",
+      "jeuneId": "jeune-22",
+      "demandeurId": "proche-08",
+      "beneficiaireId": "senior-08",
+      "service": "MENAGE",
+      "date": "2026-10-08",
+      "heureDebut": "17:00",
+      "heureFin": "19:00",
+      "statut": "CONFIRME",
+      "telephoneJeune": "06 50 21 56 12",
+      "telephoneDemandeur": "06 62 67 88 27",
+      "creeAt": "2026-09-27T17:00:00.000Z"
+    },
+    "demande-10": {
+      "demandeServiceId": "demande-10",
+      "jeuneId": "jeune-28",
+      "demandeurId": "senior-10",
+      "beneficiaireId": "senior-10",
+      "service": "JARDINAGE",
+      "date": "2026-10-07",
+      "heureDebut": "14:00",
+      "heureFin": "17:00",
+      "statut": "CONFIRME",
+      "telephoneJeune": "06 10 43 56 52",
+      "telephoneDemandeur": "06 93 43 61 93",
+      "creeAt": "2026-09-20T19:00:00.000Z"
+    },
+    "demande-11": {
+      "demandeServiceId": "demande-11",
+      "jeuneId": "jeune-31",
+      "demandeurId": "senior-11",
+      "beneficiaireId": "senior-11",
+      "service": "CUISINE",
+      "date": "2026-10-10",
+      "heureDebut": "14:00",
+      "heureFin": "17:00",
+      "statut": "CONFIRME",
+      "telephoneJeune": "06 12 97 84 97",
+      "telephoneDemandeur": "06 60 25 31 92",
+      "creeAt": "2026-09-21T10:00:00.000Z"
+    },
+    "demande-13": {
+      "demandeServiceId": "demande-13",
+      "jeuneId": "jeune-02",
+      "demandeurId": "proche-01",
+      "beneficiaireId": "senior-01",
+      "service": "MENAGE",
+      "date": "2026-10-09",
+      "heureDebut": "18:00",
+      "heureFin": "20:00",
+      "statut": "CONFIRME",
+      "telephoneJeune": "06 16 38 15 81",
+      "telephoneDemandeur": "06 36 19 84 21",
+      "creeAt": "2026-09-23T12:00:00.000Z"
+    },
+    "demande-15": {
+      "demandeServiceId": "demande-15",
+      "jeuneId": "jeune-08",
+      "demandeurId": "proche-03",
+      "beneficiaireId": "senior-03",
+      "service": "COURSES",
+      "date": "2026-10-06",
+      "heureDebut": "09:00",
+      "heureFin": "12:00",
+      "statut": "CONFIRME",
+      "telephoneJeune": "06 57 88 82 50",
+      "telephoneDemandeur": "06 72 97 67 61",
+      "creeAt": "2026-09-25T14:00:00.000Z"
+    },
+    "demande-16": {
+      "demandeServiceId": "demande-16",
+      "jeuneId": "jeune-11",
+      "demandeurId": "proche-04",
+      "beneficiaireId": "senior-04",
+      "service": "MENAGE",
+      "date": "2026-10-10",
+      "heureDebut": "17:00",
+      "heureFin": "19:00",
+      "statut": "CONFIRME",
+      "telephoneJeune": "06 71 98 30 76",
+      "telephoneDemandeur": "06 10 51 53 60",
+      "creeAt": "2026-09-26T15:00:00.000Z"
+    }
+  }
+}

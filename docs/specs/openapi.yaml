@@ -1,0 +1,675 @@
+openapi: 3.0.3
+
+info:
+  title: API - GrannyHelp
+  description: >
+    API REST de l'application GrannyHelp.
+    L'application facilite l'entraide de proximité entre jeunes volontaires,
+    personnes âgées et accompagnateurs.
+  version: 1.0.0
+
+paths:
+
+  /services:
+    get:
+      summary: Rechercher des annonces
+      description: >
+        Recherche les annonces de services disponibles.
+        Les résultats peuvent être utilisés pour un affichage en liste
+        ou en cartes.
+      parameters:
+
+        - name: recherche
+          in: query
+          required: false
+          description: Recherche textuelle dans le nom ou la description du service.
+          schema:
+            type: string
+
+        - name: categorie
+          in: query
+          required: false
+          description: Filtrer les annonces par catégorie.
+          schema:
+            type: string
+
+        - name: ville
+          in: query
+          required: false
+          description: Filtrer les annonces par ville.
+          schema:
+            type: string
+
+        - name: date
+          in: query
+          required: false
+          description: Rechercher une disponibilité à une date donnée.
+          schema:
+            type: string
+            format: date
+
+        - name: rayon
+          in: query
+          required: false
+          description: Rayon de recherche autour de la position de l'utilisateur, en kilomètres.
+          schema:
+            type: number
+            format: float
+            minimum: 0
+
+      responses:
+        '200':
+          description: Liste des annonces correspondant aux critères.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+
+        '400':
+          description: Critères de recherche invalides.
+
+    post:
+      summary: Créer une annonce
+      description: >
+        Crée une nouvelle annonce de service.
+        L'annonce est associée à un utilisateur ayant le rôle senior
+        ou accompagnant.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateService'
+
+      responses:
+        '201':
+          description: Annonce créée.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+
+        '400':
+          description: Données invalides.
+
+  /services/{id}:
+    get:
+      summary: Consulter une annonce
+      description: Retourne le détail d'une annonce de service.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Identifiant UUID de l'annonce.
+          schema:
+            type: string
+            format: uuid
+
+      responses:
+        '200':
+          description: Annonce trouvée.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+
+        '404':
+          description: Annonce introuvable.
+
+    put:
+      summary: Modifier une annonce
+      description: Modifie une annonce existante.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Identifiant UUID de l'annonce.
+          schema:
+            type: string
+            format: uuid
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateService'
+
+      responses:
+        '200':
+          description: Annonce modifiée.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+
+        '400':
+          description: Données invalides.
+
+        '404':
+          description: Annonce introuvable.
+
+  /users/{id}/disponibilites:
+    get:
+      summary: Consulter les disponibilités d'un utilisateur
+      description: Retourne les créneaux de disponibilité d'un utilisateur.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Identifiant UUID de l'utilisateur.
+          schema:
+            type: string
+            format: uuid
+
+      responses:
+        '200':
+          description: Liste des disponibilités.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Disponibilite'
+
+        '404':
+          description: Utilisateur introuvable.
+
+  /demandes-service:
+    post:
+      summary: Créer une demande de service
+      description: >
+        Crée une demande de service par un bénéficiaire.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDemandeService'
+
+      responses:
+        '201':
+          description: Demande créée.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandeService'
+
+        '400':
+          description: Données invalides.
+
+  /rendez-vous:
+    post:
+      summary: Créer un rendez-vous
+      description: Crée un rendez-vous entre un jeune et un senior pour un service.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRendezVous'
+
+      responses:
+        '201':
+          description: Rendez-vous créé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RendezVous'
+
+        '400':
+          description: Données invalides.
+
+  /rendez-vous/{id}:
+    get:
+      summary: Consulter un rendez-vous
+      description: Retourne les informations d'un rendez-vous.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Identifiant UUID du rendez-vous.
+          schema:
+            type: string
+            format: uuid
+
+      responses:
+        '200':
+          description: Rendez-vous trouvé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RendezVous'
+
+        '404':
+          description: Rendez-vous introuvable.
+
+
+components:
+
+  schemas:
+
+    Utilisateur:
+      type: object
+      required:
+        - id
+        - prenom
+        - nom
+        - email
+        - role
+      properties:
+
+        id:
+          type: string
+          format: uuid
+          description: Identifiant unique de l'utilisateur.
+
+        prenom:
+          type: string
+          description: Prénom de l'utilisateur.
+
+        nom:
+          type: string
+          description: Nom de l'utilisateur.
+
+        dateNaissance:
+          type: string
+          format: date
+          description: Date de naissance.
+
+        email:
+          type: string
+          format: email
+          description: Adresse e-mail.
+
+        telephone:
+          type: string
+          description: Numéro de téléphone.
+
+        adresse:
+          type: string
+          description: Adresse postale.
+
+        codePostal:
+          type: string
+          description: Code postal.
+
+        ville:
+          type: string
+          description: Ville.
+
+        photoProfil:
+          type: string
+          description: Photo de profil.
+
+        description:
+          type: string
+          description: Description de l'utilisateur.
+
+        statut:
+          type: string
+          description: Statut de l'utilisateur.
+
+        role:
+          type: string
+          enum:
+            - jeune
+            - senior
+            - accompagnant
+          description: Type de profil de l'utilisateur.
+
+        creeAt:
+          type: string
+          format: date-time
+          description: Date de création du compte.
+
+
+    Service:
+      type: object
+      required:
+        - id
+        - nom
+        - categorie
+        - description
+        - isActif
+      properties:
+
+        id:
+          type: string
+          format: uuid
+          description: Identifiant unique de l'annonce.
+
+        nom:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Nom du service proposé.
+
+        categorie:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Catégorie du service.
+
+        description:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          description: Description du service proposé.
+
+        isActif:
+          type: boolean
+          description: Indique si l'annonce est active.
+
+        creeAt:
+          type: string
+          format: date-time
+          description: Date et heure de création de l'annonce.
+
+
+    CreateService:
+      type: object
+      required:
+        - nom
+        - categorie
+        - description
+      properties:
+
+        nom:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Nom du service.
+
+        categorie:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Catégorie du service.
+
+        description:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          description: Description du service.
+
+        isActif:
+          type: boolean
+          default: true
+          description: Indique si l'annonce est active.
+
+
+    ServiceUtilisateur:
+      type: object
+      required:
+        - id
+        - userId
+        - serviceId
+        - type
+      properties:
+
+        id:
+          type: string
+          format: uuid
+          description: Identifiant unique de la relation.
+
+        userId:
+          type: string
+          format: uuid
+          description: Identifiant de l'utilisateur.
+
+        serviceId:
+          type: string
+          format: uuid
+          description: Identifiant du service.
+
+        type:
+          type: string
+          enum:
+            - OFFERT
+            - DEMANDE
+          description: Type de relation entre l'utilisateur et le service.
+
+        creeAt:
+          type: string
+          format: date-time
+          description: Date et heure de création.
+
+
+    Disponibilite:
+      type: object
+      required:
+        - id
+        - userId
+        - jour
+        - heureDebut
+        - heureFin
+      properties:
+
+        id:
+          type: string
+          format: uuid
+          description: Identifiant unique de la disponibilité.
+
+        userId:
+          type: string
+          format: uuid
+          description: Identifiant de l'utilisateur.
+
+        jour:
+          type: string
+          description: Jour de disponibilité.
+
+        heureDebut:
+          type: string
+          description: Heure de début de disponibilité.
+
+        heureFin:
+          type: string
+          description: Heure de fin de disponibilité.
+
+        creeAt:
+          type: string
+          format: date-time
+          description: Date et heure de création.
+
+
+    DemandeService:
+      type: object
+      required:
+        - id
+        - beneficiaireId
+        - serviceId
+        - description
+        - dateDemande
+        - statut
+      properties:
+
+        id:
+          type: string
+          format: uuid
+          description: Identifiant unique de la demande.
+
+        rendezVousId:
+          type: string
+          format: uuid
+          nullable: true
+          description: Identifiant du rendez-vous associé.
+
+        beneficiaireId:
+          type: string
+          format: uuid
+          description: Identifiant du bénéficiaire.
+
+        serviceId:
+          type: string
+          format: uuid
+          description: Identifiant du service demandé.
+
+        description:
+          type: string
+          description: Description de la demande.
+
+        dateDemande:
+          type: string
+          format: date
+          description: Date de la demande.
+
+        statut:
+          type: string
+          description: Statut de la demande.
+
+        creeAt:
+          type: string
+          format: date-time
+          description: Date et heure de création.
+
+
+    CreateDemandeService:
+      type: object
+      required:
+        - beneficiaireId
+        - serviceId
+        - description
+        - dateDemande
+      properties:
+
+        beneficiaireId:
+          type: string
+          format: uuid
+          description: Identifiant du bénéficiaire.
+
+        serviceId:
+          type: string
+          format: uuid
+          description: Identifiant du service demandé.
+
+        description:
+          type: string
+          description: Description de la demande.
+
+        dateDemande:
+          type: string
+          format: date
+          description: Date souhaitée pour la demande.
+
+
+    RendezVous:
+      type: object
+      required:
+        - id
+        - jeuneId
+        - seniorId
+        - serviceId
+        - date
+        - heureDebut
+        - heureFin
+        - statut
+      properties:
+
+        id:
+          type: string
+          format: uuid
+          description: Identifiant unique du rendez-vous.
+
+        rendezVousId:
+          type: string
+          format: uuid
+          nullable: true
+          description: Identifiant de la demande associée.
+
+        jeuneId:
+          type: string
+          format: uuid
+          description: Identifiant du jeune volontaire.
+
+        seniorId:
+          type: string
+          format: uuid
+          description: Identifiant du senior.
+
+        serviceId:
+          type: string
+          format: uuid
+          description: Identifiant du service.
+
+        date:
+          type: string
+          format: date
+          description: Date du rendez-vous.
+
+        heureDebut:
+          type: string
+          description: Heure de début du rendez-vous.
+
+        heureFin:
+          type: string
+          description: Heure de fin du rendez-vous.
+
+        statut:
+          type: string
+          description: Statut du rendez-vous.
+
+        annulePar:
+          type: string
+          format: uuid
+          nullable: true
+          description: Identifiant de l'utilisateur ayant annulé le rendez-vous.
+
+        annuleLe:
+          type: string
+          format: date-time
+          nullable: true
+          description: Date et heure de l'annulation.
+
+        raisonAnnulation:
+          type: string
+          nullable: true
+          description: Motif de l'annulation.
+
+        creeAt:
+          type: string
+          format: date-time
+          description: Date et heure de création.
+
+
+    CreateRendezVous:
+      type: object
+      required:
+        - jeuneId
+        - seniorId
+        - serviceId
+        - date
+        - heureDebut
+        - heureFin
+      properties:
+
+        jeuneId:
+          type: string
+          format: uuid
+          description: Identifiant du jeune volontaire.
+
+        seniorId:
+          type: string
+          format: uuid
+          description: Identifiant du senior.
+
+        serviceId:
+          type: string
+          format: uuid
+          description: Identifiant du service.
+
+        date:
+          type: string
+          format: date
+          description: Date du rendez-vous.
+
+        heureDebut:
+          type: string
+          description: Heure de début.
+
+        heureFin:
+          type: string
+          description: Heure de fin.

@@ -1,0 +1,375 @@
+.vdo{--paper:#fff8f0;--ink:#2a2140;--muted:#675e80;--muted-strong:#675e80;--yellow:#ffc145;--yellow-soft:#ffe8b8;--sage:#cff3ee;--peach:#ffd4cc;--line:#ede3e8;--white:#fffdf8;--green:#0e9e86;--focus:#1FAF98;--font-head:"Fredoka",sans-serif;--font-body:"Nunito",-apple-system,"Segoe UI",Arial,sans-serif;font-family:var(--font-body);color:var(--ink);background:var(--white);position:relative;padding:0;display:flex;flex-direction:column;min-height:100vh;width:100%;max-width:480px;box-shadow:0 0 0 1px var(--line)}
+.vdo h1,.vdo h2,.vdo h3,.vdo h4{font-family:var(--font-head)}
+.vdo button,.vdo input,.vdo select,.vdo textarea{font:inherit;color:inherit}
+.vdo button,.vdo .primary,.vdo .secondary,.vdo .helper-card,.vdo .role-card,.vdo .icon-btn,.vdo .story-btn,.vdo .post-act,.vdo .post-cta,.vdo .map-preview-card,.vdo .beneficiary,.vdo .location-button,.vdo .see-all,.vdo .bottom-nav a{border-radius:14px!important}
+.vdo a{color:inherit}
+.vdo button:focus-visible{outline:3px solid #496dbe;outline-offset:3px}
+.vdo h2{font:600 31px/1.1 var(--font-head);letter-spacing:-.9px;margin:13px 0}
+.vdo h3{font-size:15px;line-height:1.3;margin:0}
+.vdo p{font-size:12px;line-height:1.6}
+.vdo .soft{color:var(--muted)}
+.vdo small{font-size:10px;line-height:1.5}
+.vdo .app-pad{padding:12px 20px 20px}
+.vdo .app-logo{width:128px;height:auto;display:block}
+.vdo .welcome{padding:14px 21px 17px;min-height:100%;display:flex;flex-direction:column}
+.vdo .welcome .app-logo{margin:0 auto;width:142px}
+.vdo .welcome-art{height:255px;position:relative;display:flex;align-items:center;justify-content:center;margin:6px -8px 0}
+.vdo .welcome-art:before{content:'';width:238px;height:228px;background:#ffdca6;border-radius:45% 55% 45% 53%;position:absolute;transform:rotate(-8deg)}
+.vdo .welcome-art img{height:243px;width:auto;position:relative;object-fit:contain;z-index:1}
+.vdo .art-flower{position:absolute;right:6px;top:38px;color:#ff6b5b;font-size:36px;z-index:2}
+.vdo .mini-pill{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#8a7ba8;margin:8px 0 0}
+.vdo .welcome h2{font-size:34px;margin:10px 0 8px}
+.vdo .welcome p{margin:0 0 16px}
+.vdo .primary,.vdo .secondary{min-height:45px;width:100%;border-radius:14px;font-size:12px;font-weight:650;display:flex;align-items:center;justify-content:center;gap:9px;padding:11px 14px;text-decoration:none}
+.vdo .primary{border:1px solid var(--yellow);background:var(--yellow);color:var(--ink)}
+.vdo .primary:hover{background:#f2a93b}
+.vdo .secondary{border:1px solid var(--line);background:transparent}
+.vdo .secondary:hover{background:var(--sage)}
+.vdo .primary .icon{margin-left:auto}
+.vdo .primary span{flex:1;text-align:center}
+.vdo .welcome-actions{margin-top:auto}
+.vdo .link-button,.vdo .link-a{background:none;border:0;padding:9px 0;font-size:11px;text-decoration:underline;text-underline-offset:3px}
+.vdo .signin-prompt{text-align:center;font-size:10px;margin-top:9px}
+.vdo .signin-prompt button,.vdo .signin-prompt a{font-weight:650;margin-left:3px}
+.vdo .app-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.vdo .icon-btn{width:36px;height:36px;flex-shrink:0;border:1px solid var(--line);border-radius:50%;background:var(--white);display:grid;place-items:center}
+.vdo .icon{width:20px;height:20px;display:inline-block;vertical-align:middle;flex-shrink:0}
+.vdo .step-text{font-size:10px;color:var(--muted)}
+.vdo .step-line{display:flex;gap:5px;margin:21px 0 26px}
+.vdo .step-line i{height:3px;background:var(--sage);flex:1;border-radius:5px}
+.vdo .step-line i.on{background:#1faf98}
+.vdo .signup-copy{margin:0 0 22px}
+.vdo .role-list{display:grid;gap:10px;margin:20px 0}
+.vdo .role-card{display:flex;align-items:center;text-align:left;gap:12px;border:1px solid var(--line);border-radius:16px;padding:15px 12px;background:var(--white);min-height:86px}
+.vdo .role-card[aria-pressed=true]{border:1.5px solid #0e9e86;background:#e3fbf6}
+.vdo .role-symbol{width:40px;height:40px;border-radius:13px;background:var(--yellow-soft);display:grid;place-items:center;flex-shrink:0}
+.vdo .role-card:nth-child(2) .role-symbol{background:var(--peach)}
+.vdo .role-card:nth-child(3) .role-symbol{background:var(--sage)}
+.vdo .role-card strong{font-size:12px;display:block;line-height:1.35}
+.vdo .role-card small{color:var(--muted);display:block;font-size:10px;margin-top:4px}
+.vdo .radio{width:16px;height:16px;border:1px solid #d8cbea;border-radius:50%;margin-left:auto;flex-shrink:0}
+.vdo .role-card[aria-pressed=true] .radio{border:5px solid #0e9e86;background:var(--white)}
+.vdo .hint{display:flex;gap:8px;font-size:10px;line-height:1.6;color:var(--muted);margin:19px 0}
+.vdo .hint .icon{width:16px;height:16px}
+.vdo .signup-bottom{margin-top:24px}
+.vdo .mini-eyebrow{font-size:9px;text-transform:uppercase;letter-spacing:1.6px;font-weight:650;color:#8a7ba8}
+.vdo .home-top{display:flex;justify-content:space-between;align-items:center;padding:9px 18px 0}
+.vdo .location-button,.vdo .location-a{padding:0;border:0;background:transparent;display:flex;gap:5px;align-items:center;font-size:11px;font-weight:600}
+.vdo .location-button .icon,.vdo .location-a .icon{width:14px;height:14px}
+.vdo .avatar{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#ffe3dc;border:0;font-size:10px;font-weight:700}
+.vdo .home-content{padding:17px 18px 12px}
+.vdo .greeting{font-size:11px;margin-bottom:4px}
+.vdo .home-content h2{font-size:27px;margin:5px 0 17px}
+.vdo .beneficiary{background:#f3e9e4;border:1px solid #d8cbea;border-radius:11px;display:flex;align-items:center;gap:7px;width:100%;font-size:10px;padding:10px;margin-bottom:14px}
+.vdo .beneficiary .icon{width:15px;height:15px}
+.vdo .beneficiary .chevron{margin-left:auto}
+.vdo .hero-card{background:var(--yellow-soft);border-radius:17px;display:flex;align-items:center;padding:14px 9px 12px 15px;position:relative;min-height:125px;overflow:hidden}
+.vdo .hero-card h3{font:600 22px/1.05 var(--font-head);letter-spacing:-.5px}
+.vdo .hero-card p{font-size:10px;margin:7px 0 0;line-height:1.4}
+.vdo .hero-card img{width:118px;height:118px;object-fit:contain;margin-right:-6px;align-self:flex-end}
+.vdo .hero-card div{flex:1}
+.vdo .section-title{display:flex;align-items:center;justify-content:space-between;margin:21px 0 12px}
+.vdo .section-title h3{font-size:12px}
+.vdo .section-title button,.vdo .section-title a{font-size:9px;color:#8a7ba8;border:0;background:none;padding:6px 0}
+.vdo .helper-card{border:1px solid var(--line);border-radius:15px;background:var(--white);padding:12px;width:100%;text-align:left;display:flex;align-items:center;gap:10px}
+.vdo .helper-avatar{width:43px;height:47px;border-radius:13px;background:var(--peach);display:grid;place-items:center;font:22px var(--font-head);flex-shrink:0}
+.vdo .helper-card strong{font-size:12px}
+.vdo .helper-card small{font-size:9px;color:var(--muted);display:block;margin-top:4px}
+.vdo .helper-card .icon{margin-left:auto;width:16px}
+.vdo .tip-note{display:flex;align-items:flex-start;gap:7px;margin:13px 0 0!important;font-size:9px!important;color:#8a7ba8}
+.vdo .tip-note .icon{width:14px;height:14px}
+.vdo .bottom-nav{display:flex;justify-content:space-around;border-top:1px solid #ede3e8;background:var(--white);padding:9px 3px 4px;flex-shrink:0}
+.vdo .bottom-nav button,.vdo .bottom-nav a{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:8px;padding:0 8px;color:#8a7ba8;min-height:34px}
+.vdo .bottom-nav button.active,.vdo .bottom-nav a.active{color:#2a2140;font-weight:650}
+.vdo .bottom-nav .icon{width:19px;height:19px}
+.vdo .form-stack{display:grid;gap:15px;margin:24px 0 18px}
+.vdo .form-stack label{font-size:11px;font-weight:600;display:block}
+.vdo .form-stack input,.vdo .form-stack select,.vdo .form-stack textarea{display:block;border:1px solid #ede3e8;border-radius:11px;background:#fffdf8;padding:12px;width:100%;margin-top:7px;font-size:13px;color:var(--ink);min-height:44px}
+.vdo .form-stack textarea{min-height:75px;resize:vertical}
+.vdo .check-label{display:flex!important;align-items:flex-start;gap:8px;line-height:1.6;font-size:10px!important;font-weight:400!important}
+.vdo .check-label input{width:16px;min-height:16px;flex-shrink:0;margin-top:1px;accent-color:#0e9e86}
+.vdo .login-art{background:var(--sage);border-radius:50%;width:134px;height:134px;display:grid;place-items:center;margin:24px auto}
+.vdo .login-art img{width:132px}
+.vdo .login-heading{text-align:center}
+.vdo .notice{padding:13px;border-radius:12px;background:var(--sage);font-size:11px;line-height:1.7;margin:15px 0}
+.vdo .success-icon{height:72px;width:72px;background:var(--sage);border-radius:50%;display:grid;place-items:center;margin:30px auto 20px}
+.vdo .success-icon .icon{width:32px;height:32px}
+.vdo .message-bubble{padding:12px;border-radius:15px;background:var(--sage);font-size:12px;line-height:1.6;margin:17px 25px 12px 0}
+.vdo .message-bubble.mine{margin:12px 0 12px 25px;background:var(--yellow-soft)}
+.vdo .detail-box{border:1px solid var(--line);border-radius:14px;padding:14px;margin:15px 0}
+.vdo .detail-box p{margin:6px 0}
+.vdo .detail-box .mini-eyebrow{font-size:8px}
+.vdo .profile-portrait{margin:23px auto 12px;width:75px;height:75px;font:34px var(--font-head);border-radius:24px;display:grid;place-items:center;background:var(--peach)}
+.vdo .profile-name{text-align:center}
+.vdo .stack-actions{display:grid;gap:10px;margin:20px 0}
+.vdo .text-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line);font-size:11px}
+.vdo .text-row button,.vdo .text-row a{border:0;background:none;font-size:11px;text-decoration:underline}
+.vdo .empty{padding:25px 0}
+.vdo .message-list button,.vdo .message-list a{width:100%;text-align:left;border:1px solid var(--line);border-radius:12px;background:var(--white);padding:14px;margin:15px 0}
+.vdo .logo-showcase{background:var(--yellow-soft);min-height:195px;display:flex;align-items:center;justify-content:center;border-radius:14px;margin:20px 0}
+.vdo .logo-showcase img{width:240px}
+@keyframes granny-wave{0%,100%{transform:rotate(0)}35%{transform:rotate(-5deg)}70%{transform:rotate(5deg)}}
+.vdo .wide-card{margin-bottom:28px}
+.vdo .status-message{font-size:11px;line-height:1.6;color:var(--green);margin:12px 0}
+.vdo .terms-content h3{margin-top:20px}
+.vdo .terms-content p{font-size:11px}
+.vdo .step-line{margin:16px 0 20px}
+.vdo .role-list{margin:16px 0}
+.vdo .role-card{min-height:78px;padding-top:12px;padding-bottom:12px}
+.vdo .hint{margin:15px 0}
+.vdo .signup-bottom{margin-top:18px}
+.vdo .home-content{padding-top:13px}
+.vdo .home-content h2{margin-bottom:12px}
+.vdo .hero-card{padding-top:10px;padding-bottom:10px}
+.vdo .hero-card img{width:98px;height:98px}
+.vdo .section-title{margin-top:17px}
+.vdo .tip-note{margin-top:10px!important}
+.vdo .helper-photo{width:43px;height:47px;border-radius:13px;object-fit:cover;display:block;flex-shrink:0}
+.vdo .mini-persona-photo{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.vdo .badge-persona-photo{width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:0 3px 8px #2a214018;flex-shrink:0}
+.vdo .beneficiary span:not(.chevron){display:inline-flex;align-items:center;gap:3px}
+.vdo .profile-portrait{overflow:hidden}
+.vdo .profile-portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.vdo .see-all{display:inline-flex;align-items:center;gap:4px}
+.vdo .see-all .icon{width:13px;height:13px}
+.vdo .hero-card{background:linear-gradient(135deg,#FFC145 0%,#FF8A65 100%)!important}
+.vdo .hero-card h3,.vdo .hero-card p{color:#2a2140}
+.vdo .welcome-art:before{background:linear-gradient(135deg,#FFC145,#FF6B5B)}
+.vdo .role-symbol,.vdo .helper-avatar,.vdo .success-icon,.vdo .login-art{background:linear-gradient(135deg,var(--yellow-soft),var(--peach))!important}
+.vdo .role-card:nth-child(2) .role-symbol{background:linear-gradient(135deg,var(--peach),#ffb199)!important}
+.vdo .role-card:nth-child(3) .role-symbol{background:linear-gradient(135deg,var(--sage),#8be3d6)!important}
+.vdo .primary{background:#FFC145!important;border:0!important;color:#2A2140!important;box-shadow:0 6px 14px rgba(42,33,64,.15)}
+.vdo .helper-card,.vdo .role-card,.vdo .beneficiary,.vdo .notice,.vdo .message-bubble,.vdo .detail-box{transition:transform .15s ease,box-shadow .15s ease}
+.vdo .helper-card:hover,.vdo .role-card:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(42,33,64,.1)}
+.vdo .role-symbol,.vdo .service-symbol,.vdo .helper-avatar,.vdo .success-icon,.vdo .login-art,.vdo .avatar{background:#2A2140!important;color:#fff!important;box-shadow:0 6px 14px rgba(42,33,64,.18)}
+.vdo .role-symbol .icon,.vdo .service-symbol .icon,.vdo .avatar{color:#fff}
+.vdo .role-symbol{border-radius:16px!important}
+.vdo .role-card:nth-child(1) .role-symbol{background:#FF6B5B!important}
+.vdo .role-card:nth-child(2) .role-symbol{background:#1FAF98!important}
+.vdo .role-card:nth-child(3) .role-symbol{background:#9B6BFF!important}
+.vdo .service-symbol{border-radius:16px!important;transition:transform .15s ease,box-shadow .15s ease}
+.vdo .helper-avatar{border-radius:14px!important;background:#FF6B5B!important}
+.vdo .login-art,.vdo .success-icon{background:#1FAF98!important;border-radius:24px!important}
+.vdo .avatar{background:#9B6BFF!important;border-radius:14px!important}
+.vdo .role-card[aria-pressed=true] .role-symbol{box-shadow:0 0 0 3px #fff,0 0 0 5px currentColor}
+.vdo .service-symbol{position:relative;overflow:hidden}
+.vdo .service-symbol svg{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit}
+.vdo .service-symbol .icon{position:absolute;right:-3px;bottom:-3px;width:16px;height:16px;padding:4px;background:#2A2140;border-radius:8px;color:#fff;box-shadow:0 2px 6px rgba(42,33,64,.35);z-index:1}
+.vdo .story-reel{display:flex;gap:14px;overflow-x:auto;padding:10px 2px 6px;margin-bottom:2px;scrollbar-width:none}
+.vdo .story-reel::-webkit-scrollbar{display:none}
+.vdo .story-item{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;width:60px}
+.vdo .story-circle{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#FFC145,#FF6B5B,#9B6BFF);padding:2.5px}
+.vdo .story-circle .icon{width:100%;height:100%;background:var(--white);border-radius:50%;padding:14px;color:#2A2140;box-sizing:border-box}
+.vdo .story-item small{font-size:9px;text-align:center;line-height:1.25;color:var(--muted)}
+.vdo .browse-map{height:150px;border-radius:16px;margin:14px 0;overflow:hidden;background:var(--sage);position:relative}
+.vdo .browse-map svg{width:100%;height:100%;display:block}
+.vdo .browse-map-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.vdo .map-caption{position:absolute;left:10px;bottom:8px;font-size:9px;font-weight:600;color:#0e6e5e;background:#ffffffd9;padding:5px 10px;border-radius:20px;display:flex;align-items:center;gap:5px;z-index:2}
+.vdo .map-caption i{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
+.vdo .map-caption i+i{margin-left:6px}
+.vdo .services-full{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.vdo .service-full{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.vdo .service-photo{position:relative;width:100%;aspect-ratio:1;border-radius:18px;overflow:hidden;background:var(--sage)}
+.vdo .service-photo svg{width:100%;height:100%;display:block}
+.vdo .service-photo-badge{position:absolute;right:6px;bottom:6px;width:26px;height:26px;border-radius:9px;background:#2A2140;color:#fff;display:grid;place-items:center;box-shadow:0 3px 8px rgba(42,33,64,.3)}
+.vdo .service-photo-badge .icon{width:14px;height:14px}
+.vdo .service-full strong{font-size:13px}
+.vdo .service-full small{font-size:10px;color:var(--muted);line-height:1.4;display:block}
+.vdo .service-full:hover .service-photo{box-shadow:0 8px 16px rgba(42,33,64,.15)}
+.vdo .service-photo-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.vdo .map-badge{position:absolute;left:10px;top:8px;font-size:9px;font-weight:700;color:#0e6e5e;background:#ffffffe6;padding:5px 10px 5px 7px;border-radius:20px;display:flex;align-items:center;gap:4px;z-index:2;letter-spacing:.2px}
+.vdo .map-badge .icon{width:12px;height:12px}
+.vdo .service-banner{width:84px;aspect-ratio:1;border-radius:16px;overflow:hidden;margin:12px 0;box-shadow:0 4px 12px rgba(42,33,64,.12);position:relative}
+.vdo .service-banner svg{width:100%;height:100%;display:block}
+.vdo .service-banner-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.vdo .modern-home{padding-bottom:18px}
+.vdo .hero-card-modern{align-items:flex-end;gap:8px;border-radius:22px!important;padding:16px 12px 14px 16px!important;min-height:148px!important}
+.vdo .hero-card-modern .mini-eyebrow{background:#fff8f0;color:#8a5a12;margin-bottom:8px;font-size:8px;padding:5px 9px;letter-spacing:1px}
+.vdo .hero-card-modern img{width:110px!important;height:118px!important;object-fit:cover;border-radius:20px;background:#fff8f0;border:3px solid rgba(255,255,255,.75);box-shadow:0 8px 18px rgba(42,33,64,.16);margin-right:0!important}
+.vdo .service-scroll{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 1px 12px;margin:4px -2px 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.vdo .service-scroll::-webkit-scrollbar{display:none}
+.vdo .service-chip{border:1px solid var(--line);background:var(--white);border-radius:18px!important;padding:10px;width:118px;min-width:118px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-align:left;scroll-snap-align:start;box-shadow:0 6px 16px rgba(42,33,64,.08)}
+.vdo .service-chip[aria-pressed="true"]{border-color:#0e9e86;background:#e7fbf7;box-shadow:0 0 0 2px rgba(31,175,152,.14)}
+.vdo .service-chip .service-photo.compact{width:100%;height:72px;aspect-ratio:auto;border-radius:14px}
+.vdo .service-chip strong{font-size:12px;line-height:1.2}
+.vdo .service-chip small{font-size:9px;line-height:1.35;color:var(--muted);display:block}
+.vdo .map-preview-card{width:100%;border:1px solid var(--line);background:var(--white);border-radius:20px!important;padding:12px;text-align:left;display:grid;gap:8px;box-shadow:0 8px 20px rgba(42,33,64,.08);margin-bottom:12px}
+.vdo .map-preview-card .browse-map{height:122px;margin:0;border-radius:16px}
+.vdo .map-preview-card strong{font-size:13px;line-height:1.25}
+.vdo .map-preview-card small{font-size:10px;color:var(--muted);line-height:1.4}
+.vdo .map-preview-card .mini-eyebrow{font-size:8px;margin:0;width:max-content}
+.vdo .slot-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.vdo .slot-row em{font-style:normal;background:#ffe8b8;color:#8a5a12;border-radius:999px;padding:4px 7px;font-size:8px;font-weight:800;line-height:1.1}
+.vdo .helper-card-rich{align-items:flex-start!important;padding:13px!important;border-radius:18px!important}
+.vdo .helper-card-rich .helper-photo{width:50px;height:54px;border-radius:16px}
+.vdo .helper-card-rich strong{font-size:13px!important}
+.vdo .helper-card-rich small{font-size:9px!important;line-height:1.35}
+.vdo .services-page .service-scroll{margin-top:18px}
+.vdo .service-detail-card{background:var(--white);border:1px solid var(--line);border-radius:22px;padding:15px;margin-top:8px;box-shadow:0 8px 20px rgba(42,33,64,.08)}
+.vdo .service-detail-card .service-photo{width:100%;aspect-ratio:16/10;border-radius:18px;margin-bottom:12px}
+.vdo .service-detail-card h3{font-size:18px;margin:4px 0}
+.vdo .service-detail-card p{font-size:11px;line-height:1.55;color:var(--muted);margin:0 0 10px}
+.vdo .service-detail-card .story-reel{margin:8px -2px 14px}
+.vdo .profile-portrait{box-shadow:0 10px 20px rgba(42,33,64,.12)}
+.vdo .profile-portrait img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}
+.vdo .home-content h2,.vdo .app-pad h2{letter-spacing:-.4px}
+.vdo .section-title{margin-top:18px}
+.vdo .form-stack label{line-height:1.35}
+.vdo .form-stack input,.vdo .form-stack select,.vdo .form-stack textarea{font-size:12px;line-height:1.35}
+.vdo .primary,.vdo .secondary{font-size:12px;line-height:1.25;min-height:46px}
+.vdo .browse-map{box-shadow:inset 0 0 0 1px rgba(42,33,64,.08)}
+#vdo .mini-pill,#vdo .mini-eyebrow{font-size:11px;letter-spacing:1.2px;color:var(--muted-strong)}
+#vdo .step-text{font-size:11px;font-weight:600;color:var(--muted-strong)}
+#vdo .greeting{font-size:13px;color:var(--muted-strong)}
+#vdo .location-button,#vdo .location-a{font-size:13px;min-height:36px}
+#vdo .role-card{min-height:84px;padding:14px 14px;gap:14px}
+#vdo .role-card strong{font-size:14px}
+#vdo .role-card small{font-size:12px;line-height:1.4}
+#vdo .role-card[aria-pressed="true"]{border-width:2px;border-color:#1FAF98;background:#effbf8}
+#vdo .helper-card small,#vdo button small,#vdo a small,#vdo .helper-card span small{font-size:11px!important}
+#vdo .helper-card strong{font-size:13px}
+#vdo .beneficiary{font-size:12px;min-height:48px;padding:10px 12px;border-radius:14px;background:#faf1ec}
+#vdo .helper-card{min-height:72px}
+#vdo .hero-card p{font-size:12px;line-height:1.45}
+#vdo .tip-note{font-size:11px!important;line-height:1.5;color:var(--muted-strong)}
+#vdo .check-label{font-size:12px!important;line-height:1.5}
+#vdo .signin-prompt{font-size:12px;margin-top:12px}
+#vdo .link-button,#vdo .link-a{font-size:12px;min-height:32px}
+#vdo .see-all{font-size:12px;font-weight:600;color:#0e7f6d}
+#vdo .map-badge,#vdo .map-caption{font-size:10.5px}
+#vdo .slot-row em{font-size:10.5px;padding:4px 9px}
+#vdo .service-chip strong{font-size:13px}
+#vdo .service-chip small{font-size:11px}
+#vdo label{font-size:13px}
+#vdo input,#vdo select,#vdo textarea{font-size:15px;min-height:50px}
+#vdo .primary{min-height:54px;font-size:15px;font-weight:700;border-radius:16px!important}
+#vdo .primary:hover{background:#ffb627!important;box-shadow:0 10px 20px rgba(255,193,69,.4)}
+#vdo .hero-card-modern .mini-eyebrow{border-radius:999px;background:#fffdf8;color:#8a5a12;font-size:10px;font-weight:700;padding:5px 10px}
+#vdo .bottom-nav{padding:8px 6px 6px}
+#vdo .bottom-nav button,#vdo .bottom-nav a{font-size:11px;min-height:48px;min-width:56px;padding:4px 6px;gap:3px;border-radius:14px!important;color:var(--muted-strong)}
+#vdo .bottom-nav button .icon,#vdo .bottom-nav a .icon{width:22px;height:22px}
+#vdo .bottom-nav button.active,#vdo .bottom-nav a.active{color:var(--ink);font-weight:700;background:#fff1d1}
+#vdo .section-title h3{font-size:15px}
+#vdo .soft{font-size:13px;line-height:1.55}
+.vdo .role-list .role-card .role-symbol.art,.vdo .role-symbol.art{width:56px!important;height:56px!important;background:none!important;box-shadow:none!important;border-radius:0!important;overflow:visible;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.vdo .role-symbol.art .role-art{width:100%;height:100%;display:block;overflow:visible}
+.vdo .role-card:hover .role-symbol.art{transform:rotate(-6deg) scale(1.06)}
+.vdo .role-card[aria-pressed=true] .role-symbol.art{box-shadow:none!important;transform:rotate(-4deg) scale(1.08)}
+@media(prefers-reduced-motion:reduce){.vdo .role-symbol.art{transition:none}}
+.vdo .welcome .app-logo{width:172px!important;height:auto}
+#vdo .beneficiary>span:not(.chevron){display:block;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left}
+#vdo .beneficiary .badge-persona-photo{flex-shrink:0}
+.vdo .story-bar{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 14px;margin:0 -2px;scrollbar-width:none}
+.vdo .story-bar::-webkit-scrollbar{display:none}
+.vdo .story-bar>div{scroll-snap-align:start;flex-shrink:0}
+.vdo .story-btn{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;width:78px;border-radius:14px!important}
+.vdo .story-ring{width:66px;height:66px;border-radius:50%;padding:3px;background:conic-gradient(from 200deg,#FFC145,#FF6B5B,#9B6BFF,#1FAF98,#FFC145);display:block;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.vdo .story-img{position:relative;display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;border:3px solid #fffdf8;background:#fff8f0}
+.vdo .story-img svg,.vdo .story-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vdo .story-btn small{font-size:11px;font-weight:600;color:var(--ink);line-height:1.2;text-align:center}
+.vdo .story-btn:hover .story-ring{transform:scale(1.06)}
+.vdo .story-btn[aria-pressed="false"] .story-ring{opacity:.92}
+.vdo .feed-page .story-btn[aria-pressed="false"] .story-ring{background:#e6dcea}
+.vdo .feed-page .story-btn[aria-pressed="true"] small{color:#0e7f6d;font-weight:800}
+.vdo .feed{display:flex;flex-direction:column;gap:16px;margin-top:4px;padding-bottom:10px}
+.vdo .post{background:var(--white);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 6px 18px rgba(42,33,64,.07)}
+.vdo .post-head{display:flex;align-items:center;gap:10px;padding:11px 12px}
+.vdo .post-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #FFC145}
+.vdo .post-head>span{flex:1;min-width:0}
+.vdo .post-head strong{display:block;font-size:13px}
+.vdo .post-head small{display:block;font-size:11px;color:var(--muted-strong)}
+.vdo .post-tag{font-style:normal;font-size:11px;font-weight:700;color:#0e6e5e;background:#dff6f1;padding:4px 10px;border-radius:999px}
+.vdo .post-img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#f3e9e4}
+.vdo .post-actions{display:flex;align-items:center;gap:6px;padding:8px 10px 2px}
+.vdo .post-act{border:0;background:none;display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--ink);min-height:40px;padding:0 8px;border-radius:12px!important}
+.vdo .post-act .icon{width:22px;height:22px}
+.vdo .post-act.liked{color:#FF6B5B}
+.vdo .post-act.liked .icon{fill:currentColor;animation:post-like .35s ease}
+@keyframes post-like{50%{transform:scale(1.3)}}
+.vdo .post-cta{margin-left:auto;border:0;background:#FFC145;color:#2A2140;font-weight:700;font-size:13px;min-height:40px;padding:0 14px;border-radius:999px!important;display:inline-flex;align-items:center;gap:6px}
+.vdo .post-cta .icon{width:16px;height:16px}
+.vdo .post-cta:hover{background:#ffb627}
+.vdo .post-text{margin:4px 12px 14px;font-size:13px;line-height:1.5;color:var(--ink)}
+@media(prefers-reduced-motion:reduce){.vdo .post-act.liked .icon{animation:none}.vdo .story-ring{transition:none}}
+#vdo .hero-card-modern{align-items:center!important;gap:12px;padding:18px 14px 18px 18px!important}
+#vdo .hero-card-modern>div{display:flex;flex-direction:column;align-items:flex-start}
+#vdo .hero-card-modern .mini-eyebrow{margin:0 0 12px!important;line-height:1}
+#vdo .hero-card-modern h3{margin:0;line-height:1.08}
+#vdo .hero-card-modern p{margin:10px 0 0}
+#vdo .hero-card-modern img{align-self:center}
+#vdo .modern-home .section-title{margin:26px 0 12px}
+#vdo .modern-home .story-bar{padding:2px 0 4px;margin:0}
+#vdo .modern-home .map-preview-card{margin-top:0}
+#vdo .modern-home .helper-card{margin-top:12px}
+#vdo .modern-home .beneficiary{margin:14px 0 16px}
+.vdo .initial-avatar{display:grid;place-items:center;background:linear-gradient(135deg,#FF6B5B,#FFC145);color:#fff;font-weight:900;font-size:16px;border:2px solid #FFC145}
+.vdo .suggestion-block{display:grid;gap:3px;margin:8px 0 10px;padding:10px 12px;border-radius:16px;background:#fff8f0;border:1px solid #f0dfd3;color:var(--ink)}
+.vdo .suggestion-block span{font-size:12px;font-weight:850;line-height:1.25}
+.vdo .suggestion-block small{font-size:10px;line-height:1.35;color:var(--muted)}.vdo .corps{flex:1;padding-bottom:12px}
+.vdo .bottom-nav{position:sticky;bottom:0;z-index:20}
+.vdo .bottom-nav a{text-decoration:none}
+.vdo a.primary,.vdo a.secondary,.vdo a.helper-card,.vdo a.map-preview-card,.vdo a.see-all,.vdo a.beneficiary,.vdo a.location-button,.vdo a.story-btn,.vdo a.post-cta,.vdo a.avatar,.vdo a.icon-btn,.vdo .message-list a{text-decoration:none;color:var(--ink)}
+.vdo .primary,.vdo .secondary{cursor:pointer;border:1px solid transparent}
+.vdo .primary:disabled{opacity:.6;cursor:wait}
+.vdo .link-button{cursor:pointer;color:var(--ink)}
+.vdo .icon-btn{cursor:pointer;color:var(--ink)}
+.vdo .h-ligne{display:block}
+.vdo .erreur{margin:12px 0 0;padding:12px 14px;border-radius:12px;background:#ffe9e4;color:#a8321f;font-size:13px;line-height:1.5}
+.vdo .info{margin:12px 0 0;padding:12px 14px;border-radius:12px;background:var(--sage);font-size:13px;line-height:1.5}
+.vdo .statut{display:inline-block;font-style:normal;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--yellow-soft);color:#8a5a12}
+.vdo .statut.ACCEPTEE{background:#cff3ee;color:#0b6e5e}
+.vdo .statut.REFUSEE,.vdo .statut.ANNULEE{background:#ffe1dc;color:#a8321f}
+.vdo .avatar{overflow:hidden;display:grid;place-items:center;font-weight:800;color:var(--ink);text-decoration:none}
+.vdo .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.vdo .helper-photo.initial-avatar{border-radius:50%;width:46px;height:46px}
+.vdo .profile-portrait.initiale{font:600 40px var(--font-head);display:grid;place-items:center;background:linear-gradient(135deg,#FFC145,#FF8A65);color:#fff}
+.vdo .profile-portrait.initiale img{display:none}
+.vdo .deux{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
+.vdo .trois{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px}
+.vdo .form-stack fieldset{border:0;padding:0;margin:0;display:grid;gap:10px}
+.vdo .form-stack legend{font-size:13px;font-weight:700;margin-bottom:8px;padding:0}
+.vdo .puces{display:flex;flex-wrap:wrap;gap:8px}
+.vdo .puce{display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;border:1px solid var(--line);background:#fffdf8;border-radius:999px!important;font-weight:700;font-size:13px;cursor:pointer}
+.vdo .puce img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+.vdo .puce[aria-pressed="true"]{border-color:var(--green);background:#e3fbf6;box-shadow:0 0 0 1px var(--green)}
+.vdo .creneaux{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.vdo .creneaux li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:var(--yellow-soft);font-size:13px;font-weight:700}
+.vdo .creneaux li button{background:none;border:0;font-size:12px;text-decoration:underline;cursor:pointer;color:var(--muted)}
+.vdo .role-badge{display:inline-block;margin:4px 0 0;font-size:11px;font-weight:800;letter-spacing:.4px;padding:4px 10px;border-radius:999px;background:var(--peach)}
+.vdo .home-top .avatar{width:38px;height:38px;border-radius:50%;padding:0;border:2px solid #9b6bff;background:#e7dbff}
+.vdo .bonjour-ligne{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vdo .resultat .slot-row em{font-style:normal}
+.vdo .compte{margin:14px 0 8px;font-size:13px;color:var(--muted)}
+.vdo .bascule{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;margin:14px 0 4px;background:#fbf1ea;border-radius:16px}
+.vdo .bascule button{border:0;background:none;padding:10px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.vdo .bascule button[aria-pressed="true"]{background:#fff;box-shadow:0 2px 8px rgba(42,33,64,.08)}
+.vdo .carte-leaflet{height:340px;border-radius:20px;overflow:hidden;border:1px solid var(--line);margin:10px 0 8px;z-index:1;position:relative}
+.vdo .legende-carte{display:flex;gap:14px;align-items:center;font-size:12px;color:var(--muted);margin:0 0 10px}
+.vdo .legende-carte i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.vdo .bulle-carte{font-family:var(--font-body);min-width:150px}
+.vdo .bulle-carte strong{display:block;font:600 15px var(--font-head)}
+.vdo .bulle-carte small{display:block;color:var(--muted);margin:2px 0 8px}
+.vdo .bulle-carte a{display:inline-block;background:var(--yellow);padding:6px 12px;border-radius:10px;font-weight:800;font-size:12px;text-decoration:none;color:var(--ink)}
+.vdo .leaflet-container a.leaflet-popup-close-button{color:var(--ink)}
+.vdo .pin-jeune{width:38px;height:38px;border-radius:50%;border:3px solid #1FAF98;background:#fff;overflow:hidden;display:grid;place-items:center;font:600 16px var(--font-head);box-shadow:0 4px 10px rgba(42,33,64,.25)}
+.vdo .pin-jeune img{width:100%;height:100%;object-fit:cover}
+.vdo .pin-moi{width:22px;height:22px;border-radius:50%;background:#FF6B5B;border:4px solid #fff;box-shadow:0 0 0 6px rgba(255,107,91,.25)}
+.vdo .conversation{display:grid;gap:8px;margin:14px 0}
+.vdo .message-bubble{max-width:84%;margin:0!important}
+.vdo .message-bubble.mine{justify-self:end;background:var(--yellow-soft)}
+.vdo .message-bubble small{display:block;font-size:10px;color:var(--muted);margin-top:4px}
+.vdo .message-list{display:grid;gap:10px;margin-top:16px}
+.vdo .message-list a{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--line);border-radius:16px;background:#fff}
+.vdo .message-list a h3{margin:0 0 2px;font-size:16px}
+.vdo .message-list a p{margin:0}
+.vdo .message-list .helper-photo{width:46px;height:46px;border-radius:50%}
+.vdo .vide{text-align:center;padding:10px 0}
+.vdo .post-cta{text-decoration:none}
+.vdo .terms-content .primary{margin-top:18px}
+.vdo .detail-box .numero{margin:0}
+.vdo .apercu-photo{display:flex;align-items:center;gap:14px}
+.vdo .apercu-photo .profile-portrait{margin:0}
+.vdo input[type=file]{padding:10px}
+.vdo .chargement{padding:40px 20px;text-align:center;color:var(--muted)}
+.vdo .welcome .h-ligne{display:block}
+@media(min-width:481px){.App{background:#fbf1ea}}

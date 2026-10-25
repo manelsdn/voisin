@@ -1,0 +1,30 @@
+:root {
+    --ink: #2A2140;
+    --muted: #6f6782;
+    --paper: #FFF8F0;
+    --white: #ffffff;
+    --yellow: #FFC145;
+    --yellow-soft: #FFF0CC;
+    --sage: #E3F4EF;
+    --peach: #FFD4CC;
+    --green: #0E9E86;
+    --red: #D9432F;
+    --line: #EDE3E8;
+    --lilac: #8A7BA8;
+    --font-head: "Fraunces", Georgia, serif;
+    --font-body: "Nunito", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+a { color: inherit; }

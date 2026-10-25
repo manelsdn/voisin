@@ -1,0 +1,1408 @@
+openapi: 3.0.3
+
+info:
+  title: API - Voisin d'Or
+  description: >
+    API REST de l'application Voisin d'Or.
+    L'application facilite l'entraide de proximité entre jeunes volontaires,
+    personnes âgées et accompagnateurs.
+    Le jeune publie une annonce (services proposés et créneaux de disponibilité).
+    Le demandeur (personne âgée ou accompagnateur) recherche un jeune par service,
+    distance et disponibilité, choisit un de ses créneaux et lui envoie une demande.
+    Le jeune accepte ou refuse la demande ; l'acceptation crée le rendez-vous.
+    Le numéro de téléphone n'est visible qu'une fois le rendez-vous confirmé.
+    Scénario minimal (MUST) : utilisateurs, annonces, recherche, demandes, rendez-vous.
+    Scénario cible (SHOULD + COULD) : messagerie, avis, favoris, médias, IA, infos locales.
+  version: 2.0.0
+
+tags:
+  - name: Utilisateurs
+  - name: Services
+  - name: Annonces
+  - name: Recherche
+  - name: Demandes
+  - name: Rendez-vous
+  - name: Messagerie
+  - name: Avis
+  - name: Favoris
+  - name: Médias
+  - name: IA
+  - name: Infos locales
+
+paths:
+
+  /auth/lien-connexion:
+    post:
+      tags: [Utilisateurs]
+      summary: Recevoir un lien de connexion
+      description: Envoie un lien de connexion sans mot de passe à l'adresse e-mail indiquée.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        '202':
+          description: Lien envoyé si l'adresse correspond à un compte.
+        '400':
+          description: Adresse e-mail invalide.
+
+  /auth/deconnexion:
+    post:
+      tags: [Utilisateurs]
+      summary: Se déconnecter
+      description: Ferme la session de l'utilisateur connecté.
+      responses:
+        '204':
+          description: Utilisateur déconnecté.
+        '401':
+          description: Aucun utilisateur connecté.
+
+  /users:
+    post:
+      tags: [Utilisateurs]
+      summary: Créer un compte
+      description: >
+        Crée un compte jeune, senior ou accompagnant.
+        La position (latitude, longitude) est calculée à partir de l'adresse.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUtilisateur'
+      responses:
+        '201':
+          description: Compte créé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utilisateur'
+        '400':
+          description: Données invalides.
+
+  /users/{id}:
+    get:
+      tags: [Utilisateurs]
+      summary: Consulter un profil
+      description: >
+        Retourne le profil public d'un utilisateur (prénom, âge, photo, description,
+        services proposés, disponibilités, distance).
+        Le téléphone n'est renvoyé que si un rendez-vous confirmé existe entre les deux utilisateurs.
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Profil trouvé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfilJeune'
+        '404':
+          description: Utilisateur introuvable.
+    patch:
+      tags: [Utilisateurs]
+      summary: Modifier son profil
+      description: >
+        Modifie les informations du profil. Si l'e-mail change, un lien de confirmation
+        est envoyé à la nouvelle adresse. Si l'adresse change, la position est recalculée.
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUtilisateur'
+      responses:
+        '200':
+          description: Profil modifié.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utilisateur'
+        '400':
+          description: Données invalides.
+        '404':
+          description: Utilisateur introuvable.
+        '409':
+          description: E-mail déjà utilisé par un autre compte.
+
+  /users/{id}/beneficiaires:
+    get:
+      tags: [Utilisateurs]
+      summary: Lister les proches d'un accompagnant
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Liste des bénéficiaires rattachés à l'accompagnant.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Utilisateur'
+        '404':
+          description: Utilisateur introuvable.
+    post:
+      tags: [Utilisateurs]
+      summary: Ajouter un proche
+      description: >
+        L'accompagnant crée le profil de son proche (rôle senior), avec son accord.
+        Le proche n'a pas besoin d'e-mail ni de se connecter.
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBeneficiaire'
+      responses:
+        '201':
+          description: Proche ajouté.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utilisateur'
+        '400':
+          description: Données invalides.
+
+  /services:
+    get:
+      tags: [Services]
+      summary: Lister les catégories de services
+      description: Retourne la liste des services disponibles (courses, ménage, bricolage, informatique, jardinage, cuisine).
+      responses:
+        '200':
+          description: Liste des services.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+
+  /users/{id}/services:
+    get:
+      tags: [Annonces]
+      summary: Consulter les services proposés par un jeune
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Services proposés.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceUtilisateur'
+        '404':
+          description: Utilisateur introuvable.
+    post:
+      tags: [Annonces]
+      summary: Publier un service dans son annonce
+      description: Le jeune ajoute un service qu'il propose à son annonce.
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateServiceUtilisateur'
+      responses:
+        '201':
+          description: Service ajouté à l'annonce.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUtilisateur'
+        '400':
+          description: Données invalides.
+        '403':
+          description: Seul un utilisateur de rôle jeune peut publier une annonce.
+
+  /users/{id}/disponibilites:
+    get:
+      tags: [Annonces]
+      summary: Consulter les créneaux d'un jeune
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Liste des créneaux.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Disponibilite'
+        '404':
+          description: Utilisateur introuvable.
+    post:
+      tags: [Annonces]
+      summary: Publier un créneau de disponibilité
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDisponibilite'
+      responses:
+        '201':
+          description: Créneau publié.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disponibilite'
+        '400':
+          description: Données invalides.
+        '403':
+          description: Seul un utilisateur de rôle jeune peut publier des créneaux.
+
+  /jeunes:
+    get:
+      tags: [Recherche]
+      summary: Rechercher des jeunes disponibles
+      description: >
+        Recherche les jeunes dont l'annonce correspond aux critères.
+        La distance est calculée entre la position du demandeur (ou de son proche)
+        et celle du jeune. Résultats triés du plus proche au plus éloigné, affichés en liste.
+      parameters:
+        - name: service
+          in: query
+          required: false
+          description: Identifiant du service recherché.
+          schema:
+            type: string
+            format: uuid
+        - name: latitude
+          in: query
+          required: true
+          description: Latitude du point de recherche.
+          schema:
+            type: number
+            format: double
+        - name: longitude
+          in: query
+          required: true
+          description: Longitude du point de recherche.
+          schema:
+            type: number
+            format: double
+        - name: rayon
+          in: query
+          required: false
+          description: Rayon de recherche en kilomètres.
+          schema:
+            type: number
+            format: float
+            minimum: 0
+            default: 2
+        - name: jour
+          in: query
+          required: false
+          description: Jour de disponibilité souhaité.
+          schema:
+            $ref: '#/components/schemas/JourSemaine'
+      responses:
+        '200':
+          description: Liste des jeunes correspondant aux critères.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProfilJeune'
+        '400':
+          description: Critères de recherche invalides.
+
+  /demandes-service:
+    get:
+      tags: [Demandes]
+      summary: Lister les demandes
+      description: >
+        Côté jeune : demandes reçues (jeuneId).
+        Côté demandeur : demandes envoyées (demandeurId).
+      parameters:
+        - name: jeuneId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: demandeurId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: statut
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/StatutDemande'
+      responses:
+        '200':
+          description: Liste des demandes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DemandeService'
+    post:
+      tags: [Demandes]
+      summary: Envoyer une demande à un jeune
+      description: >
+        Le demandeur (senior ou accompagnant) envoie une demande à un jeune choisi,
+        sur un des créneaux publiés par ce jeune. La demande est créée au statut ENVOYEE.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDemandeService'
+      responses:
+        '201':
+          description: Demande envoyée.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandeService'
+        '400':
+          description: Données invalides (jeune, service, créneau ou précisions manquants).
+
+  /demandes-service/{id}:
+    get:
+      tags: [Demandes]
+      summary: Consulter une demande
+      parameters:
+        - $ref: '#/components/parameters/DemandeId'
+      responses:
+        '200':
+          description: Demande trouvée.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandeService'
+        '404':
+          description: Demande introuvable.
+    patch:
+      tags: [Demandes]
+      summary: Accepter, refuser ou annuler une demande
+      description: >
+        Le jeune accepte (ACCEPTEE) ou refuse (REFUSEE) la demande.
+        Le demandeur peut l'annuler (ANNULEE).
+        L'acceptation crée automatiquement le rendez-vous au statut CONFIRME.
+      parameters:
+        - $ref: '#/components/parameters/DemandeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - statut
+              properties:
+                statut:
+                  type: string
+                  enum:
+                    - ACCEPTEE
+                    - REFUSEE
+                    - ANNULEE
+      responses:
+        '200':
+          description: Demande mise à jour.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DemandeService'
+        '400':
+          description: Changement de statut impossible.
+        '404':
+          description: Demande introuvable.
+
+  /rendez-vous/{id}:
+    get:
+      tags: [Rendez-vous]
+      summary: Consulter un rendez-vous
+      description: Retourne le rendez-vous, avec les numéros de téléphone des deux parties.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Rendez-vous trouvé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RendezVous'
+        '404':
+          description: Rendez-vous introuvable.
+    patch:
+      tags: [Rendez-vous]
+      summary: Terminer ou annuler un rendez-vous
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - statut
+              properties:
+                statut:
+                  type: string
+                  enum:
+                    - TERMINE
+                    - ANNULE
+                raisonAnnulation:
+                  type: string
+      responses:
+        '200':
+          description: Rendez-vous mis à jour.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RendezVous'
+        '404':
+          description: Rendez-vous introuvable.
+
+  /geocodage:
+    get:
+      tags: [Recherche]
+      summary: Convertir une adresse en position
+      description: Route du worker Cloudflare. Utilise la Base Adresse Nationale.
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Position trouvée.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Position'
+        '404':
+          description: Adresse introuvable.
+
+  /demandes-service/{id}/messages:
+    get:
+      tags: [Messagerie]
+      summary: Lire la conversation d'une demande
+      parameters:
+        - $ref: '#/components/parameters/DemandeId'
+      responses:
+        '200':
+          description: Messages du plus ancien au plus récent.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Message'
+        '404':
+          description: Demande introuvable.
+    post:
+      tags: [Messagerie]
+      summary: Envoyer un message
+      description: Texte, photo ou message vocal entre le demandeur et le jeune.
+      parameters:
+        - $ref: '#/components/parameters/DemandeId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMessage'
+      responses:
+        '201':
+          description: Message envoyé.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '400':
+          description: Message vide.
+        '403':
+          description: Seuls le demandeur et le jeune peuvent écrire.
+
+  /rendez-vous/{id}/avis:
+    post:
+      tags: [Avis]
+      summary: Laisser un avis après un service
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAvis'
+      responses:
+        '201':
+          description: Avis publié.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Avis'
+        '400':
+          description: Note invalide ou rendez-vous pas terminé.
+        '409':
+          description: Un avis existe déjà pour ce rendez-vous.
+
+  /users/{id}/avis:
+    get:
+      tags: [Avis]
+      summary: Lire les avis reçus par un jeune
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Liste des avis.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Avis'
+
+  /users/{id}/favoris:
+    get:
+      tags: [Favoris]
+      summary: Lister mes jeunes favoris
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Liste des favoris.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Favori'
+    post:
+      tags: [Favoris]
+      summary: Ajouter un jeune en favori
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jeuneId
+              properties:
+                jeuneId:
+                  type: string
+                  format: uuid
+      responses:
+        '201':
+          description: Favori ajouté.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Favori'
+
+  /users/{id}/favoris/{jeuneId}:
+    delete:
+      tags: [Favoris]
+      summary: Retirer un favori
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - name: jeuneId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Favori retiré.
+
+  /medias:
+    post:
+      tags: [Médias]
+      summary: Envoyer une photo ou un message vocal
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - fichier
+              properties:
+                fichier:
+                  type: string
+                  format: binary
+                type:
+                  type: string
+                  enum:
+                    - PHOTO
+                    - VOCAL
+      responses:
+        '201':
+          description: Fichier enregistré.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Media'
+        '413':
+          description: Fichier trop lourd (5 Mo maximum).
+
+  /ia/presentation:
+    post:
+      tags: [IA]
+      summary: Proposer une présentation d'annonce
+      description: Le jeune donne quelques mots, l'IA propose une présentation de 180 caractères maximum.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - motsCles
+              properties:
+                motsCles:
+                  type: string
+                  maxLength: 200
+                services:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/CategorieService'
+      responses:
+        '200':
+          description: Présentation proposée.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  presentation:
+                    type: string
+                    maxLength: 180
+
+  /infos-locales:
+    get:
+      tags: [Infos locales]
+      summary: Infos utiles autour d'un rendez-vous
+      parameters:
+        - name: latitude
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: longitude
+          in: query
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Météo, quartier et lieux proches.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfosLocales'
+
+
+components:
+
+  parameters:
+
+    UserId:
+      name: id
+      in: path
+      required: true
+      description: Identifiant UUID de l'utilisateur.
+      schema:
+        type: string
+        format: uuid
+
+    DemandeId:
+      name: id
+      in: path
+      required: true
+      description: Identifiant UUID de la demande.
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+
+    RoleUtilisateur:
+      type: string
+      enum:
+        - JEUNE
+        - SENIOR
+        - ACCOMPAGNANT
+
+    CategorieService:
+      type: string
+      enum:
+        - COURSES
+        - MENAGE
+        - BRICOLAGE
+        - INFORMATIQUE
+        - JARDINAGE
+        - CUISINE
+
+    JourSemaine:
+      type: string
+      enum:
+        - LUNDI
+        - MARDI
+        - MERCREDI
+        - JEUDI
+        - VENDREDI
+        - SAMEDI
+        - DIMANCHE
+
+    StatutDemande:
+      type: string
+      enum:
+        - ENVOYEE
+        - ACCEPTEE
+        - REFUSEE
+        - ANNULEE
+
+    StatutRendezVous:
+      type: string
+      enum:
+        - CONFIRME
+        - TERMINE
+        - ANNULE
+
+    Utilisateur:
+      type: object
+      required:
+        - id
+        - prenom
+        - nom
+        - role
+        - ville
+        - latitude
+        - longitude
+      properties:
+        id:
+          type: string
+          format: uuid
+        prenom:
+          type: string
+        nom:
+          type: string
+        dateNaissance:
+          type: string
+          format: date
+        email:
+          type: string
+          format: email
+          nullable: true
+          description: Obligatoire pour les rôles JEUNE et ACCOMPAGNANT ; facultatif pour un senior géré par un proche.
+        telephone:
+          type: string
+          description: Privé, visible uniquement après confirmation d'un rendez-vous.
+        adresse:
+          type: string
+        codePostal:
+          type: string
+        ville:
+          type: string
+        latitude:
+          type: number
+          format: double
+          description: Latitude calculée à partir de l'adresse (géolocalisation).
+        longitude:
+          type: number
+          format: double
+          description: Longitude calculée à partir de l'adresse (géolocalisation).
+        photoProfil:
+          type: string
+        description:
+          type: string
+        role:
+          $ref: '#/components/schemas/RoleUtilisateur'
+        accompagnantId:
+          type: string
+          format: uuid
+          nullable: true
+          description: Pour un senior, identifiant du proche accompagnateur qui organise ses demandes.
+        creeAt:
+          type: string
+          format: date-time
+
+    CreateUtilisateur:
+      type: object
+      required:
+        - prenom
+        - nom
+        - email
+        - telephone
+        - role
+        - adresse
+        - codePostal
+        - ville
+      properties:
+        prenom:
+          type: string
+          maxLength: 35
+        nom:
+          type: string
+          maxLength: 50
+        email:
+          type: string
+          format: email
+        telephone:
+          type: string
+        role:
+          $ref: '#/components/schemas/RoleUtilisateur'
+        adresse:
+          type: string
+        codePostal:
+          type: string
+        ville:
+          type: string
+        dateNaissance:
+          type: string
+          format: date
+        description:
+          type: string
+          maxLength: 180
+
+    UpdateUtilisateur:
+      type: object
+      properties:
+        prenom:
+          type: string
+          maxLength: 35
+        nom:
+          type: string
+          maxLength: 50
+        email:
+          type: string
+          format: email
+        telephone:
+          type: string
+        adresse:
+          type: string
+        codePostal:
+          type: string
+        ville:
+          type: string
+        photoProfil:
+          type: string
+        description:
+          type: string
+          maxLength: 180
+
+    CreateBeneficiaire:
+      type: object
+      required:
+        - prenom
+        - adresse
+        - codePostal
+        - ville
+        - accordDonne
+      properties:
+        prenom:
+          type: string
+          maxLength: 35
+        nom:
+          type: string
+        adresse:
+          type: string
+        codePostal:
+          type: string
+        ville:
+          type: string
+        telephone:
+          type: string
+        accordDonne:
+          type: boolean
+          description: Le proche a donné son accord pour que l'accompagnant organise ses demandes.
+
+    ProfilJeune:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        prenom:
+          type: string
+        age:
+          type: integer
+        photoProfil:
+          type: string
+        description:
+          type: string
+        ville:
+          type: string
+        distanceKm:
+          type: number
+          format: float
+          description: Distance entre le jeune et le point de recherche.
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+        disponibilites:
+          type: array
+          items:
+            $ref: '#/components/schemas/Disponibilite'
+
+    Service:
+      type: object
+      required:
+        - id
+        - nom
+        - categorie
+      properties:
+        id:
+          type: string
+          format: uuid
+        nom:
+          type: string
+          maxLength: 100
+        categorie:
+          $ref: '#/components/schemas/CategorieService'
+        description:
+          type: string
+          maxLength: 1000
+        isActif:
+          type: boolean
+
+    ServiceUtilisateur:
+      type: object
+      description: Service proposé par un jeune dans son annonce.
+      required:
+        - id
+        - userId
+        - serviceId
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+          description: Identifiant du jeune.
+        serviceId:
+          type: string
+          format: uuid
+        creeAt:
+          type: string
+          format: date-time
+
+    CreateServiceUtilisateur:
+      type: object
+      required:
+        - serviceId
+      properties:
+        serviceId:
+          type: string
+          format: uuid
+
+    Disponibilite:
+      type: object
+      required:
+        - id
+        - userId
+        - jour
+        - heureDebut
+        - heureFin
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+          description: Identifiant du jeune.
+        jour:
+          $ref: '#/components/schemas/JourSemaine'
+        heureDebut:
+          type: string
+          example: '17:00'
+        heureFin:
+          type: string
+          example: '19:00'
+        creeAt:
+          type: string
+          format: date-time
+
+    CreateDisponibilite:
+      type: object
+      required:
+        - jour
+        - heureDebut
+        - heureFin
+      properties:
+        jour:
+          $ref: '#/components/schemas/JourSemaine'
+        heureDebut:
+          type: string
+          example: '17:00'
+        heureFin:
+          type: string
+          example: '19:00'
+
+    DemandeService:
+      type: object
+      required:
+        - id
+        - demandeurId
+        - beneficiaireId
+        - jeuneId
+        - serviceId
+        - disponibiliteId
+        - dateSouhaitee
+        - description
+        - statut
+      properties:
+        id:
+          type: string
+          format: uuid
+        demandeurId:
+          type: string
+          format: uuid
+          description: Utilisateur qui envoie la demande (senior ou accompagnant).
+        beneficiaireId:
+          type: string
+          format: uuid
+          description: Personne âgée qui reçoit l'aide (le demandeur lui-même s'il est senior).
+        jeuneId:
+          type: string
+          format: uuid
+          description: Jeune choisi par le demandeur.
+        serviceId:
+          type: string
+          format: uuid
+        disponibiliteId:
+          type: string
+          format: uuid
+          description: Créneau du jeune choisi par le demandeur.
+        dateSouhaitee:
+          type: string
+          format: date
+        description:
+          type: string
+          maxLength: 400
+          description: Précisions sur le besoin.
+        statut:
+          $ref: '#/components/schemas/StatutDemande'
+        creeAt:
+          type: string
+          format: date-time
+
+    CreateDemandeService:
+      type: object
+      required:
+        - beneficiaireId
+        - jeuneId
+        - serviceId
+        - disponibiliteId
+        - dateSouhaitee
+        - description
+      properties:
+        beneficiaireId:
+          type: string
+          format: uuid
+        jeuneId:
+          type: string
+          format: uuid
+        serviceId:
+          type: string
+          format: uuid
+        disponibiliteId:
+          type: string
+          format: uuid
+        dateSouhaitee:
+          type: string
+          format: date
+        description:
+          type: string
+          minLength: 1
+          maxLength: 400
+
+    RendezVous:
+      type: object
+      required:
+        - id
+        - demandeServiceId
+        - jeuneId
+        - beneficiaireId
+        - serviceId
+        - date
+        - heureDebut
+        - heureFin
+        - statut
+      properties:
+        id:
+          type: string
+          format: uuid
+        demandeServiceId:
+          type: string
+          format: uuid
+          description: Identifiant de la demande acceptée.
+        jeuneId:
+          type: string
+          format: uuid
+        beneficiaireId:
+          type: string
+          format: uuid
+        serviceId:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date
+        heureDebut:
+          type: string
+        heureFin:
+          type: string
+        statut:
+          $ref: '#/components/schemas/StatutRendezVous'
+        telephoneJeune:
+          type: string
+        telephoneDemandeur:
+          type: string
+        annulePar:
+          type: string
+          format: uuid
+          nullable: true
+        annuleLe:
+          type: string
+          format: date-time
+          nullable: true
+        raisonAnnulation:
+          type: string
+          nullable: true
+        creeAt:
+          type: string
+          format: date-time
+
+    Position:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        ville:
+          type: string
+        codePostal:
+          type: string
+
+    TypeMessage:
+      type: string
+      enum:
+        - TEXTE
+        - PHOTO
+        - VOCAL
+
+    Message:
+      type: object
+      required:
+        - id
+        - demandeServiceId
+        - auteurId
+        - type
+        - creeAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        demandeServiceId:
+          type: string
+          format: uuid
+        auteurId:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/TypeMessage'
+        texte:
+          type: string
+          maxLength: 500
+        mediaUrl:
+          type: string
+          nullable: true
+        creeAt:
+          type: string
+          format: date-time
+
+    CreateMessage:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          $ref: '#/components/schemas/TypeMessage'
+        texte:
+          type: string
+          maxLength: 500
+        mediaUrl:
+          type: string
+
+    Avis:
+      type: object
+      required:
+        - id
+        - rendezVousId
+        - auteurId
+        - cibleId
+        - note
+      properties:
+        id:
+          type: string
+          format: uuid
+        rendezVousId:
+          type: string
+          format: uuid
+        auteurId:
+          type: string
+          format: uuid
+        cibleId:
+          type: string
+          format: uuid
+        note:
+          type: integer
+          minimum: 1
+          maximum: 5
+        commentaire:
+          type: string
+          maxLength: 300
+        creeAt:
+          type: string
+          format: date-time
+
+    CreateAvis:
+      type: object
+      required:
+        - note
+      properties:
+        note:
+          type: integer
+          minimum: 1
+          maximum: 5
+        commentaire:
+          type: string
+          maxLength: 300
+
+    Favori:
+      type: object
+      required:
+        - id
+        - userId
+        - jeuneId
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        jeuneId:
+          type: string
+          format: uuid
+        creeAt:
+          type: string
+          format: date-time
+
+    Media:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum:
+            - PHOTO
+            - VOCAL
+        url:
+          type: string
+        creeAt:
+          type: string
+          format: date-time
+
+    InfosLocales:
+      type: object
+      properties:
+        quartier:
+          type: string
+        meteo:
+          type: object
+          properties:
+            date:
+              type: string
+              format: date
+            resume:
+              type: string
+            temperatureMax:
+              type: number
+            pluie:
+              type: boolean
+        lieux:
+          type: array
+          items:
+            type: object
+            properties:
+              nom:
+                type: string
+              type:
+                type: string
+                enum:
+                  - SUPERMARCHE
+                  - PHARMACIE
+                  - MARCHE
+                  - BOULANGERIE
+              distanceKm:
+                type: number

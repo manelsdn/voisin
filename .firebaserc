@@ -1,0 +1,13 @@
+{
+  "projects": {
+    "default": "granny-help-2561a"
+  },
+  "targets": {
+    "granny-help-2561a": {
+      "hosting": {
+        "app": ["granny-help-2561a"],
+        "landing": ["voisin-dor-g2"]
+      }
+    }
+  }
+}

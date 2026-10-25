@@ -1,0 +1,93 @@
+classDiagram
+direction TB
+class Utilisateur {
+  +UUID id
+  +String prenom
+  +String nom
+  +String email
+  +String telephone
+  +String adresse
+  +String codePostal
+  +String ville
+  +Double latitude
+  +Double longitude
+  +String photoProfil
+  +String description
+  +RoleUtilisateur role
+  +UUID accompagnantId
+}
+class Service {
+  +UUID id
+  +String nom
+  +CategorieService categorie
+}
+class ServiceUtilisateur {
+  +UUID id
+  +UUID userId
+  +UUID serviceId
+}
+class Disponibilite {
+  +UUID id
+  +UUID userId
+  +JourSemaine jour
+  +Time heureDebut
+  +Time heureFin
+}
+class DemandeService {
+  +UUID id
+  +UUID demandeurId
+  +UUID beneficiaireId
+  +UUID jeuneId
+  +UUID serviceId
+  +UUID disponibiliteId
+  +Date dateSouhaitee
+  +String description
+  +StatutDemande statut
+}
+class RendezVous {
+  +UUID id
+  +UUID demandeServiceId
+  +Date date
+  +Time heureDebut
+  +Time heureFin
+  +StatutRendezVous statut
+}
+class Message {
+  +UUID id
+  +UUID demandeServiceId
+  +UUID auteurId
+  +TypeMessage type
+  +String texte
+  +String mediaUrl
+}
+class Avis {
+  +UUID id
+  +UUID rendezVousId
+  +UUID auteurId
+  +UUID cibleId
+  +Integer note
+  +String commentaire
+}
+class Favori {
+  +UUID id
+  +UUID userId
+  +UUID jeuneId
+}
+Utilisateur "1" --> "0..*" Utilisateur : accompagne
+Utilisateur "1" --> "0..*" Disponibilite : publie
+Utilisateur "1" --> "0..*" ServiceUtilisateur : propose
+Service "1" --> "0..*" ServiceUtilisateur : concerne
+Utilisateur "1" --> "0..*" DemandeService : envoie / reçoit
+DemandeService "1" --> "0..1" RendezVous : génère
+DemandeService "1" --> "0..*" Message : conversation
+RendezVous "1" --> "0..2" Avis : évalué par
+Utilisateur "1" --> "0..*" Favori : garde
+style Utilisateur fill:#FDF0FD,stroke:#E070E8,stroke-width:2px
+style Service fill:#EEFBF8,stroke:#2ED1C0,stroke-width:2px
+style ServiceUtilisateur fill:#EEFBF1,stroke:#44D07A,stroke-width:2px
+style Disponibilite fill:#FEF5EC,stroke:#F2923A,stroke-width:2px
+style DemandeService fill:#EAFBFD,stroke:#27CFE6,stroke-width:2px
+style RendezVous fill:#F3F1FD,stroke:#9B7DEB,stroke-width:2px
+style Message fill:#FFF6E0,stroke:#FFC145,stroke-width:2px,stroke-dasharray:5 3
+style Avis fill:#FFEDEA,stroke:#FF8A65,stroke-width:2px,stroke-dasharray:5 3
+style Favori fill:#FFEDEA,stroke:#FF6B5B,stroke-width:2px,stroke-dasharray:5 3

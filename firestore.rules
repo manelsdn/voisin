@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function connecte() { return request.auth != null; }
+
+    match /users/{id} {
+      allow read: if true;
+      allow create: if connecte() && (request.auth.uid == id || request.resource.data.accompagnantId == request.auth.uid);
+      allow update: if connecte() && (request.auth.uid == id || resource.data.accompagnantId == request.auth.uid);
+    }
+
+    match /demandes/{id} {
+      allow read: if connecte() && (resource.data.demandeurId == request.auth.uid || resource.data.jeuneId == request.auth.uid);
+      allow create: if connecte() && request.resource.data.demandeurId == request.auth.uid && request.resource.data.statut == "ENVOYEE";
+      allow update: if connecte() && resource.data.statut == "ENVOYEE" && (
+        (request.auth.uid == resource.data.jeuneId && request.resource.data.statut in ["ACCEPTEE", "REFUSEE"]) ||
+        (request.auth.uid == resource.data.demandeurId && request.resource.data.statut == "ANNULEE")
+      );
+    }
+
+    match /rendezVous/{id} {
+      allow read: if connecte() && (resource.data.jeuneId == request.auth.uid || resource.data.demandeurId == request.auth.uid);
+      allow create: if connecte() && request.resource.data.jeuneId == request.auth.uid;
+    }
+
+    match /messages/{id} {
+      allow read: if connecte() && (resource.data.de == request.auth.uid || resource.data.a == request.auth.uid);
+      allow create: if connecte() && request.resource.data.de == request.auth.uid && request.resource.data.texte is string && request.resource.data.texte.size() > 0 && request.resource.data.texte.size() <= 500;
+    }
+  }
+}
