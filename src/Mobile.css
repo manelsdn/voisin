@@ -1,4 +1,3 @@
-
 #vdo{background:var(--paper)}
 #vdo .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
@@ -7,8 +6,6 @@
 #vdo .home-content{padding:8px 16px 18px}
 #vdo h2,#vdo .app-pad h2{font-size:26px;line-height:1.08;letter-spacing:-.6px;margin:8px 0 10px}
 #vdo .home-content h2{font-size:28px;margin:6px 0 12px}
-#vdo .titre-accent em{font:italic 500 1em/1 "Fraunces",Georgia,serif;color:#FF6B5B;letter-spacing:-.4px;position:relative;white-space:nowrap}
-#vdo .titre-accent em:after{content:"";position:absolute;left:0;right:6%;bottom:-4px;height:5px;border-radius:5px;background:#FF6B5B;opacity:.85}
 #vdo .soft{font-size:13px;line-height:1.45;margin:0 0 8px}
 #vdo .section-title,#vdo .modern-home .section-title{margin:18px 0 8px}
 #vdo .section-title h3{font:600 17px var(--font-head);letter-spacing:-.2px}
@@ -28,10 +25,6 @@
 #vdo .bottom-nav a.active,#vdo .bottom-nav button.active{background:#FFC145;color:#2A2140}
 #vdo .corps{padding-bottom:6px}
 
-#vdo .fab{position:sticky;bottom:86px;z-index:21;align-self:flex-end;margin:-56px 14px 10px auto;display:inline-flex;align-items:center;gap:8px;min-height:50px;padding:0 18px 0 14px;border-radius:999px!important;background:#FF6B5B;color:#fff!important;font:600 15px var(--font-head);text-decoration:none;box-shadow:0 10px 22px rgba(255,107,91,.4);animation:fab-entree .4s cubic-bezier(.34,1.56,.64,1) both}
-#vdo .fab .icon{width:20px;height:20px;color:#fff}
-#vdo .fab:active{transform:scale(.96)}
-@keyframes fab-entree{from{transform:translateY(16px) scale(.9);opacity:0}to{transform:none;opacity:1}}
 
 #vdo .actions-flottantes{position:sticky;bottom:84px;z-index:15;background:linear-gradient(180deg,rgba(255,248,240,0),var(--paper) 30%);margin:6px -16px 0;padding:18px 16px 4px}
 #vdo .actions-flottantes .primary{box-shadow:0 10px 22px rgba(255,193,69,.45)}
@@ -41,22 +34,14 @@
 #vdo .bonjour-ligne{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 #vdo .greeting{font-size:14px;font-weight:700}
 
-#vdo .hero-photo{position:relative;border-radius:24px;overflow:hidden;height:168px;background:var(--yellow-soft);box-shadow:0 10px 24px rgba(42,33,64,.12)}
-#vdo .hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block}
-#vdo .hero-photo-texte{position:absolute;left:10px;right:10px;bottom:10px;background:rgba(255,253,248,.94);border-radius:16px;padding:9px 12px;display:grid;gap:2px}
-#vdo .hero-photo-texte .mini-eyebrow{font-size:9.5px;color:#8a5a12}
-#vdo .hero-photo-texte strong{font:600 15px/1.2 var(--font-head)}
 
 #vdo .story-bar{gap:8px;padding:2px 0 4px}
 #vdo .story-btn{width:66px}
 #vdo .story-ring{width:58px;height:58px}
 #vdo .story-btn small{font-size:11px}
 
-#vdo .carte-grande{position:relative;padding:0;margin:14px 0 0;border:0;border-radius:24px!important;overflow:hidden;box-shadow:0 10px 24px rgba(42,33,64,.12)}
-#vdo .carte-grande .browse-map{height:220px;margin:0;border-radius:0}
 #vdo .carte-bouton{position:absolute;right:10px;bottom:10px;z-index:3;display:inline-flex;align-items:center;gap:6px;background:#2A2140;color:#fff;font:600 13px var(--font-head);padding:9px 14px;border-radius:999px}
 #vdo .carte-bouton .icon{width:15px;height:15px;color:#FFC145}
-#vdo .carte-grande .map-caption{bottom:auto;top:40px}
 
 #vdo .liste-compacte,#vdo .stack-actions{display:flex;flex-direction:column}
 #vdo .liste-compacte{gap:8px}
@@ -81,7 +66,6 @@
 
 #vdo .feed{gap:12px}
 #vdo .post{border-radius:22px;border:0}
-#vdo .post-img{aspect-ratio:16/10}
 #vdo .post-head{padding:10px 12px}
 #vdo .post-text{font-size:13px;line-height:1.45;margin:8px 12px 0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 
@@ -96,25 +80,103 @@
 #vdo .onglets button{border-radius:999px!important;min-height:38px}
 #vdo .onglets button[aria-selected=true]{background:#2A2140;color:#fff}
 
-#vdo .welcome{padding:12px 18px 18px}
-#vdo .welcome-art{height:auto;margin:12px 0 4px}
-#vdo .welcome-art:before{display:none}
-#vdo .welcome-art img{width:100%;height:230px;object-fit:cover;object-position:center 25%;border-radius:28px 28px 28px 8px;box-shadow:0 14px 30px rgba(42,33,64,.16)}
-#vdo .welcome h2{font-size:32px;margin:12px 0 6px}
-#vdo .login-art{width:auto;height:auto;border-radius:24px;background:none!important;box-shadow:none!important;margin:10px 0 14px;overflow:hidden}
-#vdo .login-art img{width:100%;height:150px;object-fit:cover;border-radius:24px;display:block}
 
 @media(max-width:360px){
     #vdo h2,#vdo .app-pad h2{font-size:23px}
     #vdo .home-content h2{font-size:25px}
-    #vdo .welcome h2{font-size:28px}
     #vdo .deux,#vdo .trois{display:grid;grid-template-columns:1fr;gap:11px}
-    #vdo .hero-photo{height:150px}
-    #vdo .carte-grande .browse-map{height:200px}
     #vdo .bottom-nav{margin:0 6px 8px}
     #vdo .bottom-nav a,#vdo .bottom-nav button{font-size:10px;padding:4px 2px}
-    #vdo .fab{padding:0 14px 0 12px;font-size:14px}
     #vdo .post-act{padding:0 6px}
     #vdo .post-cta{font-size:13px;padding:0 12px}
 }
-@media(prefers-reduced-motion:reduce){#vdo .fab{animation:none}}
+
+#vdo .home-content{padding-top:4px}
+#vdo .titre-accent{margin-bottom:14px}
+
+#vdo .scene{position:relative;display:grid;grid-template-columns:1fr 46%;align-items:end;gap:6px;margin:26px 0 6px;padding:16px 10px 16px 16px;border-radius:28px;background:radial-gradient(circle at 85% 0,#FFE8B8 0,transparent 55%),linear-gradient(135deg,#FFC145 0%,#FF9E6B 100%);box-shadow:0 14px 30px rgba(255,138,101,.28);isolation:isolate;overflow:visible}
+#vdo .scene-texte{display:grid;gap:6px;align-content:start;align-self:center;position:relative;z-index:2}
+#vdo .scene-texte .mini-eyebrow{justify-self:start;background:rgba(255,253,248,.9);color:#8a5a12;padding:4px 9px;border-radius:999px;font-size:9.5px;font-weight:800;letter-spacing:1px}
+#vdo .scene-texte strong{font:600 19px/1.12 var(--font-head);letter-spacing:-.3px;color:#2A2140}
+#vdo .scene-cta{justify-self:start;display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:9px 14px;border-radius:999px!important;background:#2A2140;color:#fff!important;font:600 13px var(--font-head);text-decoration:none;box-shadow:0 6px 14px rgba(42,33,64,.25)}
+#vdo .scene-cta .icon{width:14px;height:14px;color:#FFC145}
+#vdo .scene-arche{margin:-46px 0 0;position:relative;z-index:1;aspect-ratio:800/955;border-radius:999px 999px 22px 22px;overflow:hidden;border:4px solid #FFFDF8;box-shadow:0 12px 24px rgba(42,33,64,.22);transform:rotate(2.5deg);background:#FFE8B8}
+#vdo .scene-arche img{width:100%;height:100%;object-fit:contain;display:block}
+#vdo .scene-large{grid-template-columns:1fr;padding:10px;gap:10px;background:linear-gradient(160deg,#CFF3EE 0%,#FFE8B8 100%);box-shadow:0 14px 30px rgba(31,175,152,.18);margin-top:14px}
+#vdo .scene-image{width:100%;aspect-ratio:710/318;height:auto;object-fit:contain;border-radius:20px;display:block;background:#fff}
+#vdo .scene-large .scene-texte{padding:0 6px 4px}
+#vdo .deco{position:absolute;pointer-events:none;z-index:0}
+#vdo .deco-soleil{width:46px;height:46px;border-radius:50%;background:#FFE8B8;left:-10px;top:-14px;box-shadow:0 0 0 7px rgba(255,232,184,.45)}
+#vdo .deco-etoile{width:20px;height:20px;right:12px;bottom:-8px;background:#9B6BFF;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);animation:scintille 3s ease-in-out infinite}
+#vdo .scene-large .deco-etoile{right:18px;top:-8px;bottom:auto;background:#FF6B5B}
+@keyframes scintille{50%{transform:scale(1.25) rotate(20deg)}}
+
+#vdo .carte-grande{position:relative;display:block;padding:0;margin:16px 0 0;border:0;border-radius:26px!important;overflow:hidden;box-shadow:0 12px 26px rgba(42,33,64,.14)}
+#vdo .carte-grande .browse-map{height:auto;aspect-ratio:3/2;margin:0;border-radius:0}
+#vdo .carte-grande .map-caption{bottom:auto;top:40px}
+
+#vdo .fab{position:fixed;right:max(16px,calc((100vw - 480px) / 2 + 16px));bottom:96px;z-index:30;display:inline-flex;align-items:center;gap:8px;min-height:52px;padding:0 18px 0 15px;border-radius:999px!important;background:#FF6B5B;color:#fff!important;font:600 15px var(--font-head);text-decoration:none;box-shadow:0 12px 26px rgba(255,107,91,.45),0 0 0 4px rgba(255,248,240,.9);animation:fab-entree .45s cubic-bezier(.34,1.56,.64,1) both}
+#vdo .fab .icon{width:20px;height:20px;color:#fff}
+#vdo .fab:active{transform:scale(.95)}
+@keyframes fab-entree{from{transform:translateY(18px) scale(.85);opacity:0}to{transform:none;opacity:1}}
+#vdo.accueil-compact .corps{padding-bottom:70px}
+
+#vdo .post-img{aspect-ratio:1/1;object-fit:cover}
+
+#vdo .welcome{padding:14px 18px 20px;justify-content:flex-start}
+#vdo .welcome-art{height:auto;margin:16px auto 6px;width:72%;max-width:250px;position:relative}
+#vdo .welcome-art:before{display:block;content:"";position:absolute;width:86%;aspect-ratio:1;border-radius:50%;background:#FFC145;left:-16%;top:-6%;transform:none;z-index:0}
+#vdo .welcome-art:after{content:"";position:absolute;width:26px;height:26px;right:-14px;bottom:18%;background:#FF6B5B;clip-path:polygon(50% 0,61% 39%,100% 50%,61% 61%,50% 100%,39% 61%,0 50%,39% 39%);animation:scintille 3s ease-in-out infinite}
+#vdo .welcome-art img{position:relative;z-index:1;width:100%;height:auto;aspect-ratio:800/955;object-fit:contain;border-radius:999px 999px 26px 26px;border:5px solid #FFFDF8;box-shadow:0 16px 34px rgba(42,33,64,.2);transform:rotate(-2deg)}
+#vdo .welcome h2{font-size:32px;margin:16px 0 6px}
+#vdo .welcome-actions{margin-top:18px}
+#vdo .login-art{width:auto;height:auto;border-radius:24px;background:none!important;box-shadow:none!important;margin:10px 0 14px;overflow:visible}
+#vdo .login-art img{width:100%;height:auto;aspect-ratio:710/318;object-fit:contain;border-radius:22px;display:block;border:4px solid #FFFDF8;box-shadow:0 12px 26px rgba(42,33,64,.14)}
+
+@media(max-width:360px){
+    #vdo .scene-texte strong{font-size:17px}
+    #vdo .scene:not(.scene-large){grid-template-columns:1fr 44%}
+    #vdo .welcome h2{font-size:28px}
+    #vdo .fab{padding:0 14px 0 12px;font-size:14px}
+}
+@media(min-width:481px){
+    .App{background:radial-gradient(circle at 12% 18%,#FFE8B8 0,transparent 26%),radial-gradient(circle at 88% 30%,#CFF3EE 0,transparent 24%),radial-gradient(circle at 20% 85%,#FFD4CC 0,transparent 22%),radial-gradient(circle at 85% 88%,#E7DBFF 0,transparent 24%),#FFF8F0!important}
+    #vdo{box-shadow:0 30px 80px rgba(42,33,64,.14);border-radius:0}
+}
+@media(prefers-reduced-motion:reduce){#vdo .fab,#vdo .deco-etoile,#vdo .welcome-art:after{animation:none}}
+#vdo .carte-grande .carte-bouton{top:10px;bottom:auto}
+#vdo .carte-grande .map-caption{top:auto;bottom:10px}
+
+#vdo{font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+#vdo p,#vdo li,#vdo label,#vdo input,#vdo select,#vdo textarea,#vdo small,#vdo button,#vdo a{font-family:var(--font-body)}
+#vdo h2,#vdo h3,#vdo .primary,#vdo .scene-texte strong,#vdo .section-title h3,#vdo .fab,#vdo .scene-cta,#vdo .carte-bouton,#vdo .welcome-etapes strong{font-family:var(--font-head)}
+#vdo .titre-accent em{isolation:isolate;font-style:normal;font-family:var(--font-head);font-weight:600;color:#FF6B5B;position:relative;white-space:nowrap;display:inline-block}
+#vdo .titre-accent em:after{content:"";position:absolute;left:2px;right:2px;bottom:-3px;height:6px;border-radius:6px;background:#FFC145;z-index:-1;opacity:.9}
+#vdo .soft{font-size:14px;color:#5d5574}
+#vdo .helper-card strong{font-size:15px}
+#vdo .helper-card small,#vdo .helper-card span small{font-size:13px!important;color:#5d5574}
+#vdo .slot-row em{font-size:12px!important}
+#vdo .story-btn small{font-size:12.5px;font-weight:700}
+#vdo .bottom-nav a,#vdo .bottom-nav button{font-size:12px;font-weight:700}
+#vdo .greeting{font-size:15px;color:#5d5574}
+#vdo .role-badge{font-size:12px}
+#vdo .tip-note{font-size:13px!important}
+#vdo label{font-size:14px;font-weight:700}
+#vdo .mini-eyebrow,#vdo .mini-pill{font-size:11px;font-weight:800;letter-spacing:1.2px}
+#vdo .story-img img{object-fit:cover}
+
+#vdo .welcome{padding:16px 18px 22px;gap:0}
+#vdo .welcome .app-logo{width:150px!important}
+#vdo .welcome-art{width:62%;max-width:230px;margin:14px auto 4px}
+#vdo .welcome .mini-pill{margin:14px 0 0;color:#8a5a12}
+#vdo .welcome h2{font-size:34px;line-height:1.05;margin:8px 0 10px}
+#vdo .welcome-intro{font-size:16px;line-height:1.5;color:#3d3554;margin:0 0 16px}
+#vdo .welcome-etapes{list-style:none;padding:14px;margin:0 0 18px;display:grid;gap:12px;background:#FFFDF8;border-radius:22px;box-shadow:0 8px 22px rgba(42,33,64,.08)}
+#vdo .welcome-etapes li{display:flex;gap:12px;align-items:center}
+#vdo .welcome-etapes b{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#2A2140;color:#FFC145;font:600 16px var(--font-head)}
+#vdo .welcome-etapes li:nth-child(2) b{background:#1FAF98;color:#fff}
+#vdo .welcome-etapes li:nth-child(3) b{background:#FF6B5B;color:#fff}
+#vdo .welcome-etapes span{font-size:14px;line-height:1.35;color:#5d5574}
+#vdo .welcome-etapes strong{display:block;font-size:16px;font-weight:600;color:var(--ink)}
+#vdo .welcome-actions{margin-top:0;position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,248,240,0),var(--paper) 35%);padding:16px 0 6px}
+#vdo .signin-prompt{font-size:14px;text-align:center}

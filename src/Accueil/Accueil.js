@@ -55,13 +55,27 @@ const Accueil = () => {
                             <span className="chevron"><Icone nom="down" /></span>
                         </Link>
                     )}
-                    <div className="hero-photo">
-                        <img src={estJeune ? "/assets/presentation/ensemble.jpg" : "/assets/presentation/accueil.jpg"} alt="" />
-                        <div className="hero-photo-texte">
-                            <span className="mini-eyebrow">{estJeune ? "MON ANNONCE" : "MON QUARTIER"}</span>
-                            <strong>{estJeune ? (utilisateur.annoncePubliee ? "Votre annonce est en ligne." : "Publiez vos créneaux.") : "Des jeunes disponibles près de vous."}</strong>
-                        </div>
-                    </div>
+                    {estJeune ? (
+                        <section className="scene scene-large">
+                            <img className="scene-image" src="/assets/presentation/ensemble.jpg" alt="" />
+                            <div className="scene-texte">
+                                <span className="mini-eyebrow">{utilisateur.annoncePubliee ? "ANNONCE EN LIGNE" : "MON ANNONCE"}</span>
+                                <strong>{utilisateur.annoncePubliee ? "Les voisins voient vos créneaux." : "Proposez vos créneaux au quartier."}</strong>
+                            </div>
+                            <i className="deco deco-etoile" aria-hidden="true"></i>
+                        </section>
+                    ) : (
+                        <section className="scene">
+                            <div className="scene-texte">
+                                <span className="mini-eyebrow">MON QUARTIER</span>
+                                <strong>Un jeune voisin pour vous aider.</strong>
+                                <Link className="scene-cta" to="/fil">Voir le fil<Icone nom="arrow" /></Link>
+                            </div>
+                            <figure className="scene-arche"><img src="/assets/presentation/accueil.jpg" alt="" /></figure>
+                            <i className="deco deco-soleil" aria-hidden="true"></i>
+                            <i className="deco deco-etoile" aria-hidden="true"></i>
+                        </section>
+                    )}
                     <div className="section-title">
                         <h3>{estJeune ? "Vos services" : "Un coup de main pour…"}</h3>
                         <Link className="see-all" to="/fil">Le fil<Icone nom="chevron" /></Link>
