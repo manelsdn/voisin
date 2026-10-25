@@ -149,7 +149,7 @@
 
 #vdo{font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 #vdo p,#vdo li,#vdo label,#vdo input,#vdo select,#vdo textarea,#vdo small,#vdo button,#vdo a{font-family:var(--font-body)}
-#vdo h2,#vdo h3,#vdo .primary,#vdo .scene-texte strong,#vdo .section-title h3,#vdo .fab,#vdo .scene-cta,#vdo .carte-bouton,#vdo .welcome-etapes strong{font-family:var(--font-head)}
+#vdo h2,#vdo h3,#vdo .primary,#vdo .scene-texte strong,#vdo .section-title h3,#vdo .fab,#vdo .scene-cta,#vdo .carte-bouton{font-family:var(--font-head)}
 #vdo .titre-accent em{isolation:isolate;font-style:normal;font-family:var(--font-head);font-weight:600;color:#FF6B5B;position:relative;white-space:nowrap;display:inline-block}
 #vdo .titre-accent em:after{content:"";position:absolute;left:2px;right:2px;bottom:-3px;height:6px;border-radius:6px;background:#FFC145;z-index:-1;opacity:.9}
 #vdo .soft{font-size:14px;color:#5d5574}
@@ -171,12 +171,5 @@
 #vdo .welcome .mini-pill{margin:14px 0 0;color:#8a5a12}
 #vdo .welcome h2{font-size:34px;line-height:1.05;margin:8px 0 10px}
 #vdo .welcome-intro{font-size:16px;line-height:1.5;color:#3d3554;margin:0 0 16px}
-#vdo .welcome-etapes{list-style:none;padding:14px;margin:0 0 18px;display:grid;gap:12px;background:#FFFDF8;border-radius:22px;box-shadow:0 8px 22px rgba(42,33,64,.08)}
-#vdo .welcome-etapes li{display:flex;gap:12px;align-items:center}
-#vdo .welcome-etapes b{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#2A2140;color:#FFC145;font:600 16px var(--font-head)}
-#vdo .welcome-etapes li:nth-child(2) b{background:#1FAF98;color:#fff}
-#vdo .welcome-etapes li:nth-child(3) b{background:#FF6B5B;color:#fff}
-#vdo .welcome-etapes span{font-size:14px;line-height:1.35;color:#5d5574}
-#vdo .welcome-etapes strong{display:block;font-size:16px;font-weight:600;color:var(--ink)}
 #vdo .welcome-actions{margin-top:0;position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,248,240,0),var(--paper) 35%);padding:16px 0 6px}
 #vdo .signin-prompt{font-size:14px;text-align:center}
