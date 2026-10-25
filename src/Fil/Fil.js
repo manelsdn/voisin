@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Avatar, CartesServices, Ecran } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { pointDeRecherche, rechercherJeunes } from "../services/api";
+import { basculerFavori, mesFavoris, pointDeRecherche, rechercherJeunes } from "../services/api";
 import { ROLES, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
 const IMAGES_FIL = { "lucas.png": "/assets/fil/lucas.jpg", "ines.png": "/assets/fil/ines.jpg", "adam.png": "/assets/fil/adam.jpg" };
@@ -24,11 +24,15 @@ const Fil = () => {
         const charger = async () => {
             const { position } = await pointDeRecherche(utilisateur);
             setJeunes((await rechercherJeunes(position, { rayon: 5, service })).filter((j) => j.id !== utilisateur.id));
+            setAimes(await mesFavoris(utilisateur).catch(() => []));
         };
         charger();
     }, [utilisateur, service]);
 
-    const aimer = (id) => setAimes(aimes.includes(id) ? aimes.filter((x) => x !== id) : [...aimes, id]);
+    const aimer = async (id) => {
+        setAimes(aimes.includes(id) ? aimes.filter((x) => x !== id) : [...aimes, id]);
+        setAimes(await basculerFavori(utilisateur, id));
+    };
 
     return (
         <Ecran titre={<>Le fil <br />du quartier</>} retour="/accueil" classe="services-page feed-page">
@@ -49,7 +53,7 @@ const Fil = () => {
                             <img className="post-img" src={imagePublication(j, principal)} alt={`${j.prenom} propose son aide`} loading="lazy" />
                             <p className="post-text"><strong>{j.prenom}</strong> {j.description || `Je propose un coup de main : ${(j.services || []).map(nomService).join(", ").toLowerCase()}.`}</p>
                             <div className="post-actions">
-                                <button type="button" className={aimes.includes(j.id) ? "post-act liked" : "post-act"} aria-pressed={aimes.includes(j.id)} aria-label="J'aime" onClick={() => aimer(j.id)}><Icone nom="heart" /></button>
+                                <button type="button" className={aimes.includes(j.id) ? "post-act liked" : "post-act"} aria-pressed={aimes.includes(j.id)} aria-label={aimes.includes(j.id) ? `Retirer ${j.prenom} de mes favoris` : `Ajouter ${j.prenom} à mes favoris`} onClick={() => aimer(j.id)}><Icone nom="heart" /></button>
                                 <Link className="post-act" to={`/messages/${j.id}`} aria-label={`Écrire à ${j.prenom}`}><Icone nom="message" /></Link>
                                 <Link className="post-cta" to={`/jeunes/${j.id}`}>Voir ses créneaux<Icone nom="arrow" /></Link>
                             </div>

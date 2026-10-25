@@ -26,7 +26,7 @@ const Messages = () => {
                         <b className="helper-photo initial-avatar" aria-hidden="true">{(c.prenom || "?")[0]}</b>
                         <span>
                             <h3>{c.prenom}</h3>
-                            <p className="soft">{c.dernier.de === utilisateur.id ? "Vous : " : ""}{c.dernier.texte}</p>
+                            <p className="soft">{c.dernier.de === utilisateur.id ? "Vous : " : ""}{c.dernier.texte || (c.dernier.audio ? "Message vocal" : "")}</p>
                         </span>
                     </Link>
                 ))}

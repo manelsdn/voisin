@@ -3,16 +3,18 @@ import { useEffect, useState } from "react";
 import { useSession } from "../composants/Session";
 import { Avatar, Ecran, LienBouton } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { deconnecter, listerProches } from "../services/api";
+import { deconnecter, listerProches, lireUtilisateur, mesFavoris } from "../services/api";
 import { ROLES } from "../services/constantes";
 
 const Profil = () => {
     const { utilisateur } = useSession();
     const [proche, setProche] = useState(null);
+    const [favoris, setFavoris] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         if (utilisateur.role === "ACCOMPAGNANT") listerProches(utilisateur.id).then((l) => setProche(l[0] || null));
+        if (utilisateur.role !== "JEUNE") mesFavoris(utilisateur).then((ids) => Promise.all(ids.map(lireUtilisateur))).then((l) => setFavoris(l.filter(Boolean))).catch(() => setFavoris([]));
     }, [utilisateur]);
 
     const sortir = async () => {
@@ -32,6 +34,19 @@ const Profil = () => {
             <div className="text-row"><span><Icone nom="phone" /> Mon numéro</span><span>{utilisateur.telephone}</span></div>
             <div className="text-row"><span>Adresse</span><span>{utilisateur.adresse}, {utilisateur.codePostal} {utilisateur.ville}</span></div>
             {utilisateur.role === "ACCOMPAGNANT" && <div className="text-row"><span><Icone nom="users" /> Mon proche</span><Link className="link-button" to="/proche">{proche ? proche.prenom : "Ajouter"}</Link></div>}
+            {utilisateur.role !== "JEUNE" && (
+                <section className="favoris" aria-label="Mes favoris">
+                    <span className="mini-eyebrow">MES FAVORIS</span>
+                    {favoris.length === 0 && <p className="soft"><small>Touchez le cœur sur le fil ou sur un profil pour retrouver un jeune ici.</small></p>}
+                    {favoris.map((j) => (
+                        <Link key={j.id} to={`/jeunes/${j.id}`} className="helper-card">
+                            <Avatar personne={j} />
+                            <span><strong>{j.prenom}</strong><small>{j.ville}</small></span>
+                            <Icone nom="chevron" />
+                        </Link>
+                    ))}
+                </section>
+            )}
             <div className="stack-actions">
                 <LienBouton to="/modifier-profil" secondaire>Modifier mes informations</LienBouton>
                 {utilisateur.role === "JEUNE" && (

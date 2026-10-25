@@ -24,6 +24,7 @@ export const STATUTS = {
     ENVOYEE: "Envoyée",
     ACCEPTEE: "Acceptée",
     REFUSEE: "Refusée",
+    TERMINEE: "Terminée",
     ANNULEE: "Annulée"
 };
 

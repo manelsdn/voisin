@@ -27,6 +27,7 @@ test("US01 · Inscription : un e-mail déjà utilisé est refusé", async ({ pag
     await page.getByRole("button", { name: /Je donne un coup de main/ }).click();
     await page.getByRole("button", { name: /Continuer/ }).click();
     await remplir(page, { "Prénom": "Léo", "Nom": "Blanc", "E-mail": "lucas.martin@exemple.fr", "Téléphone": "06 11 22 33 44", "Adresse": "3 rue Paul Bert", "Code postal": "69003", "Ville": "Lyon" });
+    await page.getByLabel(/J'accepte la/).check();
     await page.getByRole("button", { name: /Recevoir le lien/ }).click();
     await expect(page.getByRole("alert")).toContainText("Un compte existe déjà");
 });
@@ -36,6 +37,7 @@ test("US06 · Mon adresse : une adresse introuvable affiche un message", async (
     await page.getByRole("button", { name: /Je donne un coup de main/ }).click();
     await page.getByRole("button", { name: /Continuer/ }).click();
     await remplir(page, { "Prénom": "Léo", "Nom": "Blanc", "E-mail": "leo.blanc@exemple.fr", "Téléphone": "06 11 22 33 44", "Adresse": "nulle part", "Code postal": "99999", "Ville": "Inconnue" });
+    await page.getByLabel(/J'accepte la/).check();
     await page.getByRole("button", { name: /Recevoir le lien/ }).click();
     await expect(page.getByRole("alert")).toContainText("Adresse introuvable");
 });
@@ -45,6 +47,7 @@ test("US01 US11 · Inscription jeune : le compte est créé et l'accueil affiche
     await page.getByRole("button", { name: /Je donne un coup de main/ }).click();
     await page.getByRole("button", { name: /Continuer/ }).click();
     await remplir(page, { "Prénom": "Léo", "Nom": "Blanc", "E-mail": "leo.blanc@exemple.fr", "Téléphone": "06 11 22 33 44", "Adresse": "3 rue Paul Bert", "Code postal": "69003", "Ville": "Lyon" });
+    await page.getByLabel(/J'accepte la/).check();
     await page.getByRole("button", { name: /Recevoir le lien/ }).click();
     await expect(page.getByText("Vérifiez votre e-mail.")).toBeVisible();
     await page.getByRole("link", { name: "Ouvrir le lien reçu" }).click();
@@ -59,6 +62,7 @@ test("US05 US12 · Proche : l'accord est obligatoire puis le bloc « Pour Madele
     await page.getByRole("button", { name: /J'accompagne un proche/ }).click();
     await page.getByRole("button", { name: /Continuer/ }).click();
     await remplir(page, { "Prénom": "Claire", "Nom": "Petit", "E-mail": "claire.petit@exemple.fr", "Téléphone": "06 55 44 33 22", "Votre adresse": "10 cours Vitton", "Code postal": "69006", "Ville": "Lyon" });
+    await page.getByLabel(/J'accepte la/).check();
     await page.getByRole("button", { name: /Recevoir le lien/ }).click();
     await page.getByRole("link", { name: "Ouvrir le lien reçu" }).click();
     await page.waitForURL("**/proche");

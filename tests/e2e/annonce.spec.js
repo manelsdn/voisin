@@ -26,6 +26,7 @@ test("US08 US09 US10 · Annonce : un nouveau jeune publie et apparaît dans la r
     await page.getByRole("button", { name: /Je donne un coup de main/ }).click();
     await page.getByRole("button", { name: /Continuer/ }).click();
     for (const [l, v] of Object.entries({ "Prénom": "Zinedine", "Nom": "Roux", "E-mail": "zinedine.roux@exemple.fr", "Téléphone": "06 99 88 77 66", "Adresse": "5 rue Moncey", "Code postal": "69003", "Ville": "Lyon" })) await page.getByLabel(l, { exact: true }).fill(v);
+    await page.getByLabel(/J'accepte la/).check();
     await page.getByRole("button", { name: /Recevoir le lien/ }).click();
     await page.getByRole("link", { name: "Ouvrir le lien reçu" }).click();
     await page.waitForURL("**/accueil");

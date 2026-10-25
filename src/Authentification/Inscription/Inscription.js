@@ -52,6 +52,11 @@ const Inscription = () => {
             setErreur("Le numéro de téléphone doit avoir 10 chiffres, par exemple 06 12 34 56 78.");
             return;
         }
+        if (!f.charte.checked) {
+            setErreur("Acceptez la charte d'entraide pour continuer.");
+            return;
+        }
+        donnees.charteAccepteeAt = new Date().toISOString();
 
         setEnvoi(true);
         try {
@@ -127,6 +132,7 @@ const Inscription = () => {
                                     <label>Code postal<input name="codePostal" autoComplete="postal-code" placeholder="69003" /></label>
                                     <label>Ville<input name="ville" autoComplete="address-level2" placeholder="Lyon" /></label>
                                 </div>
+                                <label className="case"><input name="charte" type="checkbox" /><span>J'accepte la <Link className="link-button" to="/charte" target="_blank" rel="noreferrer">charte d'entraide</Link></span></label>
                                 <Message erreur={erreur} />
                                 <button className="primary" type="submit" disabled={envoi}><span>{envoi ? "Envoi…" : "Recevoir le lien"}</span><Icone nom="arrow" /></button>
                             </form>

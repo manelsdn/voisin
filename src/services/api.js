@@ -2,6 +2,7 @@ import * as firebase from "./stockageFirebase";
 import * as test from "./stockageTest";
 import * as supa from "./stockageSupabase";
 import { distanceKm, geocoder, prochaineDate } from "./geo";
+import { NOMS_JOURS, SERVICES } from "./constantes";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const s = process.env.REACT_APP_MODE === "test" ? test : process.env.REACT_APP_BACKEND === "supabase" ? supa : firebase;
@@ -93,7 +94,7 @@ export const rechercherJeunes = async (position, { service = "", rayon = 2, jour
         .sort((a, b) => a.distance - b.distance);
 };
 
-export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, creneau, description }) => {
+export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, creneau, description, photo }) => {
     if (!service || !creneau || !description.trim()) throw new Error("Choisissez un service, un créneau et écrivez quelques précisions.");
     return s.ajouter("demandes", {
         demandeurId: demandeur.id,
@@ -109,6 +110,7 @@ export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, 
         description: description.trim(),
         distanceKm: distanceKm(beneficiaire, jeune),
         statut: "ENVOYEE",
+        ...(photo ? { photo } : {}),
         creeAt: new Date().toISOString()
     });
 };
@@ -170,4 +172,130 @@ export const mesConversations = async (moi) => {
         parPersonne[autreId] = { id: autreId, prenom: m.de === moi.id ? m.aPrenom : m.dePrenom, dernier: m };
     });
     return Object.values(parPersonne).sort((x, y) => (y.dernier.creeAt || "").localeCompare(x.dernier.creeAt || ""));
+};
+
+const televerser = async (chemin, fichier) => {
+    if (s.televerser) return s.televerser(chemin, fichier);
+    const fichierRef = ref(getStorage(), chemin);
+    await uploadBytes(fichierRef, fichier);
+    return getDownloadURL(fichierRef);
+};
+
+export const televerserPhotoDemande = (utilisateur, fichier) => {
+    if (!fichier.type.startsWith("image/")) throw new Error("Choisissez une image.");
+    if (fichier.size > 1024 * 1024) throw new Error("La photo fait 1 Mo maximum.");
+    return televerser(`demandes/${utilisateur.id}/${Date.now()}`, fichier);
+};
+
+export const terminerDemande = async (demande, utilisateur) => {
+    if (demande.statut !== "ACCEPTEE") throw new Error("Seule une demande acceptée peut être terminée.");
+    if (utilisateur.id !== demande.jeuneId) throw new Error("Seul le jeune peut indiquer que le service a eu lieu.");
+    await s.ecrire("demandes", demande.id, { statut: "TERMINEE", termineAt: new Date().toISOString() });
+};
+
+export const lireAvis = (demandeId) => s.lire("avis", demandeId);
+
+export const laisserAvis = async (demande, utilisateur, { note, commentaire }) => {
+    if (demande.statut !== "TERMINEE") throw new Error("L'avis se donne une fois le service terminé.");
+    if (utilisateur.id !== demande.demandeurId) throw new Error("Seul le demandeur peut laisser un avis.");
+    const valeur = Number(note);
+    if (!(valeur >= 1 && valeur <= 5)) throw new Error("Choisissez une note de 1 à 5.");
+    const texte = (commentaire || "").trim();
+    if (texte.length > 200) throw new Error("Le commentaire fait 200 caractères maximum.");
+    if (await lireAvis(demande.id)) throw new Error("Vous avez déjà laissé un avis pour ce service.");
+    await s.ecrire("avis", demande.id, {
+        demandeId: demande.id,
+        jeuneId: demande.jeuneId,
+        auteurId: utilisateur.id,
+        auteurPrenom: utilisateur.prenom,
+        service: demande.service,
+        note: valeur,
+        commentaire: texte,
+        creeAt: new Date().toISOString()
+    });
+};
+
+export const avisDuJeune = async (jeuneId) =>
+    (await s.chercher("avis", "jeuneId", jeuneId)).sort((a, b) => (b.creeAt || "").localeCompare(a.creeAt || ""));
+
+export const mesFavoris = async (utilisateur) => ((await lireUtilisateur(utilisateur.id)) || {}).favoris || [];
+
+export const basculerFavori = async (utilisateur, jeuneId) => {
+    const actuels = await mesFavoris(utilisateur);
+    const favoris = actuels.includes(jeuneId) ? actuels.filter((x) => x !== jeuneId) : [...actuels, jeuneId];
+    await s.ecrire("users", utilisateur.id, { favoris });
+    return favoris;
+};
+
+export const envoyerMessageVocal = async (de, a, enregistrement, duree) => {
+    if (!enregistrement || !enregistrement.size) throw new Error("Le message vocal est vide.");
+    if (duree > 61) throw new Error("Le message vocal dure 1 minute maximum.");
+    const audio = await televerser(`messages/${de.id}/${Date.now()}`, enregistrement);
+    return s.ajouter("messages", { de: de.id, dePrenom: de.prenom, a: a.id, aPrenom: a.prenom, texte: "", audio, dureeAudio: Math.round(duree), creeAt: new Date().toISOString() });
+};
+
+const couper = (texte, max) => {
+    if (texte.length <= max) return texte;
+    const court = texte.slice(0, max - 1);
+    return court.slice(0, court.lastIndexOf(" ")).replace(/[,;:]$/, "") + ".";
+};
+
+const liste = (mots) => (mots.length > 1 ? `${mots.slice(0, -1).join(", ")} et ${mots[mots.length - 1]}` : mots[0] || "");
+
+const MODELES = [
+    ({ prenom, mots, services, jours }) => `Bonjour, je suis ${prenom}${mots ? `, ${mots}` : ""}. Je vous aide pour ${services}${jours ? `, le ${jours}` : ""}. À l'heure et avec le sourire !`,
+    ({ prenom, mots, services, jours }) => `${prenom}${mots ? `, ${mots}` : ""}. Disponible${jours ? ` le ${jours}` : ""} pour ${services} dans le quartier. N'hésitez pas à m'écrire !`,
+    ({ prenom, mots, services }) => `Coup de main de voisin : ${services}. Moi c'est ${prenom}${mots ? `, ${mots}` : ""}. On s'organise ensemble, à votre rythme.`
+];
+
+export const suggestionAnnonce = ({ prenom, mots, services, disponibilites }, essai = 0) => {
+    if (!services.length) throw new Error("Choisissez au moins un service pour recevoir une proposition.");
+    const noms = services.map((c) => (SERVICES.find((x) => x.code === c) || { nom: c }).nom.toLowerCase());
+    const jours = [...new Set(disponibilites.map((d) => (NOMS_JOURS[d.jour] || "").toLowerCase()))].filter(Boolean);
+    const modele = MODELES[essai % MODELES.length];
+    const propre = (mots || "").trim().replace(/[.!]+$/, "");
+    return couper(modele({ prenom, mots: propre.charAt(0).toLowerCase() + propre.slice(1), services: liste(noms), jours: liste(jours) }), 180);
+};
+
+const METEO = [
+    [[0], "Ciel dégagé"], [[1, 2], "Quelques nuages"], [[3], "Couvert"], [[45, 48], "Brouillard"],
+    [[51, 53, 55, 56, 57], "Bruine"], [[61, 63, 65, 66, 67, 80, 81, 82], "Pluie"], [[71, 73, 75, 77, 85, 86], "Neige"], [[95, 96, 99], "Orage"]
+];
+
+const texteMeteo = (code) => (METEO.find(([codes]) => codes.includes(code)) || [null, "Temps variable"])[1];
+
+export const meteoDuJour = async (position, date) => {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${position.latitude}&longitude=${position.longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe%2FParis&start_date=${date}&end_date=${date}`;
+    const reponse = await fetch(url);
+    if (!reponse.ok) return null;
+    const { daily } = await reponse.json();
+    if (!daily || !daily.time || !daily.time.length) return null;
+    return { texte: texteMeteo(daily.weather_code[0]), min: Math.round(daily.temperature_2m_min[0]), max: Math.round(daily.temperature_2m_max[0]), pluie: daily.precipitation_probability_max[0] };
+};
+
+const TYPES_LIEUX = { supermarket: "Supermarché", convenience: "Épicerie", bakery: "Boulangerie", pharmacy: "Pharmacie" };
+
+export const lieuxUtiles = async (position) => {
+    const { latitude: la, longitude: lo } = position;
+    const requete = `[out:json][timeout:15];(nwr(around:1000,${la},${lo})["shop"~"^(supermarket|convenience|bakery)$"]["name"];nwr(around:1000,${la},${lo})["amenity"="pharmacy"]["name"];);out center 40;`;
+    const reponse = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: new URLSearchParams({ data: requete }) });
+    if (!reponse.ok) return [];
+    const { elements = [] } = await reponse.json();
+    return elements
+        .map((e) => ({
+            id: `${e.type}${e.id}`,
+            nom: e.tags.name,
+            type: TYPES_LIEUX[e.tags.shop || e.tags.amenity] || "Commerce",
+            distance: distanceKm(position, { latitude: e.lat != null ? e.lat : e.center && e.center.lat, longitude: e.lon != null ? e.lon : e.center && e.center.lon })
+        }))
+        .filter((l) => l.distance !== null && l.distance <= 1)
+        .sort((a, b) => a.distance - b.distance)
+        .slice(0, 6);
+};
+
+export const infosLocales = async (demande) => {
+    const lieu = await lireUtilisateur(demande.beneficiaireId);
+    if (!lieu || lieu.latitude == null) return null;
+    const [meteo, lieux] = await Promise.all([meteoDuJour(lieu, demande.dateSouhaitee).catch(() => null), lieuxUtiles(lieu).catch(() => [])]);
+    return { meteo, lieux };
 };

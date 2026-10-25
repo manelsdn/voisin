@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Ecran, Indice, Message } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { publierAnnonce } from "../services/api";
+import { publierAnnonce, suggestionAnnonce } from "../services/api";
 import { JOURS, NOMS_JOURS, SERVICES, texteCreneau } from "../services/constantes";
 
 const MonAnnonce = () => {
@@ -13,6 +13,8 @@ const MonAnnonce = () => {
     const [description, setDescription] = useState(utilisateur.description || "");
     const [nouveau, setNouveau] = useState({ jour: "SAMEDI", heureDebut: "09:00", heureFin: "12:00" });
     const [erreur, setErreur] = useState("");
+    const [essai, setEssai] = useState(0);
+    const [avantProposition, setAvantProposition] = useState(null);
     const navigate = useNavigate();
 
     if (utilisateur.role !== "JEUNE") return <Ecran titre="Mon annonce" retour="/accueil"><div className="notice">Seuls les jeunes volontaires publient une annonce.</div></Ecran>;
@@ -26,6 +28,23 @@ const MonAnnonce = () => {
         }
         setErreur("");
         setCreneaux([...creneaux, { ...nouveau, id: "d" + Date.now() }]);
+    };
+
+    const proposer = () => {
+        try {
+            const mots = avantProposition !== null ? avantProposition : description;
+            setDescription(suggestionAnnonce({ prenom: utilisateur.prenom, mots, services, disponibilites: creneaux }, essai));
+            setAvantProposition(mots);
+            setEssai(essai + 1);
+            setErreur("");
+        } catch (err) {
+            setErreur(err.message);
+        }
+    };
+
+    const refuser = () => {
+        setDescription(avantProposition || "");
+        setAvantProposition(null);
     };
 
     const publier = async (e) => {
@@ -67,6 +86,11 @@ const MonAnnonce = () => {
                     <button type="button" className="secondary" onClick={ajouterCreneau}>Ajouter ce créneau</button>
                 </fieldset>
                 <label>Présentation courte ({description.length}/180)<textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Exemple : étudiant, disponible après les cours pour les courses et l'informatique." /></label>
+                <div className="deux">
+                    <button type="button" className="secondary" onClick={proposer}><Icone nom="sparkles" />{avantProposition !== null ? "Autre proposition" : "Proposer un texte"}</button>
+                    {avantProposition !== null && <button type="button" className="secondary" onClick={refuser}>Garder mon texte</button>}
+                </div>
+                {avantProposition !== null && <p className="soft"><small>Proposition modifiable : relisez-la avant de publier.</small></p>}
                 <Message erreur={erreur} />
                 <button className="primary" type="submit"><span>Publier mon annonce</span><Icone nom="arrow" /></button>
             </form>

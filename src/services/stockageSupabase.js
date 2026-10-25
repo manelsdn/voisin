@@ -2,7 +2,7 @@ import { supabase } from "../configs/supabase";
 
 const lienInitial = typeof window !== "undefined" ? window.location.href : "";
 
-const TABLES = { users: "users", demandes: "demandes", rendezVous: "rendez_vous", messages: "messages" };
+const TABLES = { users: "users", demandes: "demandes", rendezVous: "rendez_vous", messages: "messages", avis: "avis" };
 const table = (col) => supabase().from(TABLES[col] || col);
 const doc = (ligne) => (ligne ? { id: ligne.id, ...ligne.data } : null);
 const nouvelId = () => (window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
@@ -40,6 +40,11 @@ export const televerserPhoto = async (uid, fichier) => {
     verifier(await supabase().storage.from("photos").upload(chemin, fichier, { upsert: true, contentType: fichier.type }));
     const { data } = supabase().storage.from("photos").getPublicUrl(chemin);
     return `${data.publicUrl}?v=${Date.now()}`;
+};
+
+export const televerser = async (chemin, fichier) => {
+    verifier(await supabase().storage.from("photos").upload(chemin, fichier, { upsert: true, contentType: (fichier.type || "application/octet-stream").split(";")[0] }));
+    return supabase().storage.from("photos").getPublicUrl(chemin).data.publicUrl;
 };
 
 const inscriptionLocale = (email) => {

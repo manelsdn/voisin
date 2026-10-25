@@ -4,7 +4,7 @@ const auditeurs = new Set();
 const base = () => {
     const brut = localStorage.getItem(CLE);
     const db = brut ? JSON.parse(brut) : {};
-    ["users", "demandes", "rendezVous", "messages"].forEach((c) => { db[c] = db[c] || {}; });
+    ["users", "demandes", "rendezVous", "messages", "avis"].forEach((c) => { db[c] = db[c] || {}; });
     return db;
 };
 
@@ -29,6 +29,13 @@ export const ajouter = async (col, data) => {
 
 export const chercher = async (col, champ, valeur) =>
     Object.entries(base()[col]).filter(([, d]) => d[champ] === valeur).map(([id, d]) => ({ id, ...d }));
+
+export const televerser = (chemin, fichier) => new Promise((resoudre, rejeter) => {
+    const lecteur = new FileReader();
+    lecteur.onload = () => resoudre(lecteur.result);
+    lecteur.onerror = () => rejeter(new Error("Le fichier n'a pas pu être lu."));
+    lecteur.readAsDataURL(fichier);
+});
 
 const session = () => localStorage.getItem("vdo-session");
 const prevenir = () => auditeurs.forEach((f) => f(session()));
