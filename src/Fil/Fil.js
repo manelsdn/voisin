@@ -4,14 +4,14 @@ import { useSession } from "../composants/Session";
 import { Avatar, CartesServices, Ecran } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { basculerFavori, mesFavoris, pointDeRecherche, rechercherJeunes } from "../services/api";
-import { ROLES, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { ROLES, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
-const IMAGES_FIL = { "lucas.png": "/assets/fil/lucas.jpg", "ines.png": "/assets/fil/ines.jpg", "adam.png": "/assets/fil/adam.jpg" };
-
-const imagePublication = (jeune, service) => {
-    const fichier = (jeune.photoProfil || "").split("/").pop();
-    return IMAGES_FIL[fichier] || imageService(service);
+const IMAGES_FIL = {
+    "jeune-01": "lucas", "jeune-02": "ines", "jeune-03": "adam", "jeune-26": "anais", "jeune-06": "chloe", "jeune-20": "lina",
+    "jeune-35": "axel", "jeune-15": "theo", "jeune-11": "louis", "jeune-21": "tom", "jeune-29": "maxime", "jeune-22": "alice"
 };
+
+const imagePublication = (jeune) => `/assets/fil/${IMAGES_FIL[jeune.id]}.jpg`;
 
 const Fil = () => {
     const { utilisateur } = useSession();
@@ -23,7 +23,7 @@ const Fil = () => {
     useEffect(() => {
         const charger = async () => {
             const { position } = await pointDeRecherche(utilisateur);
-            setJeunes((await rechercherJeunes(position, { rayon: 5, service })).filter((j) => j.id !== utilisateur.id));
+            setJeunes((await rechercherJeunes(position, { rayon: 5, service })).filter((j) => j.id !== utilisateur.id && IMAGES_FIL[j.id]));
             setAimes(await mesFavoris(utilisateur).catch(() => []));
         };
         charger();
@@ -50,7 +50,7 @@ const Fil = () => {
                                 <span><strong>{j.prenom}</strong><small>{ROLES.JEUNE} · {texteDistance(j.distance)}{j.disponibilites && j.disponibilites[0] ? ` · ${texteCreneau(j.disponibilites[0])}` : ""}</small></span>
                                 <em className="post-tag">{nomService(principal)}</em>
                             </header>
-                            <img className="post-img" src={imagePublication(j, principal)} alt={`${j.prenom} propose son aide`} loading="lazy" />
+                            <img className="post-img" src={imagePublication(j)} alt={`${j.prenom} propose son aide`} loading="lazy" />
                             <p className="post-text"><strong>{j.prenom}</strong> {j.description || `Je propose un coup de main : ${(j.services || []).map(nomService).join(", ").toLowerCase()}.`}</p>
                             <div className="post-actions">
                                 <button type="button" className={aimes.includes(j.id) ? "post-act liked" : "post-act"} aria-pressed={aimes.includes(j.id)} aria-label={aimes.includes(j.id) ? `Retirer ${j.prenom} de mes favoris` : `Ajouter ${j.prenom} à mes favoris`} onClick={() => aimer(j.id)}><Icone nom="heart" /></button>
