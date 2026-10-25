@@ -49,6 +49,7 @@ const Profil = () => {
             )}
             <div className="stack-actions">
                 <LienBouton to="/modifier-profil" secondaire>Modifier mes informations</LienBouton>
+                <LienBouton to="/changer-role" secondaire>Changer de rôle</LienBouton>
                 {utilisateur.role === "JEUNE" && (
                     <>
                         <LienBouton to="/annonce" secondaire>Modifier mon annonce</LienBouton>

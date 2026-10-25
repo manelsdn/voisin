@@ -299,3 +299,15 @@ export const infosLocales = async (demande) => {
     const [meteo, lieux] = await Promise.all([meteoDuJour(lieu, demande.dateSouhaitee).catch(() => null), lieuxUtiles(lieu).catch(() => [])]);
     return { meteo, lieux };
 };
+
+export const changerRole = async (utilisateur, role) => {
+    if (!["JEUNE", "SENIOR", "ACCOMPAGNANT"].includes(role)) throw new Error("Choisissez un rôle.");
+    if (role === utilisateur.role) throw new Error("C'est déjà votre rôle.");
+    const [recues, envoyees] = await Promise.all([s.chercher("demandes", "jeuneId", utilisateur.id), s.chercher("demandes", "demandeurId", utilisateur.id)]);
+    if ([...recues, ...envoyees].some((d) => d.statut === "ENVOYEE" || d.statut === "ACCEPTEE")) {
+        throw new Error("Vous avez un service en cours. Terminez-le ou annulez-le avant de changer de rôle.");
+    }
+    const changements = { role, roleChangeAt: new Date().toISOString() };
+    if (utilisateur.role === "JEUNE") changements.annoncePubliee = false;
+    await s.ecrire("users", utilisateur.id, changements);
+};

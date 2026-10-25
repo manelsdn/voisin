@@ -25,6 +25,7 @@ import Messages from "./Messages/Messages";
 import Conversation from "./Messages/Conversation";
 import Fil from "./Fil/Fil";
 import Charte from "./Profil/Charte";
+import ChangerRole from "./Profil/ChangerRole";
 
 const Protege = ({ children }) => {
     const { chargement, uid, utilisateur } = useSession();
@@ -57,6 +58,7 @@ function App() {
                         <Route path="/profil" element={p(<Profil />)} />
                         <Route path="/modifier-profil" element={p(<ModifierProfil />)} />
                         <Route path="/proche" element={p(<Proche />)} />
+                        <Route path="/changer-role" element={p(<ChangerRole />)} />
                         <Route path="/annonce" element={p(<MonAnnonce />)} />
                         <Route path="/recherche" element={p(<Recherche />)} />
                         <Route path="/jeunes/:id" element={p(<ProfilJeune />)} />
