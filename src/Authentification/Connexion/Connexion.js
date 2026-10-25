@@ -39,7 +39,7 @@ const Connexion = () => {
             <div className="corps">
                 <div className="app-pad">
                     <Retour vers="/bienvenue" />
-                    <div className="login-art"><img src="/assets/illustration-mamie.png" alt="Un moment de partage autour d'un café" /></div>
+                    <div className="login-art"><img src="/assets/presentation/ensemble.jpg" alt="Un moment de partage autour d'un café" /></div>
                     <div className="login-heading">
                         <span className="mini-eyebrow">LE PLAISIR DE SE RETROUVER</span>
                         <h2>Vous revoilà !</h2>

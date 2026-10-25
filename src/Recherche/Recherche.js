@@ -46,7 +46,7 @@ const Recherche = () => {
 
     return (
         <Ecran titre={<>Des mains tendues, <br />près de vous.</>} retour="/accueil">
-            {pour && <p className="soft">Autour de l'adresse de {pour.id === utilisateur.id ? "chez vous" : pour.prenom} · {pour.ville} · triés du plus proche au plus éloigné</p>}
+            {pour && <p className="soft">Autour de {pour.id === utilisateur.id ? "chez vous" : `chez ${pour.prenom}`} · {pour.ville}</p>}
             {filtres.service && EXEMPLES[filtres.service] && (
                 <div className="story-reel" aria-label={`Exemples pour ${nomService(filtres.service)}`}>
                     {EXEMPLES[filtres.service].map(([icone, texte]) => (
@@ -54,14 +54,14 @@ const Recherche = () => {
                     ))}
                 </div>
             )}
-            <div className="form-stack">
-                <label>Type de service<select name="service" value={filtres.service} onChange={changer("service")}><option value="">Tous</option>{SERVICES.map((s) => <option key={s.code} value={s.code}>{s.nom}</option>)}</select></label>
-                <label>Distance<select name="rayon" value={filtres.rayon} onChange={changer("rayon")}>{RAYONS.map((r) => <option key={r} value={r}>À moins de {r < 1 ? r * 1000 + " m" : r + " km"}</option>)}</select></label>
-                <label>Disponibilité<select name="jour" value={filtres.jour} onChange={changer("jour")}><option value="">Tous les jours</option>{JOURS.map((j) => <option key={j} value={j}>{NOMS_JOURS[j]}</option>)}</select></label>
-            </div>
             <div className="bascule" role="group" aria-label="Affichage des résultats">
                 <button type="button" aria-pressed={vue === "liste"} onClick={() => setVue("liste")}><Icone nom="filter" />Liste</button>
                 <button type="button" aria-pressed={vue === "carte"} onClick={() => setVue("carte")}><Icone nom="pin" />Carte</button>
+            </div>
+            <div className="filtres-ligne">
+                <label><span className="sr-only">Type de service</span><select name="service" value={filtres.service} onChange={changer("service")}><option value="">Tous services</option>{SERVICES.map((s) => <option key={s.code} value={s.code}>{s.nom}</option>)}</select></label>
+                <label><span className="sr-only">Distance</span><select name="rayon" value={filtres.rayon} onChange={changer("rayon")}>{RAYONS.map((r) => <option key={r} value={r}>{"< "}{r < 1 ? r * 1000 + " m" : r + " km"}</option>)}</select></label>
+                <label><span className="sr-only">Disponibilité</span><select name="jour" value={filtres.jour} onChange={changer("jour")}><option value="">Tous les jours</option>{JOURS.map((j) => <option key={j} value={j}>{NOMS_JOURS[j]}</option>)}</select></label>
             </div>
             {resultats === null && <p className="soft">Recherche…</p>}
             {resultats && <p className="compte" aria-live="polite">{resultats.length} {resultats.length > 1 ? "jeunes disponibles" : "jeune disponible"}</p>}

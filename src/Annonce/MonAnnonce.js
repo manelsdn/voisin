@@ -60,7 +60,7 @@ const MonAnnonce = () => {
 
     return (
         <Ecran titre="Votre annonce." retour="/accueil" surtitre="MON ANNONCE">
-            <p className="soft">Publiez les services que vous proposez et vos créneaux. Les personnes du quartier vous trouveront dans la recherche.</p>
+            <p className="soft">Vos services et vos créneaux, visibles dans le quartier.</p>
             <form className="form-stack" onSubmit={publier}>
                 <fieldset>
                     <legend>Services proposés</legend>

@@ -67,7 +67,7 @@ const ProfilJeune = () => {
                 </section>
             )}
             <Astuce>Pourboire libre et directement entre vous. Le numéro s'affiche une fois la demande acceptée.</Astuce>
-            <div className="stack-actions">
+            <div className="stack-actions actions-flottantes">
                 {moi ? <LienBouton to="/annonce" fleche>Modifier mon annonce</LienBouton> : utilisateur.role !== "JEUNE" && <LienBouton to={`/jeunes/${jeune.id}/demande`} fleche>Envoyer une demande</LienBouton>}
                 {!moi && <Link className="secondary" to={`/messages/${jeune.id}`}>Échanger avec {jeune.prenom}</Link>}
             </div>

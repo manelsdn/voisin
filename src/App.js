@@ -1,5 +1,6 @@
 import "./App.css";
 import "./Design.css";
+import "./Mobile.css";
 import "leaflet/dist/leaflet.css";
 import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";

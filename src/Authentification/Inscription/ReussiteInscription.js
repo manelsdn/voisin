@@ -50,7 +50,7 @@ const ReussiteInscription = () => {
         <div className="ecran vdo" id="vdo">
             <div className="corps">
                 <div className="app-pad">
-                    <div className="login-art"><img src="/assets/illustration-mamie.png" alt="" /></div>
+                    <div className="login-art"><img src="/assets/presentation/ensemble.jpg" alt="" /></div>
                     <div className="login-heading">
                         <span className="mini-eyebrow">VALIDATION</span>
                         {erreur ? <h2>Oups.</h2> : demanderEmail ? <h2>Confirmez votre e-mail.</h2> : <h2>Validation en cours…</h2>}

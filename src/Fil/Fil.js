@@ -36,7 +36,7 @@ const Fil = () => {
 
     return (
         <Ecran titre={<>Le fil <br />du quartier</>} retour="/accueil" classe="services-page feed-page">
-            <p className="soft">Ici, les jeunes publient les services qu'ils peuvent proposer. Vous consultez simplement les propositions, du plus proche au plus éloigné.</p>
+            <p className="soft">Les annonces des jeunes, du plus proche au plus loin.</p>
             <CartesServices tous actif={service} lien={(code) => (code ? `/fil?service=${code}` : "/fil")} />
             <div className="feed">
                 {jeunes === null && <p className="soft">Chargement…</p>}
