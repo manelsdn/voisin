@@ -402,10 +402,11 @@ paths:
           description: Demande introuvable.
     patch:
       tags: [Demandes]
-      summary: Accepter, refuser ou annuler une demande
+      summary: Accepter, refuser, annuler ou terminer une demande
       description: >
         Le jeune accepte (ACCEPTEE) ou refuse (REFUSEE) la demande.
         Le demandeur peut l'annuler (ANNULEE).
+        Après le créneau, le jeune indique que le service a eu lieu (TERMINEE).
         L'acceptation crée automatiquement le rendez-vous au statut CONFIRME.
       parameters:
         - $ref: '#/components/parameters/DemandeId'
@@ -424,6 +425,7 @@ paths:
                     - ACCEPTEE
                     - REFUSEE
                     - ANNULEE
+                    - TERMINEE
       responses:
         '200':
           description: Demande mise à jour.
@@ -811,6 +813,7 @@ components:
         - ACCEPTEE
         - REFUSEE
         - ANNULEE
+        - TERMINEE
 
     StatutRendezVous:
       type: string
@@ -888,7 +891,11 @@ components:
         - adresse
         - codePostal
         - ville
+        - charteAcceptee
       properties:
+        charteAcceptee:
+          type: boolean
+          description: Acceptation obligatoire de la charte d'entraide (US29). Enregistrée avec sa date (charteAccepteeAt).
         prenom:
           type: string
           maxLength: 35
@@ -1138,6 +1145,10 @@ components:
           type: string
           maxLength: 400
           description: Précisions sur le besoin.
+        photoUrl:
+          type: string
+          format: uri
+          description: Photo jointe pour montrer le besoin (US38).
         statut:
           $ref: '#/components/schemas/StatutDemande'
         creeAt:
@@ -1173,6 +1184,10 @@ components:
           type: string
           minLength: 1
           maxLength: 400
+        photoUrl:
+          type: string
+          format: uri
+          description: Une photo maximum, 1 Mo (US38).
 
     RendezVous:
       type: object
