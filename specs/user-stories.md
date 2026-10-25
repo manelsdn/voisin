@@ -12,7 +12,7 @@ Roadmap V2 validée avec Sara et Youmna (DEV) le 28 septembre 2026.
 | EPIC | Besoin | Hypothèse | Approche retenue | Scénario | Priorité |
 |---|---|---|---|---|---|
 | 🔐 Accès simple | Les utilisateurs veulent entrer vite dans l'app, sans mot de passe à retenir. | Si l'inscription tient sur un écran court, plus de personnes âgées et de proches iront jusqu'au bout. | Inscription avec prénom, nom, e-mail et téléphone. Connexion par lien reçu par e-mail. Déconnexion. | Minimal | MUST |
-| 👥 Rôles | Madeleine, Camille et Lucas n'ont pas le même parcours. | Choisir son rôle dès le début évite de montrer des écrans inutiles. | Trois rôles : personne âgée, proche accompagnateur, jeune volontaire. L'accueil change selon le rôle. | Minimal | MUST |
+| 👥 Rôles | Madeleine, Camille et Lucas n'ont pas le même parcours. | Choisir son rôle dès le début évite de montrer des écrans inutiles. | Trois rôles : personne âgée, proche accompagnateur, jeune volontaire. L'accueil change selon le rôle. Changement de rôle possible depuis le profil. | Minimal | MUST |
 | 🧓 Proche accompagné | Madeleine n'a pas toujours de smartphone ; Camille organise l'aide pour elle. | Les proches seront les premiers utilisateurs de l'app. | Camille ajoute le profil de Madeleine (prénom, adresse) avec son accord. Madeleine n'a pas besoin de compte. | Minimal | MUST |
 | 📍 Profil et localisation | Il faut savoir où habite chacun pour proposer de l'aide proche. | Une aide à moins de 2 km a plus de chances d'être acceptée. | Adresse, code postal et ville convertis en position. L'adresse exacte n'est jamais affichée. Modification du profil. | Minimal | MUST |
 | 📢 Annonce du jeune | Les jeunes veulent dire ce qu'ils savent faire et quand ils sont libres. | Un jeune qui publie ses créneaux reçoit des demandes plus adaptées. | Le jeune publie une annonce : services proposés, créneaux (jour, heure de début, heure de fin) et une courte présentation. | Minimal | MUST |
@@ -74,11 +74,11 @@ Roadmap V2 validée avec Sara et Youmna (DEV) le 28 septembre 2026.
 
 **Spécifications fonctionnelles :** Premier écran de l'inscription : trois cartes (personne âgée, proche, jeune).
 
-**Critères d'acceptation :** Impossible de continuer sans rôle. Un seul rôle par compte. Le rôle est visible sur l'accueil.
+**Critères d'acceptation :** Impossible de continuer sans rôle. Un seul rôle à la fois, modifiable depuis le profil (US42). Le rôle est visible sur l'accueil.
 
 **Spécifications techniques :** Champ rôle : JEUNE, SENIOR, ACCOMPAGNANT
 
-**Exclusions :** Pas de changement de rôle après l'inscription.
+**Exclusions :** Pas de double rôle sur un même compte.
 
 ### US05 - 🧓 Ajouter un proche (Proche, MUST)
 
@@ -374,13 +374,13 @@ Roadmap V2 validée avec Sara et Youmna (DEV) le 28 septembre 2026.
 
 **User story :** En tant qu'utilisateur, je veux lire la charte d'entraide afin de connaître les règles avant un service.
 
-**Spécifications fonctionnelles :** Depuis mon profil, j'ouvre « La charte d'entraide » et je clique sur « J'ai compris ».
+**Spécifications fonctionnelles :** À l'inscription, je coche « J'accepte la charte d'entraide ». Depuis mon profil, je peux la relire et cliquer sur « J'ai compris ».
 
-**Critères d'acceptation :** La charte est lisible depuis le profil. Elle rappelle le respect, l'accord du proche, l'échange du numéro après acceptation et le pourboire libre.
+**Critères d'acceptation :** Inscription impossible sans accepter la charte. La charte est lisible depuis le profil. Elle rappelle le respect, l'accord du proche, l'échange du numéro après acceptation et le pourboire libre.
 
-**Spécifications techniques :** Front uniquement
+**Spécifications techniques :** Champ charteAccepteeAt sur l'utilisateur
 
-**Exclusions :** Acceptation obligatoire à l'inscription pas encore en place.
+**Exclusions :** Pas de nouvelle acceptation quand la charte change.
 
 ### US30 - 📸 Photo de profil (Photos, COULD)
 
@@ -525,3 +525,15 @@ Roadmap V2 validée avec Sara et Youmna (DEV) le 28 septembre 2026.
 **Spécifications techniques :** API météo, API lieux
 
 **Exclusions :** Pas d'itinéraire.
+
+### US42 - 👥 Changer de rôle (Rôles, COULD)
+
+**User story :** En tant qu'utilisateur, je veux changer de rôle depuis mon profil afin d'aider ou d'être aidé selon ma situation.
+
+**Spécifications fonctionnelles :** Dans « Profil », je clique sur « Changer de rôle », je choisis un nouveau rôle puis je confirme.
+
+**Critères d'acceptation :** Impossible si une demande est envoyée ou acceptée. Un jeune qui change de rôle voit son annonce retirée. Un nouveau proche accompagnateur est invité à ajouter son proche. Messages et historique conservés.
+
+**Spécifications techniques :** PATCH /users/{id} (role)
+
+**Exclusions :** Un seul rôle à la fois.

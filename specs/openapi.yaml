@@ -940,6 +940,10 @@ components:
         description:
           type: string
           maxLength: 180
+        role:
+          type: string
+          enum: [JEUNE, SENIOR, ACCOMPAGNANT]
+          description: Changement de rôle (US42). Refusé si une demande est envoyée ou acceptée.
 
     CreateBeneficiaire:
       type: object
