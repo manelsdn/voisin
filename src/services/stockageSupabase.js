@@ -18,7 +18,12 @@ const verifier = ({ data, error }) => {
     return data;
 };
 
-export const lire = async (col, id) => doc(verifier(await table(col).select("id, data").eq("id", id).maybeSingle()));
+const profils = async (filtres) => verifier(await supabase().rpc("profils_filtres", filtres)).map(doc);
+
+export const lire = async (col, id) => {
+    if (col === "users") return (await profils({ p_ids: [id] }))[0] || null;
+    return doc(verifier(await table(col).select("id, data").eq("id", id).maybeSingle()));
+};
 
 export const ecrire = async (col, id, data) => {
     const existant = verifier(await table(col).select("id, data").eq("id", id).maybeSingle());
@@ -32,8 +37,10 @@ export const ajouter = async (col, data) => {
     return id;
 };
 
-export const chercher = async (col, champ, valeur) =>
-    verifier(await table(col).select("id, data").eq(`data->>${champ}`, valeur)).map(doc);
+export const chercher = async (col, champ, valeur) => {
+    if (col === "users") return profils({ p_champ: champ, p_valeur: valeur });
+    return verifier(await table(col).select("id, data").eq(`data->>${champ}`, valeur)).map(doc);
+};
 
 export const televerserPhoto = async (uid, fichier) => {
     const chemin = `profil/${uid}`;
