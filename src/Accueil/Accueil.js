@@ -1,72 +1,66 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { Astuce, Avatar, Navigation } from "../composants/Mise";
+import { Avatar, IconesServices, Navigation } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { besoinsProches, mesBesoins, mesConversations, mesDemandes, pointDeRecherche, propositionsDuBesoin } from "../services/api";
-import { texteDate } from "../services/geo";
-import { ROLES, STATUTS, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { besoinsProches, mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
+import { ROLES, SERVICES, iconeService, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
-const majuscule = (t) => (t ? t.charAt(0).toUpperCase() + t.slice(1) : "");
-
-const aujourdhui = () => new Date().toISOString().slice(0, 10);
-
-const Tuile = ({ to, nombre, libelle, icone, alerte }) => (
-    <Link className={`tuile${alerte && nombre > 0 ? " tuile-alerte" : ""}`} to={to}>
-        <span className="tuile-icone"><Icone nom={icone} /></span>
-        <b>{nombre === null ? "–" : nombre}</b>
-        <span>{libelle}</span>
-    </Link>
-);
+const CONFIANCE = [
+    ["users", "Des voisins, pas des inconnus", "Des jeunes à quelques rues de chez vous."],
+    ["phone", "Numéro protégé", "Il s'affiche seulement après acceptation."],
+    ["sparkles", "Charte et avis", "Chacun s'engage, chaque service peut être noté."]
+];
 
 const Accueil = () => {
     const { utilisateur } = useSession();
     const estJeune = utilisateur.role === "JEUNE";
     const [proche, setProche] = useState(null);
-    const [demandes, setDemandes] = useState(null);
-    const [conversations, setConversations] = useState(null);
-    const [extra, setExtra] = useState(null);
+    const [une, setUne] = useState(null);
+    const [attente, setAttente] = useState([]);
     const ville = (proche && proche.ville) || utilisateur.ville;
 
     useEffect(() => {
         let actif = true;
         const charger = async () => {
             const { personne, position } = await pointDeRecherche(utilisateur);
-            const [liste, convs] = await Promise.all([mesDemandes(utilisateur), mesConversations(utilisateur).catch(() => [])]);
-            let complement = 0;
-            if (estJeune) {
-                complement = (await besoinsProches(position, { rayon: 5 }).catch(() => [])).length;
-            } else {
-                const ouverts = (await mesBesoins(utilisateur).catch(() => [])).filter((b) => b.statut === "OUVERTE");
-                const nombres = await Promise.all(ouverts.map((b) => propositionsDuBesoin(b.id).then((p) => p.length).catch(() => 0)));
-                complement = nombres.reduce((a, b) => a + b, 0);
-            }
+            const [liste, demandes] = await Promise.all([
+                estJeune ? besoinsProches(position, { rayon: 5 }).catch(() => []) : rechercherJeunes(position, { rayon: 2 }).catch(() => []),
+                mesDemandes(utilisateur).catch(() => [])
+            ]);
             if (!actif) return;
             if (personne.id !== utilisateur.id) setProche(personne);
-            setDemandes(liste);
-            setConversations(convs);
-            setExtra(complement);
+            setUne(estJeune ? liste.slice(0, 6) : [...liste.filter((j) => j.photoProfil), ...liste.filter((j) => !j.photoProfil)].slice(0, 6));
+            setAttente(demandes.filter((d) => d.statut === "ENVOYEE"));
         };
         charger();
         return () => { actif = false; };
     }, [utilisateur, estJeune]);
 
-    const enAttente = demandes ? demandes.filter((d) => d.statut === "ENVOYEE") : [];
-    const acceptees = demandes ? demandes.filter((d) => d.statut === "ACCEPTEE").sort((a, b) => (a.dateSouhaitee || "").localeCompare(b.dateSouhaitee || "")) : [];
-    const aVenir = acceptees.filter((d) => (d.dateSouhaitee || "") >= aujourdhui());
-    const prochain = aVenir[0] || acceptees[acceptees.length - 1] || null;
-    const avec = prochain ? (estJeune ? prochain.beneficiairePrenom : prochain.jeunePrenom) : "";
-    const pourQui = proche ? proche.prenom : null;
+    const pour = proche ? proche.prenom : null;
+    const lienService = (code) => `/recherche?service=${code}`;
 
     return (
-        <div className="ecran vdo accueil-simple" id="vdo">
+        <div className="ecran vdo accueil-vitrine" id="vdo">
             <div className="corps">
                 <div className="home-top">
                     <Link className="location-button" to={utilisateur.role === "ACCOMPAGNANT" ? "/proche" : "/modifier-profil"} aria-label={`Mon quartier : ${ville}`}><Icone nom="pin" />{ville}<Icone nom="down" /></Link>
                     <Link className="avatar" to="/profil" aria-label="Mon profil"><Avatar personne={utilisateur} classe="mini-persona-photo" /></Link>
                 </div>
                 <div className="home-content">
-                    <div className="bonjour-ligne"><h1 className="greeting">Bonjour {utilisateur.prenom}</h1><span className="role-badge">{ROLES[utilisateur.role]}</span></div>
+                    <div className="bonjour-ligne"><span className="greeting">Bonjour {utilisateur.prenom}</span><span className="role-badge">{ROLES[utilisateur.role]}</span></div>
+
+                    <section className="vitrine-hero">
+                        <img src={estJeune ? "/assets/presentation/ensemble.jpg" : "/assets/presentation/accueil.jpg"} alt="" />
+                        <div className="vitrine-voile">
+                            <h1>{estJeune ? <>Un coup de main,<br />un sourire en retour.</> : <>Petits services,<br />grands liens.</>}</h1>
+                            <Link className="vitrine-recherche" to={estJeune ? "/annonce" : "/besoins/nouveau"}>
+                                <Icone nom={estJeune ? "sparkles" : "mic"} />
+                                <span>{estJeune ? (utilisateur.annoncePubliee ? "Modifier mon annonce" : "Publier mon annonce") : pour ? `De quoi ${pour} a besoin ?` : "De quoi avez-vous besoin ?"}</span>
+                            </Link>
+                        </div>
+                    </section>
+
                     {utilisateur.role === "ACCOMPAGNANT" && (
                         <Link className="beneficiary" to="/proche">
                             <Icone nom="users" />
@@ -76,72 +70,60 @@ const Accueil = () => {
                         </Link>
                     )}
 
-                    {estJeune ? (
-                        utilisateur.annoncePubliee ? (
-                            <Link className="action-principale action-calme" to="/annonce">
-                                <span className="action-icone"><Icone nom="check" /></span>
-                                <span><strong>Votre annonce est en ligne</strong><small>Les voisins voient vos services et vos créneaux.</small></span>
-                                <Icone nom="chevron" />
-                            </Link>
-                        ) : (
-                            <Link className="action-principale" to="/annonce">
-                                <span className="action-icone"><Icone nom="sparkles" /></span>
-                                <span><strong>Publier mon annonce</strong><small>Dites ce que vous savez faire et quand vous êtes libre.</small></span>
-                                <Icone nom="arrow" />
-                            </Link>
-                        )
-                    ) : (
-                        <Link className="action-principale" to="/besoins/nouveau">
-                            <span className="action-icone"><Icone nom="mic" /></span>
-                            <span><strong>{pourQui ? `De quoi ${pourQui} a besoin\u00a0?` : "De quoi avez-vous besoin\u00a0?"}</strong><small>Écrivez-le ou dites-le au micro. Les jeunes du quartier vous répondent.</small></span>
-                            <Icone nom="arrow" />
+                    {!estJeune && attente.length > 0 && (
+                        <Link className="bandeau-attente" to="/services">
+                            <span className="bandeau-point" aria-hidden="true" />
+                            <span><strong>{attente.length > 1 ? `${attente.length} demandes en attente` : "Demande en attente"}</strong>Le jeune va vous répondre.</span>
+                            <Icone nom="chevron" />
                         </Link>
                     )}
 
-                    {prochain && (
-                        <>
-                            <h3 className="section-h">{aVenir.length ? "Prochain rendez-vous" : "Rendez-vous confirmé"}</h3>
-                            <Link className="rdv-carte" to={`/demandes/${prochain.id}`}>
-                                <img src={imageService(prochain.service)} alt="" />
-                                <span>
-                                    <strong>{nomService(prochain.service)} avec {avec}</strong>
-                                    <small>{majuscule(texteDate(prochain.dateSouhaitee))} · {prochain.creneau && `${prochain.creneau.heureDebut}-${prochain.creneau.heureFin}`}</small>
-                                </span>
-                                <Icone nom="chevron" />
+                    <h2 className="vitrine-titre">{estJeune ? "Ce que vous pouvez proposer" : "Un coup de main pour…"}</h2>
+                    <div className="categories" role="list" aria-label="Services">
+                        {SERVICES.map((s) => (
+                            <Link key={s.code} role="listitem" className="categorie" to={estJeune ? "/annonce" : lienService(s.code)}>
+                                <span className="categorie-image"><img src={s.image} alt="" /><i><Icone nom={iconeService(s.code)} /></i></span>
+                                <span>{s.nom}</span>
                             </Link>
-                        </>
-                    )}
-
-                    <h3 className="section-h">En ce moment</h3>
-                    <div className="tuiles">
-                        {estJeune ? (
-                            <>
-                                <Tuile to="/services" nombre={demandes && enAttente.length} libelle="à répondre" icone="calendar" alerte />
-                                <Tuile to="/recherche" nombre={extra} libelle="besoins près de vous" icone="heart" />
-                                <Tuile to="/messages" nombre={conversations && conversations.length} libelle="conversations" icone="message" />
-                            </>
-                        ) : (
-                            <>
-                                <Tuile to="/services" nombre={demandes && enAttente.length} libelle="en attente de réponse" icone="clock" />
-                                <Tuile to="/besoins" nombre={extra} libelle="propositions d'aide" icone="heart" alerte />
-                                <Tuile to="/messages" nombre={conversations && conversations.length} libelle="conversations" icone="message" />
-                            </>
-                        )}
+                        ))}
                     </div>
 
-                    {estJeune && (
+                    <div className="vitrine-entete">
+                        <h2 className="vitrine-titre">{estJeune ? "Ils ont besoin d'un coup de main" : "Vos voisins volontaires"}</h2>
+                        <Link className="see-all" to="/recherche">Tout voir<Icone nom="chevron" /></Link>
+                    </div>
+                    {une === null && <div className="carrousel">{[0, 1, 2].map((i) => <span key={i} className="squelette squelette-carte" />)}</div>}
+                    {une && une.length === 0 && <p className="soft">{estJeune ? "Pas encore de besoin publié près de chez vous." : "Pas encore de jeune à moins de 2 km."}</p>}
+                    {une && une.length > 0 && (
+                        <div className="carrousel" role="list" aria-label={estJeune ? "Besoins à la une" : "Jeunes à la une"}>
+                            {estJeune
+                                ? une.map((b) => (
+                                    <Link key={b.id} role="listitem" className="carte-une" to={`/besoins/${b.id}`}>
+                                        <span className="carte-une-image"><img src={imageService(b.service)} alt="" /><em>{texteDistance(b.distance)}</em></span>
+                                        <strong>{nomService(b.service)} pour {b.beneficiairePrenom}</strong>
+                                        <small>{b.creneau ? texteCreneau(b.creneau) : "Quand vous voulez"}</small>
+                                    </Link>
+                                ))
+                                : une.map((j) => (
+                                    <Link key={j.id} role="listitem" className="carte-une" to={`/jeunes/${j.id}`}>
+                                        <span className="carte-une-image"><Avatar personne={j} classe="carte-une-photo" /><em>{texteDistance(j.distance)}</em></span>
+                                        <strong>{j.prenom}</strong>
+                                        <IconesServices services={j.services} max={3} />
+                                    </Link>
+                                ))}
+                        </div>
+                    )}
+
+                    {estJeune && attente.length > 0 && (
                         <>
-                            <h3 className="section-h">Demandes reçues</h3>
-                            {demandes === null && <div className="squelettes">{[0, 1].map((i) => <span key={i} className="squelette" />)}</div>}
-                            {demandes && enAttente.length === 0 && <p className="soft">Aucune demande en attente. Touchez « Aider » pour voir les besoins du quartier.</p>}
+                            <h2 className="vitrine-titre">Demandes reçues</h2>
                             <div className="liste-cartes">
-                                {enAttente.map((d) => (
+                                {attente.map((d) => (
                                     <Link key={d.id} to={`/demandes/${d.id}`} className="carte-profil">
                                         <span className="carte-photo carte-service"><img src={imageService(d.service)} alt="" /></span>
                                         <span className="carte-corps">
                                             <span className="carte-ligne"><strong>{d.beneficiairePrenom} · {nomService(d.service)}</strong></span>
                                             <small>{texteDistance(d.distanceKm)} · {texteCreneau(d.creneau)}</small>
-                                            <span className="carte-bas"><em className="statut ENVOYEE">{STATUTS[d.statut]}</em></span>
                                         </span>
                                         <Icone nom="chevron" />
                                     </Link>
@@ -157,7 +139,19 @@ const Accueil = () => {
                             <Icone nom="chevron" />
                         </Link>
                     )}
-                    <Astuce>Pourboire libre, directement entre vous.</Astuce>
+
+                    <h2 className="vitrine-titre">Comment ça marche</h2>
+                    <ol className="etapes">
+                        {(estJeune
+                            ? [["Publiez votre annonce", "Vos services et vos créneaux."], ["Proposez votre aide", "Sur un besoin du quartier, ou recevez une demande."], ["Rencontrez votre voisin", "Un service, et souvent un vrai lien."]]
+                            : [["Dites votre besoin", "Par écrit ou au micro."], ["Un jeune vous répond", "Il propose son aide, ou vous le choisissez."], ["Rencontrez-vous", "Un service, et souvent un vrai lien."]]
+                        ).map(([titre, detail], i) => <li key={titre}><span className="etape-num">{i + 1}</span><span><strong>{titre}</strong><small>{detail}</small></span></li>)}
+                    </ol>
+
+                    <ul className="confiance-badges" aria-label="Votre sécurité">
+                        {CONFIANCE.map(([icone, titre, detail]) => <li key={titre}><Icone nom={icone} /><span><strong>{titre}</strong><small>{detail}</small></span></li>)}
+                    </ul>
+                    <p className="pourboire"><Icone nom="heart" />Pourboire libre, directement entre vous.</p>
                 </div>
             </div>
             <Navigation />

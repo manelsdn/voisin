@@ -37,6 +37,7 @@ test("V2 · Messagerie : un message envoyé est visible des deux côtés", async
     await deconnecter(page);
     await connecter(page, "lucas.martin@exemple.fr");
     await page.getByRole("link", { name: "Messages" }).click();
+    await expect(page.getByRole("heading", { name: "On garde le lien." })).toBeVisible();
     await page.getByRole("link", { name: /Camille/ }).click();
     await expect(page.locator(".message-bubble")).toContainText("êtes-vous libre samedi");
 });

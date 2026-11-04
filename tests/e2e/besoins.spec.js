@@ -45,7 +45,7 @@ test("US45 · Proposer son aide : le demandeur voit la proposition et peut envoy
     await page.goto("/besoins");
     await page.getByRole("link", { name: /Jardinage pour Madeleine/ }).click();
     await expect(page.getByText("j'adore jardiner")).toBeVisible();
-    await page.getByRole("link", { name: "Lui envoyer une demande" }).click();
+    await page.locator(".carte-proposition", { hasText: "Lucas" }).getByRole("link", { name: "Lui envoyer une demande" }).click();
     await expect(page).toHaveURL(/jeunes\/jeune-01\/demande/);
     await expect(page.getByLabel("Quelques précisions")).toHaveValue(/rosiers/);
 });
@@ -97,4 +97,31 @@ test("Dictée absente si le navigateur ne la gère pas, la saisie au clavier rem
     await page.getByLabel(/Décrivez votre besoin/).fill("Aider ma mère à faire un appel vidéo sur sa tablette demain après-midi");
     await expect(page.getByRole("button", { name: "Informatique" })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByLabel("Début")).toHaveValue("14:00");
+});
+
+test("Accueil : première impression avec services, jeunes à la une et confiance", async ({ page }) => {
+    await connecter(page, "camille.moreau@exemple.fr");
+    await expect(page.getByRole("heading", { name: /Petits services/ })).toBeVisible();
+    await expect(page.getByRole("link", { name: /De quoi Madeleine a besoin/ })).toBeVisible();
+    await page.getByRole("list", { name: "Services" }).getByRole("listitem").filter({ hasText: "Jardinage" }).click();
+    await expect(page).toHaveURL(/recherche\?service=JARDINAGE/);
+    await page.goto("/accueil");
+    await expect(page.getByRole("list", { name: "Jeunes à la une" }).getByRole("listitem").first()).toBeVisible();
+    await expect(page.getByRole("list", { name: "Votre sécurité" })).toContainText("Numéro protégé");
+    await deconnecter(page);
+    await connecter(page, "lucas.martin@exemple.fr");
+    await expect(page.getByRole("list", { name: "Besoins à la une" })).toContainText("Jardinage pour Madeleine");
+});
+
+test("Accueil d'un nouveau compte : la grande action et « Comment ça marche »", async ({ page }) => {
+    await page.goto("/inscription");
+    await page.getByRole("button", { name: /Je cherche de l'aide/ }).click();
+    await page.getByRole("button", { name: /Continuer/ }).click();
+    for (const [l, v] of Object.entries({ "Prénom": "Rose", "Nom": "Perrin", "E-mail": "rose.perrin@exemple.fr", "Téléphone": "04 78 11 22 33", "Adresse": "3 rue Paul Bert", "Code postal": "69003", "Ville": "Lyon" })) await page.getByLabel(l, { exact: true }).fill(v);
+    await page.getByLabel(/J'accepte la/).check();
+    await page.getByRole("button", { name: /Recevoir le lien/ }).click();
+    await page.getByRole("link", { name: "Ouvrir le lien reçu" }).click();
+    await page.waitForURL("**/accueil");
+    await expect(page.getByRole("heading", { name: "Comment ça marche" })).toBeVisible();
+    await expect(page.getByRole("link", { name: /De quoi avez-vous besoin/ })).toBeVisible();
 });

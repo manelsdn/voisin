@@ -1888,7 +1888,8 @@
       "description": "Passer l'aspirateur et ranger la cuisine.",
       "distanceKm": 0.57,
       "statut": "ACCEPTEE",
-      "creeAt": "2026-09-23T12:00:00.000Z"
+      "creeAt": "2026-09-23T12:00:00.000Z",
+      "reponduAt": "2026-11-03T09:30:00.000Z"
     },
     "demande-14": {
       "demandeurId": "proche-02",
@@ -1949,6 +1950,28 @@
       "distanceKm": 1.33,
       "statut": "ACCEPTEE",
       "creeAt": "2026-09-26T15:00:00.000Z"
+    },
+    "demande-17": {
+      "demandeurId": "proche-01",
+      "demandeurPrenom": "Camille",
+      "beneficiaireId": "senior-01",
+      "beneficiairePrenom": "Madeleine",
+      "jeuneId": "jeune-01",
+      "jeunePrenom": "Lucas",
+      "service": "COURSES",
+      "disponibiliteId": "d1-1",
+      "creneau": {
+        "jour": "SAMEDI",
+        "heureDebut": "09:00",
+        "heureFin": "12:00"
+      },
+      "dateSouhaitee": "2026-10-24",
+      "description": "Porter les courses du marché jusqu'au 3e étage.",
+      "distanceKm": 0.44,
+      "statut": "TERMINEE",
+      "creeAt": "2026-10-18T10:00:00.000Z",
+      "reponduAt": "2026-10-18T14:00:00.000Z",
+      "termineAt": "2026-10-24T12:30:00.000Z"
     }
   },
   "rendezVous": {
@@ -2077,6 +2100,20 @@
       "telephoneJeune": "06 71 98 30 76",
       "telephoneDemandeur": "06 10 51 53 60",
       "creeAt": "2026-09-26T15:00:00.000Z"
+    },
+    "demande-17": {
+      "demandeServiceId": "demande-17",
+      "jeuneId": "jeune-01",
+      "demandeurId": "proche-01",
+      "beneficiaireId": "senior-01",
+      "service": "COURSES",
+      "date": "2026-10-24",
+      "heureDebut": "09:00",
+      "heureFin": "12:00",
+      "statut": "CONFIRME",
+      "telephoneJeune": "06 74 37 14 21",
+      "telephoneDemandeur": "06 36 19 84 21",
+      "creeAt": "2026-10-18T14:00:00.000Z"
     }
   },
   "besoins": {
@@ -2191,5 +2228,37 @@
       "creeAt": "2026-11-04T01:00:00Z"
     }
   },
-  "propositions": {}
+  "propositions": {
+    "besoin-01_jeune-26": {
+      "besoinId": "besoin-01",
+      "auteurId": "proche-01",
+      "jeuneId": "jeune-26",
+      "jeunePrenom": "Anaïs",
+      "jeunePhoto": "/assets/avatars/anais.jpg",
+      "message": "Bonjour Camille, j'adore les plantes, je peux passer samedi après-midi.",
+      "creeAt": "2026-11-04T08:15:00.000Z"
+    }
+  },
+  "avis": {
+    "demande-17": {
+      "demandeId": "demande-17",
+      "jeuneId": "jeune-01",
+      "auteurId": "proche-01",
+      "auteurPrenom": "Camille",
+      "service": "COURSES",
+      "note": 5,
+      "commentaire": "Lucas a porté les courses de Madeleine avec le sourire, merci !",
+      "creeAt": "2026-10-24T18:00:00.000Z"
+    }
+  },
+  "messages": {
+    "message-01": {
+      "de": "jeune-02",
+      "dePrenom": "Inès",
+      "a": "proche-01",
+      "aPrenom": "Camille",
+      "texte": "Bonjour Camille, c'est noté pour le ménage chez Madeleine, à bientôt !",
+      "creeAt": "2026-11-03T09:35:00.000Z"
+    }
+  }
 }
