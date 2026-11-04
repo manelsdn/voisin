@@ -123,7 +123,6 @@ const Recherche = () => {
                         {!estJeune && <Link className="carte-publier" to="/besoins/nouveau"><Icone nom="plus" /><span><strong>Vous ne trouvez pas ?</strong><small>Publiez votre besoin, les jeunes du quartier vous proposeront leur aide.</small></span></Link>}
                     </div>
                 )}
-                {!estJeune && vue === "carte" && <Link className="fab fab-rond" to="/besoins/nouveau" aria-label="Publier un besoin"><Icone nom="plus" /></Link>}
             </main>
             <Navigation />
         </div>

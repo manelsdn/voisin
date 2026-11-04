@@ -47,9 +47,9 @@ const Accueil = () => {
                     <div className="bonjour-ligne"><span className="greeting">Bonjour {utilisateur.prenom}</span><span className="role-badge">{ROLES[utilisateur.role]}</span></div>
 
                     <section className={estJeune ? "vitrine-hero hero-haut hero-jeune" : "vitrine-hero hero-haut"}>
-                        <img src={estJeune ? "/assets/presentation/ensemble.jpg" : "/assets/presentation/accueil-large.jpg"} alt="" />
+                        <img src={estJeune ? "/assets/presentation/accueil-jeune.jpg" : "/assets/presentation/accueil-large.jpg"} alt="" />
                         <div className="vitrine-voile">
-                            <h1>{estJeune ? <>Un coup de main,<br />un sourire en retour.</> : <>Petits services, grands liens.</>}</h1>
+                            <h1>{estJeune ? <>Un coup de main, un sourire en retour.</> : <>Petits services, grands liens.</>}</h1>
                             <Link className="vitrine-recherche" to={estJeune ? "/annonce" : "/besoins/nouveau"}>
                                 <Icone nom={estJeune ? "sparkles" : "mic"} />
                                 <span>{estJeune ? (utilisateur.annoncePubliee ? "Modifier mon annonce" : "Publier mon annonce") : pour ? `De quoi ${pour} a besoin ?` : "De quoi avez-vous besoin ?"}</span>

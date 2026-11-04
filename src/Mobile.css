@@ -588,3 +588,10 @@
 #vdo .hero-haut:not(.hero-jeune)>img{height:150px;aspect-ratio:auto;object-position:50% 46%}
 #vdo .hero-haut:not(.hero-jeune)>img{height:auto;aspect-ratio:1200/540;object-position:center}
 #vdo .hero-haut:not(.hero-jeune) .vitrine-voile h1{white-space:nowrap;font-size:clamp(17px,5.6vw,24px)}
+#vdo .hero-haut.hero-jeune>img{height:auto;aspect-ratio:1200/539;object-fit:cover!important;object-position:center;background:#fff}
+#vdo .hero-haut .vitrine-voile h1{white-space:nowrap;letter-spacing:-.3px}
+#vdo .hero-haut.hero-jeune .vitrine-voile h1{font-size:clamp(13px,4.5vw,19px)}
+
+#vdo .post-compact .post-head>.carte-photo{flex:0 0 96px;width:96px!important;height:96px!important;border-radius:16px!important;border:0!important;object-fit:cover!important}
+#vdo .carte-photo.carte-service{overflow:visible!important;border:0!important}
+#vdo .carte-photo.carte-service img{border-radius:50%!important;border:3px solid #FFC145;box-sizing:border-box}
