@@ -1,55 +1,72 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { Astuce, Avatar, CarteJeune, CartesServices, Navigation } from "../composants/Mise";
-import { CarteBesoin } from "../Recherche/Recherche";
+import { Astuce, Avatar, Navigation } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { besoinsProches, mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
+import { besoinsProches, mesBesoins, mesConversations, mesDemandes, pointDeRecherche, propositionsDuBesoin } from "../services/api";
+import { texteDate } from "../services/geo";
 import { ROLES, STATUTS, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
-const CarteQuartier = ({ ville }) => (
-    <div className="browse-map" role="img" aria-label="Carte du quartier avec les personnes disponibles à proximité">
-        <span className="map-badge"><Icone nom="pin" />Carte du quartier</span>
-        <img className="browse-map-photo" src="/assets/carte-quartier.jpg" alt="" />
-        <span className="map-caption"><i style={{ background: "#FFC145" }}></i>Vous <i style={{ background: "#1FAF98" }}></i>Disponibles près de {ville}</span>
-    </div>
+const majuscule = (t) => (t ? t.charAt(0).toUpperCase() + t.slice(1) : "");
+
+const aujourdhui = () => new Date().toISOString().slice(0, 10);
+
+const Tuile = ({ to, nombre, libelle, icone, alerte }) => (
+    <Link className={`tuile${alerte && nombre > 0 ? " tuile-alerte" : ""}`} to={to}>
+        <span className="tuile-icone"><Icone nom={icone} /></span>
+        <b>{nombre === null ? "–" : nombre}</b>
+        <span>{libelle}</span>
+    </Link>
 );
 
 const Accueil = () => {
     const { utilisateur } = useSession();
-    const [proche, setProche] = useState(null);
-    const [suggestions, setSuggestions] = useState(null);
-    const [besoins, setBesoins] = useState(null);
     const estJeune = utilisateur.role === "JEUNE";
+    const [proche, setProche] = useState(null);
+    const [demandes, setDemandes] = useState(null);
+    const [conversations, setConversations] = useState(null);
+    const [extra, setExtra] = useState(null);
     const ville = (proche && proche.ville) || utilisateur.ville;
 
     useEffect(() => {
+        let actif = true;
         const charger = async () => {
+            const { personne, position } = await pointDeRecherche(utilisateur);
+            const [liste, convs] = await Promise.all([mesDemandes(utilisateur), mesConversations(utilisateur).catch(() => [])]);
+            let complement = 0;
             if (estJeune) {
-                const demandes = await mesDemandes(utilisateur);
-                setSuggestions(demandes.filter((d) => d.statut === "ENVOYEE"));
-                setBesoins((await besoinsProches(utilisateur, { rayon: 5 }).catch(() => [])).slice(0, 3));
+                complement = (await besoinsProches(position, { rayon: 5 }).catch(() => [])).length;
             } else {
-                const { personne, position } = await pointDeRecherche(utilisateur);
-                if (personne.id !== utilisateur.id) setProche(personne);
-                setSuggestions((await rechercherJeunes(position, { rayon: 2 })).slice(0, 3));
+                const ouverts = (await mesBesoins(utilisateur).catch(() => [])).filter((b) => b.statut === "OUVERTE");
+                const nombres = await Promise.all(ouverts.map((b) => propositionsDuBesoin(b.id).then((p) => p.length).catch(() => 0)));
+                complement = nombres.reduce((a, b) => a + b, 0);
             }
+            if (!actif) return;
+            if (personne.id !== utilisateur.id) setProche(personne);
+            setDemandes(liste);
+            setConversations(convs);
+            setExtra(complement);
         };
         charger();
+        return () => { actif = false; };
     }, [utilisateur, estJeune]);
 
-    const titre = estJeune ? <>Prêt à donner <br /><em>un coup de main</em> ?</> : <>Petits services, <br /><em>grands liens.</em></>;
+    const enAttente = demandes ? demandes.filter((d) => d.statut === "ENVOYEE") : [];
+    const acceptees = demandes ? demandes.filter((d) => d.statut === "ACCEPTEE").sort((a, b) => (a.dateSouhaitee || "").localeCompare(b.dateSouhaitee || "")) : [];
+    const aVenir = acceptees.filter((d) => (d.dateSouhaitee || "") >= aujourdhui());
+    const prochain = aVenir[0] || acceptees[acceptees.length - 1] || null;
+    const avec = prochain ? (estJeune ? prochain.beneficiairePrenom : prochain.jeunePrenom) : "";
+    const pourQui = proche ? proche.prenom : null;
 
     return (
-        <div className="ecran vdo accueil-compact" id="vdo">
+        <div className="ecran vdo accueil-simple" id="vdo">
             <div className="corps">
                 <div className="home-top">
                     <Link className="location-button" to={utilisateur.role === "ACCOMPAGNANT" ? "/proche" : "/modifier-profil"} aria-label={`Mon quartier : ${ville}`}><Icone nom="pin" />{ville}<Icone nom="down" /></Link>
                     <Link className="avatar" to="/profil" aria-label="Mon profil"><Avatar personne={utilisateur} classe="mini-persona-photo" /></Link>
                 </div>
-                <div className="home-content modern-home">
-                    <div className="bonjour-ligne"><span className="greeting">Bonjour {utilisateur.prenom}</span><span className="role-badge">{ROLES[utilisateur.role]}</span></div>
-                    <h2 className="titre-accent">{titre}</h2>
+                <div className="home-content">
+                    <div className="bonjour-ligne"><h1 className="greeting">Bonjour {utilisateur.prenom}</h1><span className="role-badge">{ROLES[utilisateur.role]}</span></div>
                     {utilisateur.role === "ACCOMPAGNANT" && (
                         <Link className="beneficiary" to="/proche">
                             <Icone nom="users" />
@@ -58,75 +75,91 @@ const Accueil = () => {
                             <span className="chevron"><Icone nom="down" /></span>
                         </Link>
                     )}
+
                     {estJeune ? (
-                        <section className="scene scene-large">
-                            <img className="scene-image" src="/assets/presentation/ensemble.jpg" alt="" />
-                            <div className="scene-texte">
-                                <span className="mini-eyebrow">{utilisateur.annoncePubliee ? "ANNONCE EN LIGNE" : "MON ANNONCE"}</span>
-                                <strong>{utilisateur.annoncePubliee ? "Les voisins voient vos créneaux." : "Proposez vos créneaux au quartier."}</strong>
-                            </div>
-                            <i className="deco deco-etoile" aria-hidden="true"></i>
-                        </section>
+                        utilisateur.annoncePubliee ? (
+                            <Link className="action-principale action-calme" to="/annonce">
+                                <span className="action-icone"><Icone nom="check" /></span>
+                                <span><strong>Votre annonce est en ligne</strong><small>Les voisins voient vos services et vos créneaux.</small></span>
+                                <Icone nom="chevron" />
+                            </Link>
+                        ) : (
+                            <Link className="action-principale" to="/annonce">
+                                <span className="action-icone"><Icone nom="sparkles" /></span>
+                                <span><strong>Publier mon annonce</strong><small>Dites ce que vous savez faire et quand vous êtes libre.</small></span>
+                                <Icone nom="arrow" />
+                            </Link>
+                        )
                     ) : (
-                        <section className="scene">
-                            <div className="scene-texte">
-                                <span className="mini-eyebrow">MON QUARTIER</span>
-                                <strong>Un jeune voisin pour vous aider.</strong>
-                                <Link className="scene-cta" to="/fil">Voir le fil<Icone nom="arrow" /></Link>
-                            </div>
-                            <figure className="scene-arche"><img src="/assets/presentation/accueil.jpg" alt="" /></figure>
-                            <i className="deco deco-soleil" aria-hidden="true"></i>
-                            <i className="deco deco-etoile" aria-hidden="true"></i>
-                        </section>
-                    )}
-                    <div className="section-title">
-                        <h3>{estJeune ? "Vos services" : "Un coup de main pour…"}</h3>
-                        <Link className="see-all" to="/fil">Le fil<Icone nom="chevron" /></Link>
-                    </div>
-                    <CartesServices lien={(code) => (estJeune ? "/annonce" : `/recherche?service=${code}`)} />
-                    {!estJeune && (
-                        <Link className="map-preview-card carte-grande" to="/recherche?vue=carte" aria-label="Voir les jeunes disponibles sur la carte">
-                            <CarteQuartier ville={ville} />
-                            <span className="carte-bouton"><Icone nom="pin" />Ouvrir la carte</span>
+                        <Link className="action-principale" to="/besoins/nouveau">
+                            <span className="action-icone"><Icone nom="mic" /></span>
+                            <span><strong>{pourQui ? `De quoi ${pourQui} a besoin\u00a0?` : "De quoi avez-vous besoin\u00a0?"}</strong><small>Écrivez-le ou dites-le au micro. Les jeunes du quartier vous répondent.</small></span>
+                            <Icone nom="arrow" />
                         </Link>
                     )}
-                    <div className="section-title">
-                        <h3>{estJeune ? "Demandes reçues" : "Près de chez vous"}</h3>
-                        <Link className="see-all" to={estJeune ? "/services" : "/recherche"}>Tout voir<Icone nom="chevron" /></Link>
-                    </div>
-                    {suggestions === null && <p className="soft">Chargement…</p>}
-                    {suggestions && suggestions.length === 0 && <div className="notice">{estJeune ? "Aucune demande pour le moment." : "Personne à moins de 2 km pour le moment."}</div>}
-                    <div className="liste-compacte">
-                        {suggestions && estJeune && suggestions.map((d) => (
-                            <Link key={d.id} to={`/demandes/${d.id}`} className="helper-card helper-card-rich">
-                                <img className="helper-photo" src={imageService(d.service)} alt="" />
+
+                    {prochain && (
+                        <>
+                            <h3 className="section-h">{aVenir.length ? "Prochain rendez-vous" : "Rendez-vous confirmé"}</h3>
+                            <Link className="rdv-carte" to={`/demandes/${prochain.id}`}>
+                                <img src={imageService(prochain.service)} alt="" />
                                 <span>
-                                    <strong>{d.beneficiairePrenom} · {nomService(d.service)}</strong>
-                                    <small>{texteDistance(d.distanceKm)} · {texteCreneau(d.creneau)}</small>
-                                    <span className="slot-row"><em>{STATUTS[d.statut]}</em></span>
+                                    <strong>{nomService(prochain.service)} avec {avec}</strong>
+                                    <small>{majuscule(texteDate(prochain.dateSouhaitee))} · {prochain.creneau && `${prochain.creneau.heureDebut}-${prochain.creneau.heureFin}`}</small>
                                 </span>
                                 <Icone nom="chevron" />
                             </Link>
-                        ))}
-                        {suggestions && !estJeune && suggestions.map((j) => <CarteJeune key={j.id} jeune={j} />)}
+                        </>
+                    )}
+
+                    <h3 className="section-h">En ce moment</h3>
+                    <div className="tuiles">
+                        {estJeune ? (
+                            <>
+                                <Tuile to="/services" nombre={demandes && enAttente.length} libelle="à répondre" icone="calendar" alerte />
+                                <Tuile to="/recherche" nombre={extra} libelle="besoins près de vous" icone="heart" />
+                                <Tuile to="/messages" nombre={conversations && conversations.length} libelle="conversations" icone="message" />
+                            </>
+                        ) : (
+                            <>
+                                <Tuile to="/services" nombre={demandes && enAttente.length} libelle="en attente de réponse" icone="clock" />
+                                <Tuile to="/besoins" nombre={extra} libelle="propositions d'aide" icone="heart" alerte />
+                                <Tuile to="/messages" nombre={conversations && conversations.length} libelle="conversations" icone="message" />
+                            </>
+                        )}
                     </div>
+
                     {estJeune && (
                         <>
-                            <div className="section-title">
-                                <h3>Besoins près de vous</h3>
-                                <Link className="see-all" to="/recherche">Tout voir<Icone nom="chevron" /></Link>
+                            <h3 className="section-h">Demandes reçues</h3>
+                            {demandes === null && <div className="squelettes">{[0, 1].map((i) => <span key={i} className="squelette" />)}</div>}
+                            {demandes && enAttente.length === 0 && <p className="soft">Aucune demande en attente. Touchez « Aider » pour voir les besoins du quartier.</p>}
+                            <div className="liste-cartes">
+                                {enAttente.map((d) => (
+                                    <Link key={d.id} to={`/demandes/${d.id}`} className="carte-profil">
+                                        <span className="carte-photo carte-service"><img src={imageService(d.service)} alt="" /></span>
+                                        <span className="carte-corps">
+                                            <span className="carte-ligne"><strong>{d.beneficiairePrenom} · {nomService(d.service)}</strong></span>
+                                            <small>{texteDistance(d.distanceKm)} · {texteCreneau(d.creneau)}</small>
+                                            <span className="carte-bas"><em className="statut ENVOYEE">{STATUTS[d.statut]}</em></span>
+                                        </span>
+                                        <Icone nom="chevron" />
+                                    </Link>
+                                ))}
                             </div>
-                            {besoins === null && <p className="soft">Chargement…</p>}
-                            {besoins && besoins.length === 0 && <div className="notice">Aucun besoin publié près de chez vous pour le moment.</div>}
-                            <div className="liste-cartes">{besoins && besoins.map((b) => <CarteBesoin key={b.id} besoin={b} />)}</div>
                         </>
+                    )}
+
+                    {!estJeune && (
+                        <Link className="lien-fil" to="/fil">
+                            <span className="lien-fil-photos" aria-hidden="true"><img src="/assets/avatars/anais.jpg" alt="" /><img src="/assets/avatars/lucas.jpg" alt="" /><img src="/assets/avatars/chloe.jpg" alt="" /></span>
+                            <span><strong>Le fil du quartier</strong><small>Les jeunes près de chez vous et ce qu'ils aiment faire.</small></span>
+                            <Icone nom="chevron" />
+                        </Link>
                     )}
                     <Astuce>Pourboire libre, directement entre vous.</Astuce>
                 </div>
             </div>
-            {estJeune
-                ? <Link className="fab" to="/annonce"><Icone nom="sparkles" /><span>{utilisateur.annoncePubliee ? "Modifier mon annonce" : "Publier mon annonce"}</span></Link>
-                : <Link className="fab" to="/besoins/nouveau"><Icone nom="plus" /><span>Publier un besoin</span></Link>}
             <Navigation />
         </div>
     );

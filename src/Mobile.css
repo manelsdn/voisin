@@ -6,22 +6,22 @@
 #vdo .home-content{padding:8px 16px 18px}
 #vdo h2,#vdo .app-pad h2{font-size:26px;line-height:1.08;letter-spacing:-.6px;margin:8px 0 10px}
 #vdo .home-content h2{font-size:28px;margin:6px 0 12px}
-#vdo .soft{font-size:13px;line-height:1.45;margin:0 0 8px}
+#vdo .soft{font-size:14px;line-height:1.45;margin:0 0 8px}
 #vdo .section-title,#vdo .modern-home .section-title{margin:18px 0 8px}
 #vdo .section-title h3{font:600 17px var(--font-head);letter-spacing:-.2px}
 #vdo .stack-actions{gap:8px;margin:14px 0}
 #vdo .form-stack{gap:11px;margin:12px 0 14px}
 #vdo input,#vdo select,#vdo textarea{min-height:46px;font-size:15px;margin-top:5px;border-radius:14px}
 #vdo .primary{min-height:50px;border-radius:999px!important;font-family:var(--font-head);font-size:16px;font-weight:600}
-#vdo .secondary{min-height:46px;border-radius:999px!important;background:var(--white);font-size:14px;font-weight:700;border:1.5px solid var(--line)}
-#vdo .notice{margin:10px 0;padding:11px 13px;font-size:13px;line-height:1.5}
+#vdo .secondary{min-height:46px;border-radius:999px!important;background:var(--white);font-size:15px;font-weight:700;border:1.5px solid var(--line)}
+#vdo .notice{margin:10px 0;padding:11px 13px;font-size:14px;line-height:1.5}
 #vdo .detail-box{margin:10px 0;padding:12px 14px;border-radius:18px;background:var(--white);box-shadow:0 4px 14px rgba(42,33,64,.06)}
-#vdo .tip-note{margin-top:12px!important;font-size:12px!important}
-#vdo .hint{margin:10px 0;font-size:12px}
-#vdo .mini-eyebrow{font-size:10.5px;letter-spacing:1.1px}
+#vdo .tip-note{margin-top:12px!important;font-size:13px!important}
+#vdo .hint{margin:10px 0;font-size:13px}
+#vdo .mini-eyebrow{font-size:11.5px;letter-spacing:1.1px}
 
 #vdo .bottom-nav{position:sticky;bottom:10px;margin:0 10px 10px;border:0;border-radius:24px;background:#2A2140;padding:6px;box-shadow:0 10px 26px rgba(42,33,64,.28)}
-#vdo .bottom-nav a,#vdo .bottom-nav button{color:#cfc6e4;min-height:46px;min-width:0;flex:1;font-size:11px;border-radius:18px!important}
+#vdo .bottom-nav a,#vdo .bottom-nav button{color:#cfc6e4;min-height:46px;min-width:0;flex:1;font-size:12px;border-radius:18px!important}
 #vdo .bottom-nav a.active,#vdo .bottom-nav button.active{background:#FFC145;color:#2A2140}
 #vdo .corps{padding-bottom:6px}
 
@@ -32,15 +32,15 @@
 
 #vdo .beneficiary{margin:8px 0 12px;min-height:44px;background:var(--white);border:1.5px solid var(--line)}
 #vdo .bonjour-ligne{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-#vdo .greeting{font-size:14px;font-weight:700}
+#vdo .greeting{font-size:15px;font-weight:700}
 
 
 #vdo .story-bar{gap:8px;padding:2px 0 4px}
 #vdo .story-btn{width:66px}
 #vdo .story-ring{width:58px;height:58px}
-#vdo .story-btn small{font-size:11px}
+#vdo .story-btn small{font-size:12px}
 
-#vdo .carte-bouton{position:absolute;right:10px;bottom:10px;z-index:3;display:inline-flex;align-items:center;gap:6px;background:#2A2140;color:#fff;font:600 13px var(--font-head);padding:9px 14px;border-radius:999px}
+#vdo .carte-bouton{position:absolute;right:10px;bottom:10px;z-index:3;display:inline-flex;align-items:center;gap:6px;background:#2A2140;color:#fff;font:600 14px var(--font-head);padding:9px 14px;border-radius:999px}
 #vdo .carte-bouton .icon{width:15px;height:15px;color:#FFC145}
 
 #vdo .liste-compacte,#vdo .stack-actions{display:flex;flex-direction:column}
@@ -48,7 +48,7 @@
 #vdo .modern-home .helper-card{margin-top:0}
 #vdo .helper-card,#vdo .helper-card-rich{min-height:0;padding:10px 12px!important;gap:10px;border-radius:18px!important;background:var(--white);border:0;box-shadow:0 4px 14px rgba(42,33,64,.07);align-items:center!important}
 #vdo .helper-card-rich .helper-photo,#vdo .helper-card .helper-photo{width:46px;height:46px;border-radius:50%}
-#vdo .helper-card strong{font-size:14px}
+#vdo .helper-card strong{font-size:15px}
 #vdo .helper-card small.inline{display:inline;font-weight:600;color:var(--muted)}
 #vdo .slot-row{margin-top:5px}
 
@@ -58,23 +58,23 @@
 #vdo .filtres-ligne{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:4px -16px 6px;padding:2px 16px}
 #vdo .filtres-ligne::-webkit-scrollbar{display:none}
 #vdo .filtres-ligne label{flex:0 0 auto;margin:0}
-#vdo .filtres-ligne select{margin:0;min-height:38px;border-radius:999px;padding:6px 30px 6px 13px;font-size:13px;font-weight:700;background-color:var(--yellow-soft);border:0;width:auto}
-#vdo .compte{font-size:12px;font-weight:700;color:var(--muted);margin:6px 0}
+#vdo .filtres-ligne select{margin:0;min-height:38px;border-radius:999px;padding:6px 30px 6px 13px;font-size:14px;font-weight:700;background-color:var(--yellow-soft);border:0;width:auto}
+#vdo .compte{font-size:13px;font-weight:700;color:var(--muted);margin:6px 0}
 #vdo .carte-leaflet{height:calc(100vh - 290px);min-height:380px;border-radius:24px;margin:6px -6px 8px}
-#vdo .legende-carte{font-size:11px;flex-wrap:wrap;gap:8px}
+#vdo .legende-carte{font-size:12px;flex-wrap:wrap;gap:8px}
 #vdo .story-reel{padding:4px 0}
 
 #vdo .feed{gap:12px}
 #vdo .post{border-radius:22px;border:0}
 #vdo .post-head{padding:10px 12px}
-#vdo .post-text{font-size:13px;line-height:1.45;margin:8px 12px 0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#vdo .post-text{font-size:14px;line-height:1.45;margin:8px 12px 0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 
 #vdo .profile-portrait{width:76px;height:76px;margin:6px auto 8px;border-radius:50%}
 #vdo .profile-name h2{font-size:24px;margin:0 0 2px}
 #vdo .profile-name .post-act{margin:6px auto 0;border:1.5px solid var(--line);border-radius:999px!important;padding:0 14px;background:var(--white)}
 
 #vdo .service-banner{height:110px;border-radius:20px;overflow:hidden}
-#vdo .message-bubble{font-size:14px}
+#vdo .message-bubble{font-size:15px}
 #vdo .conversation{gap:8px}
 #vdo .onglets{border-radius:999px;margin:10px 0}
 #vdo .onglets button{border-radius:999px!important;min-height:38px}
@@ -86,9 +86,9 @@
     #vdo .home-content h2{font-size:25px}
     #vdo .deux,#vdo .trois{display:grid;grid-template-columns:1fr;gap:11px}
     #vdo .bottom-nav{margin:0 6px 8px}
-    #vdo .bottom-nav a,#vdo .bottom-nav button{font-size:10px;padding:4px 2px}
+    #vdo .bottom-nav a,#vdo .bottom-nav button{font-size:11px;padding:4px 2px}
     #vdo .post-act{padding:0 6px}
-    #vdo .post-cta{font-size:13px;padding:0 12px}
+    #vdo .post-cta{font-size:14px;padding:0 12px}
 }
 
 #vdo .home-content{padding-top:4px}
@@ -96,9 +96,9 @@
 
 #vdo .scene{position:relative;display:grid;grid-template-columns:1fr 46%;align-items:end;gap:6px;margin:26px 0 6px;padding:16px 10px 16px 16px;border-radius:28px;background:radial-gradient(circle at 85% 0,#FFE8B8 0,transparent 55%),linear-gradient(135deg,#FFC145 0%,#FF9E6B 100%);box-shadow:0 14px 30px rgba(255,138,101,.28);isolation:isolate;overflow:visible}
 #vdo .scene-texte{display:grid;gap:6px;align-content:start;align-self:center;position:relative;z-index:2}
-#vdo .scene-texte .mini-eyebrow{justify-self:start;background:rgba(255,253,248,.9);color:#8a5a12;padding:4px 9px;border-radius:999px;font-size:9.5px;font-weight:800;letter-spacing:1px}
+#vdo .scene-texte .mini-eyebrow{justify-self:start;background:rgba(255,253,248,.9);color:#8a5a12;padding:4px 9px;border-radius:999px;font-size:10.5px;font-weight:800;letter-spacing:1px}
 #vdo .scene-texte strong{font:600 19px/1.12 var(--font-head);letter-spacing:-.3px;color:#2A2140}
-#vdo .scene-cta{justify-self:start;display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:9px 14px;border-radius:999px!important;background:#2A2140;color:#fff!important;font:600 13px var(--font-head);text-decoration:none;box-shadow:0 6px 14px rgba(42,33,64,.25)}
+#vdo .scene-cta{justify-self:start;display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:9px 14px;border-radius:999px!important;background:#2A2140;color:#fff!important;font:600 14px var(--font-head);text-decoration:none;box-shadow:0 6px 14px rgba(42,33,64,.25)}
 #vdo .scene-cta .icon{width:14px;height:14px;color:#FFC145}
 #vdo .scene-arche{margin:-46px 0 0;position:relative;z-index:1;aspect-ratio:800/955;border-radius:999px 999px 22px 22px;overflow:hidden;border:4px solid #FFFDF8;box-shadow:0 12px 24px rgba(42,33,64,.22);transform:rotate(2.5deg);background:#FFE8B8}
 #vdo .scene-arche img{width:100%;height:100%;object-fit:contain;display:block}
@@ -137,7 +137,7 @@
     #vdo .scene-texte strong{font-size:17px}
     #vdo .scene:not(.scene-large){grid-template-columns:1fr 44%}
     #vdo .welcome h2{font-size:28px}
-    #vdo .fab{padding:0 14px 0 12px;font-size:14px}
+    #vdo .fab{padding:0 14px 0 12px;font-size:15px}
 }
 @media(min-width:481px){
     .App{background:radial-gradient(circle at 12% 18%,#FFE8B8 0,transparent 26%),radial-gradient(circle at 88% 30%,#CFF3EE 0,transparent 24%),radial-gradient(circle at 20% 85%,#FFD4CC 0,transparent 22%),radial-gradient(circle at 85% 88%,#E7DBFF 0,transparent 24%),#FFF8F0!important}
@@ -152,17 +152,17 @@
 #vdo h2,#vdo h3,#vdo .primary,#vdo .scene-texte strong,#vdo .section-title h3,#vdo .fab,#vdo .scene-cta,#vdo .carte-bouton{font-family:var(--font-head)}
 #vdo .titre-accent em{isolation:isolate;font-style:normal;font-family:var(--font-head);font-weight:600;color:#FF6B5B;position:relative;white-space:nowrap;display:inline-block}
 #vdo .titre-accent em:after{content:"";position:absolute;left:2px;right:2px;bottom:-3px;height:6px;border-radius:6px;background:#FFC145;z-index:-1;opacity:.9}
-#vdo .soft{font-size:14px;color:#5d5574}
+#vdo .soft{font-size:15px;color:#5d5574}
 #vdo .helper-card strong{font-size:15px}
-#vdo .helper-card small,#vdo .helper-card span small{font-size:13px!important;color:#5d5574}
-#vdo .slot-row em{font-size:12px!important}
-#vdo .story-btn small{font-size:12.5px;font-weight:700}
-#vdo .bottom-nav a,#vdo .bottom-nav button{font-size:12px;font-weight:700}
+#vdo .helper-card small,#vdo .helper-card span small{font-size:14px!important;color:#5d5574}
+#vdo .slot-row em{font-size:13px!important}
+#vdo .story-btn small{font-size:13.5px;font-weight:700}
+#vdo .bottom-nav a,#vdo .bottom-nav button{font-size:13px;font-weight:700}
 #vdo .greeting{font-size:15px;color:#5d5574}
-#vdo .role-badge{font-size:12px}
-#vdo .tip-note{font-size:13px!important}
-#vdo label{font-size:14px;font-weight:700}
-#vdo .mini-eyebrow,#vdo .mini-pill{font-size:11px;font-weight:800;letter-spacing:1.2px}
+#vdo .role-badge{font-size:13px}
+#vdo .tip-note{font-size:14px!important}
+#vdo label{font-size:15px;font-weight:700}
+#vdo .mini-eyebrow,#vdo .mini-pill{font-size:12px;font-weight:800;letter-spacing:1.2px}
 #vdo .story-img img{object-fit:cover}
 
 #vdo .welcome{padding:16px 18px 22px;gap:0}
@@ -172,10 +172,10 @@
 #vdo .welcome h2{font-size:34px;line-height:1.05;margin:8px 0 10px}
 #vdo .welcome-intro{font-size:16px;line-height:1.5;color:#3d3554;margin:0 0 16px}
 #vdo .welcome-actions{margin-top:0;position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,248,240,0),var(--paper) 35%);padding:16px 0 6px}
-#vdo .signin-prompt{font-size:14px;text-align:center}
+#vdo .signin-prompt{font-size:15px;text-align:center}
 
 #vdo .nav-5{padding:6px 4px;gap:2px;align-items:flex-end;overflow:visible}
-#vdo .nav-5 a{flex:1;min-width:0;font-size:11px;padding:4px 0}
+#vdo .nav-5 a{flex:1;min-width:0;font-size:12px;padding:4px 0}
 #vdo .nav-5 .nav-centre{position:relative;background:none!important;color:#FFC145!important;font-weight:800;padding-top:0}
 #vdo .nav-centre-rond{display:grid;place-items:center;width:56px;height:56px;margin:-26px auto 2px;border-radius:50%!important;background:linear-gradient(135deg,#FFC145,#FF8A65);color:#2A2140;box-shadow:0 10px 22px rgba(255,138,101,.5),0 0 0 5px #2A2140;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
 #vdo .nav-centre-rond .icon{width:26px!important;height:26px!important;stroke-width:2.4}
@@ -196,11 +196,11 @@
 #vdo .carte-corps{flex:1;min-width:0;display:grid;gap:3px}
 #vdo .carte-ligne{display:flex;align-items:center;gap:8px}
 #vdo .carte-ligne strong{font:600 17px/1.2 var(--font-head);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#vdo .carte-note{font:800 12px Nunito;color:#8a5a12;background:#FFE8B8;border-radius:999px;padding:2px 8px}
-#vdo .carte-corps small{font-size:13px!important;color:#5d5574;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0}
+#vdo .carte-note{font:800 13px Nunito;color:#8a5a12;background:#FFE8B8;border-radius:999px;padding:2px 8px}
+#vdo .carte-corps small{font-size:14px!important;color:#5d5574;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0}
 #vdo .carte-bas{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px}
-#vdo .carte-bas em{font-style:normal;font:800 11.5px Nunito;background:#E9FBF7;color:#0b6e5e;border-radius:999px;padding:4px 9px}
-#vdo .carte-texte{font-size:13.5px;line-height:1.35;color:#3d3554;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#vdo .carte-bas em{font-style:normal;font:800 12.5px Nunito;background:#E9FBF7;color:#0b6e5e;border-radius:999px;padding:4px 9px}
+#vdo .carte-texte{font-size:14.5px;line-height:1.35;color:#3d3554;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 #vdo .carte-service{position:relative;overflow:visible}
 #vdo .carte-service img{width:100%;height:100%;object-fit:cover;border-radius:18px;display:block}
 #vdo .carte-service i{position:absolute;right:-6px;bottom:-6px;width:28px;height:28px;border-radius:50%;background:#2A2140;color:#FFC145;display:grid;place-items:center;border:3px solid #FFFDF8}
@@ -210,31 +210,31 @@
 #vdo .carte-publier{display:flex;align-items:center;gap:12px;padding:14px;border:2px dashed #e3d8e4;border-radius:20px!important;color:var(--ink);text-decoration:none;background:transparent}
 #vdo .carte-publier>.icon:first-child{flex:none;width:44px;height:44px;padding:11px;border-radius:14px;background:#FFE8B8;color:#8a5a12}
 #vdo .carte-publier strong{display:block;font:600 16px var(--font-head)}
-#vdo .carte-publier small{display:block;font-size:13px!important;color:#5d5574;margin-top:2px}
+#vdo .carte-publier small{display:block;font-size:14px!important;color:#5d5574;margin-top:2px}
 #vdo .carte-publier-haut{margin:6px 0 12px;border-style:solid;border-color:transparent;background:#FFFDF8;box-shadow:0 4px 16px rgba(42,33,64,.08)}
 #vdo .carte-publier-haut>.icon:last-child{margin-left:auto;width:18px;color:#b3a9c4}
 
 #vdo .puces-services{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px 4px}
 #vdo .puces-services::-webkit-scrollbar{display:none}
-#vdo .puces-services button{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 13px 0 10px;border:1.5px solid #ede3e8;background:#FFFDF8;border-radius:999px!important;font:800 13.5px Nunito;color:var(--ink);cursor:pointer}
+#vdo .puces-services button{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 13px 0 10px;border:1.5px solid #ede3e8;background:#FFFDF8;border-radius:999px!important;font:800 14.5px Nunito;color:var(--ink);cursor:pointer}
 #vdo .puces-services .icon{width:17px;height:17px;color:#8a5a12}
 #vdo .puces-services button[aria-pressed=true]{background:#2A2140;border-color:#2A2140;color:#fff}
 #vdo .puces-services button[aria-pressed=true] .icon{color:#FFC145}
 #vdo fieldset .puces-services{flex-wrap:wrap;overflow:visible;margin:6px 0 0;padding:0}
 #vdo fieldset{border:0;padding:0;margin:0}
-#vdo legend{font-weight:700;font-size:14px;padding:0;margin-bottom:2px}
+#vdo legend{font-weight:700;font-size:15px;padding:0;margin-bottom:2px}
 
 #vdo.explorer .corps{display:flex;flex-direction:column}
 #vdo .explorer-haut{position:sticky;top:0;z-index:12;background:rgba(255,248,240,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:12px 16px 8px;display:grid;gap:8px;box-shadow:0 6px 14px -12px rgba(42,33,64,.4)}
 #vdo .explorer-ligne{display:flex;align-items:center;justify-content:space-between;gap:10px}
 #vdo .explorer-titre{margin:0;font:600 21px/1.1 var(--font-head);letter-spacing:-.4px}
-#vdo .explorer-lieu{margin:0;display:flex;align-items:center;gap:5px;font:700 12.5px Nunito;color:#5d5574}
+#vdo .explorer-lieu{margin:0;display:flex;align-items:center;gap:5px;font:700 13.5px Nunito;color:#5d5574}
 #vdo .explorer-lieu .icon{width:14px;height:14px;color:#FF6B5B}
 #vdo .bascule-mini{margin:0;padding:3px;gap:2px;flex:none}
-#vdo .bascule-mini button{min-height:34px;padding:0 10px;font-size:12.5px;gap:4px}
+#vdo .bascule-mini button{min-height:34px;padding:0 10px;font-size:13.5px;gap:4px}
 #vdo .bascule-mini .icon{width:15px;height:15px}
 #vdo .explorer .filtres-ligne{margin:0 -16px;align-items:center}
-#vdo .explorer .compte{margin:0 0 0 auto;white-space:nowrap;flex:none;font-size:12px}
+#vdo .explorer .compte{margin:0 0 0 auto;white-space:nowrap;flex:none;font-size:13px}
 #vdo .explorer .liste-cartes{padding:12px 16px 110px}
 #vdo .explorer-plan{padding:10px 12px 0;flex:1;display:flex;flex-direction:column}
 #vdo .explorer-carte .carte-leaflet{height:calc(100dvh - 300px);min-height:330px;margin:0;border-radius:24px}
@@ -248,7 +248,7 @@
 #vdo .vide{display:grid;justify-items:center;text-align:center;gap:6px;padding:26px 18px;background:#FFFDF8;border-radius:24px;box-shadow:0 4px 16px rgba(42,33,64,.06)}
 #vdo .vide-icone{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:#FFE8B8;color:#8a5a12}
 #vdo .vide strong{font:600 17px var(--font-head)}
-#vdo .vide p{margin:0;font-size:13.5px;color:#5d5574}
+#vdo .vide p{margin:0;font-size:14.5px;color:#5d5574}
 #vdo .vide .secondary{margin-top:8px;width:auto;padding:0 18px}
 #vdo .vide-petit{padding:18px}
 
@@ -256,34 +256,34 @@
 #vdo .post-compact .post-head{display:flex;align-items:center;gap:12px;padding:0;text-decoration:none;color:var(--ink)}
 #vdo .post-compact .post-head>span{flex:1;min-width:0;display:grid;gap:3px}
 #vdo .post-compact .post-head strong{font:600 17px var(--font-head)}
-#vdo .post-compact .post-head small{font-size:12.5px!important;color:#5d5574}
+#vdo .post-compact .post-head small{font-size:13.5px!important;color:#5d5574}
 #vdo .post-compact .post-tag{align-self:flex-start}
-#vdo .post-compact .post-text{margin:8px 2px 0;font-size:13.5px;-webkit-line-clamp:2}
+#vdo .post-compact .post-text{margin:8px 2px 0;font-size:14.5px;-webkit-line-clamp:2}
 #vdo .post-compact .post-actions{padding:6px 0 0}
 #vdo .feed{display:flex;flex-direction:column;gap:10px}
 
-#vdo .besoin-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 2px;font:700 12.5px Nunito;color:#5d5574}
+#vdo .besoin-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 2px;font:700 13.5px Nunito;color:#5d5574}
 #vdo .besoin-meta span{display:inline-flex;align-items:center;gap:4px}
 #vdo .besoin-meta .icon{width:14px;height:14px;color:#FF6B5B}
 #vdo .besoin-texte{font-size:15px;line-height:1.5;margin:0 0 6px!important}
 #vdo .section-h{display:flex;align-items:center;gap:8px;font:600 18px var(--font-head);margin:18px 0 8px}
-#vdo .pastille-nb{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:999px;background:#FF6B5B;color:#fff;font:800 13px Nunito}
+#vdo .pastille-nb{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:999px;background:#FF6B5B;color:#fff;font:800 14px Nunito}
 #vdo .carte-proposition{background:#FFFDF8;border-radius:20px;padding:12px;box-shadow:0 4px 16px rgba(42,33,64,.08)}
 #vdo .carte-proposition header{display:flex;align-items:center;gap:12px}
 #vdo .carte-proposition header strong{display:block;font:600 17px var(--font-head)}
-#vdo .carte-proposition header small{font-size:12px;color:#8a7ba8}
+#vdo .carte-proposition header small{font-size:13px;color:#8a7ba8}
 #vdo .carte-proposition .carte-photo{width:52px;height:52px;border-radius:50%!important}
-#vdo .carte-proposition p{margin:10px 2px;font-size:14px;line-height:1.45;color:#3d3554}
+#vdo .carte-proposition p{margin:10px 2px;font-size:15px;line-height:1.45;color:#3d3554}
 #vdo .carte-actions{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
-#vdo .carte-actions .primary,#vdo .carte-actions .secondary{min-height:42px;font-size:13.5px;padding:0 10px}
+#vdo .carte-actions .primary,#vdo .carte-actions .secondary{min-height:42px;font-size:14.5px;padding:0 10px}
 #vdo .confirmation{display:grid;gap:10px;background:#E9FBF7;border-radius:22px;padding:16px;margin-top:12px}
 #vdo .confirmation>div strong{font:600 18px var(--font-head)}
-#vdo .confirmation>div p{margin:4px 0 0;font-size:13.5px;color:#3d3554}
+#vdo .confirmation>div p{margin:4px 0 0;font-size:14.5px;color:#3d3554}
 #vdo .ok-rond{width:44px;height:44px;border-radius:50%;background:#1FAF98;color:#fff;display:grid;place-items:center}
 
 #vdo .fab{bottom:96px}
 @media(max-width:360px){
-  #vdo .nav-5 a{font-size:10px}
+  #vdo .nav-5 a{font-size:11px}
   #vdo .nav-centre-rond{width:50px;height:50px}
   #vdo .carte-photo{width:56px;height:56px}
   #vdo .carte-actions{grid-template-columns:1fr}
@@ -295,13 +295,13 @@
 #vdo .bascule-mini .icon{width:18px;height:18px;margin:0}
 #vdo .explorer-lieu{justify-content:flex-start}
 #vdo .explorer-lieu span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-#vdo .explorer-lieu .compte{margin:0 0 0 auto;padding-left:8px;flex:none;font:800 12px Nunito;color:#0e7f6d}
+#vdo .explorer-lieu .compte{margin:0 0 0 auto;padding-left:8px;flex:none;font:800 13px Nunito;color:#0e7f6d}
 #vdo .explorer .filtres-ligne{margin:0 -16px;padding:0 16px}
 #vdo .carte-profil{padding:9px 10px;gap:11px}
 #vdo .carte-photo{width:56px;height:56px;border-radius:16px!important}
 #vdo .carte-corps{gap:2px}
 #vdo .carte-bas{flex-wrap:nowrap;overflow:hidden}
-#vdo .carte-bas em{white-space:nowrap;font-size:11px;padding:3px 8px}
+#vdo .carte-bas em{white-space:nowrap;font-size:12px;padding:3px 8px}
 #vdo .icones-services i{width:22px;height:22px;border-radius:7px}
 #vdo .icones-services .icon{width:13px!important;height:13px!important}
 #vdo .avatar-dessin svg{display:block;width:100%;height:100%}
@@ -317,8 +317,46 @@
 #vdo .dictee-bouton.actif{border-style:solid;border-color:#FF6B5B;background:#FFEDEA}
 #vdo .dictee-bouton.actif .dictee-micro{animation:dictee-pulse 1.2s ease-out infinite}
 @keyframes dictee-pulse{0%{box-shadow:0 0 0 0 rgba(255,107,91,.55)}100%{box-shadow:0 0 0 16px rgba(255,107,91,0)}}
-#vdo .dictee-provisoire{margin:0;padding:8px 12px;border-radius:12px;background:#FFFDF8;color:#5d5574;font:italic 600 14px Nunito}
-#vdo .dictee-erreur{margin:0;color:#b4382b;font:700 13.5px Nunito}
-#vdo .devine{display:flex;gap:8px;align-items:flex-start;margin:0;padding:10px 12px;border-radius:14px;background:#E7F7F3;color:#1d5f53;font:600 13.5px/1.4 Nunito}
+#vdo .dictee-provisoire{margin:0;padding:8px 12px;border-radius:12px;background:#FFFDF8;color:#5d5574;font:italic 600 15px Nunito}
+#vdo .dictee-erreur{margin:0;color:#b4382b;font:700 14.5px Nunito}
+#vdo .devine{display:flex;gap:8px;align-items:flex-start;margin:0;padding:10px 12px;border-radius:14px;background:#E7F7F3;color:#1d5f53;font:600 14.5px/1.4 Nunito}
 #vdo .devine .icon{flex:none;width:18px;height:18px;margin-top:1px;color:#1FAF98}
 @media (prefers-reduced-motion:reduce){#vdo .dictee-bouton.actif .dictee-micro{animation:none}}
+#vdo.accueil-simple .home-content{padding-bottom:120px}
+#vdo.accueil-simple .bonjour-ligne{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+#vdo.accueil-simple .greeting{margin:0;font:600 24px/1.15 var(--font-head);color:var(--ink);letter-spacing:-.4px}
+#vdo .action-principale{display:flex;align-items:center;gap:14px;margin:16px 0 6px;padding:16px;border-radius:22px!important;background:#2A2140;color:#fff!important;text-decoration:none;box-shadow:0 14px 28px rgba(42,33,64,.22)}
+#vdo .action-principale>span:nth-child(2){flex:1;min-width:0;display:grid;gap:3px}
+#vdo .action-principale strong{font:700 18px/1.2 var(--font-head);color:#fff}
+#vdo .action-principale small{font:600 14px/1.35 Nunito;color:#e9e2f5}
+#vdo .action-principale>.icon{flex:none;width:22px;height:22px;color:#FFC145}
+#vdo .action-icone{flex:none;display:grid;place-items:center;width:50px;height:50px;border-radius:50%;background:#FF6B5B;color:#fff}
+#vdo .action-icone .icon{width:24px;height:24px}
+#vdo .action-calme{background:#E7F7F3;color:var(--ink)!important;box-shadow:none;border:1.5px solid #bfe9df}
+#vdo .action-calme strong{color:#1d5f53}
+#vdo .action-calme small{color:#3f6f66}
+#vdo .action-calme .action-icone{background:#1FAF98}
+#vdo .action-calme>.icon{color:#1d5f53}
+#vdo .rdv-carte{display:flex;align-items:center;gap:12px;padding:10px 12px 10px 10px;border-radius:18px!important;background:#FFFDF8;border:1.5px solid #FFE8B8;color:var(--ink)!important;text-decoration:none}
+#vdo .rdv-carte img{flex:none;width:56px;height:56px;border-radius:14px;object-fit:cover}
+#vdo .rdv-carte>span{flex:1;min-width:0;display:grid;gap:2px}
+#vdo .rdv-carte strong{font:800 16px Nunito}
+#vdo .rdv-carte small{font:600 14px Nunito;color:#5d5574}
+#vdo .tuiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#vdo .tuile{display:grid;justify-items:start;gap:2px;min-height:104px;padding:12px;border-radius:18px!important;background:#FFFDF8;border:1.5px solid #f0e6ea;color:var(--ink)!important;text-decoration:none}
+#vdo .tuile b{font:700 26px/1 var(--font-head);margin-top:4px}
+#vdo .tuile>span:last-child{font:700 13.5px/1.25 Nunito;color:#5d5574}
+#vdo .tuile-icone{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#FFF1D6;color:#8a5a12}
+#vdo .tuile-icone .icon{width:17px;height:17px}
+#vdo .tuile-alerte{border-color:#FF6B5B;background:#FFF3F1}
+#vdo .tuile-alerte .tuile-icone{background:#FF6B5B;color:#fff}
+#vdo .aide-centre{margin-top:14px}
+@media (max-width:340px){#vdo .tuiles{gap:6px}#vdo .tuile{padding:10px 8px;min-height:96px}#vdo .tuile b{font-size:22px}#vdo .tuile>span:last-child{font-size:12.5px}}
+#vdo .lien-fil{display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;border-radius:18px!important;background:#FFFDF8;border:1.5px solid #f0e6ea;color:var(--ink)!important;text-decoration:none}
+#vdo .lien-fil>span:nth-child(2){flex:1;min-width:0;display:grid;gap:2px}
+#vdo .lien-fil strong{font:800 16px Nunito}
+#vdo .lien-fil small{font:600 14px/1.35 Nunito;color:#5d5574}
+#vdo .lien-fil-photos{flex:none;display:flex}
+#vdo .lien-fil-photos img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #FFFDF8}
+#vdo .lien-fil-photos img+img{margin-left:-12px}
+#vdo .explorer-haut{grid-template-columns:minmax(0,1fr)}
