@@ -70,6 +70,14 @@ export const ajouterProche = async (accompagnant, proche) => {
     });
 };
 
+export const modifierProche = async (accompagnant, proche, donnees) => {
+    if (!donnees.prenom || !donnees.adresse || !donnees.codePostal || !donnees.ville) throw new Error("Le prénom et l'adresse de votre proche sont obligatoires.");
+    if (proche.accompagnantId !== accompagnant.id) throw new Error("Vous ne pouvez modifier que votre proche.");
+    const adresseChangee = donnees.adresse !== proche.adresse || donnees.codePostal !== proche.codePostal || donnees.ville !== proche.ville;
+    const position = adresseChangee ? await geocoder(donnees) : {};
+    await s.ecrire("users", proche.id, { ...donnees, ...position });
+};
+
 export const pointDeRecherche = async (utilisateur) => {
     if (utilisateur.role !== "ACCOMPAGNANT") return { personne: utilisateur, position: utilisateur };
     const proche = (await listerProches(utilisateur.id))[0];
@@ -260,6 +268,21 @@ export const tousLesLikes = async () => {
 };
 
 export const likesDuJeune = async (jeuneId) => (await s.chercher("likes", "jeuneId", jeuneId).catch(() => [])).filter((l) => l.actif);
+
+const TAILLE_MAX = 10 * 1024 * 1024;
+
+export const envoyerFichier = async (de, a, fichier, texte = "") => {
+    if (!fichier || !fichier.size) throw new Error("Le fichier est vide.");
+    if (fichier.size > TAILLE_MAX) throw new Error("Le fichier fait 10 Mo maximum.");
+    const propre = (texte || "").trim().slice(0, 500);
+    const nomPropre = (fichier.name || "fichier").replace(/[^\w.-]+/g, "_").slice(-80);
+    const url = await televerser(`messages/${de.id}/${Date.now()}-${nomPropre}`, fichier);
+    return s.ajouter("messages", {
+        de: de.id, dePrenom: de.prenom, a: a.id, aPrenom: a.prenom, texte: propre,
+        fichier: { url, nom: fichier.name || "fichier", type: fichier.type || "application/octet-stream", taille: fichier.size },
+        creeAt: new Date().toISOString()
+    });
+};
 
 export const envoyerMessageVocal = async (de, a, enregistrement, duree) => {
     if (!enregistrement || !enregistrement.size) throw new Error("Le message vocal est vide.");

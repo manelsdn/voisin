@@ -599,3 +599,18 @@
 #vdo .carte-besoin.post .post-head strong{line-height:1.2}
 #vdo .hero-haut>img,#vdo .hero-haut.hero-jeune>img,#vdo .hero-haut:not(.hero-jeune)>img{height:120px!important;aspect-ratio:auto!important;object-fit:cover!important;object-position:50% 0%!important}
 #vdo.explorer .liste-cartes.feed{padding:4px 12px 8px;gap:12px}
+#vdo .bottom-nav{position:sticky;bottom:0;margin:0!important;border-radius:22px 22px 0 0!important;padding:6px 6px calc(8px + env(safe-area-inset-bottom))!important;box-shadow:0 -8px 24px rgba(42,33,64,.18)}
+#vdo .chat-joindre{flex:none;display:grid;place-items:center;width:46px;height:46px;min-height:46px;padding:0;border-radius:50%!important;border:0;background:#EEF4FF;color:#2563EB}
+#vdo .chat-joindre .icon{width:22px;height:22px}
+#vdo .chat-piece{display:flex;align-items:center;gap:8px;margin:0 4px 8px;padding:6px 6px 6px 12px;border-radius:14px;background:#EEF4FF;color:#1E3A8A;font:700 14px Nunito}
+#vdo .chat-piece .icon{flex:none;width:18px;height:18px}
+#vdo .chat-piece span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#vdo .chat-piece button{flex:none;width:44px;height:44px;min-height:44px;border:0;border-radius:12px;background:transparent;color:#1E3A8A;font-size:24px;line-height:1}
+#vdo .chat-image{display:block;margin:2px 0 4px}
+#vdo .chat-image img{display:block;max-width:220px;max-height:260px;width:auto;height:auto;border-radius:14px;object-fit:contain!important;background:#fff}
+#vdo .chat-fichier{display:flex;align-items:center;gap:10px;margin:2px 0 4px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.18);color:inherit!important;text-decoration:none}
+#vdo.chat .message-bubble:not(.mine) .chat-fichier{background:#F3EEF5}
+#vdo .chat-fichier .icon{flex:none;width:20px;height:20px}
+#vdo .chat-fichier span{display:grid;min-width:0}
+#vdo .chat-fichier strong{font:800 14.5px Nunito;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#vdo .chat-fichier small{font:600 12.5px Nunito;opacity:.85}

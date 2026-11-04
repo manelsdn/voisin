@@ -77,3 +77,32 @@ test("US48 · Notification : un nouveau message affiche une alerte cliquable sur
     await expect(page.locator(".message-bubble")).toContainText("le besoin de Madeleine");
     await expect(alerte).toHaveCount(0);
 });
+
+test("US50 · Joindre une image ou un fichier dans un message", async ({ page }) => {
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/messages/jeune-01");
+    await page.locator('input[type="file"]').setInputFiles({ name: "liste-courses.pdf", mimeType: "application/pdf", buffer: Buffer.from("%PDF-1.4 liste") });
+    await expect(page.getByText("liste-courses.pdf")).toBeVisible();
+    await page.getByLabel("Votre message").fill("Voici la liste");
+    await page.getByRole("button", { name: "Envoyer" }).click();
+    await expect(page.locator(".message-bubble.mine .chat-fichier")).toContainText("liste-courses.pdf");
+    await page.locator('input[type="file"]').setInputFiles(require("path").join(__dirname, "../../public/assets/avatars/lucas.jpg"));
+    await page.getByRole("button", { name: "Envoyer" }).click();
+    await expect(page.locator(".message-bubble.mine .chat-image img")).toBeVisible();
+});
+
+test("Le proche peut modifier le prénom et l'adresse de la personne accompagnée", async ({ page }) => {
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/proche");
+    await page.getByRole("button", { name: /Modifier son prénom ou son adresse/ }).click();
+    await page.getByLabel("Prénom de votre proche").fill("Mado");
+    await page.getByLabel("Son adresse").fill("20 cours Lafayette");
+    await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
+    await expect(page.getByRole("status")).toContainText("Mado");
+    await expect(page.getByRole("heading", { name: "Mado" })).toBeVisible();
+    await page.getByLabel("Prénom de votre proche").count().then((n) => expect(n).toBe(0));
+    await page.getByRole("button", { name: /Modifier son prénom ou son adresse/ }).click();
+    await page.getByLabel("Prénom de votre proche").fill("");
+    await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
+    await expect(page.getByRole("alert")).toContainText("obligatoires");
+});

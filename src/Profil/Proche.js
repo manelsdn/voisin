@@ -2,17 +2,34 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Ecran, Indice, Message } from "../composants/Mise";
-import { ajouterProche, listerProches } from "../services/api";
+import { ajouterProche, listerProches, modifierProche } from "../services/api";
 
 const Proche = () => {
     const { utilisateur } = useSession();
     const [proche, setProche] = useState(undefined);
     const [erreur, setErreur] = useState("");
+    const [edition, setEdition] = useState(false);
+    const [info, setInfo] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
         listerProches(utilisateur.id).then((l) => setProche(l[0] || null));
     }, [utilisateur]);
+
+    const modifier = async (e) => {
+        e.preventDefault();
+        const f = e.target;
+        const donnees = { prenom: f.prenom.value.trim(), adresse: f.adresse.value.trim(), codePostal: f.codePostal.value.trim(), ville: f.ville.value.trim() };
+        try {
+            await modifierProche(utilisateur, proche, donnees);
+            setProche((await listerProches(utilisateur.id))[0] || null);
+            setErreur("");
+            setEdition(false);
+            setInfo(`Les informations de ${donnees.prenom} sont à jour.`);
+        } catch (err) {
+            setErreur(err.message);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -44,13 +61,28 @@ const Proche = () => {
 
     return (
         <Ecran titre="Mon proche" retour="/accueil">
-            {proche ? (
+            {proche && edition ? (
+                <form className="form-stack" onSubmit={modifier} noValidate>
+                    <label>Prénom de votre proche<input name="prenom" maxLength={35} defaultValue={proche.prenom} /></label>
+                    <label>Son adresse<input name="adresse" defaultValue={proche.adresse} /></label>
+                    <div className="deux">
+                        <label>Code postal<input name="codePostal" defaultValue={proche.codePostal} /></label>
+                        <label>Ville<input name="ville" defaultValue={proche.ville} /></label>
+                    </div>
+                    <Indice icone="pin">L'adresse sert à trouver les jeunes proches de chez {proche.prenom}. Elle n'est jamais affichée aux autres.</Indice>
+                    <Message erreur={erreur} />
+                    <button className="primary" type="submit">Enregistrer les modifications</button>
+                    <button className="secondary" type="button" onClick={() => { setEdition(false); setErreur(""); }}>Annuler</button>
+                </form>
+            ) : proche ? (
                 <>
+                    {info && <div className="notice" role="status">{info}</div>}
                     <div className="detail-box">
                         <span className="mini-eyebrow">MON PROCHE</span>
                         <h2 className="sous-titre">{proche.prenom}</h2>
                         <p>{proche.adresse}, {proche.codePostal} {proche.ville}</p>
                     </div>
+                    <button className="secondary" type="button" onClick={() => { setEdition(true); setInfo(""); }}>Modifier son prénom ou son adresse</button>
                     <Indice icone="pin">Les recherches utilisent l'adresse de {proche.prenom}. Un seul proche par compte pour le moment.</Indice>
                 </>
             ) : (

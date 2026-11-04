@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Avatar, Ecran, Message, Retour } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { ecouterMessages, envoyerMessage, envoyerMessageVocal, lireConversation, lireUtilisateur, marquerLus } from "../services/api";
+import { ecouterMessages, envoyerFichier, envoyerMessage, envoyerMessageVocal, lireConversation, lireUtilisateur, marquerLus } from "../services/api";
 import { ROLES } from "../services/constantes";
 
 const FORMATS = ["audio/webm", "audio/mp4", "audio/ogg"];
@@ -30,6 +30,8 @@ const Conversation = () => {
     const [envoi, setEnvoi] = useState(false);
     const enregistreur = useRef(null);
     const fil = useRef(null);
+    const choixFichier = useRef(null);
+    const [piece, setPiece] = useState(null);
 
     const charger = useCallback(async () => {
         try {
@@ -64,7 +66,9 @@ const Conversation = () => {
         if (envoi) return;
         setEnvoi(true);
         try {
-            await envoyerMessage(utilisateur, autre, texte);
+            if (piece) await envoyerFichier(utilisateur, autre, piece, texte);
+            else await envoyerMessage(utilisateur, autre, texte);
+            setPiece(null);
             setTexte("");
             setErreur("");
             await charger();
@@ -147,6 +151,8 @@ const Conversation = () => {
                             <div className={moi ? "message-bubble mine" : "message-bubble"}>
                                 {m.texte}
                                 {m.audio && <audio controls preload="none" src={m.audio} aria-label="Message vocal" />}
+                                {m.fichier && (m.fichier.type || "").startsWith("image/") && <a href={m.fichier.url} target="_blank" rel="noopener noreferrer" className="chat-image"><img src={m.fichier.url} alt={`Envoyé : ${m.fichier.nom}`} /></a>}
+                                {m.fichier && !(m.fichier.type || "").startsWith("image/") && <a href={m.fichier.url} target="_blank" rel="noopener noreferrer" download={m.fichier.nom} className="chat-fichier"><Icone nom="clip" /><span><strong>{m.fichier.nom}</strong><small>{Math.max(1, Math.round((m.fichier.taille || 0) / 1024))} Ko · Ouvrir</small></span></a>}
                                 <small>{moi ? "Vous" : autre.prenom} · {heure(m.creeAt)}{moi && m.lu ? " · Lu" : ""}</small>
                             </div>
                         </div>
@@ -155,7 +161,15 @@ const Conversation = () => {
             </main>
             <footer className="chat-pied"><form className="chat-saisie" onSubmit={envoyer} noValidate>
                 <Message erreur={erreur} />
+                {piece && (
+                    <div className="chat-piece">
+                        <Icone nom="clip" /><span>{piece.name}</span>
+                        <button type="button" aria-label="Retirer le fichier joint" onClick={() => setPiece(null)}>×</button>
+                    </div>
+                )}
                 <div className="chat-ligne-saisie">
+                    <input ref={choixFichier} type="file" className="sr-only" tabIndex={-1} aria-hidden="true" accept="image/*,.pdf,.doc,.docx,.txt" onChange={(e) => { setPiece(e.target.files[0] || null); e.target.value = ""; }} />
+                    <button type="button" className="chat-joindre" aria-label="Joindre une image ou un fichier" onClick={() => choixFichier.current && choixFichier.current.click()}><Icone nom="clip" /></button>
                     <button type="button" aria-label={enregistre ? "Relâchez pour envoyer" : "Maintenir pour un message vocal"} className={enregistre ? "chat-micro actif" : "chat-micro"} onPointerDown={demarrer} onPointerUp={arreter} onPointerLeave={arreter} onKeyDown={(e) => (e.key === " " || e.key === "Enter") && !e.repeat && demarrer()} onKeyUp={(e) => (e.key === " " || e.key === "Enter") && arreter()} onContextMenu={(e) => e.preventDefault()}>
                         <Icone nom="mic" />
                     </button>
