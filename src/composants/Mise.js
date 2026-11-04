@@ -1,6 +1,7 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { SERVICES } from "../services/constantes";
+import { SERVICES, iconeService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 import { DessinService, Icone } from "./Icones";
+import { useSession } from "./Session";
 
 export const Retour = ({ vers, texte, action }) => {
     const navigate = useNavigate();
@@ -26,21 +27,82 @@ export const Ecran = ({ titre, retour, children, nav = true, surtitre, classe = 
     </div>
 );
 
-export const Navigation = () => (
-    <nav className="bottom-nav" aria-label="Navigation principale">
-        <NavLink to="/accueil"><Icone nom="home" />Accueil</NavLink>
-        <NavLink to="/services"><Icone nom="calendar" />Services</NavLink>
-        <NavLink to="/messages"><Icone nom="message" />Messages</NavLink>
-        <NavLink to="/profil"><Icone nom="user" />Profil</NavLink>
-    </nav>
+export const Navigation = () => {
+    const session = useSession();
+    const estJeune = session && session.utilisateur && session.utilisateur.role === "JEUNE";
+    return (
+        <nav className="bottom-nav nav-5" aria-label="Navigation principale">
+            <NavLink to="/accueil"><Icone nom="home" />Accueil</NavLink>
+            <NavLink to="/services"><Icone nom="calendar" />Services</NavLink>
+            <NavLink to="/recherche" className={({ isActive }) => (isActive ? "nav-centre active" : "nav-centre")} aria-label={estJeune ? "Aider : les besoins près de chez moi" : "Trouver un jeune près de chez moi"}>
+                <span className="nav-centre-rond"><Icone nom={estJeune ? "heart" : "search"} /></span>{estJeune ? "Aider" : "Trouver"}
+            </NavLink>
+            <NavLink to="/messages"><Icone nom="message" />Messages</NavLink>
+            <NavLink to="/profil"><Icone nom="user" />Profil</NavLink>
+        </nav>
+    );
+};
+
+const TEINTES = ["#F6C7A1", "#E8B48A", "#C98B62", "#9A6544", "#F2D0B5"];
+const CHEVEUX = ["#2A2140", "#5A3A26", "#8A5A32", "#C9872E", "#1E1A2B"];
+const FONDS = ["#FFE8B8", "#CFF3EE", "#FFD4CC", "#E7DBFF", "#FDE2C4"];
+const HABITS = ["#1FAF98", "#FF6B5B", "#9B6BFF", "#FFC145", "#3D7DD8"];
+const COUPES = [
+    "M26 40c0-14 9-22 22-22s22 8 22 22c-4-6-10-9-22-9s-18 3-22 9z",
+    "M24 46c-2-18 8-30 24-30s26 12 24 30c-3-10-6-14-8-16-4 4-12 6-22 4-8 2-14 6-18 12z",
+    "M24 52c-4-22 6-36 24-36s28 14 24 36l-4 14c0-12-2-24-4-28-6 4-14 6-20 4-6 2-12 4-16 10l-4 14z"
+];
+
+const graine = (texte) => [...String(texte || "?")].reduce((t, c) => (t * 31 + c.charCodeAt(0)) % 99991, 7);
+
+export const svgAvatar = (personne) => {
+    const g = graine((personne && (personne.id || personne.prenom)) || "?");
+    const age = personne && personne.role === "SENIOR";
+    const teinte = TEINTES[g % 5];
+    const cheveux = age ? (g % 2 ? "#E9E4EE" : "#CFC8D6") : CHEVEUX[(g >> 2) % 5];
+    const lunettes = age ? '<path d="M34 46a6 6 0 1 0 12 0a6 6 0 1 0 -12 0M50 46a6 6 0 1 0 12 0a6 6 0 1 0 -12 0M46 46h4" fill="none" stroke="#2A2140" stroke-width="2"/>' : "";
+    return `<svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg"><rect width="96" height="96" rx="48" fill="${FONDS[(g >> 3) % 5]}"/><path d="M14 96c2-18 16-28 34-28s32 10 34 28z" fill="${HABITS[(g >> 4) % 5]}"/><rect x="41" y="56" width="14" height="14" rx="6" fill="${teinte}"/><ellipse cx="48" cy="44" rx="20" ry="22" fill="${teinte}"/><path d="${COUPES[(g >> 5) % 3]}" fill="${cheveux}"/>${lunettes}<circle cx="40" cy="46" r="2.4" fill="#2A2140"/><circle cx="56" cy="46" r="2.4" fill="#2A2140"/><path d="M41 55q7 6 14 0" fill="none" stroke="#2A2140" stroke-width="2.6" stroke-linecap="round"/><circle cx="34" cy="53" r="3.5" fill="#FF6B5B" opacity=".25"/><circle cx="62" cy="53" r="3.5" fill="#FF6B5B" opacity=".25"/></svg>`;
+};
+
+export const DessinAvatar = ({ personne, classe }) => (
+    <span className={`${classe} avatar-dessin`} aria-hidden="true" dangerouslySetInnerHTML={{ __html: svgAvatar(personne) }} />
 );
 
-export const Avatar = ({ personne, classe = "helper-photo" }) => {
-    const prenom = (personne && personne.prenom) || "?";
-    return personne && personne.photoProfil
+export const Avatar = ({ personne, classe = "helper-photo" }) =>
+    personne && personne.photoProfil
         ? <img className={classe} src={personne.photoProfil} alt="" />
-        : <b className={`${classe} initial-avatar`} aria-hidden="true">{prenom[0]}</b>;
+        : <DessinAvatar personne={personne} classe={classe} />;
+
+export const IconesServices = ({ services = [], max = 4 }) => (
+    <span className="icones-services" aria-hidden="true">
+        {services.slice(0, max).map((c) => <i key={c} title={nomService(c)}><Icone nom={iconeService(c)} /></i>)}
+    </span>
+);
+
+export const CarteJeune = ({ jeune, note, classe = "" }) => {
+    const prochain = (jeune.disponibilites || [])[0];
+    return (
+        <Link to={`/jeunes/${jeune.id}`} className={`carte-profil resultat ${classe}`}>
+            <Avatar personne={jeune} classe="carte-photo" />
+            <span className="carte-corps">
+                <span className="carte-ligne"><strong>{jeune.prenom}</strong>{note ? <span className="carte-note">★ {note}</span> : null}</span>
+                <small>{texteDistance(jeune.distance)} · {(jeune.services || []).map(nomService).join(", ")}</small>
+                <span className="carte-bas">
+                    <IconesServices services={jeune.services} />
+                    {prochain && <em>{texteCreneau(prochain)}</em>}
+                </span>
+            </span>
+            <Icone nom="chevron" />
+        </Link>
+    );
 };
+
+export const PucesServices = ({ actif, choisir, tous = true }) => (
+    <div className="puces-services" role="group" aria-label="Filtrer par service">
+        {tous && <button type="button" aria-pressed={!actif} onClick={() => choisir("")}><Icone nom="sparkles" />Tous</button>}
+        {SERVICES.map((s) => <button key={s.code} type="button" aria-pressed={actif === s.code} onClick={() => choisir(s.code)}><Icone nom={iconeService(s.code)} />{s.nom}</button>)}
+    </div>
+);
 
 export const BanniereService = ({ code }) => {
     const service = SERVICES.find((s) => s.code === code);

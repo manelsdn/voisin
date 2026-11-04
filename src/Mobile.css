@@ -173,3 +173,152 @@
 #vdo .welcome-intro{font-size:16px;line-height:1.5;color:#3d3554;margin:0 0 16px}
 #vdo .welcome-actions{margin-top:0;position:sticky;bottom:0;background:linear-gradient(180deg,rgba(255,248,240,0),var(--paper) 35%);padding:16px 0 6px}
 #vdo .signin-prompt{font-size:14px;text-align:center}
+
+#vdo .nav-5{padding:6px 4px;gap:2px;align-items:flex-end;overflow:visible}
+#vdo .nav-5 a{flex:1;min-width:0;font-size:11px;padding:4px 0}
+#vdo .nav-5 .nav-centre{position:relative;background:none!important;color:#FFC145!important;font-weight:800;padding-top:0}
+#vdo .nav-centre-rond{display:grid;place-items:center;width:56px;height:56px;margin:-26px auto 2px;border-radius:50%!important;background:linear-gradient(135deg,#FFC145,#FF8A65);color:#2A2140;box-shadow:0 10px 22px rgba(255,138,101,.5),0 0 0 5px #2A2140;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+#vdo .nav-centre-rond .icon{width:26px!important;height:26px!important;stroke-width:2.4}
+#vdo .nav-centre:active .nav-centre-rond{transform:scale(.92)}
+#vdo .nav-centre.active .nav-centre-rond{background:#FFFDF8;box-shadow:0 10px 22px rgba(255,193,69,.5),0 0 0 5px #2A2140}
+
+#vdo .avatar-dessin{display:block;background:#FFE8B8}
+
+#vdo .icones-services{display:inline-flex;gap:4px}
+#vdo .icones-services i{display:grid;place-items:center;width:26px;height:26px;border-radius:9px;background:#FFF1D1;color:#8a5a12}
+#vdo .icones-services .icon{width:15px!important;height:15px!important}
+
+#vdo .liste-cartes{display:flex;flex-direction:column;gap:10px}
+#vdo .carte-profil{display:flex;align-items:center;gap:12px;padding:10px 12px;background:#FFFDF8;border-radius:20px!important;box-shadow:0 4px 16px rgba(42,33,64,.08);color:var(--ink);text-decoration:none;min-height:0;transition:transform .15s ease,box-shadow .15s ease}
+#vdo .carte-profil:active{transform:scale(.985)}
+#vdo .carte-profil>.icon{flex:none;width:18px;height:18px;color:#b3a9c4;margin-left:auto}
+#vdo .carte-photo{flex:none;width:64px;height:64px;border-radius:18px!important;object-fit:cover;display:block;overflow:hidden}
+#vdo .carte-corps{flex:1;min-width:0;display:grid;gap:3px}
+#vdo .carte-ligne{display:flex;align-items:center;gap:8px}
+#vdo .carte-ligne strong{font:600 17px/1.2 var(--font-head);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#vdo .carte-note{font:800 12px Nunito;color:#8a5a12;background:#FFE8B8;border-radius:999px;padding:2px 8px}
+#vdo .carte-corps small{font-size:13px!important;color:#5d5574;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0}
+#vdo .carte-bas{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px}
+#vdo .carte-bas em{font-style:normal;font:800 11.5px Nunito;background:#E9FBF7;color:#0b6e5e;border-radius:999px;padding:4px 9px}
+#vdo .carte-texte{font-size:13.5px;line-height:1.35;color:#3d3554;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#vdo .carte-service{position:relative;overflow:visible}
+#vdo .carte-service img{width:100%;height:100%;object-fit:cover;border-radius:18px;display:block}
+#vdo .carte-service i{position:absolute;right:-6px;bottom:-6px;width:28px;height:28px;border-radius:50%;background:#2A2140;color:#FFC145;display:grid;place-items:center;border:3px solid #FFFDF8}
+#vdo .carte-service i .icon{width:14px!important;height:14px!important}
+#vdo .carte-besoin .carte-ligne strong{white-space:normal}
+
+#vdo .carte-publier{display:flex;align-items:center;gap:12px;padding:14px;border:2px dashed #e3d8e4;border-radius:20px!important;color:var(--ink);text-decoration:none;background:transparent}
+#vdo .carte-publier>.icon:first-child{flex:none;width:44px;height:44px;padding:11px;border-radius:14px;background:#FFE8B8;color:#8a5a12}
+#vdo .carte-publier strong{display:block;font:600 16px var(--font-head)}
+#vdo .carte-publier small{display:block;font-size:13px!important;color:#5d5574;margin-top:2px}
+#vdo .carte-publier-haut{margin:6px 0 12px;border-style:solid;border-color:transparent;background:#FFFDF8;box-shadow:0 4px 16px rgba(42,33,64,.08)}
+#vdo .carte-publier-haut>.icon:last-child{margin-left:auto;width:18px;color:#b3a9c4}
+
+#vdo .puces-services{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px 4px}
+#vdo .puces-services::-webkit-scrollbar{display:none}
+#vdo .puces-services button{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:0 13px 0 10px;border:1.5px solid #ede3e8;background:#FFFDF8;border-radius:999px!important;font:800 13.5px Nunito;color:var(--ink);cursor:pointer}
+#vdo .puces-services .icon{width:17px;height:17px;color:#8a5a12}
+#vdo .puces-services button[aria-pressed=true]{background:#2A2140;border-color:#2A2140;color:#fff}
+#vdo .puces-services button[aria-pressed=true] .icon{color:#FFC145}
+#vdo fieldset .puces-services{flex-wrap:wrap;overflow:visible;margin:6px 0 0;padding:0}
+#vdo fieldset{border:0;padding:0;margin:0}
+#vdo legend{font-weight:700;font-size:14px;padding:0;margin-bottom:2px}
+
+#vdo.explorer .corps{display:flex;flex-direction:column}
+#vdo .explorer-haut{position:sticky;top:0;z-index:12;background:rgba(255,248,240,.96);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:12px 16px 8px;display:grid;gap:8px;box-shadow:0 6px 14px -12px rgba(42,33,64,.4)}
+#vdo .explorer-ligne{display:flex;align-items:center;justify-content:space-between;gap:10px}
+#vdo .explorer-titre{margin:0;font:600 21px/1.1 var(--font-head);letter-spacing:-.4px}
+#vdo .explorer-lieu{margin:0;display:flex;align-items:center;gap:5px;font:700 12.5px Nunito;color:#5d5574}
+#vdo .explorer-lieu .icon{width:14px;height:14px;color:#FF6B5B}
+#vdo .bascule-mini{margin:0;padding:3px;gap:2px;flex:none}
+#vdo .bascule-mini button{min-height:34px;padding:0 10px;font-size:12.5px;gap:4px}
+#vdo .bascule-mini .icon{width:15px;height:15px}
+#vdo .explorer .filtres-ligne{margin:0 -16px;align-items:center}
+#vdo .explorer .compte{margin:0 0 0 auto;white-space:nowrap;flex:none;font-size:12px}
+#vdo .explorer .liste-cartes{padding:12px 16px 110px}
+#vdo .explorer-plan{padding:10px 12px 0;flex:1;display:flex;flex-direction:column}
+#vdo .explorer-carte .carte-leaflet{height:calc(100dvh - 300px);min-height:330px;margin:0;border-radius:24px}
+#vdo .explorer .legende-carte{padding:6px 4px 100px}
+#vdo .explorer .vide{margin:16px}
+#vdo .explorer .fab{bottom:96px}
+
+#vdo .squelettes{display:grid;gap:10px;padding:12px 16px}
+#vdo .squelette{display:block;height:84px;border-radius:20px;background:linear-gradient(90deg,#f3ebe6 25%,#fbf6f2 50%,#f3ebe6 75%);background-size:200% 100%;animation:squelette 1.2s linear infinite}
+@keyframes squelette{to{background-position:-200% 0}}
+#vdo .vide{display:grid;justify-items:center;text-align:center;gap:6px;padding:26px 18px;background:#FFFDF8;border-radius:24px;box-shadow:0 4px 16px rgba(42,33,64,.06)}
+#vdo .vide-icone{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:#FFE8B8;color:#8a5a12}
+#vdo .vide strong{font:600 17px var(--font-head)}
+#vdo .vide p{margin:0;font-size:13.5px;color:#5d5574}
+#vdo .vide .secondary{margin-top:8px;width:auto;padding:0 18px}
+#vdo .vide-petit{padding:18px}
+
+#vdo .post-compact{padding:12px;border-radius:20px;box-shadow:0 4px 16px rgba(42,33,64,.08)}
+#vdo .post-compact .post-head{display:flex;align-items:center;gap:12px;padding:0;text-decoration:none;color:var(--ink)}
+#vdo .post-compact .post-head>span{flex:1;min-width:0;display:grid;gap:3px}
+#vdo .post-compact .post-head strong{font:600 17px var(--font-head)}
+#vdo .post-compact .post-head small{font-size:12.5px!important;color:#5d5574}
+#vdo .post-compact .post-tag{align-self:flex-start}
+#vdo .post-compact .post-text{margin:8px 2px 0;font-size:13.5px;-webkit-line-clamp:2}
+#vdo .post-compact .post-actions{padding:6px 0 0}
+#vdo .feed{display:flex;flex-direction:column;gap:10px}
+
+#vdo .besoin-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 2px;font:700 12.5px Nunito;color:#5d5574}
+#vdo .besoin-meta span{display:inline-flex;align-items:center;gap:4px}
+#vdo .besoin-meta .icon{width:14px;height:14px;color:#FF6B5B}
+#vdo .besoin-texte{font-size:15px;line-height:1.5;margin:0 0 6px!important}
+#vdo .section-h{display:flex;align-items:center;gap:8px;font:600 18px var(--font-head);margin:18px 0 8px}
+#vdo .pastille-nb{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 8px;border-radius:999px;background:#FF6B5B;color:#fff;font:800 13px Nunito}
+#vdo .carte-proposition{background:#FFFDF8;border-radius:20px;padding:12px;box-shadow:0 4px 16px rgba(42,33,64,.08)}
+#vdo .carte-proposition header{display:flex;align-items:center;gap:12px}
+#vdo .carte-proposition header strong{display:block;font:600 17px var(--font-head)}
+#vdo .carte-proposition header small{font-size:12px;color:#8a7ba8}
+#vdo .carte-proposition .carte-photo{width:52px;height:52px;border-radius:50%!important}
+#vdo .carte-proposition p{margin:10px 2px;font-size:14px;line-height:1.45;color:#3d3554}
+#vdo .carte-actions{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+#vdo .carte-actions .primary,#vdo .carte-actions .secondary{min-height:42px;font-size:13.5px;padding:0 10px}
+#vdo .confirmation{display:grid;gap:10px;background:#E9FBF7;border-radius:22px;padding:16px;margin-top:12px}
+#vdo .confirmation>div strong{font:600 18px var(--font-head)}
+#vdo .confirmation>div p{margin:4px 0 0;font-size:13.5px;color:#3d3554}
+#vdo .ok-rond{width:44px;height:44px;border-radius:50%;background:#1FAF98;color:#fff;display:grid;place-items:center}
+
+#vdo .fab{bottom:96px}
+@media(max-width:360px){
+  #vdo .nav-5 a{font-size:10px}
+  #vdo .nav-centre-rond{width:50px;height:50px}
+  #vdo .carte-photo{width:56px;height:56px}
+  #vdo .carte-actions{grid-template-columns:1fr}
+  #vdo .bascule-mini button{padding:0 8px}
+}
+@media(prefers-reduced-motion:reduce){#vdo .squelette{animation:none}}
+#vdo .explorer-titre{font-size:19px;white-space:nowrap}
+#vdo .bascule-mini button{width:42px;padding:0;justify-content:center}
+#vdo .bascule-mini .icon{width:18px;height:18px;margin:0}
+#vdo .explorer-lieu{justify-content:flex-start}
+#vdo .explorer-lieu span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+#vdo .explorer-lieu .compte{margin:0 0 0 auto;padding-left:8px;flex:none;font:800 12px Nunito;color:#0e7f6d}
+#vdo .explorer .filtres-ligne{margin:0 -16px;padding:0 16px}
+#vdo .carte-profil{padding:9px 10px;gap:11px}
+#vdo .carte-photo{width:56px;height:56px;border-radius:16px!important}
+#vdo .carte-corps{gap:2px}
+#vdo .carte-bas{flex-wrap:nowrap;overflow:hidden}
+#vdo .carte-bas em{white-space:nowrap;font-size:11px;padding:3px 8px}
+#vdo .icones-services i{width:22px;height:22px;border-radius:7px}
+#vdo .icones-services .icon{width:13px!important;height:13px!important}
+#vdo .avatar-dessin svg{display:block;width:100%;height:100%}
+#vdo .fab-rond{width:56px;height:56px;padding:0;justify-content:center;border-radius:50%!important}
+#vdo .fab-rond .icon{width:26px;height:26px}
+#vdo .carte-besoin .carte-texte{-webkit-line-clamp:1}
+.vdo .pin-jeune svg{width:100%;height:100%;display:block}
+#vdo .post-compact .post-head>.carte-photo{flex:0 0 56px;width:56px;height:56px}
+#vdo .dictee{display:grid;gap:6px}
+#vdo .dictee-bouton{display:flex;align-items:center;gap:12px;width:100%;min-height:58px;padding:8px 16px 8px 8px;border:2px dashed #FFC145;border-radius:18px!important;background:#FFF8EC;color:var(--ink);font:800 15.5px Nunito;text-align:left;cursor:pointer;transition:background .2s,border-color .2s}
+#vdo .dictee-micro{flex:none;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#FF6B5B;color:#fff;box-shadow:0 6px 14px rgba(255,107,91,.35)}
+#vdo .dictee-micro .icon{width:22px;height:22px}
+#vdo .dictee-bouton.actif{border-style:solid;border-color:#FF6B5B;background:#FFEDEA}
+#vdo .dictee-bouton.actif .dictee-micro{animation:dictee-pulse 1.2s ease-out infinite}
+@keyframes dictee-pulse{0%{box-shadow:0 0 0 0 rgba(255,107,91,.55)}100%{box-shadow:0 0 0 16px rgba(255,107,91,0)}}
+#vdo .dictee-provisoire{margin:0;padding:8px 12px;border-radius:12px;background:#FFFDF8;color:#5d5574;font:italic 600 14px Nunito}
+#vdo .dictee-erreur{margin:0;color:#b4382b;font:700 13.5px Nunito}
+#vdo .devine{display:flex;gap:8px;align-items:flex-start;margin:0;padding:10px 12px;border-radius:14px;background:#E7F7F3;color:#1d5f53;font:600 13.5px/1.4 Nunito}
+#vdo .devine .icon{flex:none;width:18px;height:18px;margin-top:1px;color:#1FAF98}
+@media (prefers-reduced-motion:reduce){#vdo .dictee-bouton.actif .dictee-micro{animation:none}}

@@ -37,3 +37,19 @@ export const nomService = (code) => (SERVICES.find((s) => s.code === code) || { 
 export const texteCreneau = (c) => c ? `${NOMS_JOURS[c.jour]} ${c.heureDebut}-${c.heureFin}` : "";
 
 export const texteDistance = (km) => km === null || km === undefined ? "" : km < 1 ? `${Math.round(km * 1000)} m` : `${km.toFixed(1).replace(".", ",")} km`;
+
+export const ICONES_SERVICES = { COURSES: "bag", MENAGE: "clean", BRICOLAGE: "tool", INFORMATIQUE: "laptop", JARDINAGE: "leaf", CUISINE: "pot" };
+
+export const iconeService = (code) => ICONES_SERVICES[code] || "heart";
+
+export const STATUTS_BESOIN = { OUVERTE: "Ouverte", POURVUE: "Pourvue", FERMEE: "Fermée" };
+
+export const depuis = (iso) => {
+    if (!iso) return "";
+    const minutes = Math.max(1, Math.round((Date.now() - new Date(iso)) / 60000));
+    if (minutes < 60) return `il y a ${minutes} min`;
+    const heures = Math.round(minutes / 60);
+    if (heures < 24) return `il y a ${heures} h`;
+    const jours = Math.round(heures / 24);
+    return jours === 1 ? "hier" : `il y a ${jours} jours`;
+};

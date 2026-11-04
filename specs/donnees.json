@@ -227,7 +227,7 @@
         }
       ],
       "annoncePubliee": true,
-      "photoProfil": "",
+      "photoProfil": "/assets/avatars/chloe.jpg",
       "accompagnantId": null,
       "creeAt": "2026-09-15T10:00:00.000Z"
     },
@@ -407,7 +407,7 @@
         }
       ],
       "annoncePubliee": true,
-      "photoProfil": "",
+      "photoProfil": "/assets/avatars/louis.jpg",
       "accompagnantId": null,
       "creeAt": "2026-09-27T10:00:00.000Z"
     },
@@ -543,7 +543,7 @@
         }
       ],
       "annoncePubliee": true,
-      "photoProfil": "",
+      "photoProfil": "/assets/avatars/theo.jpg",
       "accompagnantId": null,
       "creeAt": "2026-09-24T10:00:00.000Z"
     },
@@ -718,7 +718,7 @@
         }
       ],
       "annoncePubliee": true,
-      "photoProfil": "",
+      "photoProfil": "/assets/avatars/lina.jpg",
       "accompagnantId": null,
       "creeAt": "2026-09-22T10:00:00.000Z"
     },
@@ -755,7 +755,7 @@
         }
       ],
       "annoncePubliee": true,
-      "photoProfil": "",
+      "photoProfil": "/assets/avatars/tom.jpg",
       "accompagnantId": null,
       "creeAt": "2026-09-22T10:00:00.000Z"
     },
@@ -798,7 +798,7 @@
         }
       ],
       "annoncePubliee": true,
-      "photoProfil": "",
+      "photoProfil": "/assets/avatars/alice.jpg",
       "accompagnantId": null,
       "creeAt": "2026-09-26T10:00:00.000Z"
     },
@@ -950,7 +950,7 @@
         }
       ],
       "annoncePubliee": true,
-      "photoProfil": "",
+      "photoProfil": "/assets/avatars/anais.jpg",
       "accompagnantId": null,
       "creeAt": "2026-09-23T10:00:00.000Z"
     },
@@ -1070,7 +1070,7 @@
         }
       ],
       "annoncePubliee": true,
-      "photoProfil": "",
+      "photoProfil": "/assets/avatars/maxime.jpg",
       "accompagnantId": null,
       "creeAt": "2026-09-10T10:00:00.000Z"
     },
@@ -1283,7 +1283,7 @@
         }
       ],
       "annoncePubliee": true,
-      "photoProfil": "",
+      "photoProfil": "/assets/avatars/axel.jpg",
       "accompagnantId": null,
       "creeAt": "2026-09-16T10:00:00.000Z"
     },
@@ -2078,5 +2078,118 @@
       "telephoneDemandeur": "06 10 51 53 60",
       "creeAt": "2026-09-26T15:00:00.000Z"
     }
-  }
+  },
+  "besoins": {
+    "besoin-01": {
+      "auteurId": "proche-01",
+      "auteurPrenom": "Camille",
+      "beneficiaireId": "senior-01",
+      "beneficiairePrenom": "Madeleine",
+      "beneficiairePhoto": "/assets/personas/madeleine.png",
+      "ville": "Lyon",
+      "latitude": 45.756,
+      "longitude": 4.852,
+      "service": "JARDINAGE",
+      "creneau": {
+        "jour": "SAMEDI",
+        "heureDebut": "14:00",
+        "heureFin": "16:00"
+      },
+      "description": "Tailler les rosiers du balcon de Madeleine et rempoter deux plantes.",
+      "statut": "OUVERTE",
+      "creeAt": "2026-11-04T06:00:00Z"
+    },
+    "besoin-02": {
+      "auteurId": "proche-02",
+      "auteurPrenom": "Sophie",
+      "beneficiaireId": "senior-02",
+      "beneficiairePrenom": "Jeanne",
+      "beneficiairePhoto": "",
+      "ville": "Lyon",
+      "latitude": 45.756,
+      "longitude": 4.84,
+      "service": "INFORMATIQUE",
+      "creneau": {
+        "jour": "MERCREDI",
+        "heureDebut": "15:00",
+        "heureFin": "16:30"
+      },
+      "description": "Aider Jeanne à faire des appels vidéo avec ses petits-enfants sur sa tablette.",
+      "statut": "OUVERTE",
+      "creeAt": "2026-11-03T13:00:00Z"
+    },
+    "besoin-03": {
+      "auteurId": "senior-09",
+      "auteurPrenom": "Henri",
+      "beneficiaireId": "senior-09",
+      "beneficiairePrenom": "Henri",
+      "beneficiairePhoto": "",
+      "ville": "Lyon",
+      "latitude": 45.758,
+      "longitude": 4.846,
+      "service": "COURSES",
+      "creneau": {
+        "jour": "DIMANCHE",
+        "heureDebut": "09:00",
+        "heureFin": "10:30"
+      },
+      "description": "Porter les courses du marché, environ 30 minutes de marche aller-retour.",
+      "statut": "OUVERTE",
+      "creeAt": "2026-11-04T04:00:00Z"
+    },
+    "besoin-04": {
+      "auteurId": "senior-10",
+      "auteurPrenom": "Odette",
+      "beneficiaireId": "senior-10",
+      "beneficiairePrenom": "Odette",
+      "beneficiairePhoto": "",
+      "ville": "Lyon",
+      "latitude": 45.743,
+      "longitude": 4.842,
+      "service": "BRICOLAGE",
+      "creneau": null,
+      "description": "Fixer une étagère et changer une ampoule au plafond.",
+      "statut": "OUVERTE",
+      "creeAt": "2026-11-03T03:00:00Z"
+    },
+    "besoin-05": {
+      "auteurId": "proche-03",
+      "auteurPrenom": "Karim",
+      "beneficiaireId": "senior-03",
+      "beneficiairePrenom": "Fatima",
+      "beneficiairePhoto": "",
+      "ville": "Lyon",
+      "latitude": 45.764,
+      "longitude": 4.849,
+      "service": "CUISINE",
+      "creneau": {
+        "jour": "VENDREDI",
+        "heureDebut": "11:00",
+        "heureFin": "13:00"
+      },
+      "description": "Préparer un repas simple avec Fatima et lui montrer une recette de soupe.",
+      "statut": "OUVERTE",
+      "creeAt": "2026-11-02T07:00:00Z"
+    },
+    "besoin-06": {
+      "auteurId": "senior-11",
+      "auteurPrenom": "Paulette",
+      "beneficiaireId": "senior-11",
+      "beneficiairePrenom": "Paulette",
+      "beneficiairePhoto": "",
+      "ville": "Lyon",
+      "latitude": 45.752,
+      "longitude": 4.848,
+      "service": "MENAGE",
+      "creneau": {
+        "jour": "JEUDI",
+        "heureDebut": "10:00",
+        "heureFin": "12:00"
+      },
+      "description": "Un petit coup de propre dans la cuisine avant la visite de ma famille.",
+      "statut": "OUVERTE",
+      "creeAt": "2026-11-04T01:00:00Z"
+    }
+  },
+  "propositions": {}
 }

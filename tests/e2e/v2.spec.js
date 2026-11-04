@@ -19,7 +19,7 @@ test("V2 · Fil du quartier : les annonces publiées s'affichent et se filtrent 
     await page.getByRole("link", { name: /Le fil/ }).first().click();
     await expect(page.getByRole("heading", { name: /Le fil/ })).toBeVisible();
     await expect(page.locator(".post").first()).toBeVisible();
-    await page.getByRole("link", { name: "Jardinage" }).click();
+    await page.getByRole("list", { name: "Services" }).getByRole("link", { name: "Jardinage" }).click();
     await expect(page).toHaveURL(/service=JARDINAGE/);
     await expect(page.locator(".post-tag").first()).toHaveText("Jardinage");
     for (const t of await page.locator(".post-tag").allTextContents()) expect(t).toBe("Jardinage");

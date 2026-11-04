@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import { nomService, texteDistance } from "../services/constantes";
+import { svgAvatar } from "../composants/Mise";
 
 const echapper = (t) => String(t || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -13,7 +14,12 @@ export const positionFloue = (personne) => {
     return [personne.latitude + dLat, personne.longitude + dLon];
 };
 
-const CarteJeunes = ({ centre, jeunes, rayon, ouvrir }) => {
+const LIEN = (j) => `/jeunes/${j.id}`;
+const TITRE = (j) => j.prenom;
+const DETAIL = (j) => `${texteDistance(j.distance)} · ${(j.services || []).map(nomService).join(", ")}`;
+const IMAGE = (j) => j.photoProfil;
+
+const CarteJeunes = ({ centre, jeunes, rayon, ouvrir, lienVers = LIEN, titre = TITRE, detail = DETAIL, image = IMAGE, bouton = "Voir son profil", region = "Carte des jeunes disponibles" }) => {
     const zone = useRef(null);
     const carte = useRef(null);
     const couche = useRef(null);
@@ -45,26 +51,27 @@ const CarteJeunes = ({ centre, jeunes, rayon, ouvrir }) => {
             if (j.latitude == null) return;
             const p = positionFloue(j);
             points.push(p);
-            const contenu = j.photoProfil ? `<img src="${echapper(j.photoProfil)}" alt="">` : echapper((j.prenom || "?")[0]);
-            const marqueur = L.marker(p, { icon: L.divIcon({ className: "", html: `<span class="pin-jeune">${contenu}</span>`, iconSize: [38, 38], iconAnchor: [19, 19] }), title: j.prenom });
+            const img = image(j);
+            const contenu = img ? `<img src="${echapper(img)}" alt="">` : svgAvatar(j);
+            const marqueur = L.marker(p, { icon: L.divIcon({ className: "", html: `<span class="pin-jeune">${contenu}</span>`, iconSize: [38, 38], iconAnchor: [19, 19] }), title: titre(j) });
             const bulle = document.createElement("div");
             bulle.className = "bulle-carte";
-            bulle.innerHTML = `<strong>${echapper(j.prenom)}</strong><small>${echapper(texteDistance(j.distance))} · ${echapper((j.services || []).map(nomService).join(", "))}</small>`;
-            const lien = document.createElement("a");
-            lien.href = `/jeunes/${j.id}`;
-            lien.textContent = "Voir son profil";
-            lien.addEventListener("click", (e) => {
+            bulle.innerHTML = `<strong>${echapper(titre(j))}</strong><small>${echapper(detail(j))}</small>`;
+            const ancre = document.createElement("a");
+            ancre.href = lienVers(j);
+            ancre.textContent = bouton;
+            ancre.addEventListener("click", (e) => {
                 e.preventDefault();
-                ouvrir(j.id);
+                ouvrir(lienVers(j));
             });
-            bulle.appendChild(lien);
+            bulle.appendChild(ancre);
             marqueur.bindPopup(bulle).addTo(couche.current);
         });
         if (points.length > 1) c.fitBounds(L.latLngBounds(points), { padding: [30, 30], maxZoom: 16 });
         else c.setView(moi, 14);
-    }, [centre, jeunes, rayon, ouvrir]);
+    }, [centre, jeunes, rayon, ouvrir, lienVers, titre, detail, image, bouton]);
 
-    return <div className="carte-leaflet" ref={zone} role="region" aria-label="Carte des jeunes disponibles"></div>;
+    return <div className="carte-leaflet" ref={zone} role="region" aria-label={region}></div>;
 };
 
 export default CarteJeunes;

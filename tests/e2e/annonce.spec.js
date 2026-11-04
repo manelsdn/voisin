@@ -43,7 +43,7 @@ test("US08 US09 US10 · Annonce : un nouveau jeune publie et apparaît dans la r
     await deconnecter(page);
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/recherche");
-    await page.getByLabel("Service").selectOption("JARDINAGE");
+    await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Jardinage" }).click();
     await page.getByLabel("Disponibilité").selectOption("DIMANCHE");
     await expect(page.getByRole("link", { name: /Zinedine/ })).toBeVisible();
 });

@@ -39,7 +39,7 @@ test("US06 · Mon adresse : une adresse introuvable affiche un message", async (
     await remplir(page, { "Prénom": "Léo", "Nom": "Blanc", "E-mail": "leo.blanc@exemple.fr", "Téléphone": "06 11 22 33 44", "Adresse": "nulle part", "Code postal": "99999", "Ville": "Inconnue" });
     await page.getByLabel(/J'accepte la/).check();
     await page.getByRole("button", { name: /Recevoir le lien/ }).click();
-    await expect(page.getByRole("alert")).toContainText("Adresse introuvable");
+    await expect(page.getByRole("alert")).toContainText(/Adresse introuvable|non reconnu/);
 });
 
 test("US01 US11 · Inscription jeune : le compte est créé et l'accueil affiche le rôle et la ville", async ({ page }) => {

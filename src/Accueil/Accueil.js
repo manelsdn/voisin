@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { Astuce, Avatar, CartesServices, Navigation } from "../composants/Mise";
+import { Astuce, Avatar, CarteJeune, CartesServices, Navigation } from "../composants/Mise";
+import { CarteBesoin } from "../Recherche/Recherche";
 import { Icone } from "../composants/Icones";
-import { mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
+import { besoinsProches, mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
 import { ROLES, STATUTS, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
 const CarteQuartier = ({ ville }) => (
@@ -18,6 +19,7 @@ const Accueil = () => {
     const { utilisateur } = useSession();
     const [proche, setProche] = useState(null);
     const [suggestions, setSuggestions] = useState(null);
+    const [besoins, setBesoins] = useState(null);
     const estJeune = utilisateur.role === "JEUNE";
     const ville = (proche && proche.ville) || utilisateur.ville;
 
@@ -26,6 +28,7 @@ const Accueil = () => {
             if (estJeune) {
                 const demandes = await mesDemandes(utilisateur);
                 setSuggestions(demandes.filter((d) => d.statut === "ENVOYEE"));
+                setBesoins((await besoinsProches(utilisateur, { rayon: 5 }).catch(() => [])).slice(0, 3));
             } else {
                 const { personne, position } = await pointDeRecherche(utilisateur);
                 if (personne.id !== utilisateur.id) setProche(personne);
@@ -105,24 +108,25 @@ const Accueil = () => {
                                 <Icone nom="chevron" />
                             </Link>
                         ))}
-                        {suggestions && !estJeune && suggestions.map((j) => (
-                            <Link key={j.id} to={`/jeunes/${j.id}`} className="helper-card helper-card-rich">
-                                <Avatar personne={j} />
-                                <span>
-                                    <strong>{j.prenom} <small className="inline">· {texteDistance(j.distance)}</small></strong>
-                                    <small>{(j.services || []).map(nomService).join(" · ")}</small>
-                                    <span className="slot-row">{(j.disponibilites || []).slice(0, 1).map((c) => <em key={c.id}>{texteCreneau(c)}</em>)}</span>
-                                </span>
-                                <Icone nom="chevron" />
-                            </Link>
-                        ))}
+                        {suggestions && !estJeune && suggestions.map((j) => <CarteJeune key={j.id} jeune={j} />)}
                     </div>
+                    {estJeune && (
+                        <>
+                            <div className="section-title">
+                                <h3>Besoins près de vous</h3>
+                                <Link className="see-all" to="/recherche">Tout voir<Icone nom="chevron" /></Link>
+                            </div>
+                            {besoins === null && <p className="soft">Chargement…</p>}
+                            {besoins && besoins.length === 0 && <div className="notice">Aucun besoin publié près de chez vous pour le moment.</div>}
+                            <div className="liste-cartes">{besoins && besoins.map((b) => <CarteBesoin key={b.id} besoin={b} />)}</div>
+                        </>
+                    )}
                     <Astuce>Pourboire libre, directement entre vous.</Astuce>
                 </div>
             </div>
             {estJeune
                 ? <Link className="fab" to="/annonce"><Icone nom="sparkles" /><span>{utilisateur.annoncePubliee ? "Modifier mon annonce" : "Publier mon annonce"}</span></Link>
-                : <Link className="fab" to="/recherche"><Icone nom="users" /><span>Trouver de l'aide</span></Link>}
+                : <Link className="fab" to="/besoins/nouveau"><Icone nom="plus" /><span>Publier un besoin</span></Link>}
             <Navigation />
         </div>
     );

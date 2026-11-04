@@ -26,6 +26,9 @@ import Conversation from "./Messages/Conversation";
 import Fil from "./Fil/Fil";
 import Charte from "./Profil/Charte";
 import ChangerRole from "./Profil/ChangerRole";
+import NouveauBesoin from "./Besoins/NouveauBesoin";
+import DetailBesoin from "./Besoins/DetailBesoin";
+import MesBesoins from "./Besoins/MesBesoins";
 
 const Protege = ({ children }) => {
     const { chargement, uid, utilisateur } = useSession();
@@ -69,6 +72,9 @@ function App() {
                         <Route path="/messages" element={p(<Messages />)} />
                         <Route path="/messages/:id" element={p(<Conversation />)} />
                         <Route path="/fil" element={p(<Fil />)} />
+                        <Route path="/besoins" element={p(<MesBesoins />)} />
+                        <Route path="/besoins/nouveau" element={p(<NouveauBesoin />)} />
+                        <Route path="/besoins/:id" element={p(<DetailBesoin />)} />
                         <Route path="/charte" element={<Charte />} />
                         <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>

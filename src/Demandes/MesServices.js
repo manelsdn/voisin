@@ -22,6 +22,7 @@ const MesServices = () => {
     return (
         <Ecran titre={<>Les liens <br />qui se préparent.</>}>
             <p className="soft">{estJeune ? "Les demandes reçues." : "Vos demandes envoyées."}</p>
+            {!estJeune && <Link className="carte-publier carte-publier-haut" to="/besoins"><Icone nom="list" /><span><strong>Mes annonces d’aide</strong><small>Les besoins publiés et les jeunes qui proposent leur aide.</small></span><Icone nom="chevron" /></Link>}
             {demandes && demandes.length > 0 && (
                 <div className="onglets" role="tablist" aria-label="Mes services">
                     <button type="button" role="tab" aria-selected={onglet === "avenir"} onClick={() => setOnglet("avenir")}>À venir</button>

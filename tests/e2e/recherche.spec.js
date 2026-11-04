@@ -26,7 +26,7 @@ test("US15 · Recherche : le filtre service ne garde que les jeunes qui le propo
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/recherche");
     await page.getByLabel("Distance").selectOption("5");
-    await page.getByLabel("Service").selectOption("COURSES");
+    await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Courses" }).click();
     await expect(page.locator(".resultat").first()).toBeVisible();
     for (const t of await page.locator(".resultat small").allTextContents()) expect(t).toContain("Courses");
 });
@@ -48,10 +48,10 @@ test("US15 · Recherche : un message s'affiche quand il n'y a aucun résultat", 
 test("US15 · Recherche : les filtres restent choisis quand on revient", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/recherche");
-    await page.getByLabel("Service").selectOption("INFORMATIQUE");
+    await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Informatique" }).click();
     await page.goto("/accueil");
     await page.goto("/recherche");
-    await expect(page.getByLabel("Service")).toHaveValue("INFORMATIQUE");
+    await expect(page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Informatique" })).toHaveAttribute("aria-pressed", "true");
 });
 
 test("US16 · Profil d'un jeune : services, distance et créneaux visibles, sans téléphone", async ({ page }) => {

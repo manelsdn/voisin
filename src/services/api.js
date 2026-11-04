@@ -311,3 +311,71 @@ export const changerRole = async (utilisateur, role) => {
     if (utilisateur.role === "JEUNE") changements.annoncePubliee = false;
     await s.ecrire("users", utilisateur.id, changements);
 };
+
+const arrondi = (x) => (x == null ? null : Math.round(x * 1000) / 1000);
+
+export const publierBesoin = async (utilisateur, { service, jour, heureDebut, heureFin, description }) => {
+    if (!service) throw new Error("Choisissez le service dont vous avez besoin.");
+    const texte = (description || "").trim();
+    if (!texte) throw new Error("Décrivez votre besoin en quelques mots.");
+    if (texte.length > 300) throw new Error("La description fait 300 caractères maximum.");
+    if (jour && heureDebut && heureFin && heureFin <= heureDebut) throw new Error("L'heure de fin doit être après l'heure de début.");
+    const { personne } = await pointDeRecherche(utilisateur);
+    return s.ajouter("besoins", {
+        auteurId: utilisateur.id,
+        auteurPrenom: utilisateur.prenom,
+        beneficiaireId: personne.id,
+        beneficiairePrenom: personne.prenom,
+        beneficiairePhoto: personne.photoProfil || "",
+        ville: personne.ville || "",
+        latitude: arrondi(personne.latitude),
+        longitude: arrondi(personne.longitude),
+        service,
+        creneau: jour ? { jour, heureDebut: heureDebut || "", heureFin: heureFin || "" } : null,
+        description: texte,
+        statut: "OUVERTE",
+        creeAt: new Date().toISOString()
+    });
+};
+
+export const lireBesoin = (id) => s.lire("besoins", id);
+
+export const besoinsProches = async (position, { service = "", rayon = 2 } = {}) =>
+    (await s.chercher("besoins", "statut", "OUVERTE"))
+        .map((b) => ({ ...b, distance: distanceKm(position, b) }))
+        .filter((b) => !service || b.service === service)
+        .filter((b) => b.distance !== null && b.distance <= rayon)
+        .sort((a, b) => a.distance - b.distance);
+
+export const mesBesoins = async (utilisateur) =>
+    (await s.chercher("besoins", "auteurId", utilisateur.id)).sort((a, b) => (b.creeAt || "").localeCompare(a.creeAt || ""));
+
+export const propositionsDuBesoin = async (besoinId) =>
+    (await s.chercher("propositions", "besoinId", besoinId)).sort((a, b) => (a.creeAt || "").localeCompare(b.creeAt || ""));
+
+export const maProposition = (besoinId, jeuneId) => s.lire("propositions", `${besoinId}_${jeuneId}`);
+
+export const proposerAide = async (besoin, jeune, message) => {
+    if (jeune.role !== "JEUNE") throw new Error("Seuls les jeunes volontaires peuvent proposer leur aide.");
+    if (besoin.statut !== "OUVERTE") throw new Error("Cette annonce n'est plus ouverte.");
+    if (await maProposition(besoin.id, jeune.id)) throw new Error("Vous avez déjà proposé votre aide.");
+    const texte = (message || "").trim() || `Bonjour, je peux vous aider pour ${nomServiceTexte(besoin.service)}.`;
+    if (texte.length > 300) throw new Error("Le message fait 300 caractères maximum.");
+    await s.ecrire("propositions", `${besoin.id}_${jeune.id}`, {
+        besoinId: besoin.id,
+        auteurId: besoin.auteurId,
+        jeuneId: jeune.id,
+        jeunePrenom: jeune.prenom,
+        jeunePhoto: jeune.photoProfil || "",
+        message: texte,
+        creeAt: new Date().toISOString()
+    });
+    await envoyerMessage(jeune, { id: besoin.auteurId, prenom: besoin.auteurPrenom }, `${texte} (annonce : ${nomServiceTexte(besoin.service)})`);
+};
+
+export const changerStatutBesoin = async (besoin, utilisateur, statut, jeuneId) => {
+    if (besoin.auteurId !== utilisateur.id) throw new Error("Seul l'auteur peut modifier cette annonce.");
+    await s.ecrire("besoins", besoin.id, { statut, ...(jeuneId ? { jeuneId } : {}), modifieAt: new Date().toISOString() });
+};
+
+const nomServiceTexte = (code) => ((SERVICES.find((x) => x.code === code) || { nom: code }).nom || "").toLowerCase();

@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { Avatar, CartesServices, Ecran } from "../composants/Mise";
+import { Avatar, CartesServices, Ecran, IconesServices } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { basculerFavori, mesFavoris, pointDeRecherche, rechercherJeunes } from "../services/api";
-import { ROLES, nomService, texteCreneau, texteDistance } from "../services/constantes";
-
-const IMAGES_FIL = {
-    "jeune-01": "lucas", "jeune-02": "ines", "jeune-03": "adam", "jeune-26": "anais", "jeune-06": "chloe", "jeune-20": "lina",
-    "jeune-35": "axel", "jeune-15": "theo", "jeune-11": "louis", "jeune-21": "tom", "jeune-29": "maxime", "jeune-22": "alice"
-};
-
-const imagePublication = (jeune) => `/assets/fil/${IMAGES_FIL[jeune.id]}.jpg`;
+import { nomService, texteCreneau, texteDistance } from "../services/constantes";
 
 const Fil = () => {
     const { utilisateur } = useSession();
@@ -23,7 +16,7 @@ const Fil = () => {
     useEffect(() => {
         const charger = async () => {
             const { position } = await pointDeRecherche(utilisateur);
-            setJeunes((await rechercherJeunes(position, { rayon: 5, service })).filter((j) => j.id !== utilisateur.id && IMAGES_FIL[j.id]));
+            setJeunes((await rechercherJeunes(position, { rayon: 5, service })).filter((j) => j.id !== utilisateur.id));
             setAimes(await mesFavoris(utilisateur).catch(() => []));
         };
         charger();
@@ -36,24 +29,24 @@ const Fil = () => {
 
     return (
         <Ecran titre={<>Le fil <br />du quartier</>} retour="/accueil" classe="services-page feed-page">
-            <p className="soft">Les annonces des jeunes, du plus proche au plus loin.</p>
+            <p className="soft">Les jeunes du quartier et ce qu’ils proposent, du plus proche au plus loin.</p>
             <CartesServices tous actif={service} lien={(code) => (code ? `/fil?service=${code}` : "/fil")} />
             <div className="feed">
                 {jeunes === null && <p className="soft">Chargement…</p>}
                 {jeunes && jeunes.length === 0 && <p className="soft">Pas encore de publication pour ce service.</p>}
                 {jeunes && jeunes.map((j) => {
                     const principal = service || (j.services || [])[0];
+                    const aime = aimes.includes(j.id);
                     return (
-                        <article className="post" key={j.id}>
-                            <header className="post-head">
-                                <Avatar personne={j} classe="post-avatar" />
-                                <span><strong>{j.prenom}</strong><small>{ROLES.JEUNE} · {texteDistance(j.distance)}{j.disponibilites && j.disponibilites[0] ? ` · ${texteCreneau(j.disponibilites[0])}` : ""}</small></span>
+                        <article className="post post-compact" key={j.id}>
+                            <Link className="post-head" to={`/jeunes/${j.id}`}>
+                                <Avatar personne={j} classe="carte-photo" />
+                                <span><strong>{j.prenom}</strong><small>{texteDistance(j.distance)}{j.disponibilites && j.disponibilites[0] ? ` · ${texteCreneau(j.disponibilites[0])}` : ""}</small><IconesServices services={j.services} /></span>
                                 <em className="post-tag">{nomService(principal)}</em>
-                            </header>
-                            <img className="post-img" src={imagePublication(j)} alt={`${j.prenom} propose son aide`} loading="lazy" />
-                            <p className="post-text"><strong>{j.prenom}</strong> {j.description || `Je propose un coup de main : ${(j.services || []).map(nomService).join(", ").toLowerCase()}.`}</p>
+                            </Link>
+                            <p className="post-text">{j.description || `Je propose un coup de main : ${(j.services || []).map(nomService).join(", ").toLowerCase()}.`}</p>
                             <div className="post-actions">
-                                <button type="button" className={aimes.includes(j.id) ? "post-act liked" : "post-act"} aria-pressed={aimes.includes(j.id)} aria-label={aimes.includes(j.id) ? `Retirer ${j.prenom} de mes favoris` : `Ajouter ${j.prenom} à mes favoris`} onClick={() => aimer(j.id)}><Icone nom="heart" /></button>
+                                <button type="button" className={aime ? "post-act liked" : "post-act"} aria-pressed={aime} aria-label={aime ? `Retirer ${j.prenom} de mes favoris` : `Ajouter ${j.prenom} à mes favoris`} onClick={() => aimer(j.id)}><Icone nom="heart" /></button>
                                 <Link className="post-act" to={`/messages/${j.id}`} aria-label={`Écrire à ${j.prenom}`}><Icone nom="message" /></Link>
                                 <Link className="post-cta" to={`/jeunes/${j.id}`}>Voir ses créneaux<Icone nom="arrow" /></Link>
                             </div>
