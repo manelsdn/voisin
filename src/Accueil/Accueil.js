@@ -46,7 +46,7 @@ const Accueil = () => {
                 <div className="home-content">
                     <div className="bonjour-ligne"><span className="greeting">Bonjour {utilisateur.prenom}</span><span className="role-badge">{ROLES[utilisateur.role]}</span></div>
 
-                    <section className={estJeune ? "vitrine-hero hero-large" : "vitrine-hero hero-portrait"}>
+                    <section className={estJeune ? "vitrine-hero hero-haut hero-jeune" : "vitrine-hero hero-haut"}>
                         <img src={estJeune ? "/assets/presentation/ensemble.jpg" : "/assets/presentation/accueil.jpg"} alt="" />
                         <div className="vitrine-voile">
                             <h1>{estJeune ? <>Un coup de main,<br />un sourire en retour.</> : <>Petits services,<br />grands liens.</>}</h1>
@@ -105,9 +105,9 @@ const Accueil = () => {
                             {estJeune
                                 ? une.map((b) => (
                                     <div key={b.id} role="listitem"><Link className="carte-une" to={`/besoins/${b.id}`}>
-                                        <span className="carte-une-image"><img src={imageService(b.service)} alt="" /><em>{texteDistance(b.distance)}</em></span>
-                                        <strong>{nomService(b.service)} pour {b.beneficiairePrenom}</strong>
-                                        <small>{b.creneau ? texteCreneau(b.creneau) : "Quand vous voulez"}</small>
+                                        <span className="carte-une-image"><img src={`/assets/services/plein/${b.service.toLowerCase()}.jpg`} alt="" /><em>{texteDistance(b.distance)}</em></span>
+                                        <strong>{b.beneficiairePrenom}</strong>
+                                        <small>{nomService(b.service)} · {b.creneau ? texteCreneau(b.creneau) : "quand vous voulez"}</small>
                                     </Link></div>
                                 ))
                                 : une.map((j) => (

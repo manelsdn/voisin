@@ -110,7 +110,7 @@ test("Accueil : première impression avec services et jeunes à la une", async (
     await expect(page.getByText("Comment ça marche")).toHaveCount(0);
     await deconnecter(page);
     await connecter(page, "lucas.martin@exemple.fr");
-    await expect(page.getByRole("list", { name: "Besoins à la une" })).toContainText("Jardinage pour Madeleine");
+    await expect(page.getByRole("list", { name: "Besoins à la une" })).toContainText("Madeleine");
 });
 
 test("Accueil d'un nouveau compte : la grande action est visible", async ({ page }) => {

@@ -486,13 +486,7 @@
 #vdo .message-list.chat-liste{grid-template-columns:minmax(0,1fr)}
 #vdo .chat-liste a{min-width:0}
 #vdo .chat-ligne{grid-template-columns:minmax(0,1fr)}
-#vdo .profile-portrait{width:132px!important;height:132px!important;border-radius:26px!important}
 #vdo .carte-une-image{height:148px}
-#vdo .chat-photo,#vdo .chat-liste .helper-photo,#vdo .carte-proposition .carte-photo{border-radius:14px!important}
-#vdo .mini-persona-photo{border-radius:10px!important}
-#vdo a.avatar{border-radius:12px!important;overflow:hidden}
-#vdo .badge-persona-photo{border-radius:8px}
-#vdo .lien-fil-photos img{border-radius:10px}
 .alerte-message{position:fixed;top:10px;left:50%;z-index:1000;transform:translateX(-50%);width:min(440px,calc(100% - 20px));display:flex;align-items:center;gap:6px;padding:6px 6px 6px 8px;border-radius:18px;background:#2A2140;color:#fff;box-shadow:0 16px 34px rgba(42,33,64,.32);animation:alerte-entree .25s ease-out}
 .alerte-message a{flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:6px;color:#fff;text-decoration:none}
 .alerte-icone{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:#2563EB;color:#fff}
@@ -510,8 +504,6 @@
 #vdo .activer-notifs small{font:600 14px Nunito;color:#3B4F86}
 #vdo.chat .message-bubble.mine{background:#2563EB;border-color:#2563EB;color:#fff}
 #vdo.chat .message-bubble.mine small{color:#DCE6FF}
-#vdo .carte-photo img,#vdo img.carte-photo,#vdo .profile-portrait img,#vdo img.chat-photo,#vdo img.helper-photo,#vdo img.mini-persona-photo,#vdo .carte-une-image img,#vdo img.carte-une-photo,#vdo img.confiance-photo{object-fit:contain!important;background:#FFF1D6}
-#vdo .post-compact .post-head>.carte-photo{flex:0 0 96px;width:96px!important;height:96px!important;border-radius:18px!important}
 #vdo .categories>[role=listitem]{flex:0 0 76px;display:grid}
 #vdo .carrousel>[role=listitem]{flex:0 0 148px;scroll-snap-align:start;display:grid}
 #vdo .icon-btn{width:44px!important;height:44px!important;min-height:44px}
@@ -553,7 +545,6 @@
 #vdo .bandeau-likes strong{font:800 15.5px Nunito;color:#2A2140}
 #vdo .bandeau-coeur{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:#D23B2A;color:#fff}
 #vdo .bandeau-coeur .icon{width:20px;height:20px}
-#vdo img{object-fit:contain!important}
 #vdo .vitrine-hero{display:grid;gap:12px;min-height:0;padding:14px;background:#FFF1D6;box-shadow:none;border:1.5px solid #FFE0A3;grid-template-columns:minmax(0,1fr)}
 #vdo .vitrine-hero>img{position:static;inset:auto;display:block;border-radius:18px;background:transparent}
 #vdo .vitrine-hero .vitrine-voile{display:contents}
@@ -563,11 +554,30 @@
 #vdo .hero-portrait .vitrine-recherche{grid-column:1/-1}
 #vdo .hero-large>img{width:100%;height:auto;aspect-ratio:710/318}
 #vdo .vitrine-recherche{border:1.5px solid #FFE0A3;box-shadow:0 6px 14px rgba(42,33,64,.08)}
-#vdo .categorie-image img,#vdo .story-img,#vdo .puce img,#vdo .post-avatar,#vdo .helper-photo,#vdo .chat-photo,#vdo .confiance-photo,#vdo .lien-fil-photos img,#vdo .mini-persona-photo,#vdo .badge-persona-photo,#vdo .carte-proposition .carte-photo{border-radius:12px!important}
-#vdo .categorie-image img{background:#fff}
-#vdo .story-ring{border-radius:18px}
 #vdo .story-img img{width:100%;height:100%}
-#vdo .puce img{width:30px;height:30px;border-radius:8px!important;background:#fff}
-#vdo .pin-jeune{border-radius:12px!important;background:#fff}
 #vdo .pin-jeune img{width:100%;height:100%;display:block}
 #vdo .carte-service img{width:100%;height:100%;background:#fff}
+#vdo .profile-portrait{width:120px!important;height:120px!important;border-radius:50%!important}
+#vdo .carte-photo,#vdo .carte-proposition .carte-photo,#vdo .chat-photo,#vdo .chat-liste .helper-photo,#vdo .helper-photo,#vdo .confiance-photo,#vdo .mini-persona-photo,#vdo .badge-persona-photo,#vdo .lien-fil-photos img,#vdo .post-avatar{border-radius:50%!important;overflow:hidden}
+#vdo a.avatar{border-radius:50%!important;overflow:hidden;padding:0}
+#vdo .carte-photo,#vdo .carte-photo img,#vdo img.carte-photo,#vdo .profile-portrait img,#vdo img.chat-photo,#vdo img.helper-photo,#vdo img.mini-persona-photo,#vdo img.confiance-photo,#vdo .badge-persona-photo,#vdo .lien-fil-photos img,#vdo .categorie-image img,#vdo .story-img img,#vdo .puce img,#vdo .pin-jeune img,#vdo .carte-une-image img,#vdo .carte-service img{object-fit:cover!important}
+#vdo .story-img img,#vdo .pin-jeune img,#vdo .carte-service img{width:100%;height:100%;display:block}
+#vdo .post-compact .post-head>.carte-photo{flex:0 0 72px;width:72px!important;height:72px!important;border:3px solid #FFC145}
+#vdo .carte-profil .carte-photo{border:3px solid #FFC145}
+#vdo .vitrine-hero>img{object-fit:cover!important;background:#FFE3B0}
+#vdo .hero-portrait{grid-template-columns:132px minmax(0,1fr);gap:14px}
+#vdo .hero-portrait>img{width:132px;height:158px;aspect-ratio:auto;border-radius:20px}
+#vdo .hero-portrait .vitrine-voile h1{align-self:center;margin:0;font-size:23px;line-height:1.15}
+#vdo .hero-large>img{width:100%;height:150px;aspect-ratio:auto;border-radius:20px}
+#vdo .hero-large .vitrine-voile h1{margin:0;font-size:23px;line-height:1.15}
+#vdo.accueil-vitrine .bonjour-ligne{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:4px 0 14px}
+#vdo.accueil-vitrine .greeting{font:600 22px/1.2 var(--font-head);color:#2A2140;margin:0}
+#vdo.accueil-vitrine .role-badge{display:inline-flex;align-items:center;min-height:28px;padding:0 12px;border-radius:999px;font:800 13px/1 Nunito}
+#vdo .categories{align-items:start}
+#vdo .categorie{justify-items:center;text-align:center}
+#vdo .categorie>span:last-child{display:block;width:100%;text-align:center}
+#vdo .hero-haut{grid-template-columns:minmax(0,1fr);gap:12px}
+#vdo .hero-haut>img{width:100%;height:190px;aspect-ratio:auto;border-radius:20px;object-position:50% 38%}
+#vdo .hero-haut.hero-jeune>img{object-position:50% 30%;background:#fff}
+#vdo .hero-haut .vitrine-voile h1{margin:2px 4px 0;font-size:24px;line-height:1.15}
+#vdo .hero-haut.hero-jeune>img{object-fit:contain!important;object-position:center;background:#fff}
