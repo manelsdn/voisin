@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Avatar, IconesServices, Navigation } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { besoinsProches, mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
+import { besoinsProches, likesDuJeune, mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
 import { ROLES, SERVICES, iconeService, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
 const Accueil = () => {
@@ -12,6 +12,7 @@ const Accueil = () => {
     const [proche, setProche] = useState(null);
     const [une, setUne] = useState(null);
     const [attente, setAttente] = useState([]);
+    const [fans, setFans] = useState([]);
     const ville = (proche && proche.ville) || utilisateur.ville;
 
     useEffect(() => {
@@ -26,6 +27,7 @@ const Accueil = () => {
             if (personne.id !== utilisateur.id) setProche(personne);
             setUne(estJeune ? liste.slice(0, 6) : liste.filter((j) => j.photoProfil).slice(0, 6));
             setAttente(demandes.filter((d) => d.statut === "ENVOYEE"));
+            if (estJeune) setFans((await likesDuJeune(utilisateur.id)).sort((x, y) => (y.creeAt || "").localeCompare(x.creeAt || "")));
         };
         charger();
         return () => { actif = false; };
@@ -44,7 +46,7 @@ const Accueil = () => {
                 <div className="home-content">
                     <div className="bonjour-ligne"><span className="greeting">Bonjour {utilisateur.prenom}</span><span className="role-badge">{ROLES[utilisateur.role]}</span></div>
 
-                    <section className="vitrine-hero">
+                    <section className={estJeune ? "vitrine-hero hero-large" : "vitrine-hero hero-portrait"}>
                         <img src={estJeune ? "/assets/presentation/ensemble.jpg" : "/assets/presentation/accueil.jpg"} alt="" />
                         <div className="vitrine-voile">
                             <h1>{estJeune ? <>Un coup de main,<br />un sourire en retour.</> : <>Petits services,<br />grands liens.</>}</h1>
@@ -68,6 +70,14 @@ const Accueil = () => {
                         <Link className="bandeau-attente" to="/services">
                             <span className="bandeau-point" aria-hidden="true" />
                             <span><strong>{attente.length > 1 ? `${attente.length} demandes en attente` : "Demande en attente"}</strong>Le jeune va vous répondre.</span>
+                            <Icone nom="chevron" />
+                        </Link>
+                    )}
+
+                    {estJeune && fans.length > 0 && (
+                        <Link className="bandeau-likes" to={`/jeunes/${utilisateur.id}`}>
+                            <span className="bandeau-coeur"><Icone nom="heart" /></span>
+                            <span><strong>{fans.length} voisin{fans.length > 1 ? "s aiment" : " aime"} votre annonce</strong>{fans.slice(0, 3).map((f) => f.prenom).join(", ")}{fans.length > 3 ? "…" : ""}</span>
                             <Icone nom="chevron" />
                         </Link>
                     )}

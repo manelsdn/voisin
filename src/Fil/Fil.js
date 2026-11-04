@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Avatar, CartesServices, Ecran, IconesServices } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { basculerFavori, mesFavoris, pointDeRecherche, rechercherJeunes } from "../services/api";
+import { basculerFavori, mesFavoris, pointDeRecherche, rechercherJeunes, tousLesLikes } from "../services/api";
 import { nomService, texteCreneau, texteDistance } from "../services/constantes";
 
 const Fil = () => {
@@ -12,19 +12,24 @@ const Fil = () => {
     const service = params.get("service") || "";
     const [jeunes, setJeunes] = useState(null);
     const [aimes, setAimes] = useState([]);
+    const [likes, setLikes] = useState({});
 
     useEffect(() => {
         const charger = async () => {
             const { position } = await pointDeRecherche(utilisateur);
             setJeunes((await rechercherJeunes(position, { rayon: 5, service })).filter((j) => j.id !== utilisateur.id && j.photoProfil));
             setAimes(await mesFavoris(utilisateur).catch(() => []));
+            setLikes(await tousLesLikes());
         };
         charger();
     }, [utilisateur, service]);
 
     const aimer = async (id) => {
-        setAimes(aimes.includes(id) ? aimes.filter((x) => x !== id) : [...aimes, id]);
+        const deja = aimes.includes(id);
+        setAimes(deja ? aimes.filter((x) => x !== id) : [...aimes, id]);
+        setLikes((l) => ({ ...l, [id]: Math.max(0, (l[id] || 0) + (deja ? -1 : 1)) }));
         setAimes(await basculerFavori(utilisateur, id));
+        setLikes(await tousLesLikes());
     };
 
     return (
@@ -46,7 +51,8 @@ const Fil = () => {
                             </Link>
                             <p className="post-text">{j.description || `Je propose un coup de main : ${(j.services || []).map(nomService).join(", ").toLowerCase()}.`}</p>
                             <div className="post-actions">
-                                <button type="button" className={aime ? "post-act liked" : "post-act"} aria-pressed={aime} aria-label={aime ? `Retirer ${j.prenom} de mes favoris` : `Ajouter ${j.prenom} à mes favoris`} onClick={() => aimer(j.id)}><Icone nom="heart" /></button>
+                                <button type="button" className={aime ? "post-act liked" : "post-act"} aria-pressed={aime} aria-label={aime ? `Retirer ${j.prenom} de mes favoris` : `Ajouter ${j.prenom} à mes favoris`} onClick={() => aimer(j.id)}><Icone nom="heart" />{likes[j.id] > 0 && <span className="compte-like" aria-hidden="true">{likes[j.id]}</span>}</button>
+                                {likes[j.id] > 0 && <span className="sr-only">{likes[j.id]} j'aime</span>}
                                 <Link className="post-act" to={`/messages/${j.id}`} aria-label={`Écrire à ${j.prenom}`}><Icone nom="message" /></Link>
                                 <Link className="post-cta" to={`/jeunes/${j.id}`}>Voir ses créneaux<Icone nom="arrow" /></Link>
                             </div>

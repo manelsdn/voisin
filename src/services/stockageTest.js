@@ -4,7 +4,7 @@ const auditeurs = new Set();
 const base = () => {
     const brut = localStorage.getItem(CLE);
     const db = brut ? JSON.parse(brut) : {};
-    ["users", "demandes", "rendezVous", "messages", "avis", "besoins", "propositions"].forEach((c) => { db[c] = db[c] || {}; });
+    ["users", "demandes", "rendezVous", "messages", "avis", "besoins", "propositions", "likes"].forEach((c) => { db[c] = db[c] || {}; });
     return db;
 };
 

@@ -543,3 +543,31 @@
 #vdo .explorer-ligne{gap:8px}
 #vdo .explorer-ligne .explorer-titre{flex:1;min-width:0;white-space:normal}
 #vdo .explorer-ligne .bascule{flex:none}
+#vdo .post-act{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+#vdo .compte-like{font:800 14px Nunito;color:inherit}
+#vdo .post-act.liked{color:#D23B2A}
+#vdo .likes-resume{display:inline-flex;align-items:center;gap:6px;margin:8px 0 0;font:700 14px Nunito;color:#5d5574}
+#vdo .likes-resume .icon{width:16px;height:16px;color:#D23B2A}
+#vdo .bandeau-likes{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px 14px;border-radius:16px!important;background:#FFF3F1;border:1.5px solid #FFC9C2;color:var(--ink)!important;text-decoration:none}
+#vdo .bandeau-likes>span:nth-child(2){flex:1;min-width:0;display:grid;font:600 14px Nunito;color:#5d5574}
+#vdo .bandeau-likes strong{font:800 15.5px Nunito;color:#2A2140}
+#vdo .bandeau-coeur{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:#D23B2A;color:#fff}
+#vdo .bandeau-coeur .icon{width:20px;height:20px}
+#vdo img{object-fit:contain!important}
+#vdo .vitrine-hero{display:grid;gap:12px;min-height:0;padding:14px;background:#FFF1D6;box-shadow:none;border:1.5px solid #FFE0A3;grid-template-columns:minmax(0,1fr)}
+#vdo .vitrine-hero>img{position:static;inset:auto;display:block;border-radius:18px;background:transparent}
+#vdo .vitrine-hero .vitrine-voile{display:contents}
+#vdo .vitrine-hero .vitrine-voile h1{color:#2A2140;text-shadow:none;font-size:24px}
+#vdo .hero-portrait{grid-template-columns:118px minmax(0,1fr);align-items:center}
+#vdo .hero-portrait>img{width:118px;height:auto;aspect-ratio:800/955}
+#vdo .hero-portrait .vitrine-recherche{grid-column:1/-1}
+#vdo .hero-large>img{width:100%;height:auto;aspect-ratio:710/318}
+#vdo .vitrine-recherche{border:1.5px solid #FFE0A3;box-shadow:0 6px 14px rgba(42,33,64,.08)}
+#vdo .categorie-image img,#vdo .story-img,#vdo .puce img,#vdo .post-avatar,#vdo .helper-photo,#vdo .chat-photo,#vdo .confiance-photo,#vdo .lien-fil-photos img,#vdo .mini-persona-photo,#vdo .badge-persona-photo,#vdo .carte-proposition .carte-photo{border-radius:12px!important}
+#vdo .categorie-image img{background:#fff}
+#vdo .story-ring{border-radius:18px}
+#vdo .story-img img{width:100%;height:100%}
+#vdo .puce img{width:30px;height:30px;border-radius:8px!important;background:#fff}
+#vdo .pin-jeune{border-radius:12px!important;background:#fff}
+#vdo .pin-jeune img{width:100%;height:100%;display:block}
+#vdo .carte-service img{width:100%;height:100%;background:#fff}

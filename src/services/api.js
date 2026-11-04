@@ -244,10 +244,22 @@ export const mesFavoris = async (utilisateur) => ((await lireUtilisateur(utilisa
 
 export const basculerFavori = async (utilisateur, jeuneId) => {
     const actuels = await mesFavoris(utilisateur);
-    const favoris = actuels.includes(jeuneId) ? actuels.filter((x) => x !== jeuneId) : [...actuels, jeuneId];
+    const aime = !actuels.includes(jeuneId);
+    const favoris = aime ? [...actuels, jeuneId] : actuels.filter((x) => x !== jeuneId);
     await s.ecrire("users", utilisateur.id, { favoris });
+    await s.ecrire("likes", `${jeuneId}_${utilisateur.id}`, { jeuneId, userId: utilisateur.id, prenom: utilisateur.prenom, actif: aime, creeAt: new Date().toISOString() }).catch(() => {});
     return favoris;
 };
+
+export const tousLesLikes = async () => {
+    const parJeune = {};
+    (await s.chercher("likes", "actif", true).catch(() => [])).forEach((l) => {
+        parJeune[l.jeuneId] = (parJeune[l.jeuneId] || 0) + 1;
+    });
+    return parJeune;
+};
+
+export const likesDuJeune = async (jeuneId) => (await s.chercher("likes", "jeuneId", jeuneId).catch(() => [])).filter((l) => l.actif);
 
 export const envoyerMessageVocal = async (de, a, enregistrement, duree) => {
     if (!enregistrement || !enregistrement.size) throw new Error("Le message vocal est vide.");

@@ -39,7 +39,7 @@ export const ajouter = async (col, data) => {
 
 export const chercher = async (col, champ, valeur) => {
     if (col === "users") return profils({ p_champ: champ, p_valeur: valeur });
-    return verifier(await table(col).select("id, data").eq(`data->>${champ}`, valeur)).map(doc);
+    return verifier(await table(col).select("id, data").eq(`data->>${champ}`, String(valeur))).map(doc);
 };
 
 export const ecouterMessages = (moiId, rappel) => {

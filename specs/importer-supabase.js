@@ -1,7 +1,7 @@
 const { createClient } = require("@supabase/supabase-js");
 const donnees = require("./donnees.json");
 
-const TABLES = { users: "users", demandes: "demandes", rendezVous: "rendez_vous", messages: "messages", avis: "avis", besoins: "besoins", propositions: "propositions" };
+const TABLES = { users: "users", demandes: "demandes", rendezVous: "rendez_vous", messages: "messages", avis: "avis", likes: "likes", besoins: "besoins", propositions: "propositions" };
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
 
 const importer = async () => {

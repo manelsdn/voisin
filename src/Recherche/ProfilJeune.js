@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Astuce, Avatar, Ecran, LienBouton } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { avisDuJeune, basculerFavori, lireUtilisateur, mesFavoris, pointDeRecherche } from "../services/api";
+import { avisDuJeune, basculerFavori, likesDuJeune, lireUtilisateur, mesFavoris, pointDeRecherche } from "../services/api";
 import { distanceKm } from "../services/geo";
 import { nomService, texteCreneau, texteDistance } from "../services/constantes";
 
@@ -16,6 +16,7 @@ const ProfilJeune = () => {
     const [distance, setDistance] = useState(null);
     const [avis, setAvis] = useState([]);
     const [favoris, setFavoris] = useState([]);
+    const [likes, setLikes] = useState(0);
     const moi = id === utilisateur.id;
 
     useEffect(() => {
@@ -23,7 +24,10 @@ const ProfilJeune = () => {
             const j = await lireUtilisateur(id);
             setJeune(j && j.role === "JEUNE" ? j : null);
             if (j) setDistance(distanceKm((await pointDeRecherche(utilisateur)).position, j));
-            if (j && j.role === "JEUNE") setAvis(await avisDuJeune(id).catch(() => []));
+            if (j && j.role === "JEUNE") {
+                setAvis(await avisDuJeune(id).catch(() => []));
+                setLikes((await likesDuJeune(id)).length);
+            }
             setFavoris(await mesFavoris(utilisateur).catch(() => []));
         };
         charger();
@@ -36,7 +40,10 @@ const ProfilJeune = () => {
     const creneaux = (jeune.disponibilites || []).map(texteCreneau);
     const favori = favoris.includes(jeune.id);
     const moyenne = avis.length ? avis.reduce((t, x) => t + x.note, 0) / avis.length : 0;
-    const basculer = async () => setFavoris(await basculerFavori(utilisateur, jeune.id));
+    const basculer = async () => {
+        setFavoris(await basculerFavori(utilisateur, jeune.id));
+        setLikes((await likesDuJeune(jeune.id)).length);
+    };
 
     return (
         <Ecran retour surtitre={moi ? "APERÇU DE MON ANNONCE" : undefined}>
@@ -46,6 +53,7 @@ const ProfilJeune = () => {
                 {!moi && <p className="soft"><Icone nom="pin" /> À {texteDistance(distance)} · {jeune.ville}</p>}
                 {avis.length > 0 && <p className="etoiles-resume"><span className="etoiles" aria-hidden="true">{"★".repeat(Math.round(moyenne))}{"☆".repeat(5 - Math.round(moyenne))}</span> {moyenne.toFixed(1).replace(".", ",")} / 5 · {avis.length} avis</p>}
                 {!moi && utilisateur.role !== "JEUNE" && <button type="button" className={favori ? "post-act liked" : "post-act"} aria-pressed={favori} onClick={basculer}><Icone nom="heart" />{favori ? "Dans mes favoris" : "Ajouter aux favoris"}</button>}
+                {likes > 0 && <p className="likes-resume"><Icone nom="heart" />{likes} voisin{likes > 1 ? "s aiment" : " aime"} {moi ? "votre annonce" : "son annonce"}</p>}
             </div>
             {jeune.description && <p>{jeune.description}</p>}
             <div className="detail-box">

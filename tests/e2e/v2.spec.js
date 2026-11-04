@@ -57,3 +57,17 @@ test("Fil homogène : seuls les jeunes avec une vraie photo apparaissent", async
     await expect(page.locator(".post .post-head span.carte-photo")).toHaveCount(0);
     expect(await page.locator(".post .post-head img.carte-photo").count()).toBe(await page.locator(".post").count());
 });
+
+test("US49 · J'aime : le compteur du fil augmente, le jeune voit qui aime son annonce", async ({ page }) => {
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/fil");
+    const coeur = page.getByRole("button", { name: "Ajouter Lucas à mes favoris" });
+    await expect(coeur).toContainText("4");
+    await coeur.click();
+    await expect(page.getByRole("button", { name: "Retirer Lucas de mes favoris" })).toContainText("5");
+    await page.goto("/jeunes/jeune-01");
+    await expect(page.getByText("5 voisins aiment son annonce")).toBeVisible();
+    await deconnecter(page);
+    await connecter(page, "lucas.martin@exemple.fr");
+    await expect(page.getByRole("link", { name: /5 voisins aiment votre annonce/ })).toContainText("Camille");
+});

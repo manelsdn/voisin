@@ -2260,5 +2260,182 @@
       "texte": "Bonjour Camille, c'est noté pour le ménage chez Madeleine, à bientôt !",
       "creeAt": "2026-11-03T09:35:00.000Z"
     }
+  },
+  "likes": {
+    "jeune-01_senior-01": {
+      "jeuneId": "jeune-01",
+      "userId": "senior-01",
+      "prenom": "Madeleine",
+      "actif": true,
+      "creeAt": "2026-11-01T10:00:00.000Z"
+    },
+    "jeune-01_proche-02": {
+      "jeuneId": "jeune-01",
+      "userId": "proche-02",
+      "prenom": "Sophie",
+      "actif": true,
+      "creeAt": "2026-11-02T11:00:00.000Z"
+    },
+    "jeune-01_senior-09": {
+      "jeuneId": "jeune-01",
+      "userId": "senior-09",
+      "prenom": "Henri",
+      "actif": true,
+      "creeAt": "2026-11-03T12:00:00.000Z"
+    },
+    "jeune-01_senior-10": {
+      "jeuneId": "jeune-01",
+      "userId": "senior-10",
+      "prenom": "Odette",
+      "actif": true,
+      "creeAt": "2026-11-04T13:00:00.000Z"
+    },
+    "jeune-02_senior-01": {
+      "jeuneId": "jeune-02",
+      "userId": "senior-01",
+      "prenom": "Madeleine",
+      "actif": true,
+      "creeAt": "2026-11-01T10:00:00.000Z"
+    },
+    "jeune-02_proche-02": {
+      "jeuneId": "jeune-02",
+      "userId": "proche-02",
+      "prenom": "Sophie",
+      "actif": true,
+      "creeAt": "2026-11-02T11:00:00.000Z"
+    },
+    "jeune-02_senior-09": {
+      "jeuneId": "jeune-02",
+      "userId": "senior-09",
+      "prenom": "Henri",
+      "actif": true,
+      "creeAt": "2026-11-03T12:00:00.000Z"
+    },
+    "jeune-26_senior-01": {
+      "jeuneId": "jeune-26",
+      "userId": "senior-01",
+      "prenom": "Madeleine",
+      "actif": true,
+      "creeAt": "2026-11-01T10:00:00.000Z"
+    },
+    "jeune-26_proche-02": {
+      "jeuneId": "jeune-26",
+      "userId": "proche-02",
+      "prenom": "Sophie",
+      "actif": true,
+      "creeAt": "2026-11-02T11:00:00.000Z"
+    },
+    "jeune-26_senior-09": {
+      "jeuneId": "jeune-26",
+      "userId": "senior-09",
+      "prenom": "Henri",
+      "actif": true,
+      "creeAt": "2026-11-03T12:00:00.000Z"
+    },
+    "jeune-26_senior-10": {
+      "jeuneId": "jeune-26",
+      "userId": "senior-10",
+      "prenom": "Odette",
+      "actif": true,
+      "creeAt": "2026-11-04T13:00:00.000Z"
+    },
+    "jeune-26_proche-03": {
+      "jeuneId": "jeune-26",
+      "userId": "proche-03",
+      "prenom": "Karim",
+      "actif": true,
+      "creeAt": "2026-11-05T14:00:00.000Z"
+    },
+    "jeune-06_senior-01": {
+      "jeuneId": "jeune-06",
+      "userId": "senior-01",
+      "prenom": "Madeleine",
+      "actif": true,
+      "creeAt": "2026-11-01T10:00:00.000Z"
+    },
+    "jeune-06_proche-02": {
+      "jeuneId": "jeune-06",
+      "userId": "proche-02",
+      "prenom": "Sophie",
+      "actif": true,
+      "creeAt": "2026-11-02T11:00:00.000Z"
+    },
+    "jeune-03_senior-01": {
+      "jeuneId": "jeune-03",
+      "userId": "senior-01",
+      "prenom": "Madeleine",
+      "actif": true,
+      "creeAt": "2026-11-01T10:00:00.000Z"
+    },
+    "jeune-03_proche-02": {
+      "jeuneId": "jeune-03",
+      "userId": "proche-02",
+      "prenom": "Sophie",
+      "actif": true,
+      "creeAt": "2026-11-02T11:00:00.000Z"
+    },
+    "jeune-11_senior-01": {
+      "jeuneId": "jeune-11",
+      "userId": "senior-01",
+      "prenom": "Madeleine",
+      "actif": true,
+      "creeAt": "2026-11-01T10:00:00.000Z"
+    },
+    "jeune-15_senior-01": {
+      "jeuneId": "jeune-15",
+      "userId": "senior-01",
+      "prenom": "Madeleine",
+      "actif": true,
+      "creeAt": "2026-11-01T10:00:00.000Z"
+    },
+    "jeune-15_proche-02": {
+      "jeuneId": "jeune-15",
+      "userId": "proche-02",
+      "prenom": "Sophie",
+      "actif": true,
+      "creeAt": "2026-11-02T11:00:00.000Z"
+    },
+    "jeune-15_senior-09": {
+      "jeuneId": "jeune-15",
+      "userId": "senior-09",
+      "prenom": "Henri",
+      "actif": true,
+      "creeAt": "2026-11-03T12:00:00.000Z"
+    },
+    "jeune-20_senior-01": {
+      "jeuneId": "jeune-20",
+      "userId": "senior-01",
+      "prenom": "Madeleine",
+      "actif": true,
+      "creeAt": "2026-11-01T10:00:00.000Z"
+    },
+    "jeune-20_proche-02": {
+      "jeuneId": "jeune-20",
+      "userId": "proche-02",
+      "prenom": "Sophie",
+      "actif": true,
+      "creeAt": "2026-11-02T11:00:00.000Z"
+    },
+    "jeune-22_senior-01": {
+      "jeuneId": "jeune-22",
+      "userId": "senior-01",
+      "prenom": "Madeleine",
+      "actif": true,
+      "creeAt": "2026-11-01T10:00:00.000Z"
+    },
+    "jeune-29_senior-01": {
+      "jeuneId": "jeune-29",
+      "userId": "senior-01",
+      "prenom": "Madeleine",
+      "actif": true,
+      "creeAt": "2026-11-01T10:00:00.000Z"
+    },
+    "jeune-29_proche-02": {
+      "jeuneId": "jeune-29",
+      "userId": "proche-02",
+      "prenom": "Sophie",
+      "actif": true,
+      "creeAt": "2026-11-02T11:00:00.000Z"
+    }
   }
 }
