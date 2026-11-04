@@ -595,3 +595,7 @@
 #vdo .post-compact .post-head>.carte-photo{flex:0 0 96px;width:96px!important;height:96px!important;border-radius:16px!important;border:0!important;object-fit:cover!important}
 #vdo .carte-photo.carte-service{overflow:visible!important;border:0!important}
 #vdo .carte-photo.carte-service img{border-radius:50%!important;border:3px solid #FFC145;box-sizing:border-box}
+#vdo .post-creneau{justify-self:start;margin-top:2px;padding:3px 10px;border-radius:999px;background:#E7F7F3;color:#0E6E5E;font:800 13px Nunito;font-style:normal}
+#vdo .carte-besoin.post .post-head strong{line-height:1.2}
+#vdo .hero-haut>img,#vdo .hero-haut.hero-jeune>img,#vdo .hero-haut:not(.hero-jeune)>img{height:120px!important;aspect-ratio:auto!important;object-fit:cover!important;object-position:50% 0%!important}
+#vdo.explorer .liste-cartes.feed{padding:4px 12px 8px;gap:12px}

@@ -32,6 +32,24 @@ export const CarteBesoin = ({ besoin }) => (
     </Link>
 );
 
+export const PostBesoin = ({ besoin }) => (
+    <article className="post post-compact carte-besoin">
+        <Link className="post-head resultat" to={`/besoins/${besoin.id}`}>
+            <img className="carte-photo" src={`/assets/services/plein/${besoin.service.toLowerCase()}.jpg`} alt="" />
+            <span>
+                <strong>{nomService(besoin.service)} pour {besoin.beneficiairePrenom}</strong>
+                <small>{texteDistance(besoin.distance)} · {besoin.ville} · {depuis(besoin.creeAt)}</small>
+                <em className="post-creneau">{besoin.creneau ? texteCreneau(besoin.creneau) : "Créneau à convenir"}</em>
+            </span>
+        </Link>
+        <p className="post-text">{besoin.description}</p>
+        <div className="post-actions">
+            <Link className="post-act" to={`/messages/${besoin.auteurId}`} aria-label={`Écrire à ${besoin.auteurPrenom}`}><Icone nom="message" /></Link>
+            <Link className="post-cta" to={`/besoins/${besoin.id}`}>Proposer mon aide<Icone nom="heart" /></Link>
+        </div>
+    </article>
+);
+
 const TITRE_BESOIN = (b) => `${nomService(b.service)} pour ${b.beneficiairePrenom}`;
 const DETAIL_BESOIN = (b) => `${texteDistance(b.distance)} · ${b.ville}`;
 const IMAGE_BESOIN = (b) => imageService(b.service);
@@ -118,8 +136,8 @@ const Recherche = () => {
                 )}
 
                 {vue === "liste" && resultats && nombre > 0 && (
-                    <div className="liste-cartes">
-                        {estJeune ? resultats.map((b) => <CarteBesoin key={b.id} besoin={b} />) : resultats.map((j) => <CarteJeune key={j.id} jeune={j} />)}
+                    <div className={estJeune ? "liste-cartes feed" : "liste-cartes"}>
+                        {estJeune ? resultats.map((b) => <PostBesoin key={b.id} besoin={b} />) : resultats.map((j) => <CarteJeune key={j.id} jeune={j} />)}
                         {!estJeune && <Link className="carte-publier" to="/besoins/nouveau"><Icone nom="plus" /><span><strong>Vous ne trouvez pas ?</strong><small>Publiez votre besoin, les jeunes du quartier vous proposeront leur aide.</small></span></Link>}
                     </div>
                 )}
