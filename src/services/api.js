@@ -169,9 +169,31 @@ export const mesConversations = async (moi) => {
     const parPersonne = {};
     (await mesMessages(moi)).forEach((m) => {
         const autreId = m.de === moi.id ? m.a : m.de;
-        parPersonne[autreId] = { id: autreId, prenom: m.de === moi.id ? m.aPrenom : m.dePrenom, dernier: m };
+        const avant = parPersonne[autreId];
+        const nonLus = (avant ? avant.nonLus : 0) + (m.a === moi.id && !m.lu ? 1 : 0);
+        parPersonne[autreId] = { id: autreId, prenom: m.de === moi.id ? m.aPrenom : m.dePrenom, dernier: m, nonLus };
     });
     return Object.values(parPersonne).sort((x, y) => (y.dernier.creeAt || "").localeCompare(x.dernier.creeAt || ""));
+};
+
+export const messagesRecus = (moi) => s.chercher("messages", "a", moi.id);
+
+export const nombreNonLus = async (moi) => (await s.chercher("messages", "a", moi.id)).filter((m) => !m.lu).length;
+
+export const marquerLus = (moi, autreId) => (s.marquerLus ? s.marquerLus(moi.id, autreId) : Promise.resolve());
+
+export const ecouterMessages = (moi, rappel) => {
+    if (s.ecouterMessages) return s.ecouterMessages(moi.id, rappel);
+    const minuterie = setInterval(() => rappel(null), 4000);
+    return () => clearInterval(minuterie);
+};
+
+export const membresDuQuartier = async (moi) => {
+    const { position } = await pointDeRecherche(moi);
+    return (await s.chercher("users", "role", "JEUNE"))
+        .filter((j) => j.id !== moi.id)
+        .map((j) => ({ ...j, distance: distanceKm(position, j) }))
+        .sort((a, b) => (a.distance === null ? 1 : b.distance === null ? -1 : a.distance - b.distance));
 };
 
 const televerser = async (chemin, fichier) => {

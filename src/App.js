@@ -23,6 +23,8 @@ import MesServices from "./Demandes/MesServices";
 import DetailDemande from "./Demandes/DetailDemande";
 import Messages from "./Messages/Messages";
 import Conversation from "./Messages/Conversation";
+import NouveauMessage from "./Messages/NouveauMessage";
+import AlerteMessages from "./composants/AlerteMessages";
 import Fil from "./Fil/Fil";
 import Charte from "./Profil/Charte";
 import ChangerRole from "./Profil/ChangerRole";
@@ -50,6 +52,7 @@ function App() {
         <div className="App">
             <SessionProvider>
                 <BrowserRouter>
+                    <AlerteMessages />
                     <Routes>
                         <Route path="/" element={<Racine />} />
                         <Route path="/bienvenue" element={<Bienvenue />} />
@@ -70,6 +73,7 @@ function App() {
                         <Route path="/services" element={p(<MesServices />)} />
                         <Route path="/demandes/:id" element={p(<DetailDemande />)} />
                         <Route path="/messages" element={p(<Messages />)} />
+                        <Route path="/messages/nouveau" element={p(<NouveauMessage />)} />
                         <Route path="/messages/:id" element={p(<Conversation />)} />
                         <Route path="/fil" element={p(<Fil />)} />
                         <Route path="/besoins" element={p(<MesBesoins />)} />

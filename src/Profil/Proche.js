@@ -43,12 +43,12 @@ const Proche = () => {
     if (proche === undefined) return <Ecran titre="Mon proche"><p className="soft">Chargement…</p></Ecran>;
 
     return (
-        <Ecran titre={<>Vous êtes là <br />pour votre proche.</>} retour="/accueil">
+        <Ecran titre="Mon proche" retour="/accueil">
             {proche ? (
                 <>
                     <div className="detail-box">
                         <span className="mini-eyebrow">MON PROCHE</span>
-                        <h3>{proche.prenom}</h3>
+                        <h2 className="sous-titre">{proche.prenom}</h2>
                         <p>{proche.adresse}, {proche.codePostal} {proche.ville}</p>
                     </div>
                     <Indice icone="pin">Les recherches utilisent l'adresse de {proche.prenom}. Un seul proche par compte pour le moment.</Indice>

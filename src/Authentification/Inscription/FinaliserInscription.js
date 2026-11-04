@@ -9,14 +9,14 @@ const FinaliserInscription = () => {
 
     return (
         <div className="ecran vdo" id="vdo">
-            <div className="corps">
+            <main className="corps">
                 <div className="app-pad">
                     <Retour vers="/inscription" texte="ÉTAPE 3 SUR 3" />
                     <div className="step-line"><i className="on"></i><i className="on"></i><i className="on"></i></div>
                     <div className="success-icon"><Icone nom="message" /></div>
                     <div className="profile-name">
                         <span className="mini-eyebrow">VÉRIFICATION</span>
-                        <h2>Vérifiez votre e-mail.</h2>
+                        <h1>Vérifiez votre e-mail.</h1>
                         {!(state && state.lienTest) && <p className="soft">Nous avons envoyé un lien à {email || "votre adresse e-mail"}.</p>}
                     </div>
                     {state && state.lienTest ? (
@@ -30,7 +30,7 @@ const FinaliserInscription = () => {
                     </div>
                     <Indice>Pas de mot de passe : le lien suffit pour entrer dans votre espace.</Indice>
                 </div>
-            </div>
+            </main>
         </div>
     );
 };

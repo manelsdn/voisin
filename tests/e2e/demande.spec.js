@@ -73,9 +73,9 @@ test("US13 · Navigation : la barre du bas mène aux bons écrans", async ({ pag
     await page.getByRole("link", { name: "Services" }).click();
     await expect(page).toHaveURL(/\/services$/);
     await page.getByRole("link", { name: "Messages" }).click();
-    await expect(page.getByRole("heading", { name: "On garde le lien." })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Messages" })).toBeVisible();
     await page.getByRole("link", { name: "Profil", exact: true }).click();
-    await expect(page.getByRole("heading", { name: /Votre place/ })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Mon profil" })).toBeVisible();
     await page.getByRole("link", { name: "Accueil" }).click();
     await expect(page.getByText("Bonjour Camille")).toBeVisible();
 });

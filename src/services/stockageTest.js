@@ -10,6 +10,8 @@ const base = () => {
 
 const sauver = (db) => localStorage.setItem(CLE, JSON.stringify(db));
 
+const signaler = (col) => window.dispatchEvent(new CustomEvent("vdo-change", { detail: col }));
+
 export const lire = async (col, id) => {
     const d = base()[col][id];
     return d ? { id, ...d } : null;
@@ -19,6 +21,33 @@ export const ecrire = async (col, id, data) => {
     const db = base();
     db[col][id] = { ...(db[col][id] || {}), ...data };
     sauver(db);
+    signaler(col);
+};
+
+export const ecouterMessages = (moiId, rappel) => {
+    const local = (e) => e.detail === "messages" && rappel(null);
+    const autreOnglet = (e) => e.key === CLE && rappel(null);
+    window.addEventListener("vdo-change", local);
+    window.addEventListener("storage", autreOnglet);
+    return () => {
+        window.removeEventListener("vdo-change", local);
+        window.removeEventListener("storage", autreOnglet);
+    };
+};
+
+export const marquerLus = async (moiId, deId) => {
+    const db = base();
+    let change = false;
+    Object.values(db.messages).forEach((m) => {
+        if (m.a === moiId && m.de === deId && !m.lu) {
+            m.lu = true;
+            change = true;
+        }
+    });
+    if (change) {
+        sauver(db);
+        signaler("messages");
+    }
 };
 
 export const ajouter = async (col, data) => {

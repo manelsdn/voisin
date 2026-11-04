@@ -16,7 +16,7 @@ const Fil = () => {
     useEffect(() => {
         const charger = async () => {
             const { position } = await pointDeRecherche(utilisateur);
-            setJeunes((await rechercherJeunes(position, { rayon: 5, service })).filter((j) => j.id !== utilisateur.id));
+            setJeunes((await rechercherJeunes(position, { rayon: 5, service })).filter((j) => j.id !== utilisateur.id && j.photoProfil));
             setAimes(await mesFavoris(utilisateur).catch(() => []));
         };
         charger();

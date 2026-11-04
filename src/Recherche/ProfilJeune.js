@@ -39,10 +39,10 @@ const ProfilJeune = () => {
     const basculer = async () => setFavoris(await basculerFavori(utilisateur, jeune.id));
 
     return (
-        <Ecran retour surtitre={moi ? "APERÇU DE MON ANNONCE" : "UN JEUNE DU QUARTIER"}>
+        <Ecran retour surtitre={moi ? "APERÇU DE MON ANNONCE" : undefined}>
             <div className={jeune.photoProfil ? "profile-portrait" : "profile-portrait initiale"}><Avatar personne={jeune} classe="" /></div>
             <div className="profile-name">
-                <h2>{jeune.prenom}{a ? `, ${a} ans` : ""}</h2>
+                <h1>{jeune.prenom}{a ? `, ${a} ans` : ""}</h1>
                 {!moi && <p className="soft"><Icone nom="pin" /> À {texteDistance(distance)} · {jeune.ville}</p>}
                 {avis.length > 0 && <p className="etoiles-resume"><span className="etoiles" aria-hidden="true">{"★".repeat(Math.round(moyenne))}{"☆".repeat(5 - Math.round(moyenne))}</span> {moyenne.toFixed(1).replace(".", ",")} / 5 · {avis.length} avis</p>}
                 {!moi && utilisateur.role !== "JEUNE" && <button type="button" className={favori ? "post-act liked" : "post-act"} aria-pressed={favori} onClick={basculer}><Icone nom="heart" />{favori ? "Dans mes favoris" : "Ajouter aux favoris"}</button>}

@@ -17,7 +17,7 @@ const DemandeEnvoyee = () => {
             <div className="success-icon"><Icone nom="check" /></div>
             <div className="profile-name">
                 <span className="mini-eyebrow">UN PREMIER LIEN SE CRÉE</span>
-                <h2>Votre demande <br />est envoyée !</h2>
+                <h1>Votre demande <br />est envoyée !</h1>
                 {demande && <p className="soft">{demande.jeunePrenom} va accepter ou refuser votre demande. Son numéro s'affichera une fois la demande acceptée.</p>}
             </div>
             {demande && (

@@ -81,7 +81,7 @@ const Recherche = () => {
 
     return (
         <div className={`ecran vdo explorer${vue === "carte" ? " explorer-carte" : ""}`} id="vdo">
-            <div className="corps">
+            <main className="corps">
                 <header className="explorer-haut">
                     <div className="explorer-ligne">
                         <h1 className="explorer-titre">{estJeune ? "Aider près de chez vous" : "Trouver un jeune"}</h1>
@@ -123,8 +123,8 @@ const Recherche = () => {
                         {!estJeune && <Link className="carte-publier" to="/besoins/nouveau"><Icone nom="plus" /><span><strong>Vous ne trouvez pas ?</strong><small>Publiez votre besoin, les jeunes du quartier vous proposeront leur aide.</small></span></Link>}
                     </div>
                 )}
-            </div>
-            {!estJeune && <Link className="fab fab-rond" to="/besoins/nouveau" aria-label="Publier un besoin"><Icone nom="plus" /></Link>}
+                {!estJeune && <Link className="fab fab-rond" to="/besoins/nouveau" aria-label="Publier un besoin"><Icone nom="plus" /></Link>}
+            </main>
             <Navigation />
         </div>
     );

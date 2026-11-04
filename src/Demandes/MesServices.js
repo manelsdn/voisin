@@ -20,7 +20,7 @@ const MesServices = () => {
     const affiches = (demandes || []).filter((d) => (onglet === "passes") === PASSES.includes(d.statut));
 
     return (
-        <Ecran titre={<>Les liens <br />qui se préparent.</>}>
+        <Ecran titre="Mes services">
             <p className="soft">{estJeune ? "Les demandes reçues." : "Vos demandes envoyées."}</p>
             {!estJeune && <Link className="carte-publier carte-publier-haut" to="/besoins"><Icone nom="list" /><span><strong>Mes annonces d’aide</strong><small>Les besoins publiés et les jeunes qui proposent leur aide.</small></span><Icone nom="chevron" /></Link>}
             {demandes && demandes.length > 0 && (

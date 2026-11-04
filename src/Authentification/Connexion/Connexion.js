@@ -36,13 +36,13 @@ const Connexion = () => {
 
     return (
         <div className="ecran vdo" id="vdo">
-            <div className="corps">
+            <main className="corps">
                 <div className="app-pad">
                     <Retour vers="/bienvenue" />
                     <div className="login-art"><img src="/assets/presentation/ensemble.jpg" alt="Un moment de partage autour d'un café" /></div>
                     <div className="login-heading">
                         <span className="mini-eyebrow">LE PLAISIR DE SE RETROUVER</span>
-                        <h2>Vous revoilà !</h2>
+                        <h1>Vous revoilà !</h1>
                         <p className="soft">Recevez un lien de connexion et retrouvez votre espace.</p>
                     </div>
                     <form className="form-stack" onSubmit={handleSubmit} noValidate>
@@ -55,7 +55,7 @@ const Connexion = () => {
                     {aide && <div className="notice">Regardez dans vos spams, puis vérifiez l'adresse saisie. Vous pouvez demander un nouveau lien avec le bouton ci-dessus : le précédent ne sert plus.</div>}
                     <div className="signin-prompt">Pas encore de compte ? <Link className="link-button" to="/inscription">Nous rejoindre</Link></div>
                 </div>
-            </div>
+            </main>
         </div>
     );
 };

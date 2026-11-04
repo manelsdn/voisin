@@ -7,19 +7,19 @@ const Bienvenue = () => {
     if (utilisateur) return <Navigate to="/accueil" replace />;
     return (
         <div className="ecran vdo" id="vdo">
-            <div className="corps">
+            <main className="corps">
                 <div className="welcome">
                     <img className="app-logo" src="/assets/logo-voisin-dor.svg" alt="Voisin d'Or" />
                     <div className="welcome-art"><img src="/assets/presentation/accueil.jpg" alt="Une jeune personne rend visite à une aînée sur son perron" /></div>
                     <div className="mini-pill">L'ENTRAIDE ENTRE GÉNÉRATIONS</div>
-                    <h2 className="titre-accent">Petits services. <br /><em>Grands liens.</em></h2>
+                    <h1 className="titre-accent">Petits services. <br /><em>Grands liens.</em></h1>
                     <p className="welcome-intro">Un jeune de votre quartier vous donne un coup de main pour les petites choses du quotidien.</p>
                     <div className="welcome-actions">
                         <LienBouton to="/inscription" fleche>C'est parti !</LienBouton>
                         <div className="signin-prompt">Déjà parmi nous ? <Link className="link-button" to="/connexion">Se connecter</Link></div>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     );
 };

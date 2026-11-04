@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { ecouterMessages, nombreNonLus } from "../services/api";
 import { SERVICES, iconeService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 import { DessinService, Icone } from "./Icones";
 import { useSession } from "./Session";
@@ -15,21 +17,39 @@ export const Retour = ({ vers, texte, action }) => {
 
 export const Ecran = ({ titre, retour, children, nav = true, surtitre, classe = "" }) => (
     <div className="ecran vdo" id="vdo">
-        <div className="corps">
+        <main className="corps">
             <div className={`app-pad ${classe}`}>
                 {retour && <Retour vers={retour} texte={surtitre} />}
                 {!retour && surtitre && <span className="mini-eyebrow">{surtitre}</span>}
-                {titre && <h2>{titre}</h2>}
+                {titre && <h1>{titre}</h1>}
                 {children}
             </div>
-        </div>
+        </main>
         {nav && <Navigation />}
     </div>
 );
 
+export const useNonLus = (utilisateur) => {
+    const [nombre, setNombre] = useState(0);
+    useEffect(() => {
+        if (!utilisateur) return undefined;
+        let actif = true;
+        const maj = () => nombreNonLus(utilisateur).then((n) => actif && setNombre(n)).catch(() => {});
+        maj();
+        const arreter = ecouterMessages(utilisateur, maj);
+        return () => {
+            actif = false;
+            arreter();
+        };
+    }, [utilisateur]);
+    return nombre;
+};
+
 export const Navigation = () => {
     const session = useSession();
-    const estJeune = session && session.utilisateur && session.utilisateur.role === "JEUNE";
+    const utilisateur = session && session.utilisateur;
+    const estJeune = utilisateur && utilisateur.role === "JEUNE";
+    const nonLus = useNonLus(utilisateur);
     return (
         <nav className="bottom-nav nav-5" aria-label="Navigation principale">
             <NavLink to="/accueil"><Icone nom="home" />Accueil</NavLink>
@@ -37,7 +57,7 @@ export const Navigation = () => {
             <NavLink to="/recherche" className={({ isActive }) => (isActive ? "nav-centre active" : "nav-centre")} aria-label={estJeune ? "Aider : les besoins près de chez moi" : "Trouver un jeune près de chez moi"}>
                 <span className="nav-centre-rond"><Icone nom={estJeune ? "heart" : "search"} /></span>{estJeune ? "Aider" : "Trouver"}
             </NavLink>
-            <NavLink to="/messages"><Icone nom="message" />Messages</NavLink>
+            <NavLink to="/messages" className="nav-messages"><Icone nom="message" />Messages{nonLus > 0 && <b className="nav-badge"><span className="sr-only">, </span>{nonLus > 9 ? "9+" : nonLus}<span className="sr-only"> non lus</span></b>}</NavLink>
             <NavLink to="/profil"><Icone nom="user" />Profil</NavLink>
         </nav>
     );
@@ -119,7 +139,7 @@ export const CartesServices = ({ lien, tous, actif }) => (
     <div className="story-bar" role="list" aria-label="Services">
         {tous && (
             <div role="listitem">
-                <Link to={lien("")} className="story-btn" aria-pressed={!actif}>
+                <Link to={lien("")} className="story-btn" aria-current={!actif ? "true" : undefined}>
                     <span className="story-ring"><span className="story-img"><img src="/assets/logo-voisin-dor-icone.svg" alt="" /></span></span>
                     <small>Tous</small>
                 </Link>
@@ -127,7 +147,7 @@ export const CartesServices = ({ lien, tous, actif }) => (
         )}
         {SERVICES.map((s) => (
             <div role="listitem" key={s.code}>
-                <Link to={lien(s.code)} className="story-btn" aria-pressed={tous ? actif === s.code : false}>
+                <Link to={lien(s.code)} className="story-btn" aria-current={tous && actif === s.code ? "true" : undefined}>
                     <span className="story-ring"><span className="story-img"><img src={s.image} alt="" /></span></span>
                     <small>{s.nom}</small>
                 </Link>

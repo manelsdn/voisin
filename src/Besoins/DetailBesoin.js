@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Astuce, Avatar, BanniereService, Ecran, LienBouton, Message } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
+import Dictee, { enPhrase } from "../composants/Dictee";
 import { changerStatutBesoin, lireBesoin, maProposition, pointDeRecherche, proposerAide, propositionsDuBesoin } from "../services/api";
 import { distanceKm } from "../services/geo";
 import { STATUTS_BESOIN, depuis, nomService, texteCreneau, texteDistance } from "../services/constantes";
@@ -66,7 +67,7 @@ const DetailBesoin = () => {
     };
 
     return (
-        <Ecran retour={auteur ? "/besoins" : "/recherche"} surtitre={auteur ? "MON ANNONCE" : "UN BESOIN DU QUARTIER"} titre={<>{nomService(besoin.service)} <br />pour {besoin.beneficiairePrenom}</>}>
+        <Ecran retour={auteur ? "/besoins" : "/recherche"} titre={<>{nomService(besoin.service)} <br />pour {besoin.beneficiairePrenom}</>}>
             <BanniereService code={besoin.service} />
             <div className="besoin-meta">
                 <em className={`statut ${besoin.statut === "OUVERTE" ? "ACCEPTEE" : "ANNULEE"}`}>{STATUTS_BESOIN[besoin.statut]}</em>
@@ -81,7 +82,7 @@ const DetailBesoin = () => {
 
             {auteur ? (
                 <>
-                    <h3 className="section-h">Propositions <span className="pastille-nb">{propositions.length}</span></h3>
+                    <h2 className="section-h">Propositions <span className="pastille-nb">{propositions.length}</span></h2>
                     {propositions.length === 0 && <div className="vide vide-petit"><span className="vide-icone"><Icone nom="heart" /></span><strong>Pas encore de proposition.</strong><p>Les jeunes du quartier voient votre annonce. Vous serez prévenu dans vos messages.</p></div>}
                     <div className="liste-cartes">
                         {propositions.map((p) => {
@@ -114,6 +115,7 @@ const DetailBesoin = () => {
                     </div>
                 ) : besoin.statut === "OUVERTE" ? (
                     <form className="form-stack actions-flottantes-form" onSubmit={proposer} noValidate>
+                        <Dictee ajouter={(texte) => setMessage((avant) => enPhrase(avant, texte, 300))} libelle="Dicter mon message" />
                         <label>Un petit mot pour {besoin.auteurPrenom} (facultatif)<textarea name="message" maxLength={300} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Bonjour, je suis disponible samedi matin…" /></label>
                         <Astuce>Votre numéro reste privé. {besoin.auteurPrenom} choisira s'il vous envoie une demande.</Astuce>
                         <Message erreur={erreur} />

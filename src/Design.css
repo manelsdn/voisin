@@ -1,14 +1,14 @@
 .vdo{--paper:#fff8f0;--ink:#2a2140;--muted:#675e80;--muted-strong:#675e80;--yellow:#ffc145;--yellow-soft:#ffe8b8;--sage:#cff3ee;--peach:#ffd4cc;--line:#ede3e8;--white:#fffdf8;--green:#0e9e86;--focus:#1FAF98;--font-head:"Fredoka",sans-serif;--font-body:"Nunito",-apple-system,"Segoe UI",Arial,sans-serif;font-family:var(--font-body);color:var(--ink);background:var(--white);position:relative;padding:0;display:flex;flex-direction:column;min-height:100vh;width:100%;max-width:480px;box-shadow:0 0 0 1px var(--line)}
-.vdo h1,.vdo h2,.vdo h3,.vdo h4{font-family:var(--font-head)}
+.vdo h1,.vdo h2,.vdo h3,.vdo h4,.vdo h1{font-family:var(--font-head)}
 .vdo button,.vdo input,.vdo select,.vdo textarea{font:inherit;color:inherit}
 .vdo button,.vdo .primary,.vdo .secondary,.vdo .helper-card,.vdo .role-card,.vdo .icon-btn,.vdo .story-btn,.vdo .post-act,.vdo .post-cta,.vdo .map-preview-card,.vdo .beneficiary,.vdo .location-button,.vdo .see-all,.vdo .bottom-nav a{border-radius:14px!important}
 .vdo a{color:inherit}
 .vdo button:focus-visible{outline:3px solid #496dbe;outline-offset:3px}
-.vdo h2{font:600 31px/1.1 var(--font-head);letter-spacing:-.9px;margin:13px 0}
+.vdo h2,.vdo h1{font:600 31px/1.1 var(--font-head);letter-spacing:-.9px;margin:13px 0}
 .vdo h3{font-size:15px;line-height:1.3;margin:0}
 .vdo p{font-size:13px;line-height:1.6}
 .vdo .soft{color:var(--muted)}
-.vdo small{font-size:11px;line-height:1.5}
+.vdo small{font-size:13px;line-height:1.5}
 .vdo .app-pad{padding:12px 20px 20px}
 .vdo .app-logo{width:128px;height:auto;display:block}
 .vdo .welcome{padding:14px 21px 17px;min-height:100%;display:flex;flex-direction:column}
@@ -16,9 +16,9 @@
 .vdo .welcome-art{height:255px;position:relative;display:flex;align-items:center;justify-content:center;margin:6px -8px 0}
 .vdo .welcome-art:before{content:'';width:238px;height:228px;background:#ffdca6;border-radius:45% 55% 45% 53%;position:absolute;transform:rotate(-8deg)}
 .vdo .welcome-art img{height:243px;width:auto;position:relative;object-fit:contain;z-index:1}
-.vdo .art-flower{position:absolute;right:6px;top:38px;color:#ff6b5b;font-size:36px;z-index:2}
-.vdo .mini-pill{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#8a7ba8;margin:8px 0 0}
-.vdo .welcome h2{font-size:34px;margin:10px 0 8px}
+.vdo .art-flower{position:absolute;right:6px;top:38px;color:#D23B2A;font-size:36px;z-index:2}
+.vdo .mini-pill{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:#6B5D8C;margin:8px 0 0}
+.vdo .welcome h2,.vdo .welcome h1{font-size:34px;margin:10px 0 8px}
 .vdo .welcome p{margin:0 0 16px}
 .vdo .primary,.vdo .secondary{min-height:45px;width:100%;border-radius:14px;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;gap:9px;padding:11px 14px;text-decoration:none}
 .vdo .primary{border:1px solid var(--yellow);background:var(--yellow);color:var(--ink)}
@@ -28,13 +28,13 @@
 .vdo .primary .icon{margin-left:auto}
 .vdo .primary span{flex:1;text-align:center}
 .vdo .welcome-actions{margin-top:auto}
-.vdo .link-button,.vdo .link-a{background:none;border:0;padding:9px 0;font-size:12px;text-decoration:underline;text-underline-offset:3px}
-.vdo .signin-prompt{text-align:center;font-size:11px;margin-top:9px}
+.vdo .link-button,.vdo .link-a{background:none;border:0;padding:9px 0;font-size:13px;text-decoration:underline;text-underline-offset:3px}
+.vdo .signin-prompt{text-align:center;font-size:13px;margin-top:9px}
 .vdo .signin-prompt button,.vdo .signin-prompt a{font-weight:650;margin-left:3px}
 .vdo .app-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .vdo .icon-btn{width:36px;height:36px;flex-shrink:0;border:1px solid var(--line);border-radius:50%;background:var(--white);display:grid;place-items:center}
 .vdo .icon{width:20px;height:20px;display:inline-block;vertical-align:middle;flex-shrink:0}
-.vdo .step-text{font-size:11px;color:var(--muted)}
+.vdo .step-text{font-size:13px;color:var(--muted)}
 .vdo .step-line{display:flex;gap:5px;margin:21px 0 26px}
 .vdo .step-line i{height:3px;background:var(--sage);flex:1;border-radius:5px}
 .vdo .step-line i.on{background:#1faf98}
@@ -46,52 +46,52 @@
 .vdo .role-card:nth-child(2) .role-symbol{background:var(--peach)}
 .vdo .role-card:nth-child(3) .role-symbol{background:var(--sage)}
 .vdo .role-card strong{font-size:13px;display:block;line-height:1.35}
-.vdo .role-card small{color:var(--muted);display:block;font-size:11px;margin-top:4px}
+.vdo .role-card small{color:var(--muted);display:block;font-size:13px;margin-top:4px}
 .vdo .radio{width:16px;height:16px;border:1px solid #d8cbea;border-radius:50%;margin-left:auto;flex-shrink:0}
 .vdo .role-card[aria-pressed=true] .radio{border:5px solid #0e9e86;background:var(--white)}
-.vdo .hint{display:flex;gap:8px;font-size:11px;line-height:1.6;color:var(--muted);margin:19px 0}
+.vdo .hint{display:flex;gap:8px;font-size:13px;line-height:1.6;color:var(--muted);margin:19px 0}
 .vdo .hint .icon{width:16px;height:16px}
 .vdo .signup-bottom{margin-top:24px}
-.vdo .mini-eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:1.6px;font-weight:650;color:#8a7ba8}
+.vdo .mini-eyebrow{font-size:13px;text-transform:uppercase;letter-spacing:1.6px;font-weight:650;color:#6B5D8C}
 .vdo .home-top{display:flex;justify-content:space-between;align-items:center;padding:9px 18px 0}
-.vdo .location-button,.vdo .location-a{padding:0;border:0;background:transparent;display:flex;gap:5px;align-items:center;font-size:12px;font-weight:600}
+.vdo .location-button,.vdo .location-a{padding:0;border:0;background:transparent;display:flex;gap:5px;align-items:center;font-size:13px;font-weight:600}
 .vdo .location-button .icon,.vdo .location-a .icon{width:14px;height:14px}
-.vdo .avatar{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#ffe3dc;border:0;font-size:11px;font-weight:700}
+.vdo .avatar{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#ffe3dc;border:0;font-size:13px;font-weight:700}
 .vdo .home-content{padding:17px 18px 12px}
-.vdo .greeting{font-size:12px;margin-bottom:4px}
-.vdo .home-content h2{font-size:27px;margin:5px 0 17px}
-.vdo .beneficiary{background:#f3e9e4;border:1px solid #d8cbea;border-radius:11px;display:flex;align-items:center;gap:7px;width:100%;font-size:11px;padding:10px;margin-bottom:14px}
+.vdo .greeting{font-size:13px;margin-bottom:4px}
+.vdo .home-content h2,.vdo .home-content h1{font-size:27px;margin:5px 0 17px}
+.vdo .beneficiary{background:#f3e9e4;border:1px solid #d8cbea;border-radius:11px;display:flex;align-items:center;gap:7px;width:100%;font-size:13px;padding:10px;margin-bottom:14px}
 .vdo .beneficiary .icon{width:15px;height:15px}
 .vdo .beneficiary .chevron{margin-left:auto}
 .vdo .hero-card{background:var(--yellow-soft);border-radius:17px;display:flex;align-items:center;padding:14px 9px 12px 15px;position:relative;min-height:125px;overflow:hidden}
 .vdo .hero-card h3{font:600 22px/1.05 var(--font-head);letter-spacing:-.5px}
-.vdo .hero-card p{font-size:11px;margin:7px 0 0;line-height:1.4}
+.vdo .hero-card p{font-size:13px;margin:7px 0 0;line-height:1.4}
 .vdo .hero-card img{width:118px;height:118px;object-fit:contain;margin-right:-6px;align-self:flex-end}
 .vdo .hero-card div{flex:1}
 .vdo .section-title{display:flex;align-items:center;justify-content:space-between;margin:21px 0 12px}
 .vdo .section-title h3{font-size:13px}
-.vdo .section-title button,.vdo .section-title a{font-size:10px;color:#8a7ba8;border:0;background:none;padding:6px 0}
+.vdo .section-title button,.vdo .section-title a{font-size:13px;color:#6B5D8C;border:0;background:none;padding:6px 0}
 .vdo .helper-card{border:1px solid var(--line);border-radius:15px;background:var(--white);padding:12px;width:100%;text-align:left;display:flex;align-items:center;gap:10px}
 .vdo .helper-avatar{width:43px;height:47px;border-radius:13px;background:var(--peach);display:grid;place-items:center;font:22px var(--font-head);flex-shrink:0}
 .vdo .helper-card strong{font-size:13px}
-.vdo .helper-card small{font-size:10px;color:var(--muted);display:block;margin-top:4px}
+.vdo .helper-card small{font-size:13px;color:var(--muted);display:block;margin-top:4px}
 .vdo .helper-card .icon{margin-left:auto;width:16px}
-.vdo .tip-note{display:flex;align-items:flex-start;gap:7px;margin:13px 0 0!important;font-size:10px!important;color:#8a7ba8}
+.vdo .tip-note{display:flex;align-items:flex-start;gap:7px;margin:13px 0 0!important;font-size:13px!important;color:#6B5D8C}
 .vdo .tip-note .icon{width:14px;height:14px}
 .vdo .bottom-nav{display:flex;justify-content:space-around;border-top:1px solid #ede3e8;background:var(--white);padding:9px 3px 4px;flex-shrink:0}
-.vdo .bottom-nav button,.vdo .bottom-nav a{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:8px;padding:0 8px;color:#8a7ba8;min-height:34px}
+.vdo .bottom-nav button,.vdo .bottom-nav a{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:8px;padding:0 8px;color:#6B5D8C;min-height:34px}
 .vdo .bottom-nav button.active,.vdo .bottom-nav a.active{color:#2a2140;font-weight:650}
 .vdo .bottom-nav .icon{width:19px;height:19px}
 .vdo .form-stack{display:grid;gap:15px;margin:24px 0 18px}
-.vdo .form-stack label{font-size:12px;font-weight:600;display:block}
+.vdo .form-stack label{font-size:13px;font-weight:600;display:block}
 .vdo .form-stack input,.vdo .form-stack select,.vdo .form-stack textarea{display:block;border:1px solid #ede3e8;border-radius:11px;background:#fffdf8;padding:12px;width:100%;margin-top:7px;font-size:14px;color:var(--ink);min-height:44px}
 .vdo .form-stack textarea{min-height:75px;resize:vertical}
-.vdo .check-label{display:flex!important;align-items:flex-start;gap:8px;line-height:1.6;font-size:11px!important;font-weight:400!important}
+.vdo .check-label{display:flex!important;align-items:flex-start;gap:8px;line-height:1.6;font-size:13px!important;font-weight:400!important}
 .vdo .check-label input{width:16px;min-height:16px;flex-shrink:0;margin-top:1px;accent-color:#0e9e86}
 .vdo .login-art{background:var(--sage);border-radius:50%;width:134px;height:134px;display:grid;place-items:center;margin:24px auto}
 .vdo .login-art img{width:132px}
 .vdo .login-heading{text-align:center}
-.vdo .notice{padding:13px;border-radius:12px;background:var(--sage);font-size:12px;line-height:1.7;margin:15px 0}
+.vdo .notice{padding:13px;border-radius:12px;background:var(--sage);font-size:13px;line-height:1.7;margin:15px 0}
 .vdo .success-icon{height:72px;width:72px;background:var(--sage);border-radius:50%;display:grid;place-items:center;margin:30px auto 20px}
 .vdo .success-icon .icon{width:32px;height:32px}
 .vdo .message-bubble{padding:12px;border-radius:15px;background:var(--sage);font-size:13px;line-height:1.6;margin:17px 25px 12px 0}
@@ -102,24 +102,24 @@
 .vdo .profile-portrait{margin:23px auto 12px;width:75px;height:75px;font:34px var(--font-head);border-radius:24px;display:grid;place-items:center;background:var(--peach)}
 .vdo .profile-name{text-align:center}
 .vdo .stack-actions{display:grid;gap:10px;margin:20px 0}
-.vdo .text-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line);font-size:12px}
-.vdo .text-row button,.vdo .text-row a{border:0;background:none;font-size:12px;text-decoration:underline}
+.vdo .text-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line);font-size:13px}
+.vdo .text-row button,.vdo .text-row a{border:0;background:none;font-size:13px;text-decoration:underline}
 .vdo .empty{padding:25px 0}
 .vdo .message-list button,.vdo .message-list a{width:100%;text-align:left;border:1px solid var(--line);border-radius:12px;background:var(--white);padding:14px;margin:15px 0}
 .vdo .logo-showcase{background:var(--yellow-soft);min-height:195px;display:flex;align-items:center;justify-content:center;border-radius:14px;margin:20px 0}
 .vdo .logo-showcase img{width:240px}
 @keyframes granny-wave{0%,100%{transform:rotate(0)}35%{transform:rotate(-5deg)}70%{transform:rotate(5deg)}}
 .vdo .wide-card{margin-bottom:28px}
-.vdo .status-message{font-size:12px;line-height:1.6;color:var(--green);margin:12px 0}
+.vdo .status-message{font-size:13px;line-height:1.6;color:var(--green);margin:12px 0}
 .vdo .terms-content h3{margin-top:20px}
-.vdo .terms-content p{font-size:12px}
+.vdo .terms-content p{font-size:13px}
 .vdo .step-line{margin:16px 0 20px}
 .vdo .role-list{margin:16px 0}
 .vdo .role-card{min-height:78px;padding-top:12px;padding-bottom:12px}
 .vdo .hint{margin:15px 0}
 .vdo .signup-bottom{margin-top:18px}
 .vdo .home-content{padding-top:13px}
-.vdo .home-content h2{margin-bottom:12px}
+.vdo .home-content h2,.vdo .home-content h1{margin-bottom:12px}
 .vdo .hero-card{padding-top:10px;padding-bottom:10px}
 .vdo .hero-card img{width:98px;height:98px}
 .vdo .section-title{margin-top:17px}
@@ -160,11 +160,11 @@
 .vdo .story-item{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;width:60px}
 .vdo .story-circle{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#FFC145,#FF6B5B,#9B6BFF);padding:2.5px}
 .vdo .story-circle .icon{width:100%;height:100%;background:var(--white);border-radius:50%;padding:14px;color:#2A2140;box-sizing:border-box}
-.vdo .story-item small{font-size:10px;text-align:center;line-height:1.25;color:var(--muted)}
+.vdo .story-item small{font-size:13px;text-align:center;line-height:1.25;color:var(--muted)}
 .vdo .browse-map{height:150px;border-radius:16px;margin:14px 0;overflow:hidden;background:var(--sage);position:relative}
 .vdo .browse-map svg{width:100%;height:100%;display:block}
 .vdo .browse-map-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
-.vdo .map-caption{position:absolute;left:10px;bottom:8px;font-size:10px;font-weight:600;color:#0e6e5e;background:#ffffffd9;padding:5px 10px;border-radius:20px;display:flex;align-items:center;gap:5px;z-index:2}
+.vdo .map-caption{position:absolute;left:10px;bottom:8px;font-size:13px;font-weight:600;color:#0e6e5e;background:#ffffffd9;padding:5px 10px;border-radius:20px;display:flex;align-items:center;gap:5px;z-index:2}
 .vdo .map-caption i{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
 .vdo .map-caption i+i{margin-left:6px}
 .vdo .services-full{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
@@ -174,10 +174,10 @@
 .vdo .service-photo-badge{position:absolute;right:6px;bottom:6px;width:26px;height:26px;border-radius:9px;background:#2A2140;color:#fff;display:grid;place-items:center;box-shadow:0 3px 8px rgba(42,33,64,.3)}
 .vdo .service-photo-badge .icon{width:14px;height:14px}
 .vdo .service-full strong{font-size:14px}
-.vdo .service-full small{font-size:11px;color:var(--muted);line-height:1.4;display:block}
+.vdo .service-full small{font-size:13px;color:var(--muted);line-height:1.4;display:block}
 .vdo .service-full:hover .service-photo{box-shadow:0 8px 16px rgba(42,33,64,.15)}
 .vdo .service-photo-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
-.vdo .map-badge{position:absolute;left:10px;top:8px;font-size:10px;font-weight:700;color:#0e6e5e;background:#ffffffe6;padding:5px 10px 5px 7px;border-radius:20px;display:flex;align-items:center;gap:4px;z-index:2;letter-spacing:.2px}
+.vdo .map-badge{position:absolute;left:10px;top:8px;font-size:13px;font-weight:700;color:#0e6e5e;background:#ffffffe6;padding:5px 10px 5px 7px;border-radius:20px;display:flex;align-items:center;gap:4px;z-index:2;letter-spacing:.2px}
 .vdo .map-badge .icon{width:12px;height:12px}
 .vdo .service-banner{width:84px;aspect-ratio:1;border-radius:16px;overflow:hidden;margin:12px 0;box-shadow:0 4px 12px rgba(42,33,64,.12);position:relative}
 .vdo .service-banner svg{width:100%;height:100%;display:block}
@@ -192,61 +192,61 @@
 .vdo .service-chip[aria-pressed="true"]{border-color:#0e9e86;background:#e7fbf7;box-shadow:0 0 0 2px rgba(31,175,152,.14)}
 .vdo .service-chip .service-photo.compact{width:100%;height:72px;aspect-ratio:auto;border-radius:14px}
 .vdo .service-chip strong{font-size:13px;line-height:1.2}
-.vdo .service-chip small{font-size:10px;line-height:1.35;color:var(--muted);display:block}
+.vdo .service-chip small{font-size:13px;line-height:1.35;color:var(--muted);display:block}
 .vdo .map-preview-card{width:100%;border:1px solid var(--line);background:var(--white);border-radius:20px!important;padding:12px;text-align:left;display:grid;gap:8px;box-shadow:0 8px 20px rgba(42,33,64,.08);margin-bottom:12px}
 .vdo .map-preview-card .browse-map{height:122px;margin:0;border-radius:16px}
 .vdo .map-preview-card strong{font-size:14px;line-height:1.25}
-.vdo .map-preview-card small{font-size:11px;color:var(--muted);line-height:1.4}
+.vdo .map-preview-card small{font-size:13px;color:var(--muted);line-height:1.4}
 .vdo .map-preview-card .mini-eyebrow{font-size:8px;margin:0;width:max-content}
 .vdo .slot-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
 .vdo .slot-row em{font-style:normal;background:#ffe8b8;color:#8a5a12;border-radius:999px;padding:4px 7px;font-size:8px;font-weight:800;line-height:1.1}
 .vdo .helper-card-rich{align-items:flex-start!important;padding:13px!important;border-radius:18px!important}
 .vdo .helper-card-rich .helper-photo{width:50px;height:54px;border-radius:16px}
 .vdo .helper-card-rich strong{font-size:14px!important}
-.vdo .helper-card-rich small{font-size:10px!important;line-height:1.35}
+.vdo .helper-card-rich small{font-size:13px!important;line-height:1.35}
 .vdo .services-page .service-scroll{margin-top:18px}
 .vdo .service-detail-card{background:var(--white);border:1px solid var(--line);border-radius:22px;padding:15px;margin-top:8px;box-shadow:0 8px 20px rgba(42,33,64,.08)}
 .vdo .service-detail-card .service-photo{width:100%;aspect-ratio:16/10;border-radius:18px;margin-bottom:12px}
 .vdo .service-detail-card h3{font-size:18px;margin:4px 0}
-.vdo .service-detail-card p{font-size:12px;line-height:1.55;color:var(--muted);margin:0 0 10px}
+.vdo .service-detail-card p{font-size:13px;line-height:1.55;color:var(--muted);margin:0 0 10px}
 .vdo .service-detail-card .story-reel{margin:8px -2px 14px}
 .vdo .profile-portrait{box-shadow:0 10px 20px rgba(42,33,64,.12)}
 .vdo .profile-portrait img{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}
-.vdo .home-content h2,.vdo .app-pad h2{letter-spacing:-.4px}
+.vdo .home-content h2,.vdo .app-pad h2,.vdo .home-content h1,.vdo .app-pad h1{letter-spacing:-.4px}
 .vdo .section-title{margin-top:18px}
 .vdo .form-stack label{line-height:1.35}
 .vdo .form-stack input,.vdo .form-stack select,.vdo .form-stack textarea{font-size:13px;line-height:1.35}
 .vdo .primary,.vdo .secondary{font-size:13px;line-height:1.25;min-height:46px}
 .vdo .browse-map{box-shadow:inset 0 0 0 1px rgba(42,33,64,.08)}
-#vdo .mini-pill,#vdo .mini-eyebrow{font-size:12px;letter-spacing:1.2px;color:var(--muted-strong)}
-#vdo .step-text{font-size:12px;font-weight:600;color:var(--muted-strong)}
+#vdo .mini-pill,#vdo .mini-eyebrow{font-size:13px;letter-spacing:1.2px;color:var(--muted-strong)}
+#vdo .step-text{font-size:13px;font-weight:600;color:var(--muted-strong)}
 #vdo .greeting{font-size:14px;color:var(--muted-strong)}
 #vdo .location-button,#vdo .location-a{font-size:14px;min-height:36px}
 #vdo .role-card{min-height:84px;padding:14px 14px;gap:14px}
 #vdo .role-card strong{font-size:15px}
 #vdo .role-card small{font-size:13px;line-height:1.4}
 #vdo .role-card[aria-pressed="true"]{border-width:2px;border-color:#1FAF98;background:#effbf8}
-#vdo .helper-card small,#vdo button small,#vdo a small,#vdo .helper-card span small{font-size:12px!important}
+#vdo .helper-card small,#vdo button small,#vdo a small,#vdo .helper-card span small{font-size:13px!important}
 #vdo .helper-card strong{font-size:14px}
 #vdo .beneficiary{font-size:13px;min-height:48px;padding:10px 12px;border-radius:14px;background:#faf1ec}
 #vdo .helper-card{min-height:72px}
 #vdo .hero-card p{font-size:13px;line-height:1.45}
-#vdo .tip-note{font-size:12px!important;line-height:1.5;color:var(--muted-strong)}
+#vdo .tip-note{font-size:13px!important;line-height:1.5;color:var(--muted-strong)}
 #vdo .check-label{font-size:13px!important;line-height:1.5}
 #vdo .signin-prompt{font-size:13px;margin-top:12px}
 #vdo .link-button,#vdo .link-a{font-size:13px;min-height:32px}
 #vdo .see-all{font-size:13px;font-weight:600;color:#0e7f6d}
-#vdo .map-badge,#vdo .map-caption{font-size:11.5px}
-#vdo .slot-row em{font-size:11.5px;padding:4px 9px}
+#vdo .map-badge,#vdo .map-caption{font-size:13px}
+#vdo .slot-row em{font-size:13px;padding:4px 9px}
 #vdo .service-chip strong{font-size:14px}
-#vdo .service-chip small{font-size:12px}
+#vdo .service-chip small{font-size:13px}
 #vdo label{font-size:14px}
 #vdo input,#vdo select,#vdo textarea{font-size:15px;min-height:50px}
 #vdo .primary{min-height:54px;font-size:15px;font-weight:700;border-radius:16px!important}
 #vdo .primary:hover{background:#ffb627!important;box-shadow:0 10px 20px rgba(255,193,69,.4)}
-#vdo .hero-card-modern .mini-eyebrow{border-radius:999px;background:#fffdf8;color:#8a5a12;font-size:11px;font-weight:700;padding:5px 10px}
+#vdo .hero-card-modern .mini-eyebrow{border-radius:999px;background:#fffdf8;color:#8a5a12;font-size:13px;font-weight:700;padding:5px 10px}
 #vdo .bottom-nav{padding:8px 6px 6px}
-#vdo .bottom-nav button,#vdo .bottom-nav a{font-size:12px;min-height:48px;min-width:56px;padding:4px 6px;gap:3px;border-radius:14px!important;color:var(--muted-strong)}
+#vdo .bottom-nav button,#vdo .bottom-nav a{font-size:13px;min-height:48px;min-width:56px;padding:4px 6px;gap:3px;border-radius:14px!important;color:var(--muted-strong)}
 #vdo .bottom-nav button .icon,#vdo .bottom-nav a .icon{width:22px;height:22px}
 #vdo .bottom-nav button.active,#vdo .bottom-nav a.active{color:var(--ink);font-weight:700;background:#fff1d1}
 #vdo .section-title h3{font-size:15px}
@@ -266,24 +266,24 @@
 .vdo .story-ring{width:66px;height:66px;border-radius:50%;padding:3px;background:conic-gradient(from 200deg,#FFC145,#FF6B5B,#9B6BFF,#1FAF98,#FFC145);display:block;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
 .vdo .story-img{position:relative;display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;border:3px solid #fffdf8;background:#fff8f0}
 .vdo .story-img svg,.vdo .story-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.vdo .story-btn small{font-size:12px;font-weight:600;color:var(--ink);line-height:1.2;text-align:center}
+.vdo .story-btn small{font-size:13px;font-weight:600;color:var(--ink);line-height:1.2;text-align:center}
 .vdo .story-btn:hover .story-ring{transform:scale(1.06)}
-.vdo .story-btn[aria-pressed="false"] .story-ring{opacity:.92}
-.vdo .feed-page .story-btn[aria-pressed="false"] .story-ring{background:#e6dcea}
-.vdo .feed-page .story-btn[aria-pressed="true"] small{color:#0e7f6d;font-weight:800}
+.vdo .story-btn:not([aria-current]) .story-ring{opacity:.92}
+.vdo .feed-page .story-btn:not([aria-current]) .story-ring{background:#e6dcea}
+.vdo .feed-page .story-btn[aria-current="true"] small{color:#0e7f6d;font-weight:800}
 .vdo .feed{display:flex;flex-direction:column;gap:16px;margin-top:4px;padding-bottom:10px}
 .vdo .post{background:var(--white);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 6px 18px rgba(42,33,64,.07)}
 .vdo .post-head{display:flex;align-items:center;gap:10px;padding:11px 12px}
 .vdo .post-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #FFC145}
 .vdo .post-head>span{flex:1;min-width:0}
 .vdo .post-head strong{display:block;font-size:14px}
-.vdo .post-head small{display:block;font-size:12px;color:var(--muted-strong)}
-.vdo .post-tag{font-style:normal;font-size:12px;font-weight:700;color:#0e6e5e;background:#dff6f1;padding:4px 10px;border-radius:999px}
+.vdo .post-head small{display:block;font-size:13px;color:var(--muted-strong)}
+.vdo .post-tag{font-style:normal;font-size:13px;font-weight:700;color:#0e6e5e;background:#dff6f1;padding:4px 10px;border-radius:999px}
 .vdo .post-img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#f3e9e4}
 .vdo .post-actions{display:flex;align-items:center;gap:6px;padding:8px 10px 2px}
 .vdo .post-act{border:0;background:none;display:inline-flex;align-items:center;gap:5px;font-size:14px;font-weight:700;color:var(--ink);min-height:40px;padding:0 8px;border-radius:12px!important}
 .vdo .post-act .icon{width:22px;height:22px}
-.vdo .post-act.liked{color:#FF6B5B}
+.vdo .post-act.liked{color:#D23B2A}
 .vdo .post-act.liked .icon{fill:currentColor;animation:post-like .35s ease}
 @keyframes post-like{50%{transform:scale(1.3)}}
 .vdo .post-cta{margin-left:auto;border:0;background:#FFC145;color:#2A2140;font-weight:700;font-size:14px;min-height:40px;padding:0 14px;border-radius:999px!important;display:inline-flex;align-items:center;gap:6px}
@@ -305,7 +305,7 @@
 .vdo .initial-avatar{display:grid;place-items:center;background:linear-gradient(135deg,#FF6B5B,#FFC145);color:#fff;font-weight:900;font-size:16px;border:2px solid #FFC145}
 .vdo .suggestion-block{display:grid;gap:3px;margin:8px 0 10px;padding:10px 12px;border-radius:16px;background:#fff8f0;border:1px solid #f0dfd3;color:var(--ink)}
 .vdo .suggestion-block span{font-size:13px;font-weight:850;line-height:1.25}
-.vdo .suggestion-block small{font-size:11px;line-height:1.35;color:var(--muted)}.vdo .corps{flex:1;padding-bottom:12px}
+.vdo .suggestion-block small{font-size:13px;line-height:1.35;color:var(--muted)}.vdo .corps{flex:1;padding-bottom:12px}
 .vdo .bottom-nav{position:sticky;bottom:0;z-index:20}
 .vdo .bottom-nav a{text-decoration:none}
 .vdo a.primary,.vdo a.secondary,.vdo a.helper-card,.vdo a.map-preview-card,.vdo a.see-all,.vdo a.beneficiary,.vdo a.location-button,.vdo a.story-btn,.vdo a.post-cta,.vdo a.avatar,.vdo a.icon-btn,.vdo .message-list a{text-decoration:none;color:var(--ink)}
@@ -316,7 +316,7 @@
 .vdo .h-ligne{display:block}
 .vdo .erreur{margin:12px 0 0;padding:12px 14px;border-radius:12px;background:#ffe9e4;color:#a8321f;font-size:14px;line-height:1.5}
 .vdo .info{margin:12px 0 0;padding:12px 14px;border-radius:12px;background:var(--sage);font-size:14px;line-height:1.5}
-.vdo .statut{display:inline-block;font-style:normal;font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--yellow-soft);color:#8a5a12}
+.vdo .statut{display:inline-block;font-style:normal;font-size:13px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--yellow-soft);color:#8a5a12}
 .vdo .statut.ACCEPTEE{background:#cff3ee;color:#0b6e5e}
 .vdo .statut.REFUSEE,.vdo .statut.ANNULEE{background:#ffe1dc;color:#a8321f}
 .vdo .avatar{overflow:hidden;display:grid;place-items:center;font-weight:800;color:var(--ink);text-decoration:none}
@@ -335,7 +335,7 @@
 .vdo .creneaux{list-style:none;padding:0;margin:0;display:grid;gap:8px}
 .vdo .creneaux li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:var(--yellow-soft);font-size:14px;font-weight:700}
 .vdo .creneaux li button{background:none;border:0;font-size:13px;text-decoration:underline;cursor:pointer;color:var(--muted)}
-.vdo .role-badge{display:inline-block;margin:4px 0 0;font-size:12px;font-weight:800;letter-spacing:.4px;padding:4px 10px;border-radius:999px;background:var(--peach)}
+.vdo .role-badge{display:inline-block;margin:4px 0 0;font-size:13px;font-weight:800;letter-spacing:.4px;padding:4px 10px;border-radius:999px;background:var(--peach)}
 .vdo .home-top .avatar{width:38px;height:38px;border-radius:50%;padding:0;border:2px solid #9b6bff;background:#e7dbff}
 .vdo .bonjour-ligne{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .vdo .resultat .slot-row em{font-style:normal}
@@ -357,7 +357,7 @@
 .vdo .conversation{display:grid;gap:8px;margin:14px 0}
 .vdo .message-bubble{max-width:84%;margin:0!important}
 .vdo .message-bubble.mine{justify-self:end;background:var(--yellow-soft)}
-.vdo .message-bubble small{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+.vdo .message-bubble small{display:block;font-size:13px;color:var(--muted);margin-top:4px}
 .vdo .message-list{display:grid;gap:10px;margin-top:16px}
 .vdo .message-list a{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--line);border-radius:16px;background:#fff}
 .vdo .message-list a h3{margin:0 0 2px;font-size:16px}
@@ -393,7 +393,7 @@
 .vdo .infos-locales .lieux li span{display:inline-flex;align-items:center;gap:6px;font-weight:700}
 .vdo .favoris{margin:18px 0 6px;display:grid;gap:8px}
 .vdo .micro{display:inline-flex;align-items:center;justify-content:center;gap:8px;touch-action:none;user-select:none;-webkit-user-select:none}
-.vdo .micro.actif{background:#FF6B5B;color:#fff;border-color:#FF6B5B}
+.vdo .micro.actif{background:#D23B2A;color:#fff;border-color:#FF6B5B}
 .vdo .message-bubble audio{display:block;max-width:100%;margin:6px 0 2px}
 .vdo .case{display:flex;align-items:center;gap:10px;font-weight:600}
 .vdo .case input{width:22px;height:22px;min-height:0;flex:none;accent-color:#FF6B5B}

@@ -32,7 +32,7 @@ const ChangerRole = () => {
     };
 
     return (
-        <Ecran titre={<>Changer <br />de rôle.</>} retour="/profil" surtitre="MON PROFIL">
+        <Ecran titre="Changer de rôle" retour="/profil">
             <p className="soft">Aujourd'hui : <strong>{ROLES[utilisateur.role]}</strong>. Vos messages et votre historique sont conservés.</p>
             <div className="role-list">
                 {CARTES.map((r) => (

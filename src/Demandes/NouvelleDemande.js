@@ -79,7 +79,7 @@ const NouvelleDemande = () => {
     };
 
     return (
-        <Ecran titre={<>Organisons ce <br />coup de main.</>} retour>
+        <Ecran titre="Envoyer une demande" retour>
             <BanniereService code={service} />
             <p className="soft">Avec {jeune.prenom}{beneficiaire.id !== utilisateur.id ? ` · pour ${beneficiaire.prenom}` : ""}</p>
             <form className="form-stack" onSubmit={handleSubmit} noValidate>

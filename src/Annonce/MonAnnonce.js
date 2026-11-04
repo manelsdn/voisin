@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Ecran, Indice, Message } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
+import Dictee, { enPhrase } from "../composants/Dictee";
+import { analyser, servicesDans } from "../services/dictee";
 import { publierAnnonce, suggestionAnnonce } from "../services/api";
-import { JOURS, NOMS_JOURS, SERVICES, texteCreneau } from "../services/constantes";
+import { JOURS, NOMS_JOURS, SERVICES, nomService, texteCreneau } from "../services/constantes";
 
 const MonAnnonce = () => {
     const { utilisateur, recharger } = useSession();
@@ -15,9 +17,19 @@ const MonAnnonce = () => {
     const [erreur, setErreur] = useState("");
     const [essai, setEssai] = useState(0);
     const [avantProposition, setAvantProposition] = useState(null);
+    const [compris, setCompris] = useState(null);
     const navigate = useNavigate();
 
     if (utilisateur.role !== "JEUNE") return <Ecran titre="Mon annonce" retour="/accueil"><div className="notice">Seuls les jeunes volontaires publient une annonce.</div></Ecran>;
+
+    const dicter = (texte) => {
+        setDescription((avant) => enPhrase(avant, texte, 180));
+        const trouve = analyser(texte);
+        const detectes = servicesDans(texte);
+        if (detectes.length) setServices((avant) => [...new Set([...avant, ...detectes])]);
+        if (trouve.jour) setNouveau((n) => ({ jour: trouve.jour, heureDebut: trouve.heureDebut || n.heureDebut, heureFin: trouve.heureFin || n.heureFin }));
+        setCompris(detectes.length || trouve.jour ? { services: detectes, creneau: trouve.jour ? `${NOMS_JOURS[trouve.jour]}${trouve.heureDebut ? ` ${trouve.heureDebut}-${trouve.heureFin}` : ""}` : "" } : null);
+    };
 
     const basculer = (code) => setServices(services.includes(code) ? services.filter((c) => c !== code) : [...services, code]);
 
@@ -59,9 +71,13 @@ const MonAnnonce = () => {
     };
 
     return (
-        <Ecran titre="Votre annonce." retour="/accueil" surtitre="MON ANNONCE">
+        <Ecran titre="Mon annonce" retour="/accueil">
             <p className="soft">Vos services et vos créneaux, visibles dans le quartier.</p>
             <form className="form-stack" onSubmit={publier}>
+                <Dictee ajouter={dicter} libelle="Dicter mon annonce au micro" />
+                {compris && (
+                    <p className="devine" aria-live="polite"><Icone nom="sparkles" /><span>Compris : <b>{[compris.services.map(nomService).join(", "), compris.creneau && `créneau ${compris.creneau} prêt à ajouter`].filter(Boolean).join(" · ")}</b>. Vous pouvez tout modifier.</span></p>
+                )}
                 <fieldset>
                     <legend>Services proposés</legend>
                     <div className="puces">

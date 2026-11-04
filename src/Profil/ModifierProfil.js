@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { Ecran, Message } from "../composants/Mise";
+import { Avatar, Ecran, Message } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { envoyerLien, modifierUtilisateur } from "../services/api";
 
@@ -66,10 +66,10 @@ const ModifierProfil = () => {
     const apercu = photo ? URL.createObjectURL(photo) : utilisateur.photoProfil;
 
     return (
-        <Ecran titre={<>Modifier <br />mon profil.</>} retour="/profil">
+        <Ecran titre="Modifier mon profil" retour="/profil">
             <form className="form-stack" onSubmit={handleOnSubmit} noValidate>
                 <div className="apercu-photo">
-                    <div className={apercu ? "profile-portrait" : "profile-portrait initiale"}>{apercu ? <img src={apercu} alt="Aperçu de votre portrait" /> : (utilisateur.prenom || "?")[0]}</div>
+                    <div className={apercu ? "profile-portrait" : "profile-portrait initiale"}>{apercu ? <img src={apercu} alt="Aperçu de votre portrait" /> : <Avatar personne={utilisateur} classe="" />}</div>
                     <label htmlFor="photoProfil">Photo de profil<input type="file" onChange={(e) => setPhoto(e.target.files[0])} id="photoProfil" name="photoProfil" accept="image/*" /></label>
                 </div>
                 {photoErreur && <p className="erreur">{photoErreur}</p>}

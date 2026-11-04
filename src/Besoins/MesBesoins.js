@@ -20,7 +20,7 @@ const MesBesoins = () => {
     }, [utilisateur]);
 
     return (
-        <Ecran titre="Mes annonces" retour="/services" surtitre="BESOINS PUBLIÉS">
+        <Ecran titre="Mes annonces" retour="/services">
             <p className="soft">Les jeunes du quartier vous proposent leur aide ici.</p>
             {besoins === null && <div className="squelettes">{[0, 1].map((i) => <span key={i} className="squelette" />)}</div>}
             {besoins && besoins.length === 0 && (

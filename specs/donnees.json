@@ -32,7 +32,7 @@
         }
       ],
       "annoncePubliee": true,
-      "photoProfil": "/assets/personas/lucas.png",
+      "photoProfil": "/assets/avatars/lucas.jpg",
       "accompagnantId": null,
       "creeAt": "2026-09-13T10:00:00.000Z"
     },
@@ -63,7 +63,7 @@
         }
       ],
       "annoncePubliee": true,
-      "photoProfil": "/assets/personas/ines.png",
+      "photoProfil": "/assets/avatars/ines.jpg",
       "accompagnantId": null,
       "creeAt": "2026-09-19T10:00:00.000Z"
     },
@@ -106,7 +106,7 @@
         }
       ],
       "annoncePubliee": true,
-      "photoProfil": "/assets/personas/adam.png",
+      "photoProfil": "/assets/avatars/adam.jpg",
       "accompagnantId": null,
       "creeAt": "2026-09-21T10:00:00.000Z"
     },

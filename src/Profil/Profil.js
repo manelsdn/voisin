@@ -23,7 +23,7 @@ const Profil = () => {
     };
 
     return (
-        <Ecran titre={<>Votre place <br />dans le quartier.</>} surtitre="MON PROFIL">
+        <Ecran titre="Mon profil">
             <div className={utilisateur.photoProfil ? "profile-portrait" : "profile-portrait initiale"}><Avatar personne={utilisateur} classe="" /></div>
             <div className="profile-name">
                 <h2>{utilisateur.prenom} {utilisateur.nom}</h2>

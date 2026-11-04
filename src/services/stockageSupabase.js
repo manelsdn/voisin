@@ -42,6 +42,25 @@ export const chercher = async (col, champ, valeur) => {
     return verifier(await table(col).select("id, data").eq(`data->>${champ}`, valeur)).map(doc);
 };
 
+export const ecouterMessages = (moiId, rappel) => {
+    const canal = supabase()
+        .channel(`messages-${moiId}-${Math.random().toString(36).slice(2)}`)
+        .on("postgres_changes", { event: "*", schema: "public", table: "messages" }, (charge) => {
+            const ligne = charge.new && charge.new.data ? charge.new : null;
+            if (!ligne || ligne.data.de === moiId || ligne.data.a === moiId) rappel(doc(ligne));
+        })
+        .subscribe();
+    const secours = setInterval(() => rappel(null), 10000);
+    return () => {
+        clearInterval(secours);
+        supabase().removeChannel(canal);
+    };
+};
+
+export const marquerLus = async (moiId, deId) => {
+    verifier(await supabase().rpc("marquer_lus", { p_de: deId }));
+};
+
 export const televerserPhoto = async (uid, fichier) => {
     const chemin = `profil/${uid}`;
     verifier(await supabase().storage.from("photos").upload(chemin, fichier, { upsert: true, contentType: fichier.type }));

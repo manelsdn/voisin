@@ -1,14 +1,23 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { Ecran, Message } from "../composants/Mise";
+import { Avatar, Ecran, Message, Retour } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { envoyerMessage, envoyerMessageVocal, lireConversation, lireUtilisateur } from "../services/api";
+import { ecouterMessages, envoyerMessage, envoyerMessageVocal, lireConversation, lireUtilisateur, marquerLus } from "../services/api";
 import { ROLES } from "../services/constantes";
 
 const FORMATS = ["audio/webm", "audio/mp4", "audio/ogg"];
 
-const heure = (iso) => new Date(iso).toLocaleString("fr-FR", { weekday: "short", hour: "2-digit", minute: "2-digit" });
+const heure = (iso) => new Date(iso).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+
+const jour = (iso) => {
+    const d = new Date(iso);
+    const auj = new Date();
+    const hier = new Date(auj.getTime() - 86400000);
+    if (d.toDateString() === auj.toDateString()) return "Aujourd'hui";
+    if (d.toDateString() === hier.toDateString()) return "Hier";
+    return d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+};
 
 const Conversation = () => {
     const { id } = useParams();
@@ -18,22 +27,30 @@ const Conversation = () => {
     const [texte, setTexte] = useState("");
     const [erreur, setErreur] = useState("");
     const [enregistre, setEnregistre] = useState(false);
+    const [envoi, setEnvoi] = useState(false);
     const enregistreur = useRef(null);
+    const fil = useRef(null);
 
     const charger = useCallback(async () => {
         try {
-            setMessages(await lireConversation(utilisateur, id));
+            const liste = await lireConversation(utilisateur, id);
+            setMessages(liste);
+            if (liste.some((m) => m.a === utilisateur.id && !m.lu)) marquerLus(utilisateur, id).catch(() => {});
         } catch (e) {
             setErreur("La messagerie n'est pas encore disponible. Réessayez plus tard.");
         }
     }, [utilisateur, id]);
 
     useEffect(() => {
-        lireUtilisateur(id).then((u) => setAutre(u && u.email !== null ? u : null));
+        lireUtilisateur(id).then((u) => setAutre(u && u.email !== null ? u : null)).catch(() => setAutre(null));
         charger();
-        const minuterie = setInterval(charger, 4000);
-        return () => clearInterval(minuterie);
-    }, [id, charger]);
+        return ecouterMessages(utilisateur, charger);
+    }, [id, charger, utilisateur]);
+
+    useEffect(() => {
+        if (fil.current) fil.current.scrollTop = fil.current.scrollHeight;
+        window.scrollTo(0, document.body.scrollHeight);
+    }, [messages.length]);
 
     useEffect(() => () => {
         if (enregistreur.current) enregistreur.current.annuler();
@@ -43,7 +60,9 @@ const Conversation = () => {
     if (autre === null || autre.id === utilisateur.id) return <Ecran retour="/messages" titre="Conversation introuvable"><div className="notice">Cette personne n'existe pas.</div></Ecran>;
 
     const envoyer = async (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
+        if (envoi) return;
+        setEnvoi(true);
         try {
             await envoyerMessage(utilisateur, autre, texte);
             setTexte("");
@@ -51,6 +70,14 @@ const Conversation = () => {
             await charger();
         } catch (err) {
             setErreur(err.code === "permission-denied" ? "La messagerie n'est pas encore disponible. Réessayez plus tard." : err.message);
+        }
+        setEnvoi(false);
+    };
+
+    const touche = (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            envoyer();
         }
     };
 
@@ -94,29 +121,49 @@ const Conversation = () => {
 
     const arreter = () => enregistreur.current && enregistreur.current.arreter();
 
+    const estJeune = autre.role === "JEUNE";
+    let dernierJour = "";
+
     return (
-        <Ecran titre={autre.prenom} retour="/messages">
-            <p className="soft">{ROLES[autre.role] || "Un voisin de votre quartier"}</p>
-            <div className="notice">Présentez-vous, puis convenez du créneau et des détails du service. Le numéro de téléphone s'affiche une fois la demande acceptée.</div>
-            <div className="conversation" aria-live="polite">
-                {messages.map((m) => (
-                    <div key={m.id} className={m.de === utilisateur.id ? "message-bubble mine" : "message-bubble"}>
-                        {m.texte}
-                        {m.audio && <audio controls preload="none" src={m.audio} aria-label="Message vocal" />}
-                        <small>{m.de === utilisateur.id ? "Vous" : autre.prenom} · {heure(m.creeAt)}</small>
-                    </div>
-                ))}
-            </div>
-            <form className="form-stack" onSubmit={envoyer} noValidate>
-                <label>Votre message<textarea name="message" maxLength={500} value={texte} onChange={(e) => setTexte(e.target.value)} placeholder="Bonjour, seriez-vous disponible…" /></label>
+        <div className="ecran vdo chat" id="vdo">
+            <header className="chat-haut">
+                <Retour vers="/messages" />
+                <Link className="chat-qui" to={estJeune ? `/jeunes/${autre.id}` : "#"} onClick={(e) => !estJeune && e.preventDefault()}>
+                    <Avatar personne={autre} classe="chat-photo" />
+                    <span><h1>{autre.prenom}</h1><small>{ROLES[autre.role] || "Un voisin de votre quartier"}</small></span>
+                </Link>
+            </header>
+            <main className="chat-fil" ref={fil} aria-live="polite">
+                <p className="chat-info"><Icone nom="phone" />Le numéro s'affiche une fois une demande acceptée. Présentez-vous et convenez des détails ici.</p>
+                {messages.length === 0 && <p className="chat-vide">Dites bonjour à {autre.prenom} 👋</p>}
+                {messages.map((m) => {
+                    const j = jour(m.creeAt);
+                    const separateur = j !== dernierJour;
+                    dernierJour = j;
+                    const moi = m.de === utilisateur.id;
+                    return (
+                        <div key={m.id} className="chat-bloc">
+                            {separateur && <p className="chat-jour"><span>{j}</span></p>}
+                            <div className={moi ? "message-bubble mine" : "message-bubble"}>
+                                {m.texte}
+                                {m.audio && <audio controls preload="none" src={m.audio} aria-label="Message vocal" />}
+                                <small>{moi ? "Vous" : autre.prenom} · {heure(m.creeAt)}{moi && m.lu ? " · Lu" : ""}</small>
+                            </div>
+                        </div>
+                    );
+                })}
+            </main>
+            <footer className="chat-pied"><form className="chat-saisie" onSubmit={envoyer} noValidate>
                 <Message erreur={erreur} />
-                <button type="submit" className="primary"><span>Envoyer</span><Icone nom="arrow" /></button>
-                <button type="button" className={enregistre ? "secondary micro actif" : "secondary micro"} onPointerDown={demarrer} onPointerUp={arreter} onPointerLeave={arreter} onKeyDown={(e) => (e.key === " " || e.key === "Enter") && !e.repeat && demarrer()} onKeyUp={(e) => (e.key === " " || e.key === "Enter") && arreter()} onContextMenu={(e) => e.preventDefault()}>
-                    <Icone nom="mic" />{enregistre ? "Relâchez pour envoyer" : "Maintenir pour un message vocal"}
-                </button>
-                <p className="soft"><small>1 minute maximum.</small></p>
-            </form>
-        </Ecran>
+                <div className="chat-ligne-saisie">
+                    <button type="button" aria-label={enregistre ? "Relâchez pour envoyer" : "Maintenir pour un message vocal"} className={enregistre ? "chat-micro actif" : "chat-micro"} onPointerDown={demarrer} onPointerUp={arreter} onPointerLeave={arreter} onKeyDown={(e) => (e.key === " " || e.key === "Enter") && !e.repeat && demarrer()} onKeyUp={(e) => (e.key === " " || e.key === "Enter") && arreter()} onContextMenu={(e) => e.preventDefault()}>
+                        <Icone nom="mic" />
+                    </button>
+                    <label className="chat-champ"><span className="sr-only">Votre message</span><textarea name="message" rows={1} maxLength={500} value={texte} onChange={(e) => setTexte(e.target.value)} onKeyDown={touche} placeholder={enregistre ? "Je vous écoute… relâchez pour envoyer" : `Écrire à ${autre.prenom}…`} /></label>
+                    <button type="submit" className="chat-envoyer" aria-label="Envoyer" disabled={envoi}><Icone nom="arrow" /></button>
+                </div>
+            </form></footer>
+        </div>
     );
 };
 

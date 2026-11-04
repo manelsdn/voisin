@@ -28,6 +28,11 @@ const plus = (debut, heures) => {
 
 const jourDans = (decalage, maintenant) => JOURS[(maintenant.getDay() + 6 + decalage) % 7];
 
+export const servicesDans = (texte) => {
+    const t = normaliser(texte || "");
+    return Object.entries(MOTS).filter(([, mots]) => mots.some((m) => t.includes(m))).map(([code]) => code);
+};
+
 export const analyser = (texte, maintenant = new Date()) => {
     const t = normaliser(texte || "");
     const trouve = {};

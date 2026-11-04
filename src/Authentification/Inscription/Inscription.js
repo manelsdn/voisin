@@ -93,14 +93,14 @@ const Inscription = () => {
 
     return (
         <div className="ecran vdo" id="vdo">
-            <div className="corps">
+            <main className="corps">
                 <div className="app-pad">
                     <Retour vers="/bienvenue" action={etape === "details" ? () => setEtape("role") : null} texte={etape === "role" ? "ÉTAPE 1 SUR 3" : "ÉTAPE 2 SUR 3"} />
                     <div className="step-line"><i className="on"></i><i className={etape === "details" ? "on" : ""}></i><i></i></div>
                     {etape === "role" ? (
                         <>
                             <span className="mini-eyebrow">FAISONS CONNAISSANCE</span>
-                            <h2>Et vous, qu'est-ce <br />qui vous amène ?</h2>
+                            <h1>Et vous, qu'est-ce <br />qui vous amène ?</h1>
                             <p className="soft signup-copy">À chacun sa façon de créer du lien.</p>
                             <div className="role-list">
                                 {ROLES_CARTES.map((r) => (
@@ -120,7 +120,7 @@ const Inscription = () => {
                         </>
                     ) : (
                         <>
-                            <h2>Créons <br />votre accès.</h2>
+                            <h1>Créons <br />votre accès.</h1>
                             <p className="soft">Un lien de connexion vous sera envoyé par e-mail. Pas de mot de passe à retenir.</p>
                             <form className="form-stack" onSubmit={handleSubmit} noValidate>
                                 <label>Prénom<input name="prenom" autoComplete="given-name" maxLength={35} placeholder="Camille" /></label>
@@ -140,7 +140,7 @@ const Inscription = () => {
                         </>
                     )}
                 </div>
-            </div>
+            </main>
         </div>
     );
 };

@@ -99,7 +99,7 @@ test("Dictée absente si le navigateur ne la gère pas, la saisie au clavier rem
     await expect(page.getByLabel("Début")).toHaveValue("14:00");
 });
 
-test("Accueil : première impression avec services, jeunes à la une et confiance", async ({ page }) => {
+test("Accueil : première impression avec services et jeunes à la une", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await expect(page.getByRole("heading", { name: /Petits services/ })).toBeVisible();
     await expect(page.getByRole("link", { name: /De quoi Madeleine a besoin/ })).toBeVisible();
@@ -107,13 +107,13 @@ test("Accueil : première impression avec services, jeunes à la une et confianc
     await expect(page).toHaveURL(/recherche\?service=JARDINAGE/);
     await page.goto("/accueil");
     await expect(page.getByRole("list", { name: "Jeunes à la une" }).getByRole("listitem").first()).toBeVisible();
-    await expect(page.getByRole("list", { name: "Votre sécurité" })).toContainText("Numéro protégé");
+    await expect(page.getByText("Comment ça marche")).toHaveCount(0);
     await deconnecter(page);
     await connecter(page, "lucas.martin@exemple.fr");
     await expect(page.getByRole("list", { name: "Besoins à la une" })).toContainText("Jardinage pour Madeleine");
 });
 
-test("Accueil d'un nouveau compte : la grande action et « Comment ça marche »", async ({ page }) => {
+test("Accueil d'un nouveau compte : la grande action est visible", async ({ page }) => {
     await page.goto("/inscription");
     await page.getByRole("button", { name: /Je cherche de l'aide/ }).click();
     await page.getByRole("button", { name: /Continuer/ }).click();
@@ -122,6 +122,30 @@ test("Accueil d'un nouveau compte : la grande action et « Comment ça marche »
     await page.getByRole("button", { name: /Recevoir le lien/ }).click();
     await page.getByRole("link", { name: "Ouvrir le lien reçu" }).click();
     await page.waitForURL("**/accueil");
-    await expect(page.getByRole("heading", { name: "Comment ça marche" })).toBeVisible();
     await expect(page.getByRole("link", { name: /De quoi avez-vous besoin/ })).toBeVisible();
+});
+
+test("US46 · Dictée pour le jeune aussi : il dicte son annonce, ses services et son créneau sont reconnus", async ({ page }) => {
+    await page.addInitScript(() => {
+        window.SpeechRecognition = class {
+            start() {
+                setTimeout(() => {
+                    const resultat = [{ transcript: "je suis étudiant, je peux faire les courses et aider sur l'ordinateur le samedi de 9h à 12h" }];
+                    resultat.isFinal = true;
+                    this.onresult({ resultIndex: 0, results: [resultat] });
+                    this.onend();
+                }, 50);
+            }
+            stop() { this.onend(); }
+            abort() {}
+        };
+    });
+    await connecter(page, "lucas.martin@exemple.fr");
+    await page.goto("/annonce");
+    await page.getByRole("button", { name: /Dicter mon annonce/ }).click();
+    await expect(page.getByLabel(/Présentation courte/)).toHaveValue(/Je suis étudiant/);
+    await expect(page.getByRole("button", { name: /Courses/ })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("button", { name: /Informatique/ })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByLabel("Début")).toHaveValue("09:00");
+    await expect(page.getByText(/Compris/)).toContainText("Samedi 09:00-12:00");
 });

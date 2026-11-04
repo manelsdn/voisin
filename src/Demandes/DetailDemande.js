@@ -83,7 +83,7 @@ const DetailDemande = () => {
             <BanniereService code={demande.service} />
             <span className="mini-eyebrow">{entete}</span>
             <div className="detail-box">
-                <h3>{nomService(demande.service)}</h3>
+                <h2 className="sous-titre">{nomService(demande.service)}</h2>
                 <p>{texteCreneau(demande.creneau)} · {texteDate(demande.dateSouhaitee)}</p>
                 <p><em className={`statut ${demande.statut}`}>{STATUTS[demande.statut]}</em></p>
                 <div className="text-row numero"><span><Icone nom="phone" /> Numéro</span><strong>{rdv ? (estJeune ? rdv.telephoneDemandeur : rdv.telephoneJeune) : "Visible après acceptation"}</strong></div>

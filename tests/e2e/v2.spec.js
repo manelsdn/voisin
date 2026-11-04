@@ -37,7 +37,7 @@ test("V2 · Messagerie : un message envoyé est visible des deux côtés", async
     await deconnecter(page);
     await connecter(page, "lucas.martin@exemple.fr");
     await page.getByRole("link", { name: "Messages" }).click();
-    await expect(page.getByRole("heading", { name: "On garde le lien." })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Messages" })).toBeVisible();
     await page.getByRole("link", { name: /Camille/ }).click();
     await expect(page.locator(".message-bubble")).toContainText("êtes-vous libre samedi");
 });
@@ -48,4 +48,12 @@ test("V2 · Charte d'entraide : accessible depuis le profil", async ({ page }) =
     await page.getByRole("link", { name: "La charte d'entraide" }).click();
     await expect(page.getByRole("heading", { name: /Une entraide/ })).toBeVisible();
     await expect(page.getByText("Le pourboire est facultatif")).toBeVisible();
+});
+
+test("Fil homogène : seuls les jeunes avec une vraie photo apparaissent", async ({ page }) => {
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/fil");
+    await expect(page.locator(".post").first()).toBeVisible();
+    await expect(page.locator(".post .post-head span.carte-photo")).toHaveCount(0);
+    expect(await page.locator(".post .post-head img.carte-photo").count()).toBe(await page.locator(".post").count());
 });

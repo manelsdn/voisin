@@ -6,12 +6,6 @@ import { Icone } from "../composants/Icones";
 import { besoinsProches, mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
 import { ROLES, SERVICES, iconeService, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
-const CONFIANCE = [
-    ["users", "Des voisins, pas des inconnus", "Des jeunes à quelques rues de chez vous."],
-    ["phone", "Numéro protégé", "Il s'affiche seulement après acceptation."],
-    ["sparkles", "Charte et avis", "Chacun s'engage, chaque service peut être noté."]
-];
-
 const Accueil = () => {
     const { utilisateur } = useSession();
     const estJeune = utilisateur.role === "JEUNE";
@@ -30,7 +24,7 @@ const Accueil = () => {
             ]);
             if (!actif) return;
             if (personne.id !== utilisateur.id) setProche(personne);
-            setUne(estJeune ? liste.slice(0, 6) : [...liste.filter((j) => j.photoProfil), ...liste.filter((j) => !j.photoProfil)].slice(0, 6));
+            setUne(estJeune ? liste.slice(0, 6) : liste.filter((j) => j.photoProfil).slice(0, 6));
             setAttente(demandes.filter((d) => d.statut === "ENVOYEE"));
         };
         charger();
@@ -42,7 +36,7 @@ const Accueil = () => {
 
     return (
         <div className="ecran vdo accueil-vitrine" id="vdo">
-            <div className="corps">
+            <main className="corps">
                 <div className="home-top">
                     <Link className="location-button" to={utilisateur.role === "ACCOMPAGNANT" ? "/proche" : "/modifier-profil"} aria-label={`Mon quartier : ${ville}`}><Icone nom="pin" />{ville}<Icone nom="down" /></Link>
                     <Link className="avatar" to="/profil" aria-label="Mon profil"><Avatar personne={utilisateur} classe="mini-persona-photo" /></Link>
@@ -81,10 +75,12 @@ const Accueil = () => {
                     <h2 className="vitrine-titre">{estJeune ? "Ce que vous pouvez proposer" : "Un coup de main pour…"}</h2>
                     <div className="categories" role="list" aria-label="Services">
                         {SERVICES.map((s) => (
-                            <Link key={s.code} role="listitem" className="categorie" to={estJeune ? "/annonce" : lienService(s.code)}>
-                                <span className="categorie-image"><img src={s.image} alt="" /><i><Icone nom={iconeService(s.code)} /></i></span>
-                                <span>{s.nom}</span>
-                            </Link>
+                            <div key={s.code} role="listitem">
+                                <Link className="categorie" to={estJeune ? "/annonce" : lienService(s.code)}>
+                                    <span className="categorie-image"><img src={s.image} alt="" /><i><Icone nom={iconeService(s.code)} /></i></span>
+                                    <span>{s.nom}</span>
+                                </Link>
+                            </div>
                         ))}
                     </div>
 
@@ -98,18 +94,18 @@ const Accueil = () => {
                         <div className="carrousel" role="list" aria-label={estJeune ? "Besoins à la une" : "Jeunes à la une"}>
                             {estJeune
                                 ? une.map((b) => (
-                                    <Link key={b.id} role="listitem" className="carte-une" to={`/besoins/${b.id}`}>
+                                    <div key={b.id} role="listitem"><Link className="carte-une" to={`/besoins/${b.id}`}>
                                         <span className="carte-une-image"><img src={imageService(b.service)} alt="" /><em>{texteDistance(b.distance)}</em></span>
                                         <strong>{nomService(b.service)} pour {b.beneficiairePrenom}</strong>
                                         <small>{b.creneau ? texteCreneau(b.creneau) : "Quand vous voulez"}</small>
-                                    </Link>
+                                    </Link></div>
                                 ))
                                 : une.map((j) => (
-                                    <Link key={j.id} role="listitem" className="carte-une" to={`/jeunes/${j.id}`}>
+                                    <div key={j.id} role="listitem"><Link className="carte-une" to={`/jeunes/${j.id}`}>
                                         <span className="carte-une-image"><Avatar personne={j} classe="carte-une-photo" /><em>{texteDistance(j.distance)}</em></span>
                                         <strong>{j.prenom}</strong>
                                         <IconesServices services={j.services} max={3} />
-                                    </Link>
+                                    </Link></div>
                                 ))}
                         </div>
                     )}
@@ -140,20 +136,9 @@ const Accueil = () => {
                         </Link>
                     )}
 
-                    <h2 className="vitrine-titre">Comment ça marche</h2>
-                    <ol className="etapes">
-                        {(estJeune
-                            ? [["Publiez votre annonce", "Vos services et vos créneaux."], ["Proposez votre aide", "Sur un besoin du quartier, ou recevez une demande."], ["Rencontrez votre voisin", "Un service, et souvent un vrai lien."]]
-                            : [["Dites votre besoin", "Par écrit ou au micro."], ["Un jeune vous répond", "Il propose son aide, ou vous le choisissez."], ["Rencontrez-vous", "Un service, et souvent un vrai lien."]]
-                        ).map(([titre, detail], i) => <li key={titre}><span className="etape-num">{i + 1}</span><span><strong>{titre}</strong><small>{detail}</small></span></li>)}
-                    </ol>
-
-                    <ul className="confiance-badges" aria-label="Votre sécurité">
-                        {CONFIANCE.map(([icone, titre, detail]) => <li key={titre}><Icone nom={icone} /><span><strong>{titre}</strong><small>{detail}</small></span></li>)}
-                    </ul>
                     <p className="pourboire"><Icone nom="heart" />Pourboire libre, directement entre vous.</p>
                 </div>
-            </div>
+            </main>
             <Navigation />
         </div>
     );
