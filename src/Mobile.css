@@ -585,4 +585,6 @@
 #vdo .service-banner{width:96px;height:96px}
 #vdo .apercu-photo .profile-portrait{width:120px!important;height:120px!important;flex:none}
 #vdo .liste-cartes{padding-bottom:8px}
-#vdo .hero-haut:not(.hero-jeune)>img{height:205px;aspect-ratio:auto;object-position:50% 42%}
+#vdo .hero-haut:not(.hero-jeune)>img{height:150px;aspect-ratio:auto;object-position:50% 46%}
+#vdo .hero-haut:not(.hero-jeune)>img{height:auto;aspect-ratio:1200/540;object-position:center}
+#vdo .hero-haut:not(.hero-jeune) .vitrine-voile h1{white-space:nowrap;font-size:clamp(17px,5.6vw,24px)}
