@@ -37,11 +37,11 @@ const FormAvis = ({ jeune, depart, envoyer, annuler }) => {
     );
 };
 
-const Commentaires = ({ jeune, utilisateur, liste, maj }) => {
+const Commentaires = ({ jeune, utilisateur, liste, maj, notent = "VOISINS" }) => {
     const [edition, setEdition] = useState(false);
     const [erreur, setErreur] = useState("");
     const mien = liste.find((c) => c.auteurId === utilisateur.id);
-    const peutNoter = utilisateur.role !== "JEUNE" && utilisateur.id !== jeune.id;
+    const peutNoter = (notent === "JEUNES") === (utilisateur.role === "JEUNE") && utilisateur.id !== jeune.id;
 
     const agir = async (action) => {
         try {

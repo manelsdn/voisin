@@ -5,7 +5,7 @@ import { Ecran, Indice, Message } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
 import { analyser, servicesDans } from "../services/dictee";
-import { publierAnnonce, suggestionAnnonce } from "../services/api";
+import { publierAnnonce, retirerAnnonce, suggestionAnnonce } from "../services/api";
 import { JOURS, NOMS_JOURS, SERVICES, nomService, texteCreneau } from "../services/constantes";
 
 const MonAnnonce = () => {
@@ -18,6 +18,7 @@ const MonAnnonce = () => {
     const [essai, setEssai] = useState(0);
     const [avantProposition, setAvantProposition] = useState(null);
     const [compris, setCompris] = useState(null);
+    const [info, setInfo] = useState("");
     const navigate = useNavigate();
 
     if (utilisateur.role !== "JEUNE") return <Ecran titre="Mon annonce" retour="/accueil"><div className="notice">Seuls les jeunes volontaires publient une annonce.</div></Ecran>;
@@ -59,6 +60,17 @@ const MonAnnonce = () => {
         setAvantProposition(null);
     };
 
+    const retirer = async () => {
+        try {
+            await retirerAnnonce(utilisateur);
+            await recharger();
+            setErreur("");
+            setInfo("Votre annonce est retirée. Plus personne ne la voit. Vous pouvez la republier quand vous voulez.");
+        } catch (err) {
+            setErreur(err.message);
+        }
+    };
+
     const publier = async (e) => {
         e.preventDefault();
         try {
@@ -72,6 +84,7 @@ const MonAnnonce = () => {
 
     return (
         <Ecran titre="Mon annonce" retour="/accueil">
+            <p className={utilisateur.annoncePubliee ? "etat-annonce en-ligne" : "etat-annonce"} role="status"><span aria-hidden="true" />{utilisateur.annoncePubliee ? "Votre annonce est en ligne" : "Votre annonce n'est pas en ligne"}</p>
             <p className="soft">Vos services et vos créneaux, visibles dans le quartier.</p>
             <form className="form-stack" onSubmit={publier}>
                 <Dictee ajouter={dicter} libelle="Dicter mon annonce au micro" />
@@ -107,9 +120,10 @@ const MonAnnonce = () => {
                     {avantProposition !== null && <button type="button" className="secondary" onClick={refuser}>Garder mon texte</button>}
                 </div>
                 {avantProposition !== null && <p className="soft"><small>Proposition modifiable : relisez-la avant de publier.</small></p>}
-                <Message erreur={erreur} />
-                <button className="primary" type="submit"><span>Publier mon annonce</span><Icone nom="arrow" /></button>
+                <Message erreur={erreur} info={info} />
+                <button className="primary" type="submit"><span>{utilisateur.annoncePubliee ? "Mettre à jour mon annonce" : "Publier mon annonce"}</span><Icone nom="arrow" /></button>
             </form>
+            {utilisateur.annoncePubliee && <button className="secondary bouton-retirer" type="button" onClick={retirer}><Icone nom="trash" />Retirer mon annonce</button>}
             <Indice icone="pin">L'adresse sert à calculer la distance avec les personnes du quartier. Elle n'est jamais affichée.</Indice>
         </Ecran>
     );

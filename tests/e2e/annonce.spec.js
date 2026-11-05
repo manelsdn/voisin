@@ -8,7 +8,7 @@ test("US08 · Annonce : au moins un service est obligatoire", async ({ page }) =
     await page.goto("/annonce");
     await page.getByRole("button", { name: "Courses" }).click();
     await page.getByRole("button", { name: "Informatique" }).click();
-    await page.getByRole("button", { name: "Publier mon annonce" }).click();
+    await page.getByRole("button", { name: /Publier mon annonce|Mettre à jour mon annonce/ }).click();
     await expect(page.getByRole("alert")).toContainText("au moins un service");
 });
 
@@ -32,12 +32,12 @@ test("US08 US09 US10 · Annonce : un nouveau jeune publie et apparaît dans la r
     await page.waitForURL("**/accueil");
     await page.getByRole("link", { name: "Publier mon annonce" }).click();
     await page.getByRole("button", { name: "Jardinage" }).click();
-    await page.getByRole("button", { name: "Publier mon annonce" }).click();
+    await page.getByRole("button", { name: /Publier mon annonce|Mettre à jour mon annonce/ }).click();
     await expect(page.getByRole("alert")).toContainText("au moins un créneau");
     await page.getByLabel("Jour").selectOption("DIMANCHE");
     await page.getByRole("button", { name: "Ajouter ce créneau" }).click();
     await page.getByLabel(/Présentation courte/).fill("Je m'occupe des plantes du quartier.");
-    await page.getByRole("button", { name: "Publier mon annonce" }).click();
+    await page.getByRole("button", { name: /Publier mon annonce|Mettre à jour mon annonce/ }).click();
     await expect(page.getByText("APERÇU DE MON ANNONCE")).toBeVisible();
     await expect(page.getByText("Dimanche 09:00-12:00")).toBeVisible();
     await deconnecter(page);

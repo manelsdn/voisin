@@ -61,7 +61,7 @@ const Recherche = () => {
     const [params] = useSearchParams();
     const navigate = useNavigate();
     const memo = lireMemo();
-    const [filtres, setFiltres] = useState({ service: params.get("service") || memo.service || "", rayon: memo.rayon || (estJeune ? 5 : 2), jour: memo.jour || "" });
+    const [filtres, setFiltres] = useState({ service: params.get("service") || memo.service || "", rayon: RAYONS.includes(memo.rayon) ? memo.rayon : 2, jour: memo.jour || "" });
     const [vue, setVue] = useState(params.get("vue") === "carte" ? "carte" : "liste");
     const [pour, setPour] = useState(null);
     const [resultats, setResultats] = useState(null);

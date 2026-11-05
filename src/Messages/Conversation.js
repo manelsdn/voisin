@@ -136,7 +136,7 @@ const Conversation = () => {
         <div className="ecran vdo chat" id="vdo">
             <header className="chat-haut">
                 <Retour vers="/messages" />
-                <Link className="chat-qui" to={estJeune ? `/jeunes/${autre.id}` : "#"} onClick={(e) => !estJeune && e.preventDefault()}>
+                <Link className="chat-qui" to={estJeune ? `/jeunes/${autre.id}` : `/voisins/${autre.id}`} aria-label={`Voir le profil de ${autre.prenom}`}>
                     <Avatar personne={autre} classe="chat-photo" />
                     <span><h1>{autre.prenom}</h1><small>{ROLES[autre.role] || "Un voisin de votre quartier"}</small></span>
                 </Link>
@@ -179,14 +179,14 @@ const Conversation = () => {
                 )}
                 <div className="chat-ligne-saisie">
                     <input ref={choixFichier} type="file" className="sr-only" tabIndex={-1} aria-hidden="true" accept="image/*,.pdf,.doc,.docx,.txt" onChange={(e) => { setPiece(e.target.files[0] || null); e.target.value = ""; }} />
+                    <button type="button" aria-label={enregistre ? "Relâchez pour envoyer" : "Maintenir pour un message vocal"} className={enregistre ? "chat-micro actif" : "chat-micro"} onPointerDown={demarrer} onPointerUp={arreter} onPointerLeave={arreter} onKeyDown={(e) => (e.key === " " || e.key === "Enter") && !e.repeat && demarrer()} onKeyUp={(e) => (e.key === " " || e.key === "Enter") && arreter()} onContextMenu={(e) => e.preventDefault()}>
+                        <Icone nom="mic" />
+                    </button>
                     <div className="chat-champ">
                         <button type="button" className="chat-icone" aria-label="Ajouter un émoji" aria-expanded={emojis} onClick={() => setEmojis(!emojis)}><span aria-hidden="true">🙂</span></button>
                         <label className="chat-texte"><span className="sr-only">Votre message</span><textarea name="message" rows={1} maxLength={500} value={texte} onChange={(e) => setTexte(e.target.value)} onKeyDown={touche} placeholder={enregistre ? "Je vous écoute… relâchez pour envoyer" : `Écrire à ${autre.prenom}…`} /></label>
                         <button type="button" className="chat-icone" aria-label="Joindre une image ou un fichier" onClick={() => choixFichier.current && choixFichier.current.click()}><Icone nom="clip" /></button>
                     </div>
-                    <button type="button" aria-label={enregistre ? "Relâchez pour envoyer" : "Maintenir pour un message vocal"} className={enregistre ? "chat-micro actif" : "chat-micro"} onPointerDown={demarrer} onPointerUp={arreter} onPointerLeave={arreter} onKeyDown={(e) => (e.key === " " || e.key === "Enter") && !e.repeat && demarrer()} onKeyUp={(e) => (e.key === " " || e.key === "Enter") && arreter()} onContextMenu={(e) => e.preventDefault()}>
-                        <Icone nom="mic" />
-                    </button>
                     <button type="submit" className="chat-envoyer" aria-label="Envoyer" disabled={envoi}><Icone nom="arrow" /></button>
                 </div>
             </form></footer>

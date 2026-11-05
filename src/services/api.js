@@ -92,6 +92,8 @@ export const publierAnnonce = async (jeune, { services, disponibilites, descript
     await s.ecrire("users", jeune.id, { services, disponibilites, description, annoncePubliee: true });
 };
 
+export const retirerAnnonce = (jeune) => s.ecrire("users", jeune.id, { annoncePubliee: false });
+
 export const rechercherJeunes = async (position, { service = "", rayon = 2, jour = "" } = {}) => {
     const jeunes = await s.chercher("users", "role", "JEUNE");
     return jeunes

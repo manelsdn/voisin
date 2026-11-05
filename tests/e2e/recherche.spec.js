@@ -14,18 +14,18 @@ const distances = async (page) => {
 test("US15 · Recherche : les résultats sont triés du plus proche au plus éloigné", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/recherche");
-    await page.getByLabel("Distance").selectOption("5");
+    await page.getByLabel("Distance").selectOption("2");
     await expect(page.locator(".resultat").first()).toBeVisible();
     const d = await distances(page);
     expect(d.length).toBeGreaterThan(5);
     expect([...d].sort((a, b) => a - b)).toEqual(d);
-    expect(Math.max(...d)).toBeLessThanOrEqual(5);
+    expect(Math.max(...d)).toBeLessThanOrEqual(2);
 });
 
 test("US15 · Recherche : le filtre service ne garde que les jeunes qui le proposent", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/recherche");
-    await page.getByLabel("Distance").selectOption("5");
+    await page.getByLabel("Distance").selectOption("2");
     await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Courses" }).click();
     await expect(page.locator(".resultat").first()).toBeVisible();
     for (const t of await page.locator(".resultat small").allTextContents()) expect(t).toContain("Courses");

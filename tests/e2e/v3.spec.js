@@ -75,7 +75,7 @@ test("Mes services : étapes claires et demande à traiter mise en avant", async
     await expect(page.getByRole("list", { name: "Avancement" })).toBeVisible();
 });
 
-test("Messagerie : émojis à côté du champ, fichier et vocal à droite", async ({ page }) => {
+test("Messagerie : vocal à gauche, émojis et fichier dans le champ", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/messages/jeune-01");
     await page.getByRole("button", { name: "Ajouter un émoji" }).click();
@@ -85,7 +85,7 @@ test("Messagerie : émojis à côté du champ, fichier et vocal à droite", asyn
     const trombone = await page.getByRole("button", { name: "Joindre une image ou un fichier" }).boundingBox();
     const micro = await page.getByRole("button", { name: /message vocal/ }).boundingBox();
     expect(trombone.x).toBeGreaterThan(champ.x);
-    expect(micro.x).toBeGreaterThan(champ.x);
+    expect(micro.x).toBeLessThan(champ.x);
 });
 
 test("Fil : donner un avis avec des étoiles, le modifier puis le supprimer", async ({ page }) => {
@@ -135,4 +135,65 @@ test("Compte : suppression avec confirmation", async ({ page }) => {
     await expect(page).toHaveURL(/bienvenue/);
     const reste = await page.evaluate(() => Object.values(JSON.parse(localStorage.getItem("vdo-db")).users).some((u) => u.email === "axel.boyer@exemple.fr"));
     expect(reste).toBe(false);
+});
+
+test("Annonce : le jeune peut retirer son annonce puis la republier", async ({ page }) => {
+    await connecter(page, "lucas.martin@exemple.fr");
+    await page.goto("/annonce");
+    await expect(page.getByText("Votre annonce est en ligne")).toBeVisible();
+    await page.getByRole("button", { name: "Retirer mon annonce" }).click();
+    await expect(page.getByText("Votre annonce n'est pas en ligne")).toBeVisible();
+    await deconnecter(page);
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/recherche");
+    await expect(page.locator(".resultat").filter({ hasText: "Lucas" })).toHaveCount(0);
+    await deconnecter(page);
+    await connecter(page, "lucas.martin@exemple.fr");
+    await page.goto("/annonce");
+    await page.getByRole("button", { name: /Publier mon annonce/ }).click();
+    await expect(page).toHaveURL(/jeunes\/jeune-01/);
+});
+
+test("Fil des voisins : le jeune voit les personnes qui ont besoin d'aide et peut leur laisser un avis", async ({ page }) => {
+    await connecter(page, "lucas.martin@exemple.fr");
+    await page.getByRole("link", { name: /Le fil des voisins/ }).click();
+    await expect(page.getByRole("heading", { name: /Le fil des voisins/ })).toBeVisible();
+    const post = page.locator("article.post").filter({ hasText: "Madeleine" }).first();
+    await post.getByRole("button", { name: /Avis/ }).click();
+    const zone = post.getByRole("region", { name: "Avis sur Madeleine" });
+    await zone.getByRole("radio", { name: "5 sur 5" }).click();
+    await zone.getByLabel("Votre avis en quelques mots").fill("Très accueillante !");
+    await zone.getByRole("button", { name: "Publier mon avis" }).click();
+    await expect(zone).toContainText("Très accueillante !");
+});
+
+test("Chat : on ouvre le profil de la personne en touchant son nom", async ({ page }) => {
+    await connecter(page, "lucas.martin@exemple.fr");
+    await page.goto("/messages/proche-01");
+    await page.getByRole("link", { name: "Voir le profil de Camille" }).click();
+    await expect(page).toHaveURL(/voisins\/proche-01/);
+    await expect(page.getByRole("heading", { name: "Camille" })).toBeVisible();
+    await expect(page.getByText("Accompagne Madeleine")).toBeVisible();
+    await deconnecter(page);
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/messages/jeune-01");
+    await page.getByRole("link", { name: "Voir le profil de Lucas" }).click();
+    await expect(page).toHaveURL(/jeunes\/jeune-01/);
+});
+
+test("Distance : 2 km au maximum", async ({ page }) => {
+    await connecter(page, "lucas.martin@exemple.fr");
+    await page.goto("/recherche");
+    await expect(page.getByLabel("Distance").locator("option")).toHaveCount(3);
+    await expect(page.getByLabel("Distance")).toHaveValue("2");
+});
+
+test("Accueil jeune : le message « voisins aiment votre annonce » peut être masqué", async ({ page }) => {
+    await connecter(page, "lucas.martin@exemple.fr");
+    await expect(page.getByText(/voisins aiment votre annonce/)).toBeVisible();
+    await page.getByRole("button", { name: "Masquer ce message" }).click();
+    await expect(page.getByText(/voisins aiment votre annonce/)).toHaveCount(0);
+    await page.reload();
+    await expect(page.getByRole("heading", { name: "Ce que vous pouvez proposer" })).toBeVisible();
+    await expect(page.getByText(/voisins aiment votre annonce/)).toHaveCount(0);
 });

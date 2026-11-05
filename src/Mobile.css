@@ -712,3 +712,13 @@
 #vdo .post-avis .icon,#vdo .post-avis svg{color:#E0A100}
 #vdo .post-avis .compte-like{font-size:14px}
 #vdo .hero-fond .vitrine-voile{padding-bottom:8px}
+#vdo .etat-annonce{display:inline-flex;align-items:center;gap:8px;margin:2px 0 6px;padding:6px 12px;border-radius:999px;background:#F1ECF0;color:#4b4363;font-weight:800;font-size:14px}
+#vdo .etat-annonce span{width:10px;height:10px;border-radius:50%;background:#9b93ad}
+#vdo .etat-annonce.en-ligne{background:#CFF3EE;color:#0B6E5E}
+#vdo .etat-annonce.en-ligne span{background:#0E9E86}
+#vdo .bouton-retirer{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:10px 0;color:#A8321F;border-color:#e9c3bb}
+#vdo .bouton-retirer svg{width:18px;height:18px}
+#vdo .bandeau-likes-boite{position:relative}
+#vdo .bandeau-likes-boite .bandeau-likes{padding-right:56px}
+#vdo .bandeau-fermer{position:absolute;top:50%;right:6px;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%!important;background:transparent;color:#7a5560;font-size:26px;line-height:1;cursor:pointer}
+#vdo .bandeau-fermer:hover{background:#ffe1dc}

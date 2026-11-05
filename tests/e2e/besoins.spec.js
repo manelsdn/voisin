@@ -53,7 +53,7 @@ test("US45 · Proposer son aide : le demandeur voit la proposition et peut envoy
 test("Photos : les profils sans photo ont un avatar illustré, pas une initiale", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/recherche");
-    await page.getByLabel("Distance").selectOption("5");
+    await page.getByLabel("Distance").selectOption("2");
     await expect(page.locator(".carte-profil").first()).toBeVisible();
     await expect(page.locator(".initial-avatar")).toHaveCount(0);
 });

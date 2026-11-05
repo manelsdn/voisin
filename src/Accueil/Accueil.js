@@ -13,6 +13,22 @@ const Accueil = () => {
     const [une, setUne] = useState(null);
     const [attente, setAttente] = useState([]);
     const [fans, setFans] = useState([]);
+    const cleFans = `vdo-fans-vus-${utilisateur.id}`;
+    const [fansVus, setFansVus] = useState(() => {
+        try {
+            return Number(localStorage.getItem(cleFans)) || 0;
+        } catch (e) {
+            return 0;
+        }
+    });
+    const masquerFans = () => {
+        setFansVus(fans.length);
+        try {
+            localStorage.setItem(cleFans, String(fans.length));
+        } catch (e) {
+            return;
+        }
+    };
     const ville = (proche && proche.ville) || utilisateur.ville;
 
     useEffect(() => {
@@ -20,7 +36,7 @@ const Accueil = () => {
         const charger = async () => {
             const { personne, position } = await pointDeRecherche(utilisateur);
             const [liste, demandes] = await Promise.all([
-                estJeune ? besoinsProches(position, { rayon: 5 }).catch(() => []) : rechercherJeunes(position, { rayon: 2 }).catch(() => []),
+                estJeune ? besoinsProches(position, { rayon: 2 }).catch(() => []) : rechercherJeunes(position, { rayon: 2 }).catch(() => []),
                 mesDemandes(utilisateur).catch(() => [])
             ]);
             if (!actif) return;
@@ -74,12 +90,14 @@ const Accueil = () => {
                         </Link>
                     )}
 
-                    {estJeune && fans.length > 0 && (
-                        <Link className="bandeau-likes" to={`/jeunes/${utilisateur.id}`}>
-                            <span className="bandeau-coeur"><Icone nom="heart" /></span>
-                            <span><strong>{fans.length} voisin{fans.length > 1 ? "s aiment" : " aime"} votre annonce</strong>{fans.slice(0, 3).map((f) => f.prenom).join(", ")}{fans.length > 3 ? "…" : ""}</span>
-                            <Icone nom="chevron" />
-                        </Link>
+                    {estJeune && fans.length > fansVus && (
+                        <div className="bandeau-likes-boite">
+                            <Link className="bandeau-likes" to={`/jeunes/${utilisateur.id}`}>
+                                <span className="bandeau-coeur"><Icone nom="heart" /></span>
+                                <span><strong>{fans.length} voisin{fans.length > 1 ? "s aiment" : " aime"} votre annonce</strong>{fans.slice(0, 3).map((f) => f.prenom).join(", ")}{fans.length > 3 ? "…" : ""}</span>
+                            </Link>
+                            <button type="button" className="bandeau-fermer" aria-label="Masquer ce message" onClick={masquerFans}>×</button>
+                        </div>
                     )}
 
                     <h2 className="vitrine-titre">{estJeune ? "Ce que vous pouvez proposer" : "Un coup de main pour…"}</h2>
@@ -138,7 +156,13 @@ const Accueil = () => {
                         </>
                     )}
 
-                    {!estJeune && (
+                    {estJeune ? (
+                        <Link className="lien-fil" to="/fil">
+                            <span className="lien-fil-photos" aria-hidden="true"><img src="/assets/services/plein/courses.jpg" alt="" /><img src="/assets/services/plein/jardinage.jpg" alt="" /><img src="/assets/services/plein/informatique.jpg" alt="" /></span>
+                            <span><strong>Le fil des voisins</strong><small>Les personnes près de chez vous qui ont besoin d'un coup de main.</small></span>
+                            <Icone nom="chevron" />
+                        </Link>
+                    ) : (
                         <Link className="lien-fil" to="/fil">
                             <span className="lien-fil-photos" aria-hidden="true"><img src="/assets/avatars/anais.jpg" alt="" /><img src="/assets/avatars/lucas.jpg" alt="" /><img src="/assets/avatars/chloe.jpg" alt="" /></span>
                             <span><strong>Le fil du quartier</strong><small>Les jeunes près de chez vous et ce qu'ils aiment faire.</small></span>

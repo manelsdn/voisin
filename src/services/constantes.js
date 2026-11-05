@@ -36,7 +36,7 @@ export const etatService = (statut, estJeune) => ({
     ANNULEE: "Annulé"
 }[statut] || STATUTS[statut]);
 
-export const RAYONS = [0.5, 1, 2, 5];
+export const RAYONS = [0.5, 1, 2];
 
 export const imageService = (code) => (SERVICES.find((s) => s.code === code) || {}).image || "";
 

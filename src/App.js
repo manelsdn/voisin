@@ -16,6 +16,7 @@ import ModifierProfil from "./Profil/ModifierProfil";
 import Proche from "./Profil/Proche";
 import MonAnnonce from "./Annonce/MonAnnonce";
 import Recherche from "./Recherche/Recherche";
+import ProfilVoisin from "./Recherche/ProfilVoisin";
 import ProfilJeune from "./Recherche/ProfilJeune";
 import NouvelleDemande from "./Demandes/NouvelleDemande";
 import DemandeEnvoyee from "./Demandes/DemandeEnvoyee";
@@ -68,6 +69,7 @@ function App() {
                         <Route path="/annonce" element={p(<MonAnnonce />)} />
                         <Route path="/recherche" element={p(<Recherche />)} />
                         <Route path="/jeunes/:id" element={p(<ProfilJeune />)} />
+                        <Route path="/voisins/:id" element={p(<ProfilVoisin />)} />
                         <Route path="/jeunes/:id/demande" element={p(<NouvelleDemande />)} />
                         <Route path="/demande-envoyee/:id" element={p(<DemandeEnvoyee />)} />
                         <Route path="/services" element={p(<MesServices />)} />

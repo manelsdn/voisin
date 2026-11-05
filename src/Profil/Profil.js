@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { useSession } from "../composants/Session";
 import { Avatar, Ecran, LienBouton, Message } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { deconnecter, listerProches, lireUtilisateur, mesFavoris, supprimerCompte } from "../services/api";
+import { deconnecter, listerProches, lireUtilisateur, mesFavoris, retirerAnnonce, supprimerCompte } from "../services/api";
 import { ROLES } from "../services/constantes";
 
 const Profil = () => {
-    const { utilisateur } = useSession();
+    const { utilisateur, recharger } = useSession();
     const [proche, setProche] = useState(null);
     const [favoris, setFavoris] = useState([]);
     const navigate = useNavigate();
@@ -19,6 +19,11 @@ const Profil = () => {
         if (utilisateur.role === "ACCOMPAGNANT") listerProches(utilisateur.id).then((l) => setProche(l[0] || null));
         if (utilisateur.role !== "JEUNE") mesFavoris(utilisateur).then((ids) => Promise.all(ids.map(lireUtilisateur))).then((l) => setFavoris(l.filter(Boolean))).catch(() => setFavoris([]));
     }, [utilisateur]);
+
+    const retirer = async () => {
+        await retirerAnnonce(utilisateur);
+        await recharger();
+    };
 
     const supprimer = async () => {
         setEnCours(true);
@@ -82,6 +87,7 @@ const Profil = () => {
                     <>
                         <LienBouton to="/annonce" secondaire>Modifier mon annonce</LienBouton>
                         {utilisateur.annoncePubliee && <LienBouton to={`/jeunes/${utilisateur.id}`} secondaire>Voir mon annonce</LienBouton>}
+                        {utilisateur.annoncePubliee && <button className="secondary bouton-retirer" type="button" onClick={retirer}><Icone nom="trash" />Retirer mon annonce</button>}
                     </>
                 )}
                 <Link className="link-button" to="/charte">La charte d'entraide</Link>
