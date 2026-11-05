@@ -683,23 +683,19 @@
 #vdo .prochaine-etape{margin:10px 0;padding:12px 14px;border-radius:16px;background:#CFF3EE;color:#0B3F37;font-size:15px;line-height:1.45}
 #vdo .prochaine-etape strong{display:block;font-size:16px;margin-bottom:2px}
 #vdo .post-act.ouvert{color:#0E7F6D}
-#vdo .commentaires{border-top:1px solid var(--line);margin-top:8px;padding-top:10px}
-#vdo .commentaires ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-#vdo .commentaire{display:flex;gap:10px;align-items:flex-start}
+#vdo .avis-fil{border-top:1px solid var(--line);margin-top:8px;padding-top:10px}
+#vdo .avis-fil ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+#vdo .avis-carte{display:flex;gap:10px;align-items:flex-start}
 #vdo .commentaire-photo{width:34px;height:34px;border-radius:50%;object-fit:cover;flex:none}
-#vdo .commentaire-corps{flex:1;min-width:0;background:#FFF4E2;border-radius:16px;padding:8px 12px}
-#vdo .commentaire-tete{display:flex;justify-content:space-between;gap:8px;margin:0 0 2px;font-size:14px}
-#vdo .commentaire-tete small{color:#675e80;font-size:13px}
-#vdo .commentaire-texte{margin:0;font-size:15px;line-height:1.4;overflow-wrap:anywhere}
+#vdo .avis-corps{flex:1;min-width:0;background:#FFF4E2;border-radius:16px;padding:8px 12px}
+#vdo .avis-tete{display:flex;justify-content:space-between;gap:8px;margin:0 0 2px;font-size:14px}
+#vdo .avis-tete small{color:#675e80;font-size:13px}
+#vdo .avis-texte{margin:0;font-size:15px;line-height:1.4;overflow-wrap:anywhere}
 #vdo .commentaire-boutons{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
 #vdo .mini-bouton{display:inline-flex;align-items:center;gap:5px;min-height:36px;padding:0 12px;border-radius:999px!important;border:1.5px solid #e3d6dc;background:#fff;color:#2A2140;font-weight:700;font-size:14px;cursor:pointer}
 #vdo .mini-bouton svg{width:15px;height:15px}
 #vdo .mini-bouton.plein{background:#2A2140;border-color:#2A2140;color:#fff}
 #vdo .mini-bouton:disabled{opacity:.45;cursor:default}
-#vdo .commentaire-edition textarea,#vdo .commentaire-ajout textarea{width:100%;min-height:44px;border:1.5px solid #e3d6dc;border-radius:14px;padding:10px 12px;font-size:15px;resize:vertical;background:#fff}
-#vdo .commentaire-ajout{display:flex;gap:8px;align-items:flex-end;margin-top:10px}
-#vdo .commentaire-ajout textarea{flex:1}
-#vdo .commentaire-ajout .mini-bouton{min-height:44px}
 #vdo .lien-danger{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;border:0;background:none;color:#A8321F;font-weight:700;font-size:15px;text-decoration:underline;cursor:pointer}
 #vdo .lien-danger svg{width:17px;height:17px}
 #vdo .zone-danger{margin:6px 0 20px;padding:16px;border-radius:20px;border:2px solid #A8321F;background:#FFF1EE}
@@ -707,3 +703,12 @@
 #vdo .zone-danger p{margin:0 0 6px;font-size:15px;line-height:1.45}
 #vdo .danger{min-height:52px;border:0;border-radius:999px!important;background:#A8321F;color:#fff;font-weight:800;font-size:16px;cursor:pointer}
 #vdo .danger:disabled{opacity:.6}
+#vdo .hero-fond .vitrine-voile{min-height:0}
+#vdo .avis-corps .etoiles{font-size:17px;margin:0;letter-spacing:1px}
+#vdo .avis-form{display:grid;gap:8px;margin-top:10px;padding:12px;border-radius:16px;background:#fff;border:1.5px solid #f0e6ea}
+#vdo .avis-form-titre{margin:0;font-weight:800;font-size:15px}
+#vdo .avis-form textarea{width:100%;min-height:52px;border:1.5px solid #e3d6dc;border-radius:14px;padding:10px 12px;font-size:15px;resize:vertical;background:#fff}
+#vdo .avis-form .etoiles-choix button{font-size:30px}
+#vdo .post-avis .icon,#vdo .post-avis svg{color:#E0A100}
+#vdo .post-avis .compte-like{font-size:14px}
+#vdo .hero-fond .vitrine-voile{padding-bottom:8px}

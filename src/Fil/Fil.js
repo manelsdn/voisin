@@ -7,6 +7,8 @@ import { basculerFavori, commentairesDuJeune, mesFavoris, pointDeRecherche, rech
 import Commentaires from "./Commentaires";
 import { nomService, texteCreneau, texteDistance } from "../services/constantes";
 
+const moyenneAvis = (l) => (l.reduce((t, c) => t + (c.note || 5), 0) / l.length).toFixed(1).replace(".", ",");
+
 const Fil = () => {
     const { utilisateur } = useSession();
     const [params] = useSearchParams();
@@ -66,7 +68,7 @@ const Fil = () => {
                             <div className="post-actions">
                                 <button type="button" className={aime ? "post-act liked" : "post-act"} aria-pressed={aime} aria-label={aime ? `Retirer ${j.prenom} de mes favoris` : `Ajouter ${j.prenom} à mes favoris`} onClick={() => aimer(j.id)}><Icone nom="heart" />{likes[j.id] > 0 && <span className="compte-like" aria-hidden="true">{likes[j.id]}</span>}</button>
                                 {likes[j.id] > 0 && <span className="sr-only">{likes[j.id]} j'aime</span>}
-                                <button type="button" className={ouvert ? "post-act ouvert" : "post-act"} aria-expanded={ouvert} aria-controls={`coms-${j.id}`} aria-label={`Commentaires (${coms.length})`} onClick={() => basculer(j.id)}><Icone nom="message" />{coms.length > 0 && <span className="compte-like" aria-hidden="true">{coms.length}</span>}</button>
+                                <button type="button" className={ouvert ? "post-act post-avis ouvert" : "post-act post-avis"} aria-expanded={ouvert} aria-controls={`coms-${j.id}`} aria-label={coms.length ? `Avis : ${moyenneAvis(coms)} sur 5, ${coms.length} avis` : "Avis"} onClick={() => basculer(j.id)}><Icone nom="star" /><span className="compte-like" aria-hidden="true">{coms.length ? `${moyenneAvis(coms)} (${coms.length})` : "Avis"}</span></button>
                                 <Link className="post-cta" to={`/jeunes/${j.id}`}>Voir ses créneaux<Icone nom="arrow" /></Link>
                             </div>
                             <div id={`coms-${j.id}`}>{ouvert && <Commentaires jeune={j} utilisateur={utilisateur} liste={coms} maj={() => majCommentaires(j.id)} />}</div>

@@ -44,7 +44,7 @@ test("US33 US34 US35 US36 · Service terminé, historique, avis puis redemander"
     await expect(page.getByLabel("Service")).toHaveValue("MENAGE");
 
     await page.goto("/jeunes/jeune-02");
-    await expect(page.getByText("1 avis")).toBeVisible();
+    await expect(page.getByText(/2 avis/)).toBeVisible();
     await expect(page.getByText("Très gentille et efficace")).toBeVisible();
 });
 

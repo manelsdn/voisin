@@ -88,25 +88,31 @@ test("Messagerie : émojis à côté du champ, fichier et vocal à droite", asyn
     expect(micro.x).toBeGreaterThan(champ.x);
 });
 
-test("Fil : commenter une annonce, modifier puis supprimer son commentaire", async ({ page }) => {
+test("Fil : donner un avis avec des étoiles, le modifier puis le supprimer", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/fil");
     const post = page.locator("article.post").filter({ hasText: "Lucas" }).first();
-    await post.getByRole("button", { name: /Commentaires \(2\)/ }).click();
-    const zone = post.getByRole("region", { name: "Commentaires sur Lucas" });
-    await expect(zone).toContainText("Ponctuel et serviable");
-    await zone.getByLabel("Votre commentaire sur Lucas").fill("Super gentil, merci Lucas !");
-    await zone.getByRole("button", { name: "Publier" }).click();
+    await post.getByRole("button", { name: /Avis : 4,5 sur 5, 2 avis/ }).click();
+    const zone = post.getByRole("region", { name: "Avis sur Lucas" });
+    await expect(zone.getByRole("img", { name: "4 sur 5" })).toBeVisible();
+    await zone.getByRole("radio", { name: "5 sur 5" }).click();
+    await zone.getByLabel("Votre avis en quelques mots").fill("Super gentil, merci Lucas !");
+    await zone.getByRole("button", { name: "Publier mon avis" }).click();
     await expect(zone).toContainText("Super gentil, merci Lucas !");
-    await expect(post.getByRole("button", { name: /Commentaires \(3\)/ })).toBeVisible();
+    await expect(post.getByRole("button", { name: /3 avis/ })).toBeVisible();
     await zone.getByRole("button", { name: "Modifier" }).click();
-    await zone.getByLabel("Modifier mon commentaire").fill("Très gentil, merci Lucas !");
+    await zone.getByRole("radio", { name: "3 sur 5" }).click();
+    await zone.getByLabel("Votre avis en quelques mots").fill("Très gentil.");
     await zone.getByRole("button", { name: "Enregistrer" }).click();
-    await expect(zone).toContainText("Très gentil, merci Lucas !");
+    await expect(zone).toContainText("Très gentil.");
     await expect(zone).toContainText("modifié");
+    await page.goto("/jeunes/jeune-01");
+    await expect(page.getByRole("region", { name: "Avis" })).toContainText("Très gentil.");
+    await page.goto("/fil");
+    await post.getByRole("button", { name: /3 avis/ }).click();
     await zone.getByRole("button", { name: "Supprimer" }).click();
-    await expect(zone).not.toContainText("Très gentil, merci Lucas !");
-    await expect(zone.getByRole("button", { name: "Modifier" })).toHaveCount(0);
+    await expect(zone).not.toContainText("Très gentil.");
+    await expect(zone.getByRole("button", { name: "Publier mon avis" })).toBeVisible();
 });
 
 test("Session : on reste connecté après avoir rechargé la page", async ({ page }) => {

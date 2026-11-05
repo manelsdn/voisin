@@ -291,23 +291,24 @@ export const tousLesCommentaires = async (ids) => {
     return Object.fromEntries(ids.map((id, i) => [id, listes[i]]));
 };
 
-const texteCommentaire = (texte) => {
+const avisVoisin = (note, texte) => {
+    const n = Number(note);
+    if (!(n >= 1 && n <= 5)) throw new Error("Choisissez une note de 1 à 5 étoiles.");
     const t = (texte || "").trim();
-    if (!t) throw new Error("Écrivez un petit mot avant de publier.");
-    if (t.length > 300) throw new Error("Le commentaire fait 300 caractères maximum.");
-    return t;
+    if (t.length > 300) throw new Error("L'avis fait 300 caractères maximum.");
+    return { note: n, texte: t };
 };
 
-export const commenter = async (auteur, jeuneId, texte) =>
-    s.ajouter("commentaires", { jeuneId, auteurId: auteur.id, auteurPrenom: auteur.prenom, auteurPhoto: auteur.photoProfil || null, texte: texteCommentaire(texte), creeAt: new Date().toISOString() });
+export const commenter = async (auteur, jeuneId, note, texte) =>
+    s.ecrire("commentaires", `${jeuneId}_${auteur.id}`, { jeuneId, auteurId: auteur.id, auteurPrenom: auteur.prenom, auteurPhoto: auteur.photoProfil || null, ...avisVoisin(note, texte), creeAt: new Date().toISOString() });
 
-export const modifierCommentaire = async (auteur, commentaire, texte) => {
-    if (commentaire.auteurId !== auteur.id) throw new Error("Vous ne pouvez modifier que vos commentaires.");
-    await s.ecrire("commentaires", commentaire.id, { texte: texteCommentaire(texte), modifieAt: new Date().toISOString() });
+export const modifierCommentaire = async (auteur, commentaire, note, texte) => {
+    if (commentaire.auteurId !== auteur.id) throw new Error("Vous ne pouvez modifier que vos avis.");
+    await s.ecrire("commentaires", commentaire.id, { ...avisVoisin(note, texte), modifieAt: new Date().toISOString() });
 };
 
 export const supprimerCommentaire = async (auteur, commentaire) => {
-    if (commentaire.auteurId !== auteur.id) throw new Error("Vous ne pouvez supprimer que vos commentaires.");
+    if (commentaire.auteurId !== auteur.id) throw new Error("Vous ne pouvez supprimer que vos avis.");
     await s.supprimer("commentaires", commentaire.id);
 };
 

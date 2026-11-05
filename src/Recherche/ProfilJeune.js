@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Astuce, Avatar, Ecran, LienBouton } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { avisDuJeune, basculerFavori, likesDuJeune, lireUtilisateur, mesDemandes, mesFavoris, pointDeRecherche } from "../services/api";
+import { avisDuJeune, basculerFavori, commentairesDuJeune, likesDuJeune, lireUtilisateur, mesDemandes, mesFavoris, pointDeRecherche } from "../services/api";
 import { distanceKm } from "../services/geo";
 import { nomService, texteCreneau, texteDistance } from "../services/constantes";
 
@@ -26,7 +26,7 @@ const ProfilJeune = () => {
             setJeune(j && j.role === "JEUNE" ? j : null);
             if (j) setDistance(distanceKm((await pointDeRecherche(utilisateur)).position, j));
             if (j && j.role === "JEUNE") {
-                setAvis(await avisDuJeune(id).catch(() => []));
+                setAvis([...(await avisDuJeune(id).catch(() => [])), ...(await commentairesDuJeune(id)).map((c) => ({ id: c.id, note: c.note || 5, commentaire: c.texte, auteurPrenom: c.auteurPrenom, creeAt: c.creeAt }))].sort((a, b) => (b.creeAt || "").localeCompare(a.creeAt || "")));
                 setLikes((await likesDuJeune(id)).length);
             }
             setFavoris(await mesFavoris(utilisateur).catch(() => []));
@@ -80,7 +80,7 @@ const ProfilJeune = () => {
                         <div className="avis-ligne" key={a.id}>
                             <span className="etoiles" aria-label={`${a.note} sur 5`}>{"★".repeat(a.note)}{"☆".repeat(5 - a.note)}</span>
                             {a.commentaire && <p>{a.commentaire}</p>}
-                            <small>{a.auteurPrenom} · {nomService(a.service)}</small>
+                            <small>{a.auteurPrenom}{a.service ? ` · ${nomService(a.service)}` : ""}</small>
                         </div>
                     ))}
                 </section>
