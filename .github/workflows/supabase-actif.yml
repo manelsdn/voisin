@@ -14,6 +14,6 @@ jobs:
           SUPABASE_URL: https://mpojrohskpyntqogkfen.supabase.co
           SUPABASE_KEY: sb_publishable_06PtR7kH-tiE84Ku1YolXQ_SM1qkMtA
         run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" "$SUPABASE_URL/rest/v1/users?select=id&limit=1" -H "apikey: $SUPABASE_KEY" -H "Authorization: Bearer $SUPABASE_KEY")
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$SUPABASE_URL/rest/v1/rpc/profils_filtres" -H "apikey: $SUPABASE_KEY" -H "Authorization: Bearer $SUPABASE_KEY" -H "Content-Type: application/json" -d '{"p_champ":"email","p_valeur":"ping@voisin-dor.fr"}')
           echo "Réponse Supabase : $code"
           test "$code" = "200"
