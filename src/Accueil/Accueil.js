@@ -44,11 +44,11 @@ const Accueil = () => {
                     <Link className="avatar" to="/profil" aria-label="Mon profil"><Avatar personne={utilisateur} classe="mini-persona-photo" /></Link>
                 </div>
                 <div className="home-content">
-                    <div className="bonjour-ligne"><span className="greeting">Bonjour {utilisateur.prenom}</span><span className="role-badge">{ROLES[utilisateur.role]}</span></div>
-
-                    <section className={estJeune ? "vitrine-hero hero-haut hero-jeune" : "vitrine-hero hero-haut"}>
-                        <img src={estJeune ? "/assets/presentation/accueil-jeune.jpg" : "/assets/presentation/accueil-large.jpg"} alt="" />
+                    <section className="vitrine-hero hero-fond">
+                        <img src="/assets/presentation/fond-lyon.jpg" alt="" />
                         <div className="vitrine-voile">
+                            <span className="role-badge">{ROLES[utilisateur.role]}</span>
+                            <p className="greeting">Bonjour {utilisateur.prenom} !</p>
                             <h1>{estJeune ? <>Un coup de main, un sourire en retour.</> : <>Petits services, grands liens.</>}</h1>
                             <Link className="vitrine-recherche" to={estJeune ? "/annonce" : "/besoins/nouveau"}>
                                 <Icone nom={estJeune ? "sparkles" : "mic"} />

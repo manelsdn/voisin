@@ -10,6 +10,8 @@ const FORMATS = ["audio/webm", "audio/mp4", "audio/ogg"];
 
 const heure = (iso) => new Date(iso).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
 
+const EMOJIS = ["😊", "😂", "🥰", "👍", "🙏", "👋", "❤️", "🌸", "☀️", "🛒", "🧹", "🔧", "💻", "🌱", "🍲", "☕", "📅", "⏰", "✅", "🎉"];
+
 const jour = (iso) => {
     const d = new Date(iso);
     const auj = new Date();
@@ -32,6 +34,7 @@ const Conversation = () => {
     const fil = useRef(null);
     const choixFichier = useRef(null);
     const [piece, setPiece] = useState(null);
+    const [emojis, setEmojis] = useState(false);
 
     const charger = useCallback(async () => {
         try {
@@ -69,6 +72,7 @@ const Conversation = () => {
             if (piece) await envoyerFichier(utilisateur, autre, piece, texte);
             else await envoyerMessage(utilisateur, autre, texte);
             setPiece(null);
+            setEmojis(false);
             setTexte("");
             setErreur("");
             await charger();
@@ -150,6 +154,7 @@ const Conversation = () => {
                             {separateur && <p className="chat-jour"><span>{j}</span></p>}
                             <div className={moi ? "message-bubble mine" : "message-bubble"}>
                                 {m.texte}
+                                {m.evenement && <Link className="chat-lien-demande" to={`/demandes/${m.evenement.demandeId}`}>Voir la demande</Link>}
                                 {m.audio && <audio controls preload="none" src={m.audio} aria-label="Message vocal" />}
                                 {m.fichier && (m.fichier.type || "").startsWith("image/") && <a href={m.fichier.url} target="_blank" rel="noopener noreferrer" className="chat-image"><img src={m.fichier.url} alt={`Envoyé : ${m.fichier.nom}`} /></a>}
                                 {m.fichier && !(m.fichier.type || "").startsWith("image/") && <a href={m.fichier.url} target="_blank" rel="noopener noreferrer" download={m.fichier.nom} className="chat-fichier"><Icone nom="clip" /><span><strong>{m.fichier.nom}</strong><small>{Math.max(1, Math.round((m.fichier.taille || 0) / 1024))} Ko · Ouvrir</small></span></a>}
@@ -167,13 +172,21 @@ const Conversation = () => {
                         <button type="button" aria-label="Retirer le fichier joint" onClick={() => setPiece(null)}>×</button>
                     </div>
                 )}
+                {emojis && (
+                    <div className="chat-emojis" role="group" aria-label="Émojis">
+                        {EMOJIS.map((e) => <button key={e} type="button" aria-label={`Ajouter ${e}`} onClick={() => setTexte((t) => (t + e).slice(0, 500))}>{e}</button>)}
+                    </div>
+                )}
                 <div className="chat-ligne-saisie">
                     <input ref={choixFichier} type="file" className="sr-only" tabIndex={-1} aria-hidden="true" accept="image/*,.pdf,.doc,.docx,.txt" onChange={(e) => { setPiece(e.target.files[0] || null); e.target.value = ""; }} />
-                    <button type="button" className="chat-joindre" aria-label="Joindre une image ou un fichier" onClick={() => choixFichier.current && choixFichier.current.click()}><Icone nom="clip" /></button>
+                    <div className="chat-champ">
+                        <button type="button" className="chat-icone" aria-label="Ajouter un émoji" aria-expanded={emojis} onClick={() => setEmojis(!emojis)}><span aria-hidden="true">🙂</span></button>
+                        <label className="chat-texte"><span className="sr-only">Votre message</span><textarea name="message" rows={1} maxLength={500} value={texte} onChange={(e) => setTexte(e.target.value)} onKeyDown={touche} placeholder={enregistre ? "Je vous écoute… relâchez pour envoyer" : `Écrire à ${autre.prenom}…`} /></label>
+                        <button type="button" className="chat-icone" aria-label="Joindre une image ou un fichier" onClick={() => choixFichier.current && choixFichier.current.click()}><Icone nom="clip" /></button>
+                    </div>
                     <button type="button" aria-label={enregistre ? "Relâchez pour envoyer" : "Maintenir pour un message vocal"} className={enregistre ? "chat-micro actif" : "chat-micro"} onPointerDown={demarrer} onPointerUp={arreter} onPointerLeave={arreter} onKeyDown={(e) => (e.key === " " || e.key === "Enter") && !e.repeat && demarrer()} onKeyUp={(e) => (e.key === " " || e.key === "Enter") && arreter()} onContextMenu={(e) => e.preventDefault()}>
                         <Icone nom="mic" />
                     </button>
-                    <label className="chat-champ"><span className="sr-only">Votre message</span><textarea name="message" rows={1} maxLength={500} value={texte} onChange={(e) => setTexte(e.target.value)} onKeyDown={touche} placeholder={enregistre ? "Je vous écoute… relâchez pour envoyer" : `Écrire à ${autre.prenom}…`} /></label>
                     <button type="submit" className="chat-envoyer" aria-label="Envoyer" disabled={envoi}><Icone nom="arrow" /></button>
                 </div>
             </form></footer>

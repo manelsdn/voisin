@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { Astuce, BanniereService, Ecran, Indice, LienBouton, Message } from "../composants/Mise";
+import { Astuce, BanniereService, Ecran, EtatService, Etapes, Indice, LienBouton, Message, prochaineEtape } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { infosLocales, laisserAvis, lireAvis, lireDemande, lireRendezVous, repondreDemande, terminerDemande } from "../services/api";
-import { STATUTS, nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { nomService, texteCreneau, texteDistance } from "../services/constantes";
 import { texteDate } from "../services/geo";
 
 const DetailDemande = () => {
@@ -85,9 +85,11 @@ const DetailDemande = () => {
             <div className="detail-box">
                 <h2 className="sous-titre">{nomService(demande.service)}</h2>
                 <p>{texteCreneau(demande.creneau)} · {texteDate(demande.dateSouhaitee)}</p>
-                <p><em className={`statut ${demande.statut}`}>{STATUTS[demande.statut]}</em></p>
+                <p><EtatService statut={demande.statut} estJeune={estJeune} /></p>
+                <Etapes statut={demande.statut} />
                 <div className="text-row numero"><span><Icone nom="phone" /> Numéro</span><strong>{rdv ? (estJeune ? rdv.telephoneDemandeur : rdv.telephoneJeune) : "Visible après acceptation"}</strong></div>
             </div>
+            <p className="prochaine-etape" role="status"><strong>Et maintenant ?</strong> {prochaineEtape(demande, estJeune, avis)}</p>
             <p>{demande.description}</p>
             {demande.photo && <img className="demande-photo" src={demande.photo} alt="Le besoin montré par le demandeur" />}
             {estJeune && demande.beneficiaireId !== demande.demandeurId && <Indice icone="users">Vous échangez avec {demande.demandeurPrenom}. {demande.beneficiairePrenom} vous accueille le jour du service.</Indice>}
@@ -113,7 +115,7 @@ const DetailDemande = () => {
                     {!infos && <p className="soft"><small>Chargement de la météo et des lieux utiles…</small></p>}
                     {infos && (
                         <>
-                            <div className="text-row"><span><Icone nom="sun" /> Météo du {texteDate(demande.dateSouhaitee)}</span><strong>{infos.meteo ? `${infos.meteo.texte} · ${infos.meteo.min}° / ${infos.meteo.max}°${infos.meteo.pluie != null ? ` · pluie ${infos.meteo.pluie} %` : ""}` : "Disponible quelques jours avant"}</strong></div>
+                            <div className="text-row"><span><Icone nom="sun" /> Météo du {texteDate(demande.dateSouhaitee)}</span><strong>{infos.meteo ? `${infos.meteo.texte} · ${infos.meteo.min}° / ${infos.meteo.max}°${infos.meteo.pluie != null ? ` · pluie ${infos.meteo.pluie} %` : ""}` : new Date(demande.dateSouhaitee + "T23:59:00") < new Date() ? "Date passée" : "Disponible 2 semaines avant"}</strong></div>
                             {infos.lieux.length > 0 ? (
                                 <ul className="lieux">
                                     {infos.lieux.map((l) => <li key={l.id}><span><Icone nom={l.type === "Pharmacie" ? "pin" : "bag"} /> {l.nom}</span><small>{l.type} · {texteDistance(l.distance)}</small></li>)}

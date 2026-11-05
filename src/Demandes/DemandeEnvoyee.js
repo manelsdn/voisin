@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Ecran, LienBouton } from "../composants/Mise";
+import { Ecran, EtatService, Etapes, LienBouton } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { lireDemande } from "../services/api";
-import { STATUTS, nomService, texteCreneau } from "../services/constantes";
+import { nomService, texteCreneau } from "../services/constantes";
 import { texteDate } from "../services/geo";
 
 const DemandeEnvoyee = () => {
@@ -24,7 +24,8 @@ const DemandeEnvoyee = () => {
                 <div className="detail-box">
                     <h3>{nomService(demande.service)} avec {demande.jeunePrenom}</h3>
                     <p>{texteCreneau(demande.creneau)} · {texteDate(demande.dateSouhaitee)}</p>
-                    <p><em className={`statut ${demande.statut}`}>{STATUTS[demande.statut]}</em></p>
+                    <p><EtatService statut={demande.statut} estJeune={false} /></p>
+                    <Etapes statut={demande.statut} />
                     <div className="text-row"><span><Icone nom="phone" /> Numéro de {demande.jeunePrenom}</span><strong>Visible après acceptation</strong></div>
                 </div>
             )}

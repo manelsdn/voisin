@@ -1,5 +1,5 @@
-import { collection, doc, getDoc, getDocs, query, setDoc, addDoc, where } from "firebase/firestore";
-import { isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailLink, signOut } from "firebase/auth";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, addDoc, where } from "firebase/firestore";
+import { deleteUser, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithEmailLink, signOut } from "firebase/auth";
 import { firestoreDB, firebaseAuth } from "../configs/firebase";
 
 export const lire = async (col, id) => {
@@ -14,6 +14,13 @@ export const ajouter = async (col, data) => (await addDoc(collection(firestoreDB
 export const chercher = async (col, champ, valeur) => {
     const snap = await getDocs(query(collection(firestoreDB, col), where(champ, "==", valeur)));
     return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+};
+
+export const supprimer = (col, id) => deleteDoc(doc(firestoreDB, col, id));
+
+export const supprimerCompte = async (uid) => {
+    await deleteDoc(doc(firestoreDB, "users", uid));
+    if (firebaseAuth.currentUser) await deleteUser(firebaseAuth.currentUser).catch(() => signOut(firebaseAuth));
 };
 
 export const envoyerLien = async (email) => {

@@ -131,7 +131,6 @@ const Recherche = () => {
                         {estJeune
                             ? <CarteJeunes centre={centre} jeunes={resultats} rayon={filtres.rayon} ouvrir={ouvrir} lienVers={LIEN_BESOIN} titre={TITRE_BESOIN} detail={DETAIL_BESOIN} image={IMAGE_BESOIN} bouton="Voir l'annonce" region="Carte des besoins près de chez vous" />
                             : <CarteJeunes centre={centre} jeunes={resultats} rayon={filtres.rayon} ouvrir={ouvrir} />}
-                        <p className="legende-carte"><span><i style={{ background: "#FF6B5B" }}></i>{pour && pour.id !== utilisateur.id ? pour.prenom : "Vous"}</span><span><i style={{ background: "#1FAF98" }}></i>{estJeune ? "Besoins" : "Jeunes disponibles"} (position approximative)</span></p>
                     </div>
                 )}
 

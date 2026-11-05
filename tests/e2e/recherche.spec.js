@@ -35,7 +35,7 @@ test("US15 · Recherche : un message s'affiche quand il n'y a aucun résultat", 
     await page.goto("/inscription");
     await page.getByRole("button", { name: /Je cherche de l'aide/ }).click();
     await page.getByRole("button", { name: /Continuer/ }).click();
-    for (const [l, v] of Object.entries({ "Prénom": "Gisèle", "Nom": "Morel", "E-mail": "gisele.morel@exemple.fr", "Téléphone": "04 78 00 11 22", "Adresse": "2 rue Anatole France", "Code postal": "69100", "Ville": "Villeurbanne" })) await page.getByLabel(l, { exact: true }).fill(v);
+    for (const [l, v] of Object.entries({ "Prénom": "Gisèle", "Nom": "Morel", "E-mail": "gisele.morel@exemple.fr", "Téléphone": "04 78 00 11 22", "Adresse": "2 rue Anatole France", "Code postal": "69400", "Ville": "Villefranche-sur-Saône" })) await page.getByLabel(l, { exact: true }).fill(v);
     await page.getByLabel(/J'accepte la/).check();
     await page.getByRole("button", { name: /Recevoir le lien/ }).click();
     await page.getByRole("link", { name: "Ouvrir le lien reçu" }).click();

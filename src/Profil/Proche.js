@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Ecran, Indice, Message } from "../composants/Mise";
 import { ajouterProche, listerProches, modifierProche } from "../services/api";
@@ -7,8 +7,9 @@ import { ajouterProche, listerProches, modifierProche } from "../services/api";
 const Proche = () => {
     const { utilisateur } = useSession();
     const [proche, setProche] = useState(undefined);
+    const [params] = useSearchParams();
     const [erreur, setErreur] = useState("");
-    const [edition, setEdition] = useState(false);
+    const [edition, setEdition] = useState(params.get("modifier") === "1");
     const [info, setInfo] = useState("");
     const navigate = useNavigate();
 
@@ -19,7 +20,7 @@ const Proche = () => {
     const modifier = async (e) => {
         e.preventDefault();
         const f = e.target;
-        const donnees = { prenom: f.prenom.value.trim(), adresse: f.adresse.value.trim(), codePostal: f.codePostal.value.trim(), ville: f.ville.value.trim() };
+        const donnees = { prenom: f.prenom.value.trim(), nom: f.nom.value.trim(), adresse: f.adresse.value.trim(), codePostal: f.codePostal.value.trim(), ville: f.ville.value.trim() };
         try {
             await modifierProche(utilisateur, proche, donnees);
             setProche((await listerProches(utilisateur.id))[0] || null);
@@ -36,11 +37,12 @@ const Proche = () => {
         const f = e.target;
         const donnees = {
             prenom: f.prenom.value.trim(),
+            nom: f.nom.value.trim(),
             adresse: f.adresse.value.trim(),
             codePostal: f.codePostal.value.trim(),
             ville: f.ville.value.trim()
         };
-        if (Object.values(donnees).some((v) => !v)) {
+        if ([donnees.prenom, donnees.adresse, donnees.codePostal, donnees.ville].some((v) => !v)) {
             setErreur("Le prénom et l'adresse de votre proche sont obligatoires.");
             return;
         }
@@ -63,7 +65,10 @@ const Proche = () => {
         <Ecran titre="Mon proche" retour="/accueil">
             {proche && edition ? (
                 <form className="form-stack" onSubmit={modifier} noValidate>
-                    <label>Prénom de votre proche<input name="prenom" maxLength={35} defaultValue={proche.prenom} /></label>
+                    <div className="deux">
+                        <label>Prénom de votre proche<input name="prenom" maxLength={35} defaultValue={proche.prenom} /></label>
+                        <label>Nom<input name="nom" maxLength={50} defaultValue={proche.nom || ""} /></label>
+                    </div>
                     <label>Son adresse<input name="adresse" defaultValue={proche.adresse} /></label>
                     <div className="deux">
                         <label>Code postal<input name="codePostal" defaultValue={proche.codePostal} /></label>
@@ -79,7 +84,7 @@ const Proche = () => {
                     {info && <div className="notice" role="status">{info}</div>}
                     <div className="detail-box">
                         <span className="mini-eyebrow">MON PROCHE</span>
-                        <h2 className="sous-titre">{proche.prenom}</h2>
+                        <h2 className="sous-titre">{proche.prenom} {proche.nom || ""}</h2>
                         <p>{proche.adresse}, {proche.codePostal} {proche.ville}</p>
                     </div>
                     <button className="secondary" type="button" onClick={() => { setEdition(true); setInfo(""); }}>Modifier son prénom ou son adresse</button>
@@ -89,7 +94,10 @@ const Proche = () => {
                 <>
                     <p className="soft">Votre proche n'a pas besoin de compte. Vous gérez les demandes et les échanges avec son accord.</p>
                     <form className="form-stack" onSubmit={handleSubmit} noValidate>
-                        <label>Prénom de votre proche<input name="prenom" maxLength={35} placeholder="Madeleine" /></label>
+                        <div className="deux">
+                            <label>Prénom de votre proche<input name="prenom" maxLength={35} placeholder="Madeleine" /></label>
+                            <label>Nom<input name="nom" maxLength={50} placeholder="Moreau" /></label>
+                        </div>
                         <label>Son adresse<input name="adresse" placeholder="8 rue Moncey" /></label>
                         <div className="deux">
                             <label>Code postal<input name="codePostal" placeholder="69003" /></label>

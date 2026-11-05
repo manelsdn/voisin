@@ -38,12 +38,16 @@ const AlerteMessages = () => {
             const dernier = nouveaux[nouveaux.length - 1];
             if (!dernier || chemin.current === `/messages/${dernier.de}`) return;
             const texte = dernier.texte || (dernier.audio ? "Message vocal" : "Nouveau message");
-            setAlerte({ id: dernier.id, de: dernier.de, prenom: dernier.dePrenom || "Un voisin", texte });
+            const ev = dernier.evenement;
+            const titres = { DEMANDE_RECUE: `Nouvelle demande de ${dernier.dePrenom}`, DEMANDE_ACCEPTEE: `${dernier.dePrenom} a accepté votre demande`, DEMANDE_REFUSEE: `${dernier.dePrenom} n'est pas disponible`, DEMANDE_ANNULEE: `${dernier.dePrenom} a annulé sa demande` };
+            const titre = ev ? titres[ev.type] || "Votre demande a changé" : `Nouveau message de ${dernier.dePrenom || "Un voisin"}`;
+            const lien = ev ? `/demandes/${ev.demandeId}` : `/messages/${dernier.de}`;
+            setAlerte({ id: dernier.id, de: dernier.de, titre, lien, texte, evenement: !!ev });
             if (notificationsPossibles() && Notification.permission === "granted" && document.hidden) {
-                const notif = new Notification(`${dernier.dePrenom || "Un voisin"} vous a écrit`, { body: texte, icon: "/logo192.png", tag: `message-${dernier.de}` });
+                const notif = new Notification(titre, { body: texte, icon: "/logo192.png", tag: `message-${dernier.de}` });
                 notif.onclick = () => {
                     window.focus();
-                    navigate(`/messages/${dernier.de}`);
+                    navigate(lien);
                     notif.close();
                 };
             }
@@ -69,9 +73,9 @@ const AlerteMessages = () => {
     if (!alerte) return null;
     return (
         <div className="alerte-message" role="status" aria-live="polite">
-            <Link to={`/messages/${alerte.de}`} onClick={() => setAlerte(null)}>
-                <span className="alerte-icone"><Icone nom="message" /></span>
-                <span className="alerte-texte"><strong>Nouveau message de {alerte.prenom}</strong><small>{alerte.texte}</small></span>
+            <Link to={alerte.lien} onClick={() => setAlerte(null)}>
+                <span className={alerte.evenement ? "alerte-icone alerte-demande" : "alerte-icone"}><Icone nom={alerte.evenement ? "calendar" : "message"} /></span>
+                <span className="alerte-texte"><strong>{alerte.titre}</strong><small>{alerte.texte}</small></span>
             </Link>
             <button type="button" aria-label="Fermer la notification" onClick={() => setAlerte(null)}>×</button>
         </div>

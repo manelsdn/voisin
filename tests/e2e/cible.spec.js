@@ -23,15 +23,15 @@ test("US33 US34 US35 US36 · Service terminé, historique, avis puis redemander"
     await page.goto("/demandes/demande-13");
     await expect(page.getByLabel("Infos locales")).toBeVisible();
     await page.getByRole("button", { name: /Service terminé/ }).click();
-    await expect(page.locator(".statut.TERMINEE")).toHaveText("Terminée");
+    await expect(page.locator(".statut.TERMINEE")).toHaveText("Fait");
     await expect(page.getByRole("button", { name: /Service terminé/ })).toHaveCount(0);
     await deconnecter(page);
 
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/services");
-    await page.getByRole("tab", { name: "À venir" }).click();
+    await page.getByRole("tab", { name: "En cours" }).click();
     await expect(page.locator(".statut.TERMINEE")).toHaveCount(0);
-    await page.getByRole("tab", { name: "Passés" }).click();
+    await page.getByRole("tab", { name: "Terminés" }).click();
     await page.getByRole("link", { name: /Ménage · avec Inès/ }).click();
     await page.getByRole("radio", { name: "4 sur 5" }).click();
     await page.getByLabel(/Un petit mot/).fill("Très gentille et efficace, merci !");

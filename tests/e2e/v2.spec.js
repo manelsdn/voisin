@@ -9,7 +9,7 @@ test("V2 · Carte : la recherche s'affiche aussi sur une carte", async ({ page }
     await page.getByRole("button", { name: "Carte" }).click();
     await expect(page.getByRole("region", { name: "Carte des jeunes disponibles" })).toBeVisible();
     await expect(page.locator(".pin-jeune").first()).toBeVisible();
-    await expect(page.getByText("position approximative")).toBeVisible();
+    await expect(page.locator(".legende-carte")).toHaveCount(0);
     await page.getByRole("button", { name: "Liste" }).click();
     await expect(page.locator(".resultat").first()).toBeVisible();
 });

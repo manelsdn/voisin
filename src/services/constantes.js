@@ -28,6 +28,14 @@ export const STATUTS = {
     ANNULEE: "Annulée"
 };
 
+export const etatService = (statut, estJeune) => ({
+    ENVOYEE: estJeune ? "À vous de répondre" : "En attente de réponse",
+    ACCEPTEE: "Confirmé",
+    TERMINEE: "Fait",
+    REFUSEE: "Pas disponible",
+    ANNULEE: "Annulé"
+}[statut] || STATUTS[statut]);
+
 export const RAYONS = [0.5, 1, 2, 5];
 
 export const imageService = (code) => (SERVICES.find((s) => s.code === code) || {}).image || "";

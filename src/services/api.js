@@ -2,7 +2,7 @@ import * as firebase from "./stockageFirebase";
 import * as test from "./stockageTest";
 import * as supa from "./stockageSupabase";
 import { distanceKm, geocoder, prochaineDate } from "./geo";
-import { NOMS_JOURS, SERVICES } from "./constantes";
+import { NOMS_JOURS, SERVICES, nomService, texteCreneau } from "./constantes";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const s = process.env.REACT_APP_MODE === "test" ? test : process.env.REACT_APP_BACKEND === "supabase" ? supa : firebase;
@@ -71,6 +71,7 @@ export const ajouterProche = async (accompagnant, proche) => {
 };
 
 export const modifierProche = async (accompagnant, proche, donnees) => {
+    donnees = { ...donnees, nom: donnees.nom || "" };
     if (!donnees.prenom || !donnees.adresse || !donnees.codePostal || !donnees.ville) throw new Error("Le prénom et l'adresse de votre proche sont obligatoires.");
     if (proche.accompagnantId !== accompagnant.id) throw new Error("Vous ne pouvez modifier que votre proche.");
     const adresseChangee = donnees.adresse !== proche.adresse || donnees.codePostal !== proche.codePostal || donnees.ville !== proche.ville;
@@ -102,9 +103,12 @@ export const rechercherJeunes = async (position, { service = "", rayon = 2, jour
         .sort((a, b) => a.distance - b.distance);
 };
 
+const prevenir = (de, a, texte, demandeId, type) =>
+    s.ajouter("messages", { de: de.id, dePrenom: de.prenom, a: a.id, aPrenom: a.prenom, texte, evenement: { type, demandeId }, creeAt: new Date().toISOString() }).catch(() => null);
+
 export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, creneau, description, photo }) => {
     if (!service || !creneau || !description.trim()) throw new Error("Choisissez un service, un créneau et écrivez quelques précisions.");
-    return s.ajouter("demandes", {
+    const id = await s.ajouter("demandes", {
         demandeurId: demandeur.id,
         demandeurPrenom: demandeur.prenom,
         beneficiaireId: beneficiaire.id,
@@ -121,6 +125,9 @@ export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, 
         ...(photo ? { photo } : {}),
         creeAt: new Date().toISOString()
     });
+    const pour = beneficiaire.id !== demandeur.id ? ` pour ${beneficiaire.prenom}` : "";
+    await prevenir(demandeur, jeune, `📩 Nouvelle demande${pour} : ${nomService(service)}, ${texteCreneau(creneau)}. Ouvrez-la pour répondre.`, id, "DEMANDE_RECUE");
+    return id;
 };
 
 export const lireDemande = (id) => s.lire("demandes", id);
@@ -137,6 +144,13 @@ export const repondreDemande = async (demande, utilisateur, statut) => {
     if ((statut === "ACCEPTEE" || statut === "REFUSEE") && !estJeune) throw new Error("Seul le jeune peut répondre.");
     if (statut === "ANNULEE" && utilisateur.id !== demande.demandeurId) throw new Error("Seul le demandeur peut annuler.");
     await s.ecrire("demandes", demande.id, { statut, reponduAt: new Date().toISOString() });
+    const autre = { id: estJeune ? demande.demandeurId : demande.jeuneId, prenom: estJeune ? demande.demandeurPrenom : demande.jeunePrenom };
+    const textes = {
+        ACCEPTEE: `✅ ${utilisateur.prenom} a accepté votre demande (${nomService(demande.service)}). Son numéro est maintenant visible.`,
+        REFUSEE: `${utilisateur.prenom} n'est pas disponible pour cette demande (${nomService(demande.service)}). Vous pouvez demander à un autre jeune.`,
+        ANNULEE: `${utilisateur.prenom} a annulé sa demande (${nomService(demande.service)}).`
+    };
+    await prevenir(utilisateur, autre, textes[statut], demande.id, `DEMANDE_${statut}`);
     if (statut === "ACCEPTEE") {
         const demandeur = await lireUtilisateur(demande.demandeurId);
         await s.ecrire("rendezVous", demande.id, {
@@ -268,6 +282,36 @@ export const tousLesLikes = async () => {
 };
 
 export const likesDuJeune = async (jeuneId) => (await s.chercher("likes", "jeuneId", jeuneId).catch(() => [])).filter((l) => l.actif);
+
+export const commentairesDuJeune = async (jeuneId) =>
+    (await s.chercher("commentaires", "jeuneId", jeuneId).catch(() => [])).sort((a, b) => (a.creeAt < b.creeAt ? -1 : 1));
+
+export const tousLesCommentaires = async (ids) => {
+    const listes = await Promise.all(ids.map((id) => commentairesDuJeune(id)));
+    return Object.fromEntries(ids.map((id, i) => [id, listes[i]]));
+};
+
+const texteCommentaire = (texte) => {
+    const t = (texte || "").trim();
+    if (!t) throw new Error("Écrivez un petit mot avant de publier.");
+    if (t.length > 300) throw new Error("Le commentaire fait 300 caractères maximum.");
+    return t;
+};
+
+export const commenter = async (auteur, jeuneId, texte) =>
+    s.ajouter("commentaires", { jeuneId, auteurId: auteur.id, auteurPrenom: auteur.prenom, auteurPhoto: auteur.photoProfil || null, texte: texteCommentaire(texte), creeAt: new Date().toISOString() });
+
+export const modifierCommentaire = async (auteur, commentaire, texte) => {
+    if (commentaire.auteurId !== auteur.id) throw new Error("Vous ne pouvez modifier que vos commentaires.");
+    await s.ecrire("commentaires", commentaire.id, { texte: texteCommentaire(texte), modifieAt: new Date().toISOString() });
+};
+
+export const supprimerCommentaire = async (auteur, commentaire) => {
+    if (commentaire.auteurId !== auteur.id) throw new Error("Vous ne pouvez supprimer que vos commentaires.");
+    await s.supprimer("commentaires", commentaire.id);
+};
+
+export const supprimerCompte = (utilisateur) => s.supprimerCompte(utilisateur.id);
 
 const TAILLE_MAX = 10 * 1024 * 1024;
 

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { ecouterMessages, nombreNonLus } from "../services/api";
-import { SERVICES, iconeService, nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { SERVICES, etatService, iconeService, nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { texteDate } from "../services/geo";
 import { DessinService, Icone } from "./Icones";
 import { useSession } from "./Session";
 
@@ -172,3 +173,31 @@ export const LienBouton = ({ to, children, secondaire, fleche }) => (
 export const Astuce = ({ icone = "heart", children }) => <p className="tip-note"><Icone nom={icone} /><span>{children}</span></p>;
 
 export const Indice = ({ icone = "heart", children }) => <div className="hint"><Icone nom={icone} /><span>{children}</span></div>;
+
+const ETAPES = ["Demandé", "Confirmé", "Fait"];
+const RANG = { ENVOYEE: 0, ACCEPTEE: 1, TERMINEE: 2 };
+
+export const Etapes = ({ statut }) => {
+    if (RANG[statut] === undefined) return null;
+    return (
+        <ol className="suivi" aria-label="Avancement">
+            {ETAPES.map((e, i) => (
+                <li key={e} className={i < RANG[statut] || statut === "TERMINEE" ? "fait" : i === RANG[statut] ? "actuel" : ""} aria-current={i === RANG[statut] ? "step" : undefined}>
+                    <span className="etape-rond">{i < RANG[statut] || statut === "TERMINEE" ? <Icone nom="check" /> : i + 1}</span>{e}
+                </li>
+            ))}
+        </ol>
+    );
+};
+
+export const EtatService = ({ statut, estJeune }) => <em className={`statut ${statut}${estJeune && statut === "ENVOYEE" ? " a-faire" : ""}`}>{etatService(statut, estJeune)}</em>;
+
+export const prochaineEtape = (d, estJeune, avis, court) => {
+    const jour = d.dateSouhaitee ? texteDate(d.dateSouhaitee) : "";
+    const autre = estJeune ? d.demandeurPrenom : d.jeunePrenom;
+    if (d.statut === "ENVOYEE") return estJeune ? "Lisez la demande, puis appuyez sur « Accepter » ou « Refuser »." : `${autre} doit répondre. Vous recevrez un message dès sa réponse.`;
+    if (d.statut === "ACCEPTEE") return estJeune ? `Rendez-vous ${jour ? `le ${jour}` : "bientôt"} chez ${d.beneficiairePrenom}. ${court ? "" : "Une fois l'aide faite, appuyez sur « Service terminé »."}` : `${autre} viendra ${jour ? `le ${jour}` : "bientôt"}.${court ? "" : " Son numéro est affiché juste au-dessus."}`;
+    if (d.statut === "TERMINEE") return !estJeune && !avis ? `C'est fait ! Laissez un avis pour remercier ${autre}.` : "C'est fait. Merci pour ce coup de main !";
+    if (d.statut === "REFUSEE") return estJeune ? "Vous avez refusé cette demande." : `${autre} n'est pas disponible. Vous pouvez choisir un autre jeune.`;
+    return "Cette demande a été annulée.";
+};

@@ -2,7 +2,7 @@ import { supabase } from "../configs/supabase";
 
 const lienInitial = typeof window !== "undefined" ? window.location.href : "";
 
-const TABLES = { users: "users", demandes: "demandes", rendezVous: "rendez_vous", messages: "messages", avis: "avis" };
+const TABLES = { users: "users", demandes: "demandes", rendezVous: "rendez_vous", messages: "messages", avis: "avis", commentaires: "commentaires" };
 const table = (col) => supabase().from(TABLES[col] || col);
 const doc = (ligne) => (ligne ? { id: ligne.id, ...ligne.data } : null);
 const nouvelId = () => (window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
@@ -40,6 +40,16 @@ export const ajouter = async (col, data) => {
 export const chercher = async (col, champ, valeur) => {
     if (col === "users") return profils({ p_champ: champ, p_valeur: valeur });
     return verifier(await table(col).select("id, data").eq(`data->>${champ}`, String(valeur))).map(doc);
+};
+
+export const supprimer = async (col, id) => {
+    verifier(await table(col).delete().eq("id", id));
+};
+
+export const supprimerCompte = async (uid) => {
+    await supabase().storage.from("photos").remove([`profil/${uid}`]).catch(() => null);
+    verifier(await supabase().rpc("supprimer_mon_compte"));
+    await supabase().auth.signOut().catch(() => null);
 };
 
 export const ecouterMessages = (moiId, rappel) => {

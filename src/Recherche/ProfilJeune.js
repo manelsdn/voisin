@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Astuce, Avatar, Ecran, LienBouton } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { avisDuJeune, basculerFavori, likesDuJeune, lireUtilisateur, mesFavoris, pointDeRecherche } from "../services/api";
+import { avisDuJeune, basculerFavori, likesDuJeune, lireUtilisateur, mesDemandes, mesFavoris, pointDeRecherche } from "../services/api";
 import { distanceKm } from "../services/geo";
 import { nomService, texteCreneau, texteDistance } from "../services/constantes";
 
@@ -17,6 +17,7 @@ const ProfilJeune = () => {
     const [avis, setAvis] = useState([]);
     const [favoris, setFavoris] = useState([]);
     const [likes, setLikes] = useState(0);
+    const [lien, setLien] = useState(false);
     const moi = id === utilisateur.id;
 
     useEffect(() => {
@@ -29,6 +30,8 @@ const ProfilJeune = () => {
                 setLikes((await likesDuJeune(id)).length);
             }
             setFavoris(await mesFavoris(utilisateur).catch(() => []));
+            const demandes = await mesDemandes(utilisateur).catch(() => []);
+            setLien(demandes.some((d) => d.jeuneId === id && d.statut === "ACCEPTEE"));
         };
         charger();
     }, [id, utilisateur]);
@@ -55,6 +58,14 @@ const ProfilJeune = () => {
                 {!moi && utilisateur.role !== "JEUNE" && <button type="button" className={favori ? "post-act liked" : "post-act"} aria-pressed={favori} onClick={basculer}><Icone nom="heart" />{favori ? "Dans mes favoris" : "Ajouter aux favoris"}</button>}
                 {likes > 0 && <p className="likes-resume"><Icone nom="heart" />{likes} voisin{likes > 1 ? "s aiment" : " aime"} {moi ? "votre annonce" : "son annonce"}</p>}
             </div>
+            {!moi && (
+                <div className={lien && jeune.telephone ? "numero numero-visible" : "numero"}>
+                    <Icone nom="phone" />
+                    {lien && jeune.telephone
+                        ? <span><small>Son numéro</small><a href={`tel:${jeune.telephone.replace(/\s/g, "")}`}>{jeune.telephone}</a></span>
+                        : <span><small>Son numéro</small><strong>Masqué</strong><em>Il s'affiche pendant un service accepté par {jeune.prenom}.</em></span>}
+                </div>
+            )}
             {jeune.description && <p>{jeune.description}</p>}
             <div className="detail-box">
                 <span className="mini-eyebrow">JE PEUX VOUS AIDER POUR</span>

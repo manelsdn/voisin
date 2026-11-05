@@ -4,7 +4,7 @@ const auditeurs = new Set();
 const base = () => {
     const brut = localStorage.getItem(CLE);
     const db = brut ? JSON.parse(brut) : {};
-    ["users", "demandes", "rendezVous", "messages", "avis", "besoins", "propositions", "likes"].forEach((c) => { db[c] = db[c] || {}; });
+    ["users", "demandes", "rendezVous", "messages", "avis", "besoins", "propositions", "likes", "commentaires"].forEach((c) => { db[c] = db[c] || {}; });
     return db;
 };
 
@@ -20,6 +20,13 @@ export const lire = async (col, id) => {
 export const ecrire = async (col, id, data) => {
     const db = base();
     db[col][id] = { ...(db[col][id] || {}), ...data };
+    sauver(db);
+    signaler(col);
+};
+
+export const supprimer = async (col, id) => {
+    const db = base();
+    delete db[col][id];
     sauver(db);
     signaler(col);
 };
@@ -87,6 +94,17 @@ export const validerLien = async (href, email) => {
 export const deconnecter = async () => {
     localStorage.removeItem("vdo-session");
     prevenir();
+};
+
+export const supprimerCompte = async (uid) => {
+    const db = base();
+    const lie = (d) => [d.userId, d.auteurId, d.de, d.a, d.demandeurId, d.beneficiaireId, d.jeuneId].includes(uid);
+    delete db.users[uid];
+    ["demandes", "rendezVous", "messages", "avis", "besoins", "propositions", "likes", "commentaires"].forEach((c) => {
+        Object.keys(db[c]).forEach((id) => { if (lie(db[c][id])) delete db[c][id]; });
+    });
+    sauver(db);
+    await deconnecter();
 };
 
 export const ecouterSession = (rappel) => {
