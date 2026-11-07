@@ -129,7 +129,7 @@ test("Annonce : le jeune peut retirer son annonce puis la republier", async ({ p
 
 test("Fil des voisins : le jeune voit les personnes qui ont besoin d'aide et peut proposer son aide", async ({ page }) => {
     await connecter(page, "lucas.martin@exemple.fr");
-    await page.getByRole("link", { name: /Le fil des voisins/ }).click();
+    await page.goto("/fil");
     await expect(page.getByRole("heading", { name: /Le fil des voisins/ })).toBeVisible();
     const post = page.locator("article.post").filter({ hasText: "Madeleine" }).first();
     await expect(post.getByRole("button", { name: /Avis/ })).toHaveCount(0);

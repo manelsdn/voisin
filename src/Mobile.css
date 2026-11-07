@@ -364,13 +364,6 @@
 #vdo .tuile-alerte .tuile-icone{background:#D23B2A;color:#fff}
 #vdo .aide-centre{margin-top:14px}
 @media (max-width:340px){#vdo .tuiles{gap:6px}#vdo .tuile{padding:10px 8px;min-height:96px}#vdo .tuile b{font-size:22px}#vdo .tuile>span:last-child{font-size:13px}}
-#vdo .lien-fil{display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;border-radius:18px!important;background:#FFFDF8;border:1.5px solid #f0e6ea;color:var(--ink)!important;text-decoration:none}
-#vdo .lien-fil>span:nth-child(2){flex:1;min-width:0;display:grid;gap:2px}
-#vdo .lien-fil strong{font:800 16px Nunito}
-#vdo .lien-fil small{font:600 14px/1.35 Nunito;color:#5d5574}
-#vdo .lien-fil-photos{flex:none;display:flex}
-#vdo .lien-fil-photos img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #FFFDF8}
-#vdo .lien-fil-photos img+img{margin-left:-12px}
 #vdo .explorer-haut{grid-template-columns:minmax(0,1fr)}
 #vdo .impact{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px;border-radius:20px;background:linear-gradient(135deg,#FFF1D6,#FFE3DD)}
 #vdo .impact span{display:grid;gap:2px;font:700 13.5px/1.25 Nunito;color:#6b4b1a}
@@ -435,7 +428,6 @@
 #vdo .carte-une strong{font:800 16px/1.2 Nunito;margin-top:4px}
 #vdo .carte-une small{font:600 14.5px Nunito;color:#5d5574}
 #vdo .squelette-carte{flex:0 0 148px;height:220px;border-radius:20px}
-#vdo.accueil-vitrine .lien-fil{margin-top:20px}
 #vdo .confiance-badges{list-style:none;margin:16px 0 0;padding:14px;display:grid;gap:12px;border-radius:20px;background:#2A2140;color:#fff}
 #vdo .confiance-badges li{display:flex;gap:12px;align-items:flex-start}
 #vdo .confiance-badges .icon{flex:none;width:22px;height:22px;color:#FFC145;margin-top:2px}
@@ -570,9 +562,9 @@
 #vdo .pin-jeune img{width:100%;height:100%;display:block}
 #vdo .carte-service img{width:100%;height:100%;background:#fff}
 #vdo .profile-portrait{width:120px!important;height:120px!important;border-radius:50%!important}
-#vdo .carte-photo,#vdo .carte-proposition .carte-photo,#vdo .chat-photo,#vdo .chat-liste .helper-photo,#vdo .helper-photo,#vdo .confiance-photo,#vdo .mini-persona-photo,#vdo .badge-persona-photo,#vdo .lien-fil-photos img,#vdo .post-avatar{border-radius:50%!important;overflow:hidden}
+#vdo .carte-photo,#vdo .carte-proposition .carte-photo,#vdo .chat-photo,#vdo .chat-liste .helper-photo,#vdo .helper-photo,#vdo .confiance-photo,#vdo .mini-persona-photo,#vdo .badge-persona-photo,#vdo .post-avatar{border-radius:50%!important;overflow:hidden}
 #vdo a.avatar{border-radius:50%!important;overflow:hidden;padding:0}
-#vdo .carte-photo,#vdo .carte-photo img,#vdo img.carte-photo,#vdo .profile-portrait img,#vdo img.chat-photo,#vdo img.helper-photo,#vdo img.mini-persona-photo,#vdo img.confiance-photo,#vdo .badge-persona-photo,#vdo .lien-fil-photos img,#vdo .categorie-image img,#vdo .story-img img,#vdo .puce img,#vdo .pin-jeune img,#vdo .carte-une-image img,#vdo .carte-service img{object-fit:cover!important}
+#vdo .carte-photo,#vdo .carte-photo img,#vdo img.carte-photo,#vdo .profile-portrait img,#vdo img.chat-photo,#vdo img.helper-photo,#vdo img.mini-persona-photo,#vdo img.confiance-photo,#vdo .badge-persona-photo,#vdo .categorie-image img,#vdo .story-img img,#vdo .puce img,#vdo .pin-jeune img,#vdo .carte-une-image img,#vdo .carte-service img{object-fit:cover!important}
 #vdo .story-img img,#vdo .pin-jeune img,#vdo .carte-service img{width:100%;height:100%;display:block}
 #vdo .post-compact .post-head>.carte-photo{flex:0 0 72px;width:72px!important;height:72px!important;border:3px solid #FFC145}
 #vdo .carte-profil .carte-photo{border:3px solid #FFC145}

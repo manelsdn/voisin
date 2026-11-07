@@ -166,13 +166,6 @@ const Accueil = () => {
                         </>
                     )}
 
-                    {estJeune && (
-                        <Link className="lien-fil" to="/fil">
-                            <span className="lien-fil-photos" aria-hidden="true"><img src="/assets/services/plein/courses.jpg" alt="" /><img src="/assets/services/plein/jardinage.jpg" alt="" /><img src="/assets/services/plein/informatique.jpg" alt="" /></span>
-                            <span><strong>Le fil des voisins</strong><small>Les personnes près de chez vous qui ont besoin d'un coup de main.</small></span>
-                            <Icone nom="chevron" />
-                        </Link>
-                    )}
                 </div>
             </main>
             <Navigation />

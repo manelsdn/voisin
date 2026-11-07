@@ -16,7 +16,7 @@ test("V2 · Carte : la recherche s'affiche aussi sur une carte", async ({ page }
 
 test("V2 · Fil des voisins : les besoins proches s'affichent et se filtrent par service", async ({ page }) => {
     await connecter(page, "lucas.martin@exemple.fr");
-    await page.getByRole("link", { name: /Le fil des voisins/ }).click();
+    await page.goto("/fil");
     await expect(page.getByRole("heading", { name: /Le fil/ })).toBeVisible();
     await expect(page.locator(".post").first()).toBeVisible();
     await page.getByRole("list", { name: "Services" }).getByRole("link", { name: "Jardinage" }).click();
