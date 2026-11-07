@@ -21,6 +21,6 @@ test("US42 · Changer de rôle : un jeune devient personne âgée et son annonce
     await page.getByRole("button", { name: /Confirmer mon nouveau rôle/ }).click();
     await page.waitForURL("**/accueil");
     await expect(page.locator(".role-badge")).toHaveText("Personne âgée");
-    await page.goto("/fil");
-    await expect(page.locator(".post-head strong", { hasText: "Théo" })).toHaveCount(0);
+    await page.goto("/recherche");
+    await expect(page.locator(".resultat strong", { hasText: "Théo" })).toHaveCount(0);
 });

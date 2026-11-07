@@ -29,11 +29,11 @@ export const STATUTS = {
 };
 
 export const etatService = (statut, estJeune) => ({
-    ENVOYEE: estJeune ? "À vous de répondre" : "En attente de réponse",
-    ACCEPTEE: "Confirmé",
-    TERMINEE: "Fait",
-    REFUSEE: "Pas disponible",
-    ANNULEE: "Annulé"
+    ENVOYEE: estJeune ? "À vous de répondre" : "En attente",
+    ACCEPTEE: "Acceptée",
+    TERMINEE: "Terminée",
+    REFUSEE: "Refusée",
+    ANNULEE: "Annulée"
 }[statut] || STATUTS[statut]);
 
 export const RAYONS = [0.5, 1, 2];

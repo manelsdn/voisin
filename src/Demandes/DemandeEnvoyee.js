@@ -30,7 +30,7 @@ const DemandeEnvoyee = () => {
                 </div>
             )}
             <div className="stack-actions">
-                <LienBouton to="/services" fleche>Voir mes services</LienBouton>
+                <LienBouton to="/services" fleche>Voir mes demandes</LienBouton>
                 <LienBouton to="/accueil" secondaire>Retour à l'accueil</LienBouton>
             </div>
         </Ecran>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { Ecran, EtatService, Etapes, LienBouton, prochaineEtape } from "../composants/Mise";
+import { Ecran, EtatService, LienBouton, prochaineEtape } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { mesDemandes } from "../services/api";
 import { imageService, nomService, texteCreneau } from "../services/constantes";
@@ -22,21 +22,13 @@ const MesServices = () => {
     const aRepondre = (demandes || []).filter((d) => estJeune && d.statut === "ENVOYEE").length;
 
     return (
-        <Ecran titre="Mes services">
-            <div className="explication">
-                <p>{estJeune ? "Ici, vous retrouvez les demandes d'aide que l'on vous envoie." : "Ici, vous suivez vos demandes d'aide, de l'envoi jusqu'au service rendu."}</p>
-                <ol className="etapes-legende">
-                    <li><b>1</b>{estJeune ? "Vous recevez une demande" : "Vous demandez de l'aide"}</li>
-                    <li><b>2</b>{estJeune ? "Vous acceptez" : "Le jeune accepte"}</li>
-                    <li><b>3</b>{estJeune ? "Vous aidez" : "Il vient vous aider"}</li>
-                </ol>
-            </div>
+        <Ecran titre={estJeune ? "Mes missions" : "Mes demandes"}>
             {aRepondre > 0 && <p className="alerte-a-faire" role="status"><Icone nom="bell" /> {aRepondre === 1 ? "1 demande attend votre réponse." : `${aRepondre} demandes attendent votre réponse.`}</p>}
             {!estJeune && <Link className="carte-publier carte-publier-haut" to="/besoins"><Icone nom="list" /><span><strong>Mes annonces d’aide</strong><small>Les besoins publiés et les jeunes qui proposent leur aide.</small></span><Icone nom="chevron" /></Link>}
             {demandes && demandes.length > 0 && (
-                <div className="onglets" role="tablist" aria-label="Mes services">
+                <div className="onglets" role="tablist" aria-label={estJeune ? "Mes missions" : "Mes demandes"}>
                     <button type="button" role="tab" aria-selected={onglet === "avenir"} onClick={() => setOnglet("avenir")}>En cours</button>
-                    <button type="button" role="tab" aria-selected={onglet === "passes"} onClick={() => setOnglet("passes")}>Terminés</button>
+                    <button type="button" role="tab" aria-selected={onglet === "passes"} onClick={() => setOnglet("passes")}>Historique</button>
                 </div>
             )}
             {demandes === null && <p className="soft">Chargement…</p>}
@@ -49,7 +41,7 @@ const MesServices = () => {
                 </div>
             )}
             <div className="stack-actions">
-                {demandes && demandes.length > 0 && affiches.length === 0 && <p className="soft">{onglet === "avenir" ? "Aucun service en cours pour le moment." : "Aucun service terminé pour le moment."}</p>}
+                {demandes && demandes.length > 0 && affiches.length === 0 && <p className="soft">{onglet === "avenir" ? "Rien en cours pour le moment." : "L'historique est vide pour le moment."}</p>}
                 {affiches.map((d) => (
                     <Link key={d.id} to={`/demandes/${d.id}`} className={`helper-card helper-card-rich carte-suivi${estJeune && d.statut === "ENVOYEE" ? " a-faire" : ""}`}>
                         <img className="helper-photo" src={imageService(d.service)} alt="" />
@@ -57,7 +49,6 @@ const MesServices = () => {
                             <strong>{nomService(d.service)} · {estJeune ? `pour ${d.beneficiairePrenom}` : `avec ${d.jeunePrenom}`}</strong>
                             <small>{texteCreneau(d.creneau)}{d.dateSouhaitee ? ` · ${texteDate(d.dateSouhaitee)}` : ""}</small>
                             <span className="slot-row"><EtatService statut={d.statut} estJeune={estJeune} /></span>
-                            <Etapes statut={d.statut} />
                             <small className="prochaine">{prochaineEtape(d, estJeune, true, true)}</small>
                         </span>
                         <Icone nom="chevron" />

@@ -84,9 +84,9 @@ const Profil = () => {
                 </section>
             )}
             {utilisateur.role !== "JEUNE" && (
-                <section className="favoris" aria-label="Mes favoris">
-                    <span className="mini-eyebrow">MES FAVORIS</span>
-                    {favoris.length === 0 && <p className="soft"><small>Touchez le cœur sur le fil ou sur un profil pour retrouver un jeune ici.</small></p>}
+                <section className="favoris" aria-label="Les jeunes que j'aime">
+                    <span className="mini-eyebrow">LES JEUNES QUE J'AIME</span>
+                    {favoris.length === 0 && <p className="soft"><small>Touchez « J'aime » sur le profil d'un jeune pour le retrouver ici.</small></p>}
                     {favoris.map((j) => (
                         <Link key={j.id} to={`/jeunes/${j.id}`} className="helper-card">
                             <Avatar personne={j} />
@@ -97,7 +97,6 @@ const Profil = () => {
                 </section>
             )}
             <div className="stack-actions">
-                <LienBouton to="/changer-role" secondaire>Changer de rôle</LienBouton>
                 {utilisateur.role === "JEUNE" && (
                     <>
                         <LienBouton to="/annonce" secondaire>Modifier mon annonce</LienBouton>
@@ -106,6 +105,7 @@ const Profil = () => {
                     </>
                 )}
                 <Link className="link-button" to="/charte">La charte d'entraide</Link>
+                <Link className="link-button" to="/changer-role">Changer de rôle</Link>
                 <button className="secondary" type="button" onClick={sortir}>Se déconnecter</button>
                 {!confirmer && <button className="lien-danger" type="button" onClick={() => setConfirmer(true)}><Icone nom="trash" />Supprimer mon compte</button>}
             </div>

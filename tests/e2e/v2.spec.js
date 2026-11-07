@@ -14,9 +14,9 @@ test("V2 · Carte : la recherche s'affiche aussi sur une carte", async ({ page }
     await expect(page.locator(".resultat").first()).toBeVisible();
 });
 
-test("V2 · Fil du quartier : les annonces publiées s'affichent et se filtrent par service", async ({ page }) => {
-    await connecter(page, "camille.moreau@exemple.fr");
-    await page.getByRole("link", { name: /Le fil/ }).first().click();
+test("V2 · Fil des voisins : les besoins proches s'affichent et se filtrent par service", async ({ page }) => {
+    await connecter(page, "lucas.martin@exemple.fr");
+    await page.getByRole("link", { name: /Le fil des voisins/ }).click();
     await expect(page.getByRole("heading", { name: /Le fil/ })).toBeVisible();
     await expect(page.locator(".post").first()).toBeVisible();
     await page.getByRole("list", { name: "Services" }).getByRole("link", { name: "Jardinage" }).click();
@@ -50,22 +50,11 @@ test("V2 · Charte d'entraide : accessible depuis le profil", async ({ page }) =
     await expect(page.getByText("Le pourboire est facultatif")).toBeVisible();
 });
 
-test("Fil homogène : seuls les jeunes avec une vraie photo apparaissent", async ({ page }) => {
+test("US49 · J'aime : le compteur du profil augmente, le jeune voit qui aime son annonce", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
-    await page.goto("/fil");
-    await expect(page.locator(".post").first()).toBeVisible();
-    await expect(page.locator(".post .post-head span.carte-photo")).toHaveCount(0);
-    expect(await page.locator(".post .post-head img.carte-photo").count()).toBe(await page.locator(".post").count());
-});
-
-test("US49 · J'aime : le compteur du fil augmente, le jeune voit qui aime son annonce", async ({ page }) => {
-    await connecter(page, "camille.moreau@exemple.fr");
-    await page.goto("/fil");
-    const coeur = page.getByRole("button", { name: "Ajouter Lucas à mes favoris" });
-    await expect(coeur).toContainText("4");
-    await coeur.click();
-    await expect(page.getByRole("button", { name: "Retirer Lucas de mes favoris" })).toContainText("5");
     await page.goto("/jeunes/jeune-01");
+    await expect(page.getByText("4 voisins aiment son annonce")).toBeVisible();
+    await page.getByRole("button", { name: "J'aime" }).click();
     await expect(page.getByText("5 voisins aiment son annonce")).toBeVisible();
     await deconnecter(page);
     await connecter(page, "lucas.martin@exemple.fr");

@@ -125,7 +125,7 @@ const DetailDemande = () => {
                 {demande.statut === "TERMINEE" && !estJeune && <LienBouton to={`/jeunes/${demande.jeuneId}/demande?service=${demande.service}`} fleche>Redemander à {demande.jeunePrenom}</LienBouton>}
                 <Link className="link-button" to={`/messages/${autre.id}`}>Échanger avec {autre.prenom}</Link>
             </div>
-            {demande.statut === "ACCEPTEE" && <p className="soft"><small>Appelez-vous pour régler les derniers détails. Le pourboire reste libre.</small></p>}
+            {demande.statut === "ACCEPTEE" && <p className="soft"><small>Appelez-vous pour régler les derniers détails.</small></p>}
             {demande.statut === "ACCEPTEE" && (
                 <section className="detail-box infos-locales" aria-label="Infos locales">
                     <span className="mini-eyebrow">PRÈS DU RENDEZ-VOUS</span>

@@ -23,7 +23,7 @@ test("US33 US34 US35 US36 · Service terminé, historique, avis puis redemander"
     await page.goto("/demandes/demande-13");
     await expect(page.getByLabel("Infos locales")).toBeVisible();
     await page.getByRole("button", { name: /Service terminé/ }).click();
-    await expect(page.locator(".statut.TERMINEE")).toHaveText("Fait");
+    await expect(page.locator(".statut.TERMINEE")).toHaveText("Terminée");
     await expect(page.getByRole("button", { name: /Service terminé/ })).toHaveCount(0);
     await deconnecter(page);
 
@@ -31,7 +31,7 @@ test("US33 US34 US35 US36 · Service terminé, historique, avis puis redemander"
     await page.goto("/services");
     await page.getByRole("tab", { name: "En cours" }).click();
     await expect(page.locator(".statut.TERMINEE")).toHaveCount(0);
-    await page.getByRole("tab", { name: "Terminés" }).click();
+    await page.getByRole("tab", { name: "Historique" }).click();
     await page.getByRole("link", { name: /Ménage · avec Inès/ }).click();
     await page.getByRole("radio", { name: "4 sur 5" }).click();
     await page.getByLabel(/Un petit mot/).fill("Très gentille et efficace, merci !");
@@ -44,24 +44,24 @@ test("US33 US34 US35 US36 · Service terminé, historique, avis puis redemander"
     await expect(page.getByLabel("Service")).toHaveValue("MENAGE");
 
     await page.goto("/jeunes/jeune-02");
-    await expect(page.getByText(/2 avis/)).toBeVisible();
+    await expect(page.getByText(/1 avis/)).toBeVisible();
     await expect(page.getByText("Très gentille et efficace")).toBeVisible();
 });
 
-test("US37 · Favoris : gardés après déconnexion, un deuxième clic les retire", async ({ page }) => {
+test("US37 · J'aime : gardé après déconnexion, un deuxième clic le retire", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/jeunes/jeune-01");
-    await page.getByRole("button", { name: "Ajouter aux favoris" }).click();
-    await expect(page.getByRole("button", { name: "Dans mes favoris" })).toBeVisible();
+    await page.getByRole("button", { name: "J'aime" }).click();
+    await expect(page.getByRole("button", { name: "Vous aimez" })).toBeVisible();
     await deconnecter(page);
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/profil");
-    await expect(page.getByLabel("Mes favoris").getByText("Lucas")).toBeVisible();
-    await page.goto("/fil");
-    await page.getByRole("button", { name: "Retirer Lucas de mes favoris" }).click();
-    await expect(page.getByRole("button", { name: "Ajouter Lucas à mes favoris" })).toBeVisible();
+    await expect(page.getByLabel("Les jeunes que j'aime").getByText("Lucas")).toBeVisible();
+    await page.goto("/jeunes/jeune-01");
+    await page.getByRole("button", { name: "Vous aimez" }).click();
+    await expect(page.getByRole("button", { name: "J'aime" })).toBeVisible();
     await page.goto("/profil");
-    await expect(page.getByLabel("Mes favoris").getByText("Lucas")).toHaveCount(0);
+    await expect(page.getByLabel("Les jeunes que j'aime").getByText("Lucas")).toHaveCount(0);
 });
 
 test("US38 · Photo dans une demande : visible par le jeune", async ({ page }) => {

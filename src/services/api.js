@@ -306,44 +306,7 @@ export const basculerFavori = async (utilisateur, jeuneId) => {
     return favoris;
 };
 
-export const tousLesLikes = async () => {
-    const parJeune = {};
-    (await s.chercher("likes", "actif", true).catch(() => [])).forEach((l) => {
-        parJeune[l.jeuneId] = (parJeune[l.jeuneId] || 0) + 1;
-    });
-    return parJeune;
-};
-
 export const likesDuJeune = async (jeuneId) => (await s.chercher("likes", "jeuneId", jeuneId).catch(() => [])).filter((l) => l.actif);
-
-export const commentairesDuJeune = async (jeuneId) =>
-    (await s.chercher("commentaires", "jeuneId", jeuneId).catch(() => [])).sort((a, b) => (a.creeAt < b.creeAt ? -1 : 1));
-
-export const tousLesCommentaires = async (ids) => {
-    const listes = await Promise.all(ids.map((id) => commentairesDuJeune(id)));
-    return Object.fromEntries(ids.map((id, i) => [id, listes[i]]));
-};
-
-const avisVoisin = (note, texte) => {
-    const n = Number(note);
-    if (!(n >= 1 && n <= 5)) throw new Error("Choisissez une note de 1 à 5 étoiles.");
-    const t = (texte || "").trim();
-    if (t.length > 300) throw new Error("L'avis fait 300 caractères maximum.");
-    return { note: n, texte: t };
-};
-
-export const commenter = async (auteur, jeuneId, note, texte) =>
-    s.ecrire("commentaires", `${jeuneId}_${auteur.id}`, { jeuneId, auteurId: auteur.id, auteurPrenom: auteur.prenom, auteurPhoto: auteur.photoProfil || null, ...avisVoisin(note, texte), creeAt: new Date().toISOString() });
-
-export const modifierCommentaire = async (auteur, commentaire, note, texte) => {
-    if (commentaire.auteurId !== auteur.id) throw new Error("Vous ne pouvez modifier que vos avis.");
-    await s.ecrire("commentaires", commentaire.id, { ...avisVoisin(note, texte), modifieAt: new Date().toISOString() });
-};
-
-export const supprimerCommentaire = async (auteur, commentaire) => {
-    if (commentaire.auteurId !== auteur.id) throw new Error("Vous ne pouvez supprimer que vos avis.");
-    await s.supprimer("commentaires", commentaire.id);
-};
 
 export const supprimerCompte = (utilisateur) => s.supprimerCompte(utilisateur.id);
 

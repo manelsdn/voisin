@@ -166,21 +166,13 @@ const Accueil = () => {
                         </>
                     )}
 
-                    {estJeune ? (
+                    {estJeune && (
                         <Link className="lien-fil" to="/fil">
                             <span className="lien-fil-photos" aria-hidden="true"><img src="/assets/services/plein/courses.jpg" alt="" /><img src="/assets/services/plein/jardinage.jpg" alt="" /><img src="/assets/services/plein/informatique.jpg" alt="" /></span>
                             <span><strong>Le fil des voisins</strong><small>Les personnes près de chez vous qui ont besoin d'un coup de main.</small></span>
                             <Icone nom="chevron" />
                         </Link>
-                    ) : (
-                        <Link className="lien-fil" to="/fil">
-                            <span className="lien-fil-photos" aria-hidden="true"><img src="/assets/avatars/anais.jpg" alt="" /><img src="/assets/avatars/lucas.jpg" alt="" /><img src="/assets/avatars/chloe.jpg" alt="" /></span>
-                            <span><strong>Le fil du quartier</strong><small>Les jeunes près de chez vous et ce qu'ils aiment faire.</small></span>
-                            <Icone nom="chevron" />
-                        </Link>
                     )}
-
-                    <p className="pourboire"><Icone nom="heart" />Pourboire libre, directement entre vous.</p>
                 </div>
             </main>
             <Navigation />

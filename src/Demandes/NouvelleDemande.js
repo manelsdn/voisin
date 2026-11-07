@@ -91,7 +91,6 @@ const NouvelleDemande = () => {
                 <label>Quelques précisions<textarea name="description" maxLength={400} value={precisions} onChange={(e) => setPrecisions(e.target.value)} placeholder="Par exemple : faire les courses du quartier, environ une heure." /></label>
                 <label>Joindre une photo du besoin (facultatif)<input name="photo" type="file" accept="image/*" onChange={choisirPhoto} /></label>
                 {apercu && <img className="demande-photo" src={apercu} alt="Aperçu du besoin à montrer" />}
-                <Astuce>Le pourboire reste libre et se donne directement entre vous.</Astuce>
                 <Astuce icone="phone">Votre numéro sera visible par {jeune.prenom} seulement si la demande est acceptée.</Astuce>
                 <Message erreur={erreur} />
                 <button className="primary" type="submit" disabled={envoi}><span>Envoyer la demande</span><Icone nom="arrow" /></button>

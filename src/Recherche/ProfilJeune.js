@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { Astuce, Avatar, Ecran, LienBouton } from "../composants/Mise";
+import { Avatar, Ecran, LienBouton } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { avisDuJeune, basculerFavori, commentairesDuJeune, likesDuJeune, lireUtilisateur, mesDemandes, mesFavoris, pointDeRecherche } from "../services/api";
+import { avisDuJeune, basculerFavori, likesDuJeune, lireUtilisateur, mesDemandes, mesFavoris, pointDeRecherche } from "../services/api";
 import { distanceKm } from "../services/geo";
 import { nomService, texteCreneau, texteDistance } from "../services/constantes";
 
@@ -26,7 +26,7 @@ const ProfilJeune = () => {
             setJeune(j && j.role === "JEUNE" ? j : null);
             if (j) setDistance(distanceKm((await pointDeRecherche(utilisateur)).position, j));
             if (j && j.role === "JEUNE") {
-                setAvis([...(await avisDuJeune(id).catch(() => [])), ...(await commentairesDuJeune(id)).map((c) => ({ id: c.id, note: c.note || 5, commentaire: c.texte, auteurPrenom: c.auteurPrenom, creeAt: c.creeAt }))].sort((a, b) => (b.creeAt || "").localeCompare(a.creeAt || "")));
+                setAvis(await avisDuJeune(id).catch(() => []));
                 setLikes((await likesDuJeune(id)).length);
             }
             setFavoris(await mesFavoris(utilisateur).catch(() => []));
@@ -55,7 +55,7 @@ const ProfilJeune = () => {
                 <h1>{jeune.prenom}{a ? `, ${a} ans` : ""}</h1>
                 {!moi && <p className="soft"><Icone nom="pin" /> À {texteDistance(distance)} · {jeune.ville}</p>}
                 {avis.length > 0 && <p className="etoiles-resume"><span className="etoiles" aria-hidden="true">{"★".repeat(Math.round(moyenne))}{"☆".repeat(5 - Math.round(moyenne))}</span> {moyenne.toFixed(1).replace(".", ",")} / 5 · {avis.length} avis</p>}
-                {!moi && utilisateur.role !== "JEUNE" && <button type="button" className={favori ? "post-act liked" : "post-act"} aria-pressed={favori} onClick={basculer}><Icone nom="heart" />{favori ? "Dans mes favoris" : "Ajouter aux favoris"}</button>}
+                {!moi && utilisateur.role !== "JEUNE" && <button type="button" className={favori ? "post-act liked" : "post-act"} aria-pressed={favori} onClick={basculer}><Icone nom="heart" />{favori ? "Vous aimez" : "J'aime"}</button>}
                 {likes > 0 && <p className="likes-resume"><Icone nom="heart" />{likes} voisin{likes > 1 ? "s aiment" : " aime"} {moi ? "votre annonce" : "son annonce"}</p>}
             </div>
             {!moi && (
@@ -75,7 +75,7 @@ const ProfilJeune = () => {
             </div>
             {avis.length > 0 && (
                 <section className="detail-box avis" aria-label="Avis">
-                    <span className="mini-eyebrow">CE QU'EN DISENT LES VOISINS</span>
+                    <span className="mini-eyebrow">AVIS APRÈS UN SERVICE</span>
                     {avis.map((a) => (
                         <div className="avis-ligne" key={a.id}>
                             <span className="etoiles" aria-label={`${a.note} sur 5`}>{"★".repeat(a.note)}{"☆".repeat(5 - a.note)}</span>
@@ -85,7 +85,6 @@ const ProfilJeune = () => {
                     ))}
                 </section>
             )}
-            <Astuce>Pourboire libre et directement entre vous. Le numéro s'affiche une fois la demande acceptée.</Astuce>
             <div className="stack-actions actions-flottantes">
                 {moi ? <LienBouton to="/annonce" fleche>Modifier mon annonce</LienBouton> : utilisateur.role !== "JEUNE" && <LienBouton to={`/jeunes/${jeune.id}/demande`} fleche>Envoyer une demande</LienBouton>}
                 {!moi && <Link className="secondary" to={`/messages/${jeune.id}`}>Échanger avec {jeune.prenom}</Link>}

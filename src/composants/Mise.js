@@ -54,7 +54,7 @@ export const Navigation = () => {
     return (
         <nav className="bottom-nav nav-5" aria-label="Navigation principale">
             <NavLink to="/accueil"><Icone nom="home" />Accueil</NavLink>
-            <NavLink to="/services"><Icone nom="calendar" />Services</NavLink>
+            <NavLink to="/services"><Icone nom="calendar" />{estJeune ? "Missions" : "Demandes"}</NavLink>
             <NavLink to="/recherche" className={({ isActive }) => (isActive ? "nav-centre active" : "nav-centre")} aria-label={estJeune ? "Aider : les besoins près de chez moi" : "Trouver un jeune près de chez moi"}>
                 <span className="nav-centre-rond"><Icone nom={estJeune ? "heart" : "search"} /></span>{estJeune ? "Aider" : "Trouver"}
             </NavLink>
@@ -174,7 +174,7 @@ export const Astuce = ({ icone = "heart", children }) => <p className="tip-note"
 
 export const Indice = ({ icone = "heart", children }) => <div className="hint"><Icone nom={icone} /><span>{children}</span></div>;
 
-const ETAPES = ["Demandé", "Confirmé", "Fait"];
+const ETAPES = ["Envoyée", "Acceptée", "Terminée"];
 const RANG = { ENVOYEE: 0, ACCEPTEE: 1, TERMINEE: 2 };
 
 export const Etapes = ({ statut }) => {

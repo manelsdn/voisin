@@ -42,7 +42,7 @@ test("Notifications : le jeune est prévenu d'une demande, le demandeur de l'acc
     await expect(page.getByText(/Nouvelle demande/).last()).toBeVisible();
     await page.getByRole("link", { name: "Voir la demande" }).last().click();
     await page.getByRole("button", { name: "Accepter la demande" }).click();
-    await expect(page.locator(".statut")).toHaveText("Confirmé");
+    await expect(page.locator(".statut")).toHaveText("Acceptée");
     await deconnecter(page);
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/messages/jeune-01");
@@ -88,33 +88,6 @@ test("Messagerie : vocal à gauche, émojis et fichier dans le champ", async ({ 
     expect(micro.x).toBeLessThan(champ.x);
 });
 
-test("Fil : donner un avis avec des étoiles, le modifier puis le supprimer", async ({ page }) => {
-    await connecter(page, "camille.moreau@exemple.fr");
-    await page.goto("/fil");
-    const post = page.locator("article.post").filter({ hasText: "Lucas" }).first();
-    await post.getByRole("button", { name: /Avis : 4,5 sur 5, 2 avis/ }).click();
-    const zone = post.getByRole("region", { name: "Avis sur Lucas" });
-    await expect(zone.getByRole("img", { name: "4 sur 5" })).toBeVisible();
-    await zone.getByRole("radio", { name: "5 sur 5" }).click();
-    await zone.getByLabel("Votre avis en quelques mots").fill("Super gentil, merci Lucas !");
-    await zone.getByRole("button", { name: "Publier mon avis" }).click();
-    await expect(zone).toContainText("Super gentil, merci Lucas !");
-    await expect(post.getByRole("button", { name: /3 avis/ })).toBeVisible();
-    await zone.getByRole("button", { name: "Modifier" }).click();
-    await zone.getByRole("radio", { name: "3 sur 5" }).click();
-    await zone.getByLabel("Votre avis en quelques mots").fill("Très gentil.");
-    await zone.getByRole("button", { name: "Enregistrer" }).click();
-    await expect(zone).toContainText("Très gentil.");
-    await expect(zone).toContainText("modifié");
-    await page.goto("/jeunes/jeune-01");
-    await expect(page.getByRole("region", { name: "Avis" })).toContainText("Très gentil.");
-    await page.goto("/fil");
-    await post.getByRole("button", { name: /3 avis/ }).click();
-    await zone.getByRole("button", { name: "Supprimer" }).click();
-    await expect(zone).not.toContainText("Très gentil.");
-    await expect(zone.getByRole("button", { name: "Publier mon avis" })).toBeVisible();
-});
-
 test("Session : on reste connecté après avoir rechargé la page", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await page.reload();
@@ -154,17 +127,14 @@ test("Annonce : le jeune peut retirer son annonce puis la republier", async ({ p
     await expect(page).toHaveURL(/jeunes\/jeune-01/);
 });
 
-test("Fil des voisins : le jeune voit les personnes qui ont besoin d'aide et peut leur laisser un avis", async ({ page }) => {
+test("Fil des voisins : le jeune voit les personnes qui ont besoin d'aide et peut proposer son aide", async ({ page }) => {
     await connecter(page, "lucas.martin@exemple.fr");
     await page.getByRole("link", { name: /Le fil des voisins/ }).click();
     await expect(page.getByRole("heading", { name: /Le fil des voisins/ })).toBeVisible();
     const post = page.locator("article.post").filter({ hasText: "Madeleine" }).first();
-    await post.getByRole("button", { name: /Avis/ }).click();
-    const zone = post.getByRole("region", { name: "Avis sur Madeleine" });
-    await zone.getByRole("radio", { name: "5 sur 5" }).click();
-    await zone.getByLabel("Votre avis en quelques mots").fill("Très accueillante !");
-    await zone.getByRole("button", { name: "Publier mon avis" }).click();
-    await expect(zone).toContainText("Très accueillante !");
+    await expect(post.getByRole("button", { name: /Avis/ })).toHaveCount(0);
+    await post.getByRole("link", { name: /Proposer mon aide/ }).click();
+    await expect(page).toHaveURL(/besoins\//);
 });
 
 test("Chat : on ouvre le profil de la personne en touchant son nom", async ({ page }) => {
