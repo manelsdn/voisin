@@ -50,7 +50,12 @@
           <a class="home-primary" href="https://voisin-dor-app.vercel.app/inscription" style="text-decoration:none;display:inline-flex;align-items:center">Ouvrir l’application</a>
         </div>
         <div class="app-visual">
-          <video src="assets/video-presentation-voisin-dor.mp4" autoplay muted loop playsinline controls aria-label="Vidéo de présentation Voisin d’Or"></video>
+          <button type="button" class="video-vignette" aria-label="Regarder la vidéo de présentation, 2 minutes" onclick="var v=this.nextElementSibling;this.hidden=true;v.hidden=false;v.play()">
+            <img src="assets/video-vignette.jpg" alt="">
+            <span class="video-lecture" aria-hidden="true"></span>
+            <span class="video-legende">Voir la vidéo · 2 min</span>
+          </button>
+          <video src="assets/video-presentation-voisin-dor.mp4" poster="assets/video-vignette.jpg" preload="none" playsinline controls hidden aria-label="Vidéo de présentation Voisin d’Or"></video>
         </div>
       </section>
     </div>
