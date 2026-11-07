@@ -39,7 +39,7 @@ const AlerteMessages = () => {
             if (!dernier || chemin.current === `/messages/${dernier.de}`) return;
             const texte = dernier.texte || (dernier.audio ? "Message vocal" : "Nouveau message");
             const ev = dernier.evenement;
-            const titres = { DEMANDE_RECUE: `Nouvelle demande de ${dernier.dePrenom}`, DEMANDE_ACCEPTEE: `${dernier.dePrenom} a accepté votre demande`, DEMANDE_REFUSEE: `${dernier.dePrenom} n'est pas disponible`, DEMANDE_ANNULEE: `${dernier.dePrenom} a annulé sa demande` };
+            const titres = { DEMANDE_RECUE: `Nouvelle demande de ${dernier.dePrenom}`, DEMANDE_ACCEPTEE: `${dernier.dePrenom} a accepté votre demande`, DEMANDE_REFUSEE: `${dernier.dePrenom} n'est pas disponible`, DEMANDE_ANNULEE: `${dernier.dePrenom} a annulé sa demande`, DEMANDE_TERMINEE: `Service terminé avec ${dernier.dePrenom} : laissez un avis` };
             const titre = ev ? titres[ev.type] || "Votre demande a changé" : `Nouveau message de ${dernier.dePrenom || "Un voisin"}`;
             const lien = ev ? `/demandes/${ev.demandeId}` : `/messages/${dernier.de}`;
             setAlerte({ id: dernier.id, de: dernier.de, titre, lien, texte, evenement: !!ev });

@@ -88,9 +88,25 @@ const DetailDemande = () => {
                 <p>{texteCreneau(demande.creneau)} · {texteDate(demande.dateSouhaitee)}</p>
                 <p><EtatService statut={demande.statut} estJeune={estJeune} /></p>
                 <Etapes statut={demande.statut} />
-                <div className="text-row numero"><span><Icone nom="phone" /> Numéro</span><strong>{numero ? <a href={`tel:${numero.replace(/\s/g, "")}`}>{numero}</a> : "Visible après acceptation"}</strong></div>
+                <div className="text-row numero"><span><Icone nom="phone" /> Numéro</span><strong>{numero ? <a href={`tel:${numero.replace(/\s/g, "")}`}>{numero}</a> : demande.statut === "TERMINEE" ? "Masqué, service terminé" : "Visible après acceptation"}</strong></div>
             </div>
             <p className="prochaine-etape" role="status"><strong>Et maintenant ?</strong> {prochaineEtape(demande, estJeune, avis)}</p>
+            {demande.statut === "TERMINEE" && (avis ? (
+                <section className="detail-box avis" id="avis" aria-label="Avis">
+                    <span className="mini-eyebrow">{estJeune ? `L'AVIS DE ${avis.auteurPrenom.toUpperCase()}` : "VOTRE AVIS"}</span>
+                    <p className="etoiles" aria-label={`${avis.note} sur 5`}>{"★".repeat(avis.note)}{"☆".repeat(5 - avis.note)}</p>
+                    {avis.commentaire && <p>{avis.commentaire}</p>}
+                </section>
+            ) : !estJeune && (
+                <form className="form-stack detail-box avis" id="avis" onSubmit={donnerAvis} noValidate>
+                    <span className="mini-eyebrow">LAISSER UN AVIS</span>
+                    <div className="etoiles-choix" role="radiogroup" aria-label="Note">
+                        {[1, 2, 3, 4, 5].map((n) => <button key={n} type="button" role="radio" aria-checked={note === n} aria-label={`${n} sur 5`} className={n <= note ? "on" : ""} onClick={() => setNote(n)}>★</button>)}
+                    </div>
+                    <label>Un petit mot pour {demande.jeunePrenom}<textarea name="commentaire" maxLength={200} placeholder="Merci pour votre aide…" /></label>
+                    <button className="primary" type="submit"><span>Publier mon avis</span><Icone nom="arrow" /></button>
+                </form>
+            ))}
             <p>{demande.description}</p>
             {demande.photo && <img className="demande-photo" src={demande.photo} alt="Le besoin montré par le demandeur" />}
             {estJeune && demande.beneficiaireId !== demande.demandeurId && <Indice icone="users">Vous échangez avec {demande.demandeurPrenom}. {demande.beneficiairePrenom} vous accueille le jour du service.</Indice>}
@@ -126,22 +142,6 @@ const DetailDemande = () => {
                     )}
                 </section>
             )}
-            {demande.statut === "TERMINEE" && (avis ? (
-                <section className="detail-box avis" aria-label="Avis">
-                    <span className="mini-eyebrow">{estJeune ? `L'AVIS DE ${avis.auteurPrenom.toUpperCase()}` : "VOTRE AVIS"}</span>
-                    <p className="etoiles" aria-label={`${avis.note} sur 5`}>{"★".repeat(avis.note)}{"☆".repeat(5 - avis.note)}</p>
-                    {avis.commentaire && <p>{avis.commentaire}</p>}
-                </section>
-            ) : !estJeune && (
-                <form className="form-stack detail-box avis" onSubmit={donnerAvis} noValidate>
-                    <span className="mini-eyebrow">LAISSER UN AVIS</span>
-                    <div className="etoiles-choix" role="radiogroup" aria-label="Note">
-                        {[1, 2, 3, 4, 5].map((n) => <button key={n} type="button" role="radio" aria-checked={note === n} aria-label={`${n} sur 5`} className={n <= note ? "on" : ""} onClick={() => setNote(n)}>★</button>)}
-                    </div>
-                    <label>Un petit mot pour {demande.jeunePrenom}<textarea name="commentaire" maxLength={200} placeholder="Merci pour votre aide…" /></label>
-                    <button className="primary" type="submit"><span>Publier mon avis</span><Icone nom="arrow" /></button>
-                </form>
-            ))}
         </Ecran>
     );
 };

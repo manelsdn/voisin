@@ -261,6 +261,13 @@ export const terminerDemande = async (demande, utilisateur) => {
     if (demande.statut !== "ACCEPTEE") throw new Error("Seule une demande acceptée peut être terminée.");
     if (utilisateur.id !== demande.jeuneId) throw new Error("Seul le jeune peut indiquer que le service a eu lieu.");
     await s.ecrire("demandes", demande.id, { statut: "TERMINEE", termineAt: new Date().toISOString() });
+    await prevenir(utilisateur, { id: demande.demandeurId, prenom: demande.demandeurPrenom }, `⭐ ${utilisateur.prenom} a indiqué que le service a eu lieu (${nomService(demande.service)}). Vous pouvez laisser un avis.`, demande.id, "DEMANDE_TERMINEE");
+};
+
+export const avisEnAttente = async (utilisateur) => {
+    const finies = (await mesDemandes(utilisateur)).filter((d) => d.statut === "TERMINEE" && d.demandeurId === utilisateur.id);
+    const avis = await Promise.all(finies.map((d) => lireAvis(d.id).catch(() => null)));
+    return finies.filter((d, i) => !avis[i]);
 };
 
 export const lireAvis = (demandeId) => s.lire("avis", demandeId);

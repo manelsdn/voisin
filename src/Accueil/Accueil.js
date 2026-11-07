@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Avatar, IconesServices, Navigation } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { besoinsProches, likesDuJeune, mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
+import { avisEnAttente, besoinsProches, likesDuJeune, mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
 import { ROLES, SERVICES, iconeService, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
 const Accueil = () => {
@@ -12,6 +12,7 @@ const Accueil = () => {
     const [proche, setProche] = useState(null);
     const [une, setUne] = useState(null);
     const [attente, setAttente] = useState([]);
+    const [aNoter, setANoter] = useState([]);
     const [fans, setFans] = useState([]);
     const cleFans = `vdo-fans-vus-${utilisateur.id}`;
     const [fansVus, setFansVus] = useState(() => {
@@ -43,6 +44,7 @@ const Accueil = () => {
             if (personne.id !== utilisateur.id) setProche(personne);
             setUne(estJeune ? liste.slice(0, 6) : liste.filter((j) => j.photoProfil).slice(0, 6));
             setAttente(demandes.filter((d) => d.statut === "ENVOYEE"));
+            if (!estJeune) setANoter(await avisEnAttente(utilisateur).catch(() => []));
             if (estJeune) setFans((await likesDuJeune(utilisateur.id)).sort((x, y) => (y.creeAt || "").localeCompare(x.creeAt || "")));
         };
         charger();
@@ -81,6 +83,14 @@ const Accueil = () => {
                             <span className="chevron"><Icone nom="down" /></span>
                         </Link>
                     )}
+
+                    {!estJeune && aNoter.map((d) => (
+                        <Link key={d.id} className="bandeau-attente bandeau-avis" to={`/demandes/${d.id}`}>
+                            <span className="bandeau-etoile" aria-hidden="true">★</span>
+                            <span><strong>Service terminé avec {d.jeunePrenom}</strong>Laissez-lui un avis.</span>
+                            <Icone nom="chevron" />
+                        </Link>
+                    ))}
 
                     {!estJeune && attente.length > 0 && (
                         <Link className="bandeau-attente" to="/services">

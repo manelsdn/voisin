@@ -413,6 +413,8 @@
 #vdo .bandeau-attente>span:nth-child(2){flex:1;min-width:0;display:grid;font:600 14px Nunito;color:#5d5574}
 #vdo .bandeau-attente strong{font:800 15.5px Nunito;color:#2A2140}
 #vdo .bandeau-point{flex:none;width:10px;height:10px;border-radius:50%;background:#FF6B5B;box-shadow:0 0 0 4px rgba(255,107,91,.2)}
+#vdo .bandeau-avis{background:#FFF8E1;border-color:#FFD877}
+#vdo .bandeau-etoile{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#FFC145;color:#2A2140;font-size:16px;line-height:1}
 #vdo .vitrine-titre{margin:24px 0 10px;font:600 19px var(--font-head);color:var(--ink)}
 #vdo .vitrine-entete{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
 #vdo .vitrine-entete .see-all{font-size:14.5px}
