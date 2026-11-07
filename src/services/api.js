@@ -79,8 +79,47 @@ export const modifierProche = async (accompagnant, proche, donnees) => {
     await s.ecrire("users", proche.id, { ...donnees, ...position });
 };
 
+const CLE_POSITION = "vdo-position-actuelle";
+let dernierePosition = null;
+
+export const positionActuelleActive = () => {
+    try {
+        return localStorage.getItem(CLE_POSITION) === "1";
+    } catch (e) {
+        return false;
+    }
+};
+
+const lirePositionActuelle = () => new Promise((resolve) => {
+    if (dernierePosition && Date.now() - dernierePosition.t < 300000) return resolve(dernierePosition.p);
+    if (!navigator.geolocation) return resolve(null);
+    navigator.geolocation.getCurrentPosition(
+        (p) => {
+            dernierePosition = { t: Date.now(), p: { latitude: p.coords.latitude, longitude: p.coords.longitude } };
+            resolve(dernierePosition.p);
+        },
+        () => resolve(null),
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+    );
+});
+
+export const choisirPositionActuelle = async (oui) => {
+    if (oui && !(await lirePositionActuelle())) return false;
+    try {
+        if (oui) localStorage.setItem(CLE_POSITION, "1");
+        else localStorage.removeItem(CLE_POSITION);
+    } catch (e) {
+        return oui;
+    }
+    if (!oui) dernierePosition = null;
+    return true;
+};
+
 export const pointDeRecherche = async (utilisateur) => {
-    if (utilisateur.role !== "ACCOMPAGNANT") return { personne: utilisateur, position: utilisateur };
+    if (utilisateur.role !== "ACCOMPAGNANT") {
+        const actuelle = positionActuelleActive() ? await lirePositionActuelle() : null;
+        return actuelle ? { personne: utilisateur, position: actuelle, actuelle: true } : { personne: utilisateur, position: utilisateur };
+    }
     const proche = (await listerProches(utilisateur.id))[0];
     return { personne: proche || utilisateur, position: proche || utilisateur };
 };

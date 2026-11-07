@@ -4,7 +4,7 @@ import { useSession } from "../composants/Session";
 import { CarteJeune, Navigation, PucesServices } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import CarteJeunes from "./CarteJeunes";
-import { besoinsProches, pointDeRecherche, rechercherJeunes } from "../services/api";
+import { besoinsProches, choisirPositionActuelle, pointDeRecherche, positionActuelleActive, rechercherJeunes } from "../services/api";
 import { JOURS, NOMS_JOURS, RAYONS, depuis, iconeService, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
 const CLE = "vdo-filtres";
@@ -64,6 +64,9 @@ const Recherche = () => {
     const [filtres, setFiltres] = useState({ service: params.get("service") || memo.service || "", rayon: RAYONS.includes(memo.rayon) ? memo.rayon : 2, jour: memo.jour || "" });
     const [vue, setVue] = useState(params.get("vue") === "carte" ? "carte" : "liste");
     const [pour, setPour] = useState(null);
+    const [position, setPosition] = useState(null);
+    const [actuelle, setActuelle] = useState(positionActuelleActive());
+    const [refus, setRefus] = useState("");
     const [resultats, setResultats] = useState(null);
 
     useEffect(() => {
@@ -77,23 +80,37 @@ const Recherche = () => {
     useEffect(() => {
         let actif = true;
         const charger = async () => {
-            const { personne, position } = await pointDeRecherche(utilisateur);
-            const liste = estJeune ? await besoinsProches(position, filtres) : await rechercherJeunes(position, filtres);
+            const point = await pointDeRecherche(utilisateur);
+            const liste = estJeune ? await besoinsProches(point.position, filtres) : await rechercherJeunes(point.position, filtres);
             if (!actif) return;
-            setPour(personne);
+            setPour(point.personne);
+            setPosition(point.actuelle ? point.position : point.personne);
+            if (actuelle && !point.actuelle) setRefus("Position indisponible : on garde votre adresse.");
             setResultats(liste);
         };
         setResultats(null);
         charger();
         return () => { actif = false; };
-    }, [utilisateur, filtres, estJeune]);
+    }, [utilisateur, filtres, estJeune, actuelle]);
+
+    const basculerPosition = async () => {
+        setRefus("");
+        const ok = await choisirPositionActuelle(!actuelle);
+        if (!ok) {
+            setRefus("Position refusée : on garde votre adresse. Vous pouvez l'autoriser dans les réglages du navigateur.");
+            return;
+        }
+        setActuelle(!actuelle);
+    };
 
     const changer = (champ) => (e) => setFiltres({ ...filtres, [champ]: champ === "rayon" ? Number(e.target.value) : e.target.value });
-    const latitude = pour ? pour.latitude : null;
-    const longitude = pour ? pour.longitude : null;
+    const latitude = position ? position.latitude : null;
+    const longitude = position ? position.longitude : null;
     const centre = useMemo(() => (latitude == null ? null : { latitude, longitude }), [latitude, longitude]);
     const ouvrir = useCallback((chemin) => navigate(chemin), [navigate]);
-    const autour = pour ? (pour.id === utilisateur.id ? "chez vous" : `chez ${pour.prenom}`) : "";
+    const surPlace = actuelle && position && position !== pour;
+    const autour = pour ? (surPlace ? "votre position" : pour.id === utilisateur.id ? "chez vous" : `chez ${pour.prenom}`) : "";
+    const peutLocaliser = utilisateur.role !== "ACCOMPAGNANT";
     const nombre = resultats ? resultats.length : 0;
     const libelle = estJeune ? (nombre > 1 ? "besoins près de vous" : "besoin près de vous") : (nombre > 1 ? "jeunes disponibles" : "jeune disponible");
 
@@ -108,7 +125,14 @@ const Recherche = () => {
                             <button type="button" aria-pressed={vue === "carte"} onClick={() => setVue("carte")}><Icone nom="map" /><span className="sr-only">Carte</span></button>
                         </div>
                     </div>
-                    {pour && <p className="explorer-lieu"><Icone nom="pin" /><span>Autour de {autour} · {pour.ville}</span>{resultats && <b className="compte" aria-live="polite">{nombre} {libelle}</b>}</p>}
+                    {pour && <p className="explorer-lieu"><Icone nom="pin" /><span>Autour de {autour}{surPlace ? "" : ` · ${pour.ville}`}</span>{resultats && <b className="compte" aria-live="polite">{nombre} {libelle}</b>}</p>}
+                    {pour && peutLocaliser && (
+                        <label className="position-actuelle">
+                            <input type="checkbox" checked={actuelle} onChange={basculerPosition} />
+                            <span>Utiliser ma position actuelle</span>
+                        </label>
+                    )}
+                    {refus && <p className="position-refus" role="status">{refus}</p>}
                     <PucesServices actif={filtres.service} choisir={(code) => setFiltres({ ...filtres, service: code })} />
                     <div className="filtres-ligne">
                         <label><span className="sr-only">Distance</span><select name="rayon" value={filtres.rayon} onChange={changer("rayon")}>{RAYONS.map((r) => <option key={r} value={r}>{"< "}{texteRayon(r)}</option>)}</select></label>

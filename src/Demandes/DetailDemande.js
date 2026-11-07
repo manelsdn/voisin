@@ -76,6 +76,7 @@ const DetailDemande = () => {
     };
 
     const autre = estJeune ? { id: demande.demandeurId, prenom: demande.demandeurPrenom } : { id: demande.jeuneId, prenom: demande.jeunePrenom };
+    const numero = rdv ? (estJeune ? rdv.telephoneDemandeur : rdv.telephoneJeune) : "";
     const entete = [estJeune ? "DEMANDE REÇUE" : "MA DEMANDE", texteDistance(demande.distanceKm) && `À ${texteDistance(demande.distanceKm).toUpperCase()}`, estJeune ? `DE ${demande.demandeurPrenom.toUpperCase()}` : `AVEC ${demande.jeunePrenom.toUpperCase()}`].filter(Boolean).join(" · ");
 
     return (
@@ -87,7 +88,7 @@ const DetailDemande = () => {
                 <p>{texteCreneau(demande.creneau)} · {texteDate(demande.dateSouhaitee)}</p>
                 <p><EtatService statut={demande.statut} estJeune={estJeune} /></p>
                 <Etapes statut={demande.statut} />
-                <div className="text-row numero"><span><Icone nom="phone" /> Numéro</span><strong>{rdv ? (estJeune ? rdv.telephoneDemandeur : rdv.telephoneJeune) : "Visible après acceptation"}</strong></div>
+                <div className="text-row numero"><span><Icone nom="phone" /> Numéro</span><strong>{numero ? <a href={`tel:${numero.replace(/\s/g, "")}`}>{numero}</a> : "Visible après acceptation"}</strong></div>
             </div>
             <p className="prochaine-etape" role="status"><strong>Et maintenant ?</strong> {prochaineEtape(demande, estJeune, avis)}</p>
             <p>{demande.description}</p>

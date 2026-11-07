@@ -296,6 +296,10 @@
 #vdo .explorer-lieu{justify-content:flex-start}
 #vdo .explorer-lieu span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 #vdo .explorer-lieu .compte{margin:0 0 0 auto;padding-left:8px;flex:none;font:800 13px Nunito;color:#0e7f6d}
+#vdo .position-actuelle{display:flex;align-items:center;gap:8px;margin:0;font:700 13.5px Nunito;color:#5d5574;cursor:pointer}
+#vdo .position-actuelle input{width:18px;height:18px;margin:0;accent-color:#0E7F6D}
+#vdo .position-refus{margin:0;font:600 13px Nunito;color:#B3261E}
+#vdo .detail-box .numero a{font:800 17px Nunito;color:#0E6E5E;text-decoration:none;letter-spacing:.4px}
 #vdo .explorer .filtres-ligne{margin:0 -16px;padding:0 16px}
 #vdo .carte-profil{padding:9px 10px;gap:11px}
 #vdo .carte-photo{width:56px;height:56px;border-radius:16px!important}
