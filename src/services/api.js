@@ -102,7 +102,7 @@ export const choisirPositionActuelle = async (utilisateur, oui) => {
 };
 
 export const pointDeRecherche = async (utilisateur) => {
-    const actuelle = utilisateur.positionActuelle ? await lirePositionActuelle() : null;
+    const actuelle = utilisateur.role === "JEUNE" && utilisateur.positionActuelle ? await lirePositionActuelle() : null;
     const point = (personne) => (actuelle ? { personne, position: actuelle, actuelle: true } : { personne, position: personne });
     if (utilisateur.role !== "ACCOMPAGNANT") return point(utilisateur);
     const proche = (await listerProches(utilisateur.id))[0];

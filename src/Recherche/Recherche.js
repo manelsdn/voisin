@@ -84,7 +84,7 @@ const Recherche = () => {
             if (!actif) return;
             setPour(point.personne);
             setPosition(point.actuelle ? point.position : point.personne);
-            if (utilisateur.positionActuelle && !point.actuelle) setRefus("Position indisponible pour le moment : on garde votre adresse.");
+            if (estJeune && utilisateur.positionActuelle && !point.actuelle) setRefus("Position indisponible pour le moment : on garde votre adresse.");
             setResultats(liste);
         };
         setResultats(null);
@@ -104,7 +104,7 @@ const Recherche = () => {
     const longitude = position ? position.longitude : null;
     const centre = useMemo(() => (latitude == null ? null : { latitude, longitude }), [latitude, longitude]);
     const ouvrir = useCallback((chemin) => navigate(chemin), [navigate]);
-    const choix = utilisateur.positionActuelle;
+    const choix = estJeune ? utilisateur.positionActuelle : false;
     const surPlace = Boolean(choix && position && position !== pour);
     const autour = pour ? (surPlace ? "votre position" : pour.id === utilisateur.id ? "chez vous" : `chez ${pour.prenom}`) : "";
     const nombre = resultats ? resultats.length : 0;
@@ -122,7 +122,7 @@ const Recherche = () => {
                         </div>
                     </div>
                     {pour && <p className="explorer-lieu"><Icone nom="pin" /><span>Autour de {autour}{surPlace ? "" : ` · ${pour.ville}`}</span>{resultats && <b className="compte" aria-live="polite">{nombre} {libelle}</b>}</p>}
-                    {pour && choix === undefined && (
+                    {pour && estJeune && choix === undefined && (
                         <div className="demande-position" role="group" aria-labelledby="titre-position">
                             <Icone nom="pin" />
                             <span>
@@ -135,7 +135,7 @@ const Recherche = () => {
                             </div>
                         </div>
                     )}
-                    {pour && choix !== undefined && (
+                    {pour && estJeune && choix !== undefined && (
                         <label className="position-actuelle">
                             <input type="checkbox" checked={Boolean(choix)} onChange={() => choisirPosition(!choix)} />
                             <span>Utiliser ma position actuelle</span>

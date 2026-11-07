@@ -64,13 +64,15 @@ const Profil = () => {
                 <div className="text-row"><span><Icone nom="pin" /> Adresse</span><strong>{utilisateur.adresse}, {utilisateur.codePostal} {utilisateur.ville}</strong></div>
                 <Link className="bloc-lien" to="/modifier-profil">Modifier mes informations<Icone nom="chevron" /></Link>
             </section>
-            <section className="bloc-infos" aria-labelledby="titre-position">
-                <h2 id="titre-position" className="bloc-titre">Ma position</h2>
-                <div className="text-row"><span><Icone nom="pin" /> Position actuelle</span><strong>{utilisateur.positionActuelle ? "Autorisée" : utilisateur.positionActuelle === false ? "Refusée" : "Pas encore choisie"}</strong></div>
-                <p className="soft"><small>{utilisateur.positionActuelle ? "Les distances partent de l'endroit où vous êtes. Votre position n'est pas enregistrée." : "Les distances partent de votre adresse."}</small></p>
-                <Message erreur={refusPosition} />
-                <button className="bloc-lien" type="button" onClick={() => choisirPosition(!utilisateur.positionActuelle)}>{utilisateur.positionActuelle ? "Ne plus utiliser ma position" : "Autoriser ma position actuelle"}<Icone nom="chevron" /></button>
-            </section>
+            {utilisateur.role === "JEUNE" && (
+                <section className="bloc-infos" aria-labelledby="titre-position">
+                    <h2 id="titre-position" className="bloc-titre">Ma position</h2>
+                    <div className="text-row"><span><Icone nom="pin" /> Position actuelle</span><strong>{utilisateur.positionActuelle ? "Autorisée" : utilisateur.positionActuelle === false ? "Refusée" : "Pas encore choisie"}</strong></div>
+                    <p className="soft"><small>{utilisateur.positionActuelle ? "Les distances partent de l'endroit où vous êtes. Votre position n'est pas enregistrée." : "Les distances partent de votre adresse."}</small></p>
+                    <Message erreur={refusPosition} />
+                    <button className="bloc-lien" type="button" onClick={() => choisirPosition(!utilisateur.positionActuelle)}>{utilisateur.positionActuelle ? "Ne plus utiliser ma position" : "Autoriser ma position actuelle"}<Icone nom="chevron" /></button>
+                </section>
+            )}
             {utilisateur.role === "ACCOMPAGNANT" && (
                 <section className="bloc-infos" aria-labelledby="titre-proche">
                     <h2 id="titre-proche" className="bloc-titre">La personne que j'accompagne</h2>
