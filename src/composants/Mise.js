@@ -100,18 +100,20 @@ export const IconesServices = ({ services = [], max = 4 }) => (
     </span>
 );
 
-export const CarteJeune = ({ jeune, note, classe = "" }) => {
+export const CarteJeune = ({ jeune, note, classe = "", raisons, lien, ouvrir }) => {
     const prochain = (jeune.disponibilites || [])[0];
     return (
-        <Link to={`/jeunes/${jeune.id}`} className={`carte-profil resultat ${classe}`}>
+        <Link to={lien || `/jeunes/${jeune.id}`} onClick={ouvrir} className={`carte-profil resultat ${classe}`}>
             <Avatar personne={jeune} classe="carte-photo" />
             <span className="carte-corps">
                 <span className="carte-ligne"><strong>{jeune.prenom}</strong>{note ? <span className="carte-note">★ {note}</span> : null}</span>
                 <small>{texteDistance(jeune.distance)} · {(jeune.services || []).map(nomService).join(", ")}</small>
-                <span className="carte-bas">
-                    <IconesServices services={jeune.services} />
-                    {prochain && <em>{texteCreneau(prochain)}</em>}
-                </span>
+                {raisons && raisons.length > 0 ? <span className="carte-raisons">{raisons.map((r) => <em key={r}>{r}</em>)}</span> : (
+                    <span className="carte-bas">
+                        <IconesServices services={jeune.services} />
+                        {prochain && <em>{texteCreneau(prochain)}</em>}
+                    </span>
+                )}
             </span>
             <Icone nom="chevron" />
         </Link>

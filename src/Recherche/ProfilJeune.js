@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Avatar, Ecran, LienBouton } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
@@ -11,6 +11,7 @@ const age = (date) => date ? Math.floor((Date.now() - new Date(date)) / 31557600
 
 const ProfilJeune = () => {
     const { id } = useParams();
+    const { search } = useLocation();
     const { utilisateur } = useSession();
     const [jeune, setJeune] = useState(undefined);
     const [distance, setDistance] = useState(null);
@@ -86,7 +87,7 @@ const ProfilJeune = () => {
                 </section>
             )}
             <div className="stack-actions actions-flottantes">
-                {moi ? <LienBouton to="/annonce" fleche>Modifier mon annonce</LienBouton> : utilisateur.role !== "JEUNE" && <LienBouton to={`/jeunes/${jeune.id}/demande`} fleche>Envoyer une demande</LienBouton>}
+                {moi ? <LienBouton to="/annonce" fleche>Modifier mon annonce</LienBouton> : utilisateur.role !== "JEUNE" && <LienBouton to={`/jeunes/${jeune.id}/demande${search}`} fleche>Envoyer une demande</LienBouton>}
                 {!moi && <Link className="secondary" to={`/messages/${jeune.id}`}>Échanger avec {jeune.prenom}</Link>}
             </div>
         </Ecran>

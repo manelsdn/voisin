@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { CarteJeune, Navigation, PucesServices } from "../composants/Mise";
+import { CarteJeune, Message, Navigation, PucesServices } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import CarteJeunes from "./CarteJeunes";
-import { besoinsProches, choisirPositionActuelle, pointDeRecherche, rechercherJeunes } from "../services/api";
+import Dictee from "../composants/Dictee";
+import { analyser, resumer } from "../services/dictee";
+import { besoinsProches, choisirPositionActuelle, classerJeunes, dateDuJour, pointDeRecherche, prevenirLesJeunes, rechercherJeunes } from "../services/api";
 import { JOURS, NOMS_JOURS, RAYONS, depuis, iconeService, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
 const CLE = "vdo-filtres";
@@ -67,6 +69,10 @@ const Recherche = () => {
     const [position, setPosition] = useState(null);
     const [refus, setRefus] = useState("");
     const [resultats, setResultats] = useState(null);
+    const [texte, setTexte] = useState("");
+    const [compris, setCompris] = useState(null);
+    const [aide, setAide] = useState("");
+    const [envoi, setEnvoi] = useState(false);
 
     useEffect(() => {
         try {
@@ -80,7 +86,8 @@ const Recherche = () => {
         let actif = true;
         const charger = async () => {
             const point = await pointDeRecherche(utilisateur);
-            const liste = estJeune ? await besoinsProches(point.position, filtres) : await rechercherJeunes(point.position, filtres);
+            const trouves = estJeune ? await besoinsProches(point.position, filtres) : await rechercherJeunes(point.position, filtres);
+            const liste = !estJeune && compris ? await classerJeunes(trouves, compris) : trouves;
             if (!actif) return;
             setPour(point.personne);
             setPosition(point.actuelle ? point.position : point.personne);
@@ -90,7 +97,59 @@ const Recherche = () => {
         setResultats(null);
         charger();
         return () => { actif = false; };
-    }, [utilisateur, filtres, estJeune]);
+    }, [utilisateur, filtres, estJeune, compris]);
+
+    const chercher = (phrase) => {
+        const c = analyser(phrase);
+        if (!c.service && !c.jour) {
+            setAide("Je n'ai pas compris le service. Essayez par exemple : « un jeune pour mes courses demain matin ».");
+            return;
+        }
+        setAide("");
+        setCompris({ ...c, texte: phrase.trim() });
+        setFiltres({ ...filtres, rayon: 2, service: c.service || "", jour: c.jour || "" });
+    };
+
+    const manuel = (suite) => {
+        setCompris(null);
+        setAide("");
+        setFiltres(suite);
+    };
+
+    const prevenir = async () => {
+        if (!compris || !compris.service) {
+            setAide("Précisez le service, par exemple « mes courses », pour prévenir les jeunes.");
+            return;
+        }
+        setEnvoi(true);
+        try {
+            navigate(`/besoins/${await prevenirLesJeunes(utilisateur, compris, compris.texte)}`);
+        } catch (err) {
+            setAide(err.message);
+            setEnvoi(false);
+        }
+    };
+
+    const autresJours = () => {
+        setCompris({ ...compris, jour: "", aujourdhui: false, heureDebut: "", heureFin: "", moment: "" });
+        setFiltres({ ...filtres, jour: "" });
+    };
+
+    const lienJeune = (j) => {
+        if (!compris || !j.creneau) return `/jeunes/${j.id}`;
+        const suite = new URLSearchParams({ creneau: j.creneau.id });
+        if (compris.service) suite.set("service", compris.service);
+        if (compris.aujourdhui) suite.set("date", dateDuJour());
+        return `/jeunes/${j.id}?${suite}`;
+    };
+
+    const ouvrirJeune = (j) => {
+        try {
+            if (compris) sessionStorage.setItem("vdo-assistant", compris.texte);
+        } catch (e) {
+            return;
+        }
+    };
 
     const choisirPosition = async (oui) => {
         setRefus("");
@@ -99,7 +158,7 @@ const Recherche = () => {
         if (!ok) setRefus("Le navigateur a bloqué la position : on garde votre adresse. Vous pouvez l'autoriser dans les réglages du navigateur.");
     };
 
-    const changer = (champ) => (e) => setFiltres({ ...filtres, [champ]: champ === "rayon" ? Number(e.target.value) : e.target.value });
+    const changer = (champ) => (e) => manuel({ ...filtres, [champ]: champ === "rayon" ? Number(e.target.value) : e.target.value });
     const latitude = position ? position.latitude : null;
     const longitude = position ? position.longitude : null;
     const centre = useMemo(() => (latitude == null ? null : { latitude, longitude }), [latitude, longitude]);
@@ -142,7 +201,21 @@ const Recherche = () => {
                         </label>
                     )}
                     {refus && <p className="position-refus" role="status">{refus}</p>}
-                    <PucesServices actif={filtres.service} choisir={(code) => setFiltres({ ...filtres, service: code })} />
+                    {!estJeune && (
+                        <form className="assistant" onSubmit={(e) => { e.preventDefault(); chercher(texte); }}>
+                            <label className="assistant-titre" htmlFor="assistant-texte"><Icone nom="sparkles" />Dites ce qu'il vous faut</label>
+                            <div className="assistant-champ">
+                                <input id="assistant-texte" type="text" value={texte} onChange={(e) => setTexte(e.target.value)} placeholder="Ex : un jeune pour mes courses aujourd'hui" autoFocus={params.get("assistant") === "1"} />
+                                <button type="submit" aria-label="Chercher"><Icone nom="search" /></button>
+                            </div>
+                            <Dictee ajouter={(t) => { setTexte(t); chercher(t); }} libelle="Le dire au micro" />
+                            {compris && (
+                                <p className="devine assistant-compris" aria-live="polite"><Icone nom="sparkles" /><span>J'ai compris : <b>{[compris.service && nomService(compris.service), resumer(compris)].filter(Boolean).join(" · ")}</b></span><button type="button" onClick={() => manuel({ ...filtres, service: "", jour: "" })}>Effacer</button></p>
+                            )}
+                            <Message erreur={aide} />
+                        </form>
+                    )}
+                    <PucesServices actif={filtres.service} choisir={(code) => manuel({ ...filtres, service: code })} />
                     <div className="filtres-ligne">
                         <label><span className="sr-only">Distance</span><select name="rayon" value={filtres.rayon} onChange={changer("rayon")}>{RAYONS.map((r) => <option key={r} value={r}>{"< "}{texteRayon(r)}</option>)}</select></label>
                         {!estJeune && <label><span className="sr-only">Disponibilité</span><select name="jour" value={filtres.jour} onChange={changer("jour")}><option value="">Tous les jours</option>{JOURS.map((j) => <option key={j} value={j}>{NOMS_JOURS[j]}</option>)}</select></label>}
@@ -153,9 +226,11 @@ const Recherche = () => {
                 {resultats && nombre === 0 && (
                     <div className="vide">
                         <span className="vide-icone"><Icone nom={estJeune ? "heart" : "search"} /></span>
-                        <strong>{estJeune ? "Aucun besoin pour ces critères pour le moment." : "Personne pour ces critères pour le moment."}</strong>
-                        <p>{estJeune ? "Élargissez la distance ou choisissez un autre service." : "Élargissez la distance ou changez de jour."}</p>
-                        {!estJeune && <Link className="secondary" to="/besoins/nouveau">Publier mon besoin</Link>}
+                        <strong>{estJeune ? "Aucun besoin pour ces critères pour le moment." : compris ? `Personne n'est libre ${compris.aujourdhui ? "aujourd'hui" : compris.jour ? `le ${NOMS_JOURS[compris.jour].toLowerCase()}` : ""}${compris.service ? ` pour ${nomService(compris.service).toLowerCase()}` : ""}.` : "Personne pour ces critères pour le moment."}</strong>
+                        <p>{estJeune ? "Élargissez la distance ou choisissez un autre service." : compris ? "Prévenez les jeunes du quartier : ceux qui peuvent vous proposeront leur aide." : "Élargissez la distance ou changez de jour."}</p>
+                        {!estJeune && compris && <button type="button" className="primary" disabled={envoi} onClick={prevenir}>Prévenir les jeunes du quartier</button>}
+                        {!estJeune && !compris && <Link className="secondary" to="/besoins/nouveau">Publier mon besoin</Link>}
+                        {!estJeune && compris && compris.jour && <button type="button" className="secondary" onClick={autresJours}>Voir les autres jours</button>}
                     </div>
                 )}
 
@@ -169,8 +244,9 @@ const Recherche = () => {
 
                 {vue === "liste" && resultats && nombre > 0 && (
                     <div className={estJeune ? "liste-cartes feed" : "liste-cartes"}>
-                        {estJeune ? resultats.map((b) => <PostBesoin key={b.id} besoin={b} />) : resultats.map((j) => <CarteJeune key={j.id} jeune={j} />)}
-                        {!estJeune && <Link className="carte-publier" to="/besoins/nouveau"><Icone nom="plus" /><span><strong>Vous ne trouvez pas ?</strong><small>Publiez votre besoin, les jeunes du quartier vous proposeront leur aide.</small></span></Link>}
+                        {estJeune ? resultats.map((b) => <PostBesoin key={b.id} besoin={b} />) : resultats.map((j) => <CarteJeune key={j.id} jeune={j} raisons={compris ? j.raisons : null} lien={lienJeune(j)} ouvrir={() => ouvrirJeune(j)} />)}
+                        {!estJeune && compris && <button type="button" className="carte-publier" disabled={envoi} onClick={prevenir}><Icone nom="plus" /><span><strong>Personne ne vous convient ?</strong><small>Prévenez les jeunes du quartier, ils vous proposeront leur aide.</small></span></button>}
+                        {!estJeune && !compris && <Link className="carte-publier" to="/besoins/nouveau"><Icone nom="plus" /><span><strong>Vous ne trouvez pas ?</strong><small>Publiez votre besoin, les jeunes du quartier vous proposeront leur aide.</small></span></Link>}
                     </div>
                 )}
             </main>

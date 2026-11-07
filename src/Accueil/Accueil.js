@@ -68,7 +68,7 @@ const Accueil = () => {
                             <span className="role-badge">{ROLES[utilisateur.role]}</span>
                             <p className="greeting">Bonjour {utilisateur.prenom} !</p>
                             <h1>{estJeune ? <>Un coup de main, un sourire en retour.</> : <>Petits services, grands liens.</>}</h1>
-                            <Link className="vitrine-recherche" to={estJeune ? "/annonce" : "/besoins/nouveau"}>
+                            <Link className="vitrine-recherche" to={estJeune ? "/annonce" : "/recherche?assistant=1"}>
                                 <Icone nom={estJeune ? "sparkles" : "mic"} />
                                 <span>{estJeune ? (utilisateur.annoncePubliee ? "Modifier mon annonce" : "Publier mon annonce") : pour ? `De quoi ${pour} a besoin ?` : "De quoi avez-vous besoin ?"}</span>
                             </Link>

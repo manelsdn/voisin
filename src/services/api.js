@@ -132,7 +132,7 @@ export const rechercherJeunes = async (position, { service = "", rayon = 2, jour
 const prevenir = (de, a, texte, demandeId, type) =>
     s.ajouter("messages", { de: de.id, dePrenom: de.prenom, a: a.id, aPrenom: a.prenom, texte, evenement: { type, demandeId }, creeAt: new Date().toISOString() }).catch(() => null);
 
-export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, creneau, description, photo }) => {
+export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, creneau, description, photo, date }) => {
     if (!service || !creneau || !description.trim()) throw new Error("Choisissez un service, un créneau et écrivez quelques précisions.");
     const id = await s.ajouter("demandes", {
         demandeurId: demandeur.id,
@@ -144,7 +144,7 @@ export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, 
         service,
         disponibiliteId: creneau.id,
         creneau: { jour: creneau.jour, heureDebut: creneau.heureDebut, heureFin: creneau.heureFin },
-        dateSouhaitee: prochaineDate(creneau.jour),
+        dateSouhaitee: date || prochaineDate(creneau.jour),
         description: description.trim(),
         distanceKm: distanceKm(beneficiaire, jeune),
         statut: "ENVOYEE",
@@ -295,6 +295,57 @@ export const laisserAvis = async (demande, utilisateur, { note, commentaire }) =
 export const avisDuJeune = async (jeuneId) =>
     (await s.chercher("avis", "jeuneId", jeuneId)).sort((a, b) => (b.creeAt || "").localeCompare(a.creeAt || ""));
 
+const enMinutes = (h) => {
+    const [a, b] = String(h || "0:0").split(":").map(Number);
+    return a * 60 + (b || 0);
+};
+
+export const dateDuJour = (maintenant = new Date()) => {
+    const d = new Date(maintenant);
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0, 10);
+};
+
+export const classerJeunes = async (jeunes, compris, maintenant = new Date()) => {
+    const minute = maintenant.getHours() * 60 + maintenant.getMinutes();
+    const choisis = jeunes
+        .map((j) => {
+            const creneaux = (j.disponibilites || [])
+                .filter((c) => !compris.jour || c.jour === compris.jour)
+                .filter((c) => !compris.aujourdhui || enMinutes(c.heureFin) > minute + 30)
+                .map((c) => {
+                    const commun = compris.heureDebut ? Math.min(enMinutes(c.heureFin), enMinutes(compris.heureFin)) - Math.max(enMinutes(c.heureDebut), enMinutes(compris.heureDebut)) : 0;
+                    return { ...c, commun };
+                })
+                .filter((c) => !compris.heureDebut || c.commun > 0)
+                .sort((a, b) => b.commun - a.commun);
+            return { ...j, creneau: creneaux[0] || null };
+        })
+        .filter((j) => !compris.jour || j.creneau);
+    const avis = await Promise.all(choisis.map((j) => avisDuJeune(j.id).catch(() => [])));
+    return choisis
+        .map((j, i) => {
+            const notes = avis[i];
+            const moyenne = notes.length ? notes.reduce((t, a) => t + a.note, 0) / notes.length : 0;
+            const score = (j.creneau ? 30 + Math.min(j.creneau.commun, 180) / 6 : 0) + (2 - Math.min(j.distance, 2)) * 15 + moyenne * 4 + Math.min(notes.length, 5) * 2;
+            const raisons = [
+                j.creneau && `${compris.aujourdhui ? "Libre aujourd'hui" : `Libre le ${NOMS_JOURS[j.creneau.jour].toLowerCase()}`} ${j.creneau.heureDebut}-${j.creneau.heureFin}`,
+                notes.length && `★ ${moyenne.toFixed(1).replace(".", ",")} (${notes.length} avis)`
+            ].filter(Boolean);
+            return { ...j, score, raisons };
+        })
+        .sort((a, b) => b.score - a.score);
+};
+
+export const prevenirLesJeunes = (utilisateur, compris, texte) =>
+    publierBesoin(utilisateur, {
+        service: compris.service,
+        jour: compris.jour || "",
+        heureDebut: compris.heureDebut || "",
+        heureFin: compris.heureFin || "",
+        description: (texte || "").trim().slice(0, 300)
+    });
+
 export const mesFavoris = async (utilisateur) => ((await lireUtilisateur(utilisateur.id)) || {}).favoris || [];
 
 export const basculerFavori = async (utilisateur, jeuneId) => {
@@ -340,19 +391,46 @@ const couper = (texte, max) => {
 
 const liste = (mots) => (mots.length > 1 ? `${mots.slice(0, -1).join(", ")} et ${mots[mots.length - 1]}` : mots[0] || "");
 
-const MODELES = [
-    ({ prenom, mots, services, jours }) => `Bonjour, je suis ${prenom}${mots ? `, ${mots}` : ""}. Je vous aide pour ${services}${jours ? `, le ${jours}` : ""}. À l'heure et avec le sourire !`,
-    ({ prenom, mots, services, jours }) => `${prenom}${mots ? `, ${mots}` : ""}. Disponible${jours ? ` le ${jours}` : ""} pour ${services} dans le quartier. N'hésitez pas à m'écrire !`,
-    ({ prenom, mots, services }) => `Coup de main de voisin : ${services}. Moi c'est ${prenom}${mots ? `, ${mots}` : ""}. On s'organise ensemble, à votre rythme.`
+const EN_MOTS = { COURSES: "vos courses", MENAGE: "un coup de ménage", BRICOLAGE: "les petites réparations", INFORMATIQUE: "le téléphone ou l'ordinateur", JARDINAGE: "le jardin", CUISINE: "la cuisine" };
+
+const momentDe = (c) => {
+    const debut = Number(String(c.heureDebut).split(":")[0]);
+    return debut < 12 ? "matin" : debut < 18 ? "après-midi" : "soir";
+};
+
+const quand = (disponibilites) => liste([...new Set(disponibilites.map((d) => `le ${(NOMS_JOURS[d.jour] || "").toLowerCase()} ${momentDe(d)}`))].slice(0, 3));
+
+const OUVERTURES = [
+    ({ prenom, mots }) => `Bonjour, moi c'est ${prenom}${mots ? `, ${mots}` : ""}.`,
+    ({ prenom, mots }) => `${prenom}${mots ? `, ${mots}` : ""}, votre voisin pour un coup de main.`,
+    ({ prenom, mots }) => `Je m'appelle ${prenom}${mots ? ` : ${mots}` : ""}.`,
+    ({ prenom, mots }) => `Salut le quartier, ici ${prenom}${mots ? `, ${mots}` : ""}.`
 ];
+
+const CORPS = [
+    ({ aides, dispo }) => `Je peux vous aider pour ${aides}${dispo ? `, ${dispo}` : ""}.`,
+    ({ aides, dispo }) => `Disponible${dispo ? ` ${dispo}` : ""} pour ${aides}.`,
+    ({ aides, dispo }) => `Je donne volontiers un coup de main pour ${aides}${dispo ? `, surtout ${dispo}` : ""}.`,
+    ({ aides, dispo }) => `Besoin d'aide pour ${aides} ? Je suis là${dispo ? ` ${dispo}` : ""}.`
+];
+
+const FINS = ["À l'heure et avec le sourire !", "Écrivez-moi, on s'organise ensemble.", "Patient et ponctuel, promis.", "Au plaisir de vous rendre service !"];
 
 export const suggestionAnnonce = ({ prenom, mots, services, disponibilites }, essai = 0) => {
     if (!services.length) throw new Error("Choisissez au moins un service pour recevoir une proposition.");
-    const noms = services.map((c) => (SERVICES.find((x) => x.code === c) || { nom: c }).nom.toLowerCase());
-    const jours = [...new Set(disponibilites.map((d) => (NOMS_JOURS[d.jour] || "").toLowerCase()))].filter(Boolean);
-    const modele = MODELES[essai % MODELES.length];
     const propre = (mots || "").trim().replace(/[.!]+$/, "");
-    return couper(modele({ prenom, mots: propre.charAt(0).toLowerCase() + propre.slice(1), services: liste(noms), jours: liste(jours) }), 180);
+    const texteMots = propre.charAt(0).toLowerCase() + propre.slice(1);
+    const aides = liste(services.map((c) => EN_MOTS[c] || nomService(c).toLowerCase()));
+    const ouverture = OUVERTURES[essai % OUVERTURES.length]({ prenom, mots: texteMots });
+    const fin = FINS[(essai + 1) % FINS.length];
+    const essais = [quand(disponibilites), quand(disponibilites.slice(0, 1)), ""];
+    for (const dispo of essais) {
+        const corps = CORPS[essai % CORPS.length]({ aides, dispo });
+        for (const texte of [`${ouverture} ${corps} ${fin}`, `${ouverture} ${corps}`]) {
+            if (texte.length <= 180) return texte;
+        }
+    }
+    return couper(`${ouverture} ${CORPS[essai % CORPS.length]({ aides, dispo: "" })}`, 180);
 };
 
 const METEO = [

@@ -701,3 +701,19 @@
 #vdo .bandeau-likes-boite .bandeau-likes{padding-right:56px}
 #vdo .bandeau-fermer{position:absolute;top:50%;right:6px;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%!important;background:transparent;color:#7a5560;font-size:26px;line-height:1;cursor:pointer}
 #vdo .bandeau-fermer:hover{background:#ffe1dc}
+
+#vdo .assistant{display:grid;gap:10px;margin:0;padding:14px;border-radius:20px;background:#FFFDF8;box-shadow:0 4px 16px rgba(42,33,64,.08)}
+#vdo .assistant-titre{display:flex;align-items:center;gap:8px;font:800 16px Nunito;color:#2A2140}
+#vdo .assistant-titre .icon{width:18px;height:18px;color:#1FAF98}
+#vdo .assistant-champ{display:flex;gap:8px}
+#vdo .assistant-champ input{flex:1;min-width:0;min-height:50px;padding:0 16px;border-radius:999px;border:1.5px solid #e3d8e4;background:#fff;font:600 16px Nunito;color:#2A2140}
+#vdo .assistant-champ input:focus{outline:none;border-color:#1FAF98;box-shadow:0 0 0 4px rgba(31,175,152,.15)}
+#vdo .assistant-champ button{flex:none;width:50px;height:50px;border-radius:50%;border:0;background:#FFC145;color:#2A2140;display:grid;place-items:center;cursor:pointer}
+#vdo .assistant-champ button .icon{width:22px;height:22px}
+#vdo .assistant .dictee{margin:0}
+#vdo .assistant-compris{align-items:center}
+#vdo .assistant-compris span{flex:1}
+#vdo .assistant-compris button{flex:none;border:0;background:none;padding:4px 2px;font:800 13.5px Nunito;color:#0E6E5E;text-decoration:underline;cursor:pointer}
+#vdo .carte-raisons{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+#vdo .carte-raisons em{font-style:normal;font:800 13.5px Nunito;padding:3px 9px;border-radius:999px;background:#E7F7F3;color:#0E6E5E}
+#vdo button.carte-publier{width:100%;background:transparent;text-align:left;font:inherit;cursor:pointer}

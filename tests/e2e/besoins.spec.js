@@ -15,22 +15,38 @@ test("US43 · Bouton central : un demandeur voit les jeunes en cartes, un jeune 
     await expect(page.locator(".carte-besoin").first()).toBeVisible();
 });
 
-test("US44 · Publier un besoin : obligatoire de choisir un service et décrire, puis visible des jeunes", async ({ page }) => {
+test("US44 · Assistant : personne n'est libre, on prévient les jeunes sans écrire d'annonce, le besoin leur est visible", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
-    await page.goto("/besoins/nouveau");
-    await page.getByRole("button", { name: /Publier mon annonce/ }).click();
-    await expect(page.getByRole("alert")).toContainText("Choisissez le service");
-    await page.getByRole("button", { name: "Bricolage" }).click();
-    await page.getByLabel(/Décrivez votre besoin/).fill("Monter un petit meuble de chevet chez Madeleine.");
-    await page.getByLabel("Jour").selectOption("SAMEDI");
-    await page.getByRole("button", { name: /Publier mon annonce/ }).click();
+    await page.goto("/recherche");
+    await page.getByLabel("Dites ce qu'il vous faut").fill("Un jeune pour monter un petit meuble de chevet vendredi soir");
+    await page.getByRole("button", { name: "Chercher" }).click();
+    await expect(page.locator(".assistant-compris")).toContainText("Bricolage · vendredi · le soir, 18:00-20:00");
+    await expect(page.getByText("Personne n'est libre le vendredi pour bricolage.")).toBeVisible();
+    await page.getByRole("button", { name: "Prévenir les jeunes du quartier" }).click();
     await expect(page.getByRole("heading", { name: /Bricolage/ })).toBeVisible();
     await expect(page.getByText("Pas encore de proposition.")).toBeVisible();
     await deconnecter(page);
     await connecter(page, "lucas.martin@exemple.fr");
     await page.goto("/recherche");
     await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Bricolage" }).click();
-    await expect(page.getByText("Monter un petit meuble de chevet")).toBeVisible();
+    await expect(page.getByText("Un jeune pour monter un petit meuble de chevet")).toBeVisible();
+});
+
+test("Assistant : « mes courses samedi matin » montre les jeunes libres, la demande est préremplie", async ({ page }) => {
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.getByRole("link", { name: /De quoi Madeleine a besoin/ }).click();
+    await expect(page.getByLabel("Dites ce qu'il vous faut")).toBeFocused();
+    await page.getByLabel("Dites ce qu'il vous faut").fill("je cherche un jeune pour mes courses samedi matin");
+    await page.getByLabel("Dites ce qu'il vous faut").press("Enter");
+    await expect(page.locator(".assistant-compris")).toContainText("Courses · samedi · le matin, 09:00-12:00");
+    const premier = page.locator(".carte-profil").first();
+    await expect(premier).toContainText("Libre le samedi");
+    for (const t of await page.locator(".carte-raisons em:first-child").allTextContents()) expect(t).toMatch(/^Libre le samedi/);
+    await premier.click();
+    await page.getByRole("link", { name: /Envoyer une demande/ }).click();
+    await expect(page.getByLabel(/Créneau proposé/)).toHaveValue(/.+/);
+    await expect(page.getByLabel(/Créneau proposé/).locator("option:checked")).toContainText("Samedi");
+    await expect(page.getByLabel("Quelques précisions")).toHaveValue(/Je cherche un jeune pour mes courses samedi matin/);
 });
 
 test("US45 · Proposer son aide : le demandeur voit la proposition et peut envoyer une demande", async ({ page }) => {
@@ -50,15 +66,25 @@ test("US45 · Proposer son aide : le demandeur voit la proposition et peut envoy
     await expect(page.getByLabel("Quelques précisions")).toHaveValue(/rosiers/);
 });
 
-test("Photos : les profils sans photo ont un avatar illustré, pas une initiale", async ({ page }) => {
+test("US44 · Publier une annonce de besoin : obligatoire de choisir un service et décrire, puis visible des jeunes", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/besoins/nouveau");
+    await page.getByRole("button", { name: /Publier mon annonce/ }).click();
+    await expect(page.getByRole("alert")).toContainText("Choisissez le service");
+    await page.getByRole("button", { name: "Bricolage" }).click();
+    await page.getByLabel(/Décrivez votre besoin/).fill("Monter un petit meuble de chevet chez Madeleine.");
+    await page.getByLabel("Jour").selectOption("SAMEDI");
+    await page.getByRole("button", { name: /Publier mon annonce/ }).click();
+    await expect(page.getByRole("heading", { name: /Bricolage/ })).toBeVisible();
+    await expect(page.getByText("Pas encore de proposition.")).toBeVisible();
+    await deconnecter(page);
+    await connecter(page, "lucas.martin@exemple.fr");
     await page.goto("/recherche");
-    await page.getByLabel("Distance").selectOption("2");
-    await expect(page.locator(".carte-profil").first()).toBeVisible();
-    await expect(page.locator(".initial-avatar")).toHaveCount(0);
+    await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Bricolage" }).click();
+    await expect(page.getByText("Monter un petit meuble de chevet")).toBeVisible();
 });
 
-test("US46 · Dictée vocale : le senior parle, l'annonce s'écrit et le service et le créneau se remplissent", async ({ page }) => {
+test("US46 · Dictée vocale dans l'annonce : le senior parle, l'annonce s'écrit et le service et le créneau se remplissent", async ({ page }) => {
     await page.addInitScript(() => {
         window.SpeechRecognition = class {
             start() {
@@ -89,7 +115,7 @@ test("US46 · Dictée vocale : le senior parle, l'annonce s'écrit et le service
     await expect(page.getByRole("heading", { name: /Bricolage/ })).toBeVisible();
 });
 
-test("Dictée absente si le navigateur ne la gère pas, la saisie au clavier remplit quand même le service", async ({ page }) => {
+test("Annonce sans dictée : la saisie au clavier remplit quand même le service", async ({ page }) => {
     await page.addInitScript(() => { delete window.SpeechRecognition; delete window.webkitSpeechRecognition; });
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/besoins/nouveau");
@@ -97,6 +123,49 @@ test("Dictée absente si le navigateur ne la gère pas, la saisie au clavier rem
     await page.getByLabel(/Décrivez votre besoin/).fill("Aider ma mère à faire un appel vidéo sur sa tablette demain après-midi");
     await expect(page.getByRole("button", { name: "Informatique" })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByLabel("Début")).toHaveValue("14:00");
+});
+
+test("Photos : les profils sans photo ont un avatar illustré, pas une initiale", async ({ page }) => {
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/recherche");
+    await page.getByLabel("Distance").selectOption("2");
+    await expect(page.locator(".carte-profil").first()).toBeVisible();
+    await expect(page.locator(".initial-avatar")).toHaveCount(0);
+});
+
+test("US46 · Dictée vocale : le senior parle, l'assistant comprend le service, le jour et l'heure", async ({ page }) => {
+    await page.addInitScript(() => {
+        window.SpeechRecognition = class {
+            start() {
+                setTimeout(() => {
+                    const resultat = [{ transcript: "j'ai besoin de quelqu'un pour porter mes courses du marché samedi de 10h à 12h" }];
+                    resultat.isFinal = true;
+                    this.onresult({ resultIndex: 0, results: [resultat] });
+                    this.onend();
+                }, 50);
+            }
+            stop() { this.onend(); }
+            abort() {}
+        };
+    });
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/recherche");
+    await page.getByRole("button", { name: /Le dire au micro/ }).click();
+    await expect(page.getByLabel("Dites ce qu'il vous faut")).toHaveValue(/porter mes courses/);
+    await expect(page.locator(".assistant-compris")).toContainText("Courses · samedi · 10:00-12:00");
+    await expect(page.locator(".carte-profil").first()).toContainText("Libre le samedi");
+});
+
+test("Dictée absente si le navigateur ne la gère pas, la saisie au clavier suffit à l'assistant", async ({ page }) => {
+    await page.addInitScript(() => { delete window.SpeechRecognition; delete window.webkitSpeechRecognition; });
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/recherche");
+    await expect(page.getByRole("button", { name: /Le dire au micro/ })).toHaveCount(0);
+    await page.getByLabel("Dites ce qu'il vous faut").fill("Aider ma mère à faire un appel vidéo sur sa tablette lundi après-midi");
+    await page.getByRole("button", { name: "Chercher" }).click();
+    await expect(page.locator(".assistant-compris")).toContainText("Informatique · lundi · l'après-midi, 14:00-17:00");
+    await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Courses" }).click();
+    await expect(page.locator(".assistant-compris")).toHaveCount(0);
 });
 
 test("Accueil : première impression avec services et jeunes à la une", async ({ page }) => {

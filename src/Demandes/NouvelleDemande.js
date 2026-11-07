@@ -4,7 +4,7 @@ import { useSession } from "../composants/Session";
 import { Astuce, BanniereService, Ecran, Message } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
-import { changerStatutBesoin, envoyerDemande, lireBesoin, lireUtilisateur, pointDeRecherche, televerserPhotoDemande } from "../services/api";
+import { changerStatutBesoin, dateDuJour, envoyerDemande, lireBesoin, lireUtilisateur, pointDeRecherche, televerserPhotoDemande } from "../services/api";
 import { prochaineDate, texteDate } from "../services/geo";
 import { nomService, texteCreneau } from "../services/constantes";
 
@@ -22,6 +22,8 @@ const NouvelleDemande = () => {
     const [params] = useSearchParams();
     const serviceDemande = params.get("service");
     const besoinId = params.get("besoin");
+    const creneauDemande = params.get("creneau");
+    const dateDemandee = params.get("date") === dateDuJour() ? params.get("date") : "";
     const [besoin, setBesoin] = useState(null);
     const [precisions, setPrecisions] = useState("");
     const navigate = useNavigate();
@@ -30,7 +32,8 @@ const NouvelleDemande = () => {
         const charger = async () => {
             const j = await lireUtilisateur(id);
             setJeune(j);
-            setCreneauId(j && j.disponibilites && j.disponibilites[0] ? j.disponibilites[0].id : "");
+            const dispos = (j && j.disponibilites) || [];
+            setCreneauId((dispos.find((c) => c.id === creneauDemande) || dispos[0] || { id: "" }).id);
             setService(j && j.services ? (j.services.includes(serviceDemande) ? serviceDemande : j.services[0]) : "");
             setBeneficiaire((await pointDeRecherche(utilisateur)).personne);
             if (besoinId) {
@@ -39,15 +42,23 @@ const NouvelleDemande = () => {
                     setBesoin(b);
                     setPrecisions(b.description || "");
                 }
+            } else if (creneauDemande) {
+                try {
+                    const dit = sessionStorage.getItem("vdo-assistant");
+                    if (dit) setPrecisions(dit.charAt(0).toUpperCase() + dit.slice(1));
+                } catch (e) {
+                    setPrecisions("");
+                }
             }
         };
         charger();
-    }, [id, utilisateur, serviceDemande, besoinId]);
+    }, [id, utilisateur, serviceDemande, besoinId, creneauDemande]);
 
     if (utilisateur.role === "JEUNE") return <Ecran titre="Demande" retour><div className="notice">Les demandes sont envoyées par les personnes âgées ou leurs proches.</div></Ecran>;
     if (!jeune || !beneficiaire) return <Ecran retour><p className="soft">Chargement…</p></Ecran>;
 
     const creneau = (jeune.disponibilites || []).find((c) => c.id === creneauId);
+    const date = creneau && dateDemandee && creneau.id === creneauDemande ? dateDemandee : "";
 
     const choisirPhoto = (e) => {
         const fichier = e.target.files[0] || null;
@@ -68,7 +79,8 @@ const NouvelleDemande = () => {
                 service,
                 creneau,
                 description: e.target.description.value,
-                photo: urlPhoto
+                photo: urlPhoto,
+                date
             });
             if (besoin) await changerStatutBesoin(besoin, utilisateur, "POURVUE", jeune.id).catch(() => null);
             navigate(`/demande-envoyee/${demandeId}`, { replace: true });
@@ -86,7 +98,7 @@ const NouvelleDemande = () => {
                 {beneficiaire.id !== utilisateur.id && <label>Pour<input name="beneficiaire" value={beneficiaire.prenom} readOnly /></label>}
                 <label>Service<select name="service" value={service} onChange={(e) => setService(e.target.value)}>{(jeune.services || []).map((c) => <option key={c} value={c}>{nomService(c)}</option>)}</select></label>
                 <label>Créneau proposé par {jeune.prenom}<select name="creneau" value={creneauId} onChange={(e) => setCreneauId(e.target.value)}>{(jeune.disponibilites || []).map((c) => <option key={c.id} value={c.id}>{texteCreneau(c)}</option>)}</select></label>
-                {creneau && <p className="soft"><small>Prochaine date : {texteDate(prochaineDate(creneau.jour))}</small></p>}
+                {creneau && <p className="soft"><small>{date ? `Aujourd'hui, ${texteDate(date)}` : `Prochaine date : ${texteDate(prochaineDate(creneau.jour))}`}</small></p>}
                 <Dictee ajouter={(texte) => setPrecisions((avant) => enPhrase(avant, texte, 400))} libelle="Dicter mes précisions" />
                 <label>Quelques précisions<textarea name="description" maxLength={400} value={precisions} onChange={(e) => setPrecisions(e.target.value)} placeholder="Par exemple : faire les courses du quartier, environ une heure." /></label>
                 <label>Joindre une photo du besoin (facultatif)<input name="photo" type="file" accept="image/*" onChange={choisirPhoto} /></label>
