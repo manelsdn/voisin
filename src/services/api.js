@@ -79,16 +79,7 @@ export const modifierProche = async (accompagnant, proche, donnees) => {
     await s.ecrire("users", proche.id, { ...donnees, ...position });
 };
 
-const CLE_POSITION = "vdo-position-actuelle";
 let dernierePosition = null;
-
-export const positionActuelleActive = () => {
-    try {
-        return localStorage.getItem(CLE_POSITION) === "1";
-    } catch (e) {
-        return false;
-    }
-};
 
 const lirePositionActuelle = () => new Promise((resolve) => {
     if (dernierePosition && Date.now() - dernierePosition.t < 300000) return resolve(dernierePosition.p);
@@ -103,25 +94,19 @@ const lirePositionActuelle = () => new Promise((resolve) => {
     );
 });
 
-export const choisirPositionActuelle = async (oui) => {
-    if (oui && !(await lirePositionActuelle())) return false;
-    try {
-        if (oui) localStorage.setItem(CLE_POSITION, "1");
-        else localStorage.removeItem(CLE_POSITION);
-    } catch (e) {
-        return oui;
-    }
+export const choisirPositionActuelle = async (utilisateur, oui) => {
+    const ok = !oui || Boolean(await lirePositionActuelle());
+    await s.ecrire("users", utilisateur.id, { positionActuelle: oui && ok });
     if (!oui) dernierePosition = null;
-    return true;
+    return ok;
 };
 
 export const pointDeRecherche = async (utilisateur) => {
-    if (utilisateur.role !== "ACCOMPAGNANT") {
-        const actuelle = positionActuelleActive() ? await lirePositionActuelle() : null;
-        return actuelle ? { personne: utilisateur, position: actuelle, actuelle: true } : { personne: utilisateur, position: utilisateur };
-    }
+    const actuelle = utilisateur.positionActuelle ? await lirePositionActuelle() : null;
+    const point = (personne) => (actuelle ? { personne, position: actuelle, actuelle: true } : { personne, position: personne });
+    if (utilisateur.role !== "ACCOMPAGNANT") return point(utilisateur);
     const proche = (await listerProches(utilisateur.id))[0];
-    return { personne: proche || utilisateur, position: proche || utilisateur };
+    return point(proche || utilisateur);
 };
 
 export const publierAnnonce = async (jeune, { services, disponibilites, description }) => {

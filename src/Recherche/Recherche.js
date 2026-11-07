@@ -4,7 +4,7 @@ import { useSession } from "../composants/Session";
 import { CarteJeune, Navigation, PucesServices } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import CarteJeunes from "./CarteJeunes";
-import { besoinsProches, choisirPositionActuelle, pointDeRecherche, positionActuelleActive, rechercherJeunes } from "../services/api";
+import { besoinsProches, choisirPositionActuelle, pointDeRecherche, rechercherJeunes } from "../services/api";
 import { JOURS, NOMS_JOURS, RAYONS, depuis, iconeService, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
 const CLE = "vdo-filtres";
@@ -56,7 +56,7 @@ const IMAGE_BESOIN = (b) => imageService(b.service);
 const LIEN_BESOIN = (b) => `/besoins/${b.id}`;
 
 const Recherche = () => {
-    const { utilisateur } = useSession();
+    const { utilisateur, recharger } = useSession();
     const estJeune = utilisateur.role === "JEUNE";
     const [params] = useSearchParams();
     const navigate = useNavigate();
@@ -65,7 +65,6 @@ const Recherche = () => {
     const [vue, setVue] = useState(params.get("vue") === "carte" ? "carte" : "liste");
     const [pour, setPour] = useState(null);
     const [position, setPosition] = useState(null);
-    const [actuelle, setActuelle] = useState(positionActuelleActive());
     const [refus, setRefus] = useState("");
     const [resultats, setResultats] = useState(null);
 
@@ -85,22 +84,19 @@ const Recherche = () => {
             if (!actif) return;
             setPour(point.personne);
             setPosition(point.actuelle ? point.position : point.personne);
-            if (actuelle && !point.actuelle) setRefus("Position indisponible : on garde votre adresse.");
+            if (utilisateur.positionActuelle && !point.actuelle) setRefus("Position indisponible pour le moment : on garde votre adresse.");
             setResultats(liste);
         };
         setResultats(null);
         charger();
         return () => { actif = false; };
-    }, [utilisateur, filtres, estJeune, actuelle]);
+    }, [utilisateur, filtres, estJeune]);
 
-    const basculerPosition = async () => {
+    const choisirPosition = async (oui) => {
         setRefus("");
-        const ok = await choisirPositionActuelle(!actuelle);
-        if (!ok) {
-            setRefus("Position refusée : on garde votre adresse. Vous pouvez l'autoriser dans les réglages du navigateur.");
-            return;
-        }
-        setActuelle(!actuelle);
+        const ok = await choisirPositionActuelle(utilisateur, oui);
+        await recharger();
+        if (!ok) setRefus("Le navigateur a bloqué la position : on garde votre adresse. Vous pouvez l'autoriser dans les réglages du navigateur.");
     };
 
     const changer = (champ) => (e) => setFiltres({ ...filtres, [champ]: champ === "rayon" ? Number(e.target.value) : e.target.value });
@@ -108,9 +104,9 @@ const Recherche = () => {
     const longitude = position ? position.longitude : null;
     const centre = useMemo(() => (latitude == null ? null : { latitude, longitude }), [latitude, longitude]);
     const ouvrir = useCallback((chemin) => navigate(chemin), [navigate]);
-    const surPlace = actuelle && position && position !== pour;
+    const choix = utilisateur.positionActuelle;
+    const surPlace = Boolean(choix && position && position !== pour);
     const autour = pour ? (surPlace ? "votre position" : pour.id === utilisateur.id ? "chez vous" : `chez ${pour.prenom}`) : "";
-    const peutLocaliser = utilisateur.role !== "ACCOMPAGNANT";
     const nombre = resultats ? resultats.length : 0;
     const libelle = estJeune ? (nombre > 1 ? "besoins près de vous" : "besoin près de vous") : (nombre > 1 ? "jeunes disponibles" : "jeune disponible");
 
@@ -126,9 +122,22 @@ const Recherche = () => {
                         </div>
                     </div>
                     {pour && <p className="explorer-lieu"><Icone nom="pin" /><span>Autour de {autour}{surPlace ? "" : ` · ${pour.ville}`}</span>{resultats && <b className="compte" aria-live="polite">{nombre} {libelle}</b>}</p>}
-                    {pour && peutLocaliser && (
+                    {pour && choix === undefined && (
+                        <div className="demande-position" role="group" aria-labelledby="titre-position">
+                            <Icone nom="pin" />
+                            <span>
+                                <strong id="titre-position">Utiliser votre position actuelle ?</strong>
+                                <small>Les distances partent de l'endroit où vous êtes, sans changer votre adresse. Votre position n'est pas enregistrée.</small>
+                            </span>
+                            <div className="demande-position-actions">
+                                <button type="button" className="primary" onClick={() => choisirPosition(true)}>Autoriser</button>
+                                <button type="button" className="secondary" onClick={() => choisirPosition(false)}>Refuser</button>
+                            </div>
+                        </div>
+                    )}
+                    {pour && choix !== undefined && (
                         <label className="position-actuelle">
-                            <input type="checkbox" checked={actuelle} onChange={basculerPosition} />
+                            <input type="checkbox" checked={Boolean(choix)} onChange={() => choisirPosition(!choix)} />
                             <span>Utiliser ma position actuelle</span>
                         </label>
                     )}

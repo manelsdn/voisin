@@ -73,7 +73,7 @@
           <p>Les jeunes qui ont publié une annonce s’affichent du plus proche au plus éloigné, en liste ou sur la carte.</p>
           <ul class="etapes-vraies">
             <li>Filtres par service, par distance (2 km maximum) et par jour.</li>
-            <li>Une personne âgée peut cocher « Utiliser ma position actuelle » au lieu de son adresse.</li>
+            <li>Chacun choisit d’autoriser ou de refuser sa position actuelle : la recherche part alors de là où il est, sans changer son adresse.</li>
             <li>Personne ne correspond ? Publiez votre besoin, au clavier ou en le dictant au micro.</li>
           </ul>
         </div>
@@ -178,6 +178,84 @@
           </ul>
         </div>
         <div class="split-art phone-art"><div class="mock-phone"><img src="assets/ecrans/service-fait.jpg" alt="Service terminé côté jeune"></div></div>
+      </div>
+    </section>
+
+    <section class="studio-panel home-band reveal" id="details">
+      <div class="center-title">
+        <h2>Les détails du fonctionnement</h2>
+        <p>Les règles appliquées par l’application, écran par écran.</p>
+      </div>
+      <div class="details-grille">
+        <article class="detail-carte">
+          <h3>Comptes et rôles</h3>
+          <ul>
+            <li>Trois rôles : jeune volontaire, personne âgée, proche accompagnant. Le proche crée aussi le profil de la personne qu’il accompagne.</li>
+            <li>Connexion par un lien envoyé par e-mail, sans mot de passe. Une adresse e-mail ne sert qu’à un seul compte.</li>
+            <li>L’adresse est vérifiée avec la Base Adresse Nationale. Villes couvertes : Lyon, Villeurbanne, Caluire-et-Cuire, Villefranche-sur-Saône, Vénissieux, Saint-Priest, Bron, Oullins et Échalas.</li>
+            <li>Chacun accepte la charte d’entraide : bienveillance, horaires respectés, accord de la personne âgée, pourboire libre et sans montant imposé.</li>
+            <li>On peut changer de rôle depuis son profil, sauf si un service est encore en cours.</li>
+            <li>La suppression du compte efface le profil, les demandes, les messages et les avis. Elle n’est pas réversible.</li>
+          </ul>
+        </article>
+        <article class="detail-carte">
+          <h3>Recherche et distance</h3>
+          <ul>
+            <li>Trois rayons au choix : 500 m, 1 km ou 2 km. Il n’y a pas de rayon plus grand : l’entraide reste dans le quartier.</li>
+            <li>Les résultats sont triés du plus proche au plus éloigné, en liste ou sur une carte.</li>
+            <li>Filtres par service et par jour de disponibilité.</li>
+            <li>La distance part de l’adresse. Chaque utilisateur peut autoriser ou refuser l’usage de sa position actuelle, et changer d’avis dans son profil. La position n’est jamais enregistrée.</li>
+            <li>Avant un service accepté, les autres voisins ne voient ni l’adresse, ni l’e-mail, ni le téléphone : seule une position arrondie sert au calcul.</li>
+          </ul>
+        </article>
+        <article class="detail-carte">
+          <h3>Annonces et besoins</h3>
+          <ul>
+            <li>Le jeune publie une annonce avec au moins un service, au moins un créneau et une présentation de 180 caractères maximum.</li>
+            <li>Une proposition de texte peut être générée ou dictée au micro, puis modifiée avant publication. L’annonce peut être retirée à tout moment.</li>
+            <li>Une personne âgée ou un proche peut publier un besoin : un service, un jour et des horaires facultatifs, une description de 300 caractères maximum.</li>
+            <li>Un jeune propose son aide une seule fois par besoin, avec un message de 300 caractères maximum.</li>
+          </ul>
+        </article>
+        <article class="detail-carte">
+          <h3>Demandes et rendez-vous</h3>
+          <ul>
+            <li>La demande précise le service, le créneau et quelques mots d’explication. On peut joindre une photo de 1 Mo maximum.</li>
+            <li>Seul le jeune peut accepter ou refuser. Seul le demandeur peut annuler, tant que le jeune n’a pas répondu.</li>
+            <li>Dès l’acceptation, le rendez-vous est confirmé et les deux numéros s’affichent. Un appui sur le numéro lance l’appel.</li>
+            <li>Pour un rendez-vous confirmé, l’application montre la météo du jour et les commerces utiles à moins de 1 km.</li>
+            <li>C’est le jeune qui indique que le service a eu lieu. Le demandeur peut ensuite redemander le même jeune.</li>
+          </ul>
+        </article>
+        <article class="detail-carte">
+          <h3>Avis et confiance</h3>
+          <ul>
+            <li>Après un service terminé, le demandeur laisse une note de 1 à 5 et un commentaire de 200 caractères maximum, une seule fois par service.</li>
+            <li>Sur le fil des voisins, chacun peut laisser un avis à étoiles de 300 caractères maximum, puis le modifier ou le supprimer.</li>
+            <li>Les profils montrent la note moyenne, le nombre d’avis et le nombre de voisins qui aiment l’annonce.</li>
+            <li>Les personnes aidées peuvent garder leurs jeunes préférés en favoris.</li>
+          </ul>
+        </article>
+        <article class="detail-carte">
+          <h3>Messagerie</h3>
+          <ul>
+            <li>Messages écrits de 500 caractères maximum, messages vocaux d’une minute maximum, pièces jointes de 10 Mo maximum.</li>
+            <li>Les notifications préviennent d’un nouveau message, si on les autorise.</li>
+            <li>La messagerie permet de se parler avant d’échanger un numéro.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="statuts-demande">
+        <h3>La vie d’une demande</h3>
+        <table>
+          <thead><tr><th scope="col">Statut</th><th scope="col">Ce qui se passe</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Envoyée</th><td>Le demandeur a choisi un jeune et un créneau. Le numéro reste masqué.</td></tr>
+            <tr><th scope="row">Acceptée</th><td>Le jeune a dit oui : le rendez-vous est confirmé et les numéros s’affichent.</td></tr>
+            <tr><th scope="row">Terminée</th><td>Le jeune a indiqué que le service a eu lieu. Le demandeur peut laisser un avis.</td></tr>
+            <tr><th scope="row">Refusée ou annulée</th><td>Le jeune a dit non, ou le demandeur a annulé. On peut choisir un autre jeune.</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 

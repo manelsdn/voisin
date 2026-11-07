@@ -299,6 +299,14 @@
 #vdo .position-actuelle{display:flex;align-items:center;gap:8px;margin:0;font:700 13.5px Nunito;color:#5d5574;cursor:pointer}
 #vdo .position-actuelle input{width:18px;height:18px;margin:0;accent-color:#0E7F6D}
 #vdo .position-refus{margin:0;font:600 13px Nunito;color:#B3261E}
+#vdo .demande-position{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:start;margin:0;padding:14px;border-radius:18px;border:1.5px solid #BFD3FB;background:#EEF4FF;color:#1E3A8A}
+#vdo .demande-position>.icon{width:24px;height:24px;color:#2563EB;margin-top:2px}
+#vdo .demande-position span{display:grid;gap:3px}
+#vdo .demande-position strong{font:800 15.5px Nunito}
+#vdo .demande-position small{font:600 13.5px/1.4 Nunito;color:#3B4F86}
+#vdo .demande-position-actions{grid-column:1/-1;display:flex;gap:10px}
+#vdo .demande-position-actions button{flex:1;min-height:44px;width:auto}
+#vdo button.bloc-lien{width:100%;background:none;border:0;padding:0;cursor:pointer;text-align:left}
 #vdo .detail-box .numero a{font:800 17px Nunito;color:#0E6E5E;text-decoration:none;letter-spacing:.4px}
 #vdo .explorer .filtres-ligne{margin:0 -16px;padding:0 16px}
 #vdo .carte-profil{padding:9px 10px;gap:11px}

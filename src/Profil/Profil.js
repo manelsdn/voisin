@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "../composants/Session";
 import { Avatar, Ecran, LienBouton, Message } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { deconnecter, listerProches, lireUtilisateur, mesFavoris, retirerAnnonce, supprimerCompte } from "../services/api";
+import { choisirPositionActuelle, deconnecter, listerProches, lireUtilisateur, mesFavoris, retirerAnnonce, supprimerCompte } from "../services/api";
 import { ROLES } from "../services/constantes";
 
 const Profil = () => {
@@ -14,6 +14,7 @@ const Profil = () => {
     const [confirmer, setConfirmer] = useState(false);
     const [erreur, setErreur] = useState("");
     const [enCours, setEnCours] = useState(false);
+    const [refusPosition, setRefusPosition] = useState("");
 
     useEffect(() => {
         if (utilisateur.role === "ACCOMPAGNANT") listerProches(utilisateur.id).then((l) => setProche(l[0] || null));
@@ -23,6 +24,13 @@ const Profil = () => {
     const retirer = async () => {
         await retirerAnnonce(utilisateur);
         await recharger();
+    };
+
+    const choisirPosition = async (oui) => {
+        setRefusPosition("");
+        const ok = await choisirPositionActuelle(utilisateur, oui);
+        await recharger();
+        if (!ok) setRefusPosition("Le navigateur a bloqué la position. Vous pouvez l'autoriser dans ses réglages, puis réessayer.");
     };
 
     const supprimer = async () => {
@@ -55,6 +63,13 @@ const Profil = () => {
                 <div className="text-row"><span><Icone nom="message" /> E-mail</span><strong>{utilisateur.email}</strong></div>
                 <div className="text-row"><span><Icone nom="pin" /> Adresse</span><strong>{utilisateur.adresse}, {utilisateur.codePostal} {utilisateur.ville}</strong></div>
                 <Link className="bloc-lien" to="/modifier-profil">Modifier mes informations<Icone nom="chevron" /></Link>
+            </section>
+            <section className="bloc-infos" aria-labelledby="titre-position">
+                <h2 id="titre-position" className="bloc-titre">Ma position</h2>
+                <div className="text-row"><span><Icone nom="pin" /> Position actuelle</span><strong>{utilisateur.positionActuelle ? "Autorisée" : utilisateur.positionActuelle === false ? "Refusée" : "Pas encore choisie"}</strong></div>
+                <p className="soft"><small>{utilisateur.positionActuelle ? "Les distances partent de l'endroit où vous êtes. Votre position n'est pas enregistrée." : "Les distances partent de votre adresse."}</small></p>
+                <Message erreur={refusPosition} />
+                <button className="bloc-lien" type="button" onClick={() => choisirPosition(!utilisateur.positionActuelle)}>{utilisateur.positionActuelle ? "Ne plus utiliser ma position" : "Autoriser ma position actuelle"}<Icone nom="chevron" /></button>
             </section>
             {utilisateur.role === "ACCOMPAGNANT" && (
                 <section className="bloc-infos" aria-labelledby="titre-proche">
