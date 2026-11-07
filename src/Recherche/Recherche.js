@@ -201,7 +201,7 @@ const Recherche = () => {
                         </label>
                     )}
                     {refus && <p className="position-refus" role="status">{refus}</p>}
-                    {!estJeune && (
+                    {!estJeune && vue === "liste" && (
                         <form className="assistant" onSubmit={(e) => { e.preventDefault(); chercher(texte); }}>
                             <label className="assistant-titre" htmlFor="assistant-texte"><Icone nom="sparkles" />Dites ce qu'il vous faut</label>
                             <div className="assistant-champ">
