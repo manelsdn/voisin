@@ -717,3 +717,20 @@
 #vdo .carte-raisons{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
 #vdo .carte-raisons em{font-style:normal;font:800 13.5px Nunito;padding:3px 9px;border-radius:999px;background:#E7F7F3;color:#0E6E5E}
 #vdo button.carte-publier{width:100%;background:transparent;text-align:left;font:inherit;cursor:pointer}
+#vdo .bandeau-rappel{background:#EEF4FF;border-color:#BFD3FB}
+#vdo .bandeau-rappel .bandeau-etoile{background:#2563EB;color:#fff}
+#vdo .bandeau-rappel .bandeau-etoile .icon{width:16px;height:16px}
+#vdo .champ-adresse{position:relative;display:grid}
+#vdo .adresses-proposees{position:absolute;z-index:20;left:0;right:0;top:100%;margin:4px 0 0;padding:6px;list-style:none;border-radius:18px;background:#fff;box-shadow:0 12px 30px rgba(42,33,64,.18);border:1.5px solid #eee4d6}
+#vdo .adresses-proposees button{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:8px 10px;border:0;border-radius:12px;background:none;text-align:left;cursor:pointer;color:#2A2140}
+#vdo .adresses-proposees button:hover,#vdo .adresses-proposees button:focus-visible{background:#FFF6E3}
+#vdo .adresses-proposees .icon{flex:none;width:18px;height:18px;color:#D23B2A}
+#vdo .adresses-proposees span{display:grid}
+#vdo .adresses-proposees strong{font:800 15px Nunito}
+#vdo .adresses-proposees small{font:600 13.5px Nunito;color:#5d5574}
+#vdo .idees{display:flex;flex-wrap:wrap;gap:8px;margin-top:-4px}
+#vdo .idees .puce{min-height:40px;font-size:14px}
+#vdo .creneau-auto{border:1.5px dashed #1FAF98;background:#F0FBF8!important}
+#vdo .creneau-auto span{display:grid;gap:2px}
+#vdo .creneau-auto small{font:700 12.5px Nunito;color:#0E7F6D}
+#vdo .notice-proche{margin-bottom:6px}

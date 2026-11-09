@@ -33,7 +33,7 @@ test("Notifications : le jeune est prévenu d'une demande, le demandeur de l'acc
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/jeunes/jeune-01");
     await page.getByRole("link", { name: "Envoyer une demande" }).click();
-    await page.getByLabel("Quelques précisions").fill("Les courses au marché.");
+    await page.getByLabel(/Un détail à préciser/).fill("Les courses au marché.");
     await page.getByRole("button", { name: /Envoyer la demande/ }).click();
     await expect(page.getByText("Votre demande est envoyée !")).toBeVisible();
     await deconnecter(page);
@@ -166,4 +166,35 @@ test("Accueil jeune : le message « voisins aiment votre annonce » peut être m
     await page.reload();
     await expect(page.getByRole("heading", { name: "Ce que vous pouvez proposer" })).toBeVisible();
     await expect(page.getByText(/voisins aiment votre annonce/)).toHaveCount(0);
+});
+
+test("Rappel : la veille du rendez-vous, un bandeau le rappelle au demandeur et au jeune", async ({ page }) => {
+    await page.addInitScript(() => {
+        if (sessionStorage.getItem("rappel-pret")) return;
+        const db = JSON.parse(localStorage.getItem("vdo-db"));
+        const d = new Date();
+        d.setDate(d.getDate() + 1);
+        d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+        db.demandes["demande-13"].dateSouhaitee = d.toISOString().slice(0, 10);
+        localStorage.setItem("vdo-db", JSON.stringify(db));
+        sessionStorage.setItem("rappel-pret", "1");
+    });
+    await connecter(page, "camille.moreau@exemple.fr");
+    await expect(page.locator(".bandeau-rappel")).toContainText(/^Demain \d+h/);
+    await expect(page.locator(".bandeau-rappel")).toContainText("avec Inès");
+    await deconnecter(page);
+    await connecter(page, "ines.benali@exemple.fr");
+    await expect(page.locator(".bandeau-rappel")).toContainText("chez Madeleine");
+});
+
+test("Recherche sans assistant : personne ne correspond, on peut quand même prévenir les jeunes", async ({ page }) => {
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/recherche");
+    await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Cuisine" }).click();
+    await page.getByLabel("Distance").selectOption("0.5");
+    await page.getByLabel("Disponibilité").selectOption("DIMANCHE");
+    await expect(page.getByText("Personne pour ces critères pour le moment.")).toBeVisible();
+    await page.getByRole("button", { name: "Prévenir les jeunes du quartier" }).click();
+    await expect(page.getByRole("heading", { name: /Cuisine/ })).toBeVisible();
+    await expect(page.getByText("Je cherche un jeune pour cuisine le dimanche.")).toBeVisible();
 });

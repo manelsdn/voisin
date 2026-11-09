@@ -66,6 +66,9 @@ test("US05 US12 · Proche : l'accord est obligatoire puis le bloc « Pour Madele
     await page.getByRole("button", { name: /Recevoir le lien/ }).click();
     await page.getByRole("link", { name: "Ouvrir le lien reçu" }).click();
     await page.waitForURL("**/proche");
+    await page.goto("/accueil");
+    await page.waitForURL("**/proche");
+    await expect(page.getByText("Avant de commencer, ajoutez la personne que vous aidez.")).toBeVisible();
     await remplir(page, { "Prénom de votre proche": "Madeleine", "Son adresse": "8 rue Moncey", "Code postal": "69003", "Ville": "Lyon" });
     await page.getByRole("button", { name: "Enregistrer" }).click();
     await expect(page.getByRole("alert")).toContainText("d'accord");

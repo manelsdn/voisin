@@ -4,6 +4,7 @@ import { emailExiste, envoyerLien } from "../../services/api";
 import { Indice, Message, Retour } from "../../composants/Mise";
 import { DessinRole, Icone } from "../../composants/Icones";
 import { geocoder } from "../../services/geo";
+import ChampAdresse from "../../composants/Adresse";
 
 const ROLES_CARTES = [
     { code: "JEUNE", titre: "Je donne un coup de main", texte: "Des services et de belles rencontres." },
@@ -127,11 +128,7 @@ const Inscription = () => {
                                 <label>Nom<input name="nom" autoComplete="family-name" maxLength={50} placeholder="Martin" /></label>
                                 <label>E-mail<input name="email" type="email" autoComplete="email" placeholder="camille@exemple.fr" /></label>
                                 <label>Téléphone<input name="telephone" type="tel" autoComplete="tel" placeholder="06 12 34 56 78" /></label>
-                                <label>{role === "ACCOMPAGNANT" ? "Votre adresse" : "Adresse"}<input name="adresse" autoComplete="street-address" placeholder="12 rue Paul Bert" /></label>
-                                <div className="deux">
-                                    <label>Code postal<input name="codePostal" autoComplete="postal-code" placeholder="69003" /></label>
-                                    <label>Ville<input name="ville" autoComplete="address-level2" placeholder="Lyon" /></label>
-                                </div>
+                                <ChampAdresse libelle={role === "ACCOMPAGNANT" ? "Votre adresse" : "Adresse"} />
                                 <label className="case"><input name="charte" type="checkbox" /><span>J'accepte la <Link className="link-button" to="/charte" target="_blank" rel="noreferrer">charte d'entraide</Link></span></label>
                                 <Message erreur={erreur} />
                                 <button className="primary" type="submit" disabled={envoi}><span>{envoi ? "Envoi…" : "Recevoir le lien"}</span><Icone nom="arrow" /></button>

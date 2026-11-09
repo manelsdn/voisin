@@ -8,13 +8,24 @@ const envoyer = async (page, precisions) => {
     await page.goto("/jeunes/jeune-01");
     await page.getByRole("link", { name: "Envoyer une demande" }).click();
     await expect(page.getByLabel("Pour")).toHaveValue("Madeleine");
-    if (precisions) await page.getByLabel("Quelques précisions").fill(precisions);
+    if (precisions) await page.getByLabel(/Un détail à préciser/).fill(precisions);
     await page.getByRole("button", { name: /Envoyer la demande/ }).click();
 };
 
-test("US17 · Demande : impossible d'envoyer sans précisions", async ({ page }) => {
-    await envoyer(page, "");
-    await expect(page.getByRole("alert")).toContainText("quelques précisions");
+test("US17 · Demande : les précisions sont facultatives, une idée se touche pour remplir le champ", async ({ page }) => {
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/jeunes/jeune-01");
+    await page.getByRole("link", { name: "Envoyer une demande" }).click();
+    await page.getByRole("group", { name: "Idées de précisions" }).getByRole("button", { name: "Code et étage" }).click();
+    await expect(page.getByLabel(/Un détail à préciser/)).toHaveValue("Code et étage");
+    await page.getByLabel(/Un détail à préciser/).fill("");
+    await page.getByRole("button", { name: /Envoyer la demande/ }).click();
+    await expect(page.getByText("Votre demande est envoyée !")).toBeVisible();
+    await deconnecter(page);
+    await connecter(page, "lucas.martin@exemple.fr");
+    await page.goto("/services");
+    await page.getByRole("link", { name: /Courses · pour Madeleine/ }).first().click();
+    await expect(page.getByText(/Pas de précision/)).toBeVisible();
 });
 
 test("US17 US22 US23 · Demande : envoyée, en attente et numéro masqué", async ({ page }) => {

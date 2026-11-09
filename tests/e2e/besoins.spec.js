@@ -46,7 +46,7 @@ test("Assistant : « mes courses samedi matin » montre les jeunes libres, la de
     await page.getByRole("link", { name: /Envoyer une demande/ }).click();
     await expect(page.getByLabel(/Créneau proposé/)).toHaveValue(/.+/);
     await expect(page.getByLabel(/Créneau proposé/).locator("option:checked")).toContainText("Samedi");
-    await expect(page.getByLabel("Quelques précisions")).toHaveValue(/Je cherche un jeune pour mes courses samedi matin/);
+    await expect(page.getByLabel(/Un détail à préciser/)).toHaveValue(/Je cherche un jeune pour mes courses samedi matin/);
 });
 
 test("US45 · Proposer son aide : le demandeur voit la proposition et peut envoyer une demande", async ({ page }) => {
@@ -63,7 +63,7 @@ test("US45 · Proposer son aide : le demandeur voit la proposition et peut envoy
     await expect(page.getByText("j'adore jardiner")).toBeVisible();
     await page.locator(".carte-proposition", { hasText: "Lucas" }).getByRole("link", { name: "Lui envoyer une demande" }).click();
     await expect(page).toHaveURL(/jeunes\/jeune-01\/demande/);
-    await expect(page.getByLabel("Quelques précisions")).toHaveValue(/rosiers/);
+    await expect(page.getByLabel(/Un détail à préciser/)).toHaveValue(/rosiers/);
 });
 
 test("US44 · Publier une annonce de besoin : obligatoire de choisir un service et décrire, puis visible des jeunes", async ({ page }) => {

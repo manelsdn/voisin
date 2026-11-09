@@ -69,7 +69,7 @@ test("US38 · Photo dans une demande : visible par le jeune", async ({ page }) =
     await page.goto("/jeunes/jeune-01/demande");
     await page.getByLabel(/Joindre une photo du besoin/).setInputFiles(path.join(__dirname, "../../public/assets/logo-voisin-dor-icone.svg"));
     await expect(page.getByAltText("Aperçu du besoin à montrer")).toBeVisible();
-    await page.getByLabel("Quelques précisions").fill("La poignée de la porte est cassée.");
+    await page.getByLabel(/Un détail à préciser/).fill("La poignée de la porte est cassée.");
     await page.getByRole("button", { name: /Envoyer la demande/ }).click();
     await page.waitForURL("**/demande-envoyee/**");
     const id = page.url().split("/").pop();

@@ -8,6 +8,15 @@ import { changerStatutBesoin, dateDuJour, envoyerDemande, lireBesoin, lireUtilis
 import { prochaineDate, texteDate } from "../services/geo";
 import { nomService, texteCreneau } from "../services/constantes";
 
+const IDEES = {
+    COURSES: ["Une liste courte", "Un gros plein", "La pharmacie", "Porter les sacs"],
+    MENAGE: ["La cuisine", "La salle de bain", "Les vitres", "Le repassage"],
+    BRICOLAGE: ["Changer une ampoule", "Monter un meuble", "Fixer une étagère", "Une petite fuite"],
+    INFORMATIQUE: ["Le téléphone", "La tablette", "Un appel vidéo", "L'imprimante"],
+    JARDINAGE: ["Arroser", "Tondre", "Tailler", "Le balcon"],
+    CUISINE: ["Le repas du midi", "Le repas du soir", "Un gâteau", "Des plats d'avance"]
+};
+
 const NouvelleDemande = () => {
     const { id } = useParams();
     const { utilisateur } = useSession();
@@ -100,7 +109,12 @@ const NouvelleDemande = () => {
                 <label>Créneau proposé par {jeune.prenom}<select name="creneau" value={creneauId} onChange={(e) => setCreneauId(e.target.value)}>{(jeune.disponibilites || []).map((c) => <option key={c.id} value={c.id}>{texteCreneau(c)}</option>)}</select></label>
                 {creneau && <p className="soft"><small>{date ? `Aujourd'hui, ${texteDate(date)}` : `Prochaine date : ${texteDate(prochaineDate(creneau.jour))}`}</small></p>}
                 <Dictee ajouter={(texte) => setPrecisions((avant) => enPhrase(avant, texte, 400))} libelle="Dicter mes précisions" />
-                <label>Quelques précisions<textarea name="description" maxLength={400} value={precisions} onChange={(e) => setPrecisions(e.target.value)} placeholder="Par exemple : faire les courses du quartier, environ une heure." /></label>
+                <label>Un détail à préciser ? (facultatif)<textarea name="description" maxLength={400} value={precisions} onChange={(e) => setPrecisions(e.target.value)} placeholder="Par exemple : faire les courses du quartier, environ une heure." /></label>
+                <div className="idees" role="group" aria-label="Idées de précisions">
+                    {[...(IDEES[service] || []), "Code et étage"].map((idee) => (
+                        <button key={idee} type="button" className="puce" onClick={() => setPrecisions((avant) => enPhrase(avant, idee, 400))}>{idee}</button>
+                    ))}
+                </div>
                 <label>Joindre une photo du besoin (facultatif)<input name="photo" type="file" accept="image/*" onChange={choisirPhoto} /></label>
                 {apercu && <img className="demande-photo" src={apercu} alt="Aperçu du besoin à montrer" />}
                 <Astuce icone="phone">Votre numéro sera visible par {jeune.prenom} seulement si la demande est acceptée.</Astuce>

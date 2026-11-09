@@ -120,9 +120,10 @@ export const analyser = (texte, maintenant = new Date()) => {
     if (jour) trouve.jour = jour;
     else if (/apres[- ]demain/.test(t)) trouve.jour = jourDans(2, maintenant);
     else if (/\bdemain\b/.test(t)) trouve.jour = jourDans(1, maintenant);
-    else if (/aujourd hui|ce jour|\bce matin\b|\bcet apres[- ]?midi\b|\bcet aprem\b|\bce midi\b|\bce soir\b/.test(t) || URGENT.test(t)) trouve.jour = jourDans(0, maintenant);
-    else if (/week-?end/.test(t)) trouve.jour = "SAMEDI";
-    if (trouve.jour && trouve.jour === jourDans(0, maintenant) && !new RegExp(`\\b${trouve.jour.toLowerCase()} prochain`).test(t)) trouve.aujourdhui = true;
+    else if (/aujourd hui|ce jour|\bce matin\b|\bcet apres[- ]?midi\b|\bcet aprem\b|\bce midi\b|\bce soir\b/.test(t) || URGENT.test(t)) {
+        trouve.jour = jourDans(0, maintenant);
+        trouve.aujourdhui = true;
+    } else if (/week-?end/.test(t)) trouve.jour = "SAMEDI";
 
     const heures = heuresDans(t);
     if (heures.length >= 2 && heures[1] > heures[0]) {

@@ -14,6 +14,7 @@ const MonAnnonce = () => {
     const [creneaux, setCreneaux] = useState(utilisateur.disponibilites || []);
     const [description, setDescription] = useState(utilisateur.description || "");
     const [nouveau, setNouveau] = useState({ jour: "SAMEDI", heureDebut: "09:00", heureFin: "12:00" });
+    const [brouillon, setBrouillon] = useState(!(utilisateur.disponibilites || []).length);
     const [erreur, setErreur] = useState("");
     const [essai, setEssai] = useState(0);
     const [avantProposition, setAvantProposition] = useState(null);
@@ -28,25 +29,42 @@ const MonAnnonce = () => {
         const trouve = analyser(texte);
         const detectes = servicesDans(texte);
         if (detectes.length) setServices((avant) => [...new Set([...avant, ...detectes])]);
-        if (trouve.jour) setNouveau((n) => ({ jour: trouve.jour, heureDebut: trouve.heureDebut || n.heureDebut, heureFin: trouve.heureFin || n.heureFin }));
+        if (trouve.jour) {
+            setNouveau((n) => ({ jour: trouve.jour, heureDebut: trouve.heureDebut || n.heureDebut, heureFin: trouve.heureFin || n.heureFin }));
+            setBrouillon(true);
+        }
         setCompris(detectes.length || trouve.jour ? { services: detectes, creneau: trouve.jour ? `${NOMS_JOURS[trouve.jour]}${trouve.heureDebut ? ` ${trouve.heureDebut}-${trouve.heureFin}` : ""}` : "" } : null);
     };
 
     const basculer = (code) => setServices(services.includes(code) ? services.filter((c) => c !== code) : [...services, code]);
 
+    const changerNouveau = (champ) => (e) => {
+        setNouveau({ ...nouveau, [champ]: e.target.value });
+        setBrouillon(true);
+    };
+
+    const dejaLa = (c) => creneaux.some((x) => x.jour === c.jour && x.heureDebut === c.heureDebut && x.heureFin === c.heureFin);
+
+    const avecBrouillon = () => {
+        if (!brouillon || dejaLa(nouveau)) return creneaux;
+        if (nouveau.heureFin <= nouveau.heureDebut) throw new Error("L'heure de fin doit être après l'heure de début.");
+        return [...creneaux, { ...nouveau, id: "d" + Date.now() }];
+    };
+
     const ajouterCreneau = () => {
-        if (nouveau.heureFin <= nouveau.heureDebut) {
-            setErreur("L'heure de fin doit être après l'heure de début.");
-            return;
+        try {
+            setCreneaux(avecBrouillon());
+            setBrouillon(false);
+            setErreur("");
+        } catch (err) {
+            setErreur(err.message);
         }
-        setErreur("");
-        setCreneaux([...creneaux, { ...nouveau, id: "d" + Date.now() }]);
     };
 
     const proposer = () => {
         try {
             const mots = avantProposition !== null ? avantProposition : description;
-            setDescription(suggestionAnnonce({ prenom: utilisateur.prenom, mots, services, disponibilites: creneaux }, essai));
+            setDescription(suggestionAnnonce({ prenom: utilisateur.prenom, mots, services, disponibilites: brouillon && !dejaLa(nouveau) ? [...creneaux, nouveau] : creneaux }, essai));
             setAvantProposition(mots);
             setEssai(essai + 1);
             setErreur("");
@@ -74,7 +92,8 @@ const MonAnnonce = () => {
     const publier = async (e) => {
         e.preventDefault();
         try {
-            await publierAnnonce(utilisateur, { services, disponibilites: creneaux, description: description.trim() });
+            const disponibilites = avecBrouillon();
+            await publierAnnonce(utilisateur, { services, disponibilites, description: description.trim() });
             await recharger();
             navigate(`/jeunes/${utilisateur.id}`);
         } catch (err) {
@@ -101,18 +120,21 @@ const MonAnnonce = () => {
                 </fieldset>
                 <fieldset>
                     <legend>Mes créneaux</legend>
-                    {creneaux.length === 0 && <p className="soft">Aucun créneau pour le moment.</p>}
+                    {creneaux.length === 0 && !brouillon && <p className="soft">Aucun créneau pour le moment.</p>}
                     <ul className="creneaux">
                         {creneaux.map((c) => (
                             <li key={c.id}>{texteCreneau(c)} <button type="button" onClick={() => setCreneaux(creneaux.filter((x) => x.id !== c.id))}>Retirer</button></li>
                         ))}
+                        {brouillon && !dejaLa(nouveau) && (
+                            <li className="creneau-auto"><span>{texteCreneau(nouveau)}<small>Ajouté automatiquement</small></span><button type="button" onClick={() => setBrouillon(false)}>Retirer</button></li>
+                        )}
                     </ul>
                     <div className="trois">
-                        <label>Jour<select name="jour" value={nouveau.jour} onChange={(e) => setNouveau({ ...nouveau, jour: e.target.value })}>{JOURS.map((j) => <option key={j} value={j}>{NOMS_JOURS[j]}</option>)}</select></label>
-                        <label>Début<input name="heureDebut" type="time" value={nouveau.heureDebut} onChange={(e) => setNouveau({ ...nouveau, heureDebut: e.target.value })} /></label>
-                        <label>Fin<input name="heureFin" type="time" value={nouveau.heureFin} onChange={(e) => setNouveau({ ...nouveau, heureFin: e.target.value })} /></label>
+                        <label>Jour<select name="jour" value={nouveau.jour} onChange={changerNouveau("jour")}>{JOURS.map((j) => <option key={j} value={j}>{NOMS_JOURS[j]}</option>)}</select></label>
+                        <label>Début<input name="heureDebut" type="time" value={nouveau.heureDebut} onChange={changerNouveau("heureDebut")} /></label>
+                        <label>Fin<input name="heureFin" type="time" value={nouveau.heureFin} onChange={changerNouveau("heureFin")} /></label>
                     </div>
-                    <button type="button" className="secondary" onClick={ajouterCreneau}>Ajouter ce créneau</button>
+                    <button type="button" className="secondary" onClick={ajouterCreneau}>Ajouter un autre créneau</button>
                 </fieldset>
                 <label>Présentation courte ({description.length}/180)<textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Exemple : étudiant, disponible après les cours pour les courses et l'informatique." /></label>
                 <div className="deux">

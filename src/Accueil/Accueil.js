@@ -1,18 +1,48 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Avatar, IconesServices, Navigation } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
-import { avisEnAttente, besoinsProches, likesDuJeune, mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
+import { avisEnAttente, besoinsProches, dateDuJour, likesDuJeune, mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
 import { ROLES, SERVICES, iconeService, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
+
+const heureCourte = (h) => {
+    const [heures, minutes] = String(h || "").split(":");
+    return `${Number(heures)}h${minutes && minutes !== "00" ? minutes : ""}`;
+};
+
+const rappelsDe = (demandes, estJeune, maintenant = new Date()) => {
+    const lendemain = new Date(maintenant);
+    lendemain.setDate(lendemain.getDate() + 1);
+    const jours = { [dateDuJour(maintenant)]: "Aujourd'hui", [dateDuJour(lendemain)]: "Demain" };
+    return demandes
+        .filter((d) => d.statut === "ACCEPTEE" && jours[d.dateSouhaitee])
+        .sort((a, b) => `${a.dateSouhaitee}${a.creneau.heureDebut}`.localeCompare(`${b.dateSouhaitee}${b.creneau.heureDebut}`))
+        .map((d) => ({ id: d.id, cle: `${d.id}-${d.dateSouhaitee}`, texte: `${jours[d.dateSouhaitee]} ${heureCourte(d.creneau.heureDebut)} : ${nomService(d.service).toLowerCase()} ${estJeune ? `chez ${d.beneficiairePrenom}` : `avec ${d.jeunePrenom}`}` }));
+};
+
+const prevenirRappels = (rappels) => {
+    if (typeof window === "undefined" || !("Notification" in window) || Notification.permission !== "granted") return;
+    rappels.forEach((r) => {
+        try {
+            if (localStorage.getItem(`vdo-rappel-${r.cle}`)) return;
+            localStorage.setItem(`vdo-rappel-${r.cle}`, "1");
+        } catch (e) {
+            return;
+        }
+        new Notification("Rappel Voisin d'Or", { body: r.texte, icon: "/logo192.png", tag: `rappel-${r.cle}` });
+    });
+};
 
 const Accueil = () => {
     const { utilisateur } = useSession();
+    const navigate = useNavigate();
     const estJeune = utilisateur.role === "JEUNE";
     const [proche, setProche] = useState(null);
     const [une, setUne] = useState(null);
     const [attente, setAttente] = useState([]);
     const [aNoter, setANoter] = useState([]);
+    const [rappels, setRappels] = useState([]);
     const [fans, setFans] = useState([]);
     const cleFans = `vdo-fans-vus-${utilisateur.id}`;
     const [fansVus, setFansVus] = useState(() => {
@@ -41,7 +71,14 @@ const Accueil = () => {
                 mesDemandes(utilisateur).catch(() => [])
             ]);
             if (!actif) return;
+            if (utilisateur.role === "ACCOMPAGNANT" && personne.id === utilisateur.id) {
+                navigate("/proche", { replace: true });
+                return;
+            }
             if (personne.id !== utilisateur.id) setProche(personne);
+            const aVenir = rappelsDe(demandes, estJeune);
+            setRappels(aVenir);
+            prevenirRappels(aVenir);
             setUne(estJeune ? liste.slice(0, 6) : liste.filter((j) => j.photoProfil).slice(0, 6));
             setAttente(demandes.filter((d) => d.statut === "ENVOYEE"));
             if (!estJeune) setANoter(await avisEnAttente(utilisateur).catch(() => []));
@@ -49,7 +86,7 @@ const Accueil = () => {
         };
         charger();
         return () => { actif = false; };
-    }, [utilisateur, estJeune]);
+    }, [utilisateur, estJeune, navigate]);
 
     const pour = proche ? proche.prenom : null;
     const lienService = (code) => `/recherche?service=${code}`;
@@ -83,6 +120,14 @@ const Accueil = () => {
                             <span className="chevron"><Icone nom="down" /></span>
                         </Link>
                     )}
+
+                    {rappels.map((r) => (
+                        <Link key={r.cle} className="bandeau-attente bandeau-rappel" to={`/demandes/${r.id}`}>
+                            <span className="bandeau-etoile" aria-hidden="true"><Icone nom="calendar" /></span>
+                            <span><strong>{r.texte}</strong>Rappel du rendez-vous. Pensez à vous appeler si besoin.</span>
+                            <Icone nom="chevron" />
+                        </Link>
+                    ))}
 
                     {!estJeune && aNoter.map((d) => (
                         <Link key={d.id} className="bandeau-attente bandeau-avis" to={`/demandes/${d.id}`}>

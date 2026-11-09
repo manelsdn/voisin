@@ -133,7 +133,7 @@ const prevenir = (de, a, texte, demandeId, type) =>
     s.ajouter("messages", { de: de.id, dePrenom: de.prenom, a: a.id, aPrenom: a.prenom, texte, evenement: { type, demandeId }, creeAt: new Date().toISOString() }).catch(() => null);
 
 export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, creneau, description, photo, date }) => {
-    if (!service || !creneau || !description.trim()) throw new Error("Choisissez un service, un créneau et écrivez quelques précisions.");
+    if (!service || !creneau) throw new Error("Choisissez un service et un créneau.");
     const id = await s.ajouter("demandes", {
         demandeurId: demandeur.id,
         demandeurPrenom: demandeur.prenom,
@@ -145,7 +145,7 @@ export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, 
         disponibiliteId: creneau.id,
         creneau: { jour: creneau.jour, heureDebut: creneau.heureDebut, heureFin: creneau.heureFin },
         dateSouhaitee: date || prochaineDate(creneau.jour),
-        description: description.trim(),
+        description: (description || "").trim(),
         distanceKm: distanceKm(beneficiaire, jeune),
         statut: "ENVOYEE",
         ...(photo ? { photo } : {}),
@@ -251,10 +251,39 @@ const televerser = async (chemin, fichier) => {
     return getDownloadURL(fichierRef);
 };
 
-export const televerserPhotoDemande = (utilisateur, fichier) => {
+export const reduireImage = (fichier, cote = 1600, qualite = 0.82) => new Promise((resolve) => {
+    if (!fichier || !fichier.type.startsWith("image/") || fichier.type === "image/gif") {
+        resolve(fichier);
+        return;
+    }
+    const lien = URL.createObjectURL(fichier);
+    const image = new Image();
+    image.onload = () => {
+        const largeur = image.naturalWidth || cote;
+        const hauteur = image.naturalHeight || cote;
+        const k = Math.min(1, cote / Math.max(largeur, hauteur));
+        const toile = document.createElement("canvas");
+        toile.width = Math.max(1, Math.round(largeur * k));
+        toile.height = Math.max(1, Math.round(hauteur * k));
+        const ctx = toile.getContext("2d");
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, toile.width, toile.height);
+        ctx.drawImage(image, 0, 0, toile.width, toile.height);
+        URL.revokeObjectURL(lien);
+        toile.toBlob((b) => resolve(b && b.size < fichier.size ? new File([b], `${fichier.name.replace(/\.[^.]+$/, "")}.jpg`, { type: "image/jpeg" }) : fichier), "image/jpeg", qualite);
+    };
+    image.onerror = () => {
+        URL.revokeObjectURL(lien);
+        resolve(fichier);
+    };
+    image.src = lien;
+});
+
+export const televerserPhotoDemande = async (utilisateur, fichier) => {
     if (!fichier.type.startsWith("image/")) throw new Error("Choisissez une image.");
-    if (fichier.size > 1024 * 1024) throw new Error("La photo fait 1 Mo maximum.");
-    return televerser(`demandes/${utilisateur.id}/${Date.now()}`, fichier);
+    const leger = await reduireImage(fichier);
+    if (leger.size > 1024 * 1024) throw new Error("Cette photo reste trop lourde. Essayez une autre photo, ou une capture d'écran.");
+    return televerser(`demandes/${utilisateur.id}/${Date.now()}`, leger);
 };
 
 export const terminerDemande = async (demande, utilisateur) => {

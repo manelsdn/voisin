@@ -107,7 +107,7 @@ const DetailDemande = () => {
                     <button className="primary" type="submit"><span>Publier mon avis</span><Icone nom="arrow" /></button>
                 </form>
             ))}
-            <p>{demande.description}</p>
+            {demande.description ? <p>{demande.description}</p> : <p className="soft">Pas de précision : {estJeune ? `vous en parlerez avec ${demande.demandeurPrenom}` : "vous en parlerez avec le jeune"} après l'acceptation.</p>}
             {demande.photo && <img className="demande-photo" src={demande.photo} alt="Le besoin montré par le demandeur" />}
             {estJeune && demande.beneficiaireId !== demande.demandeurId && <Indice icone="users">Vous échangez avec {demande.demandeurPrenom}. {demande.beneficiairePrenom} vous accueille le jour du service.</Indice>}
             <Astuce>Pourboire libre, directement avec {demande.beneficiairePrenom}.</Astuce>

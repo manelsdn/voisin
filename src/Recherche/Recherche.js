@@ -117,13 +117,15 @@ const Recherche = () => {
     };
 
     const prevenir = async () => {
-        if (!compris || !compris.service) {
+        const besoin = compris || { service: filtres.service, jour: filtres.jour };
+        if (!besoin.service) {
             setAide("Précisez le service, par exemple « mes courses », pour prévenir les jeunes.");
             return;
         }
+        const texte = besoin.texte || `Je cherche un jeune pour ${nomService(besoin.service).toLowerCase()}${besoin.jour ? ` le ${NOMS_JOURS[besoin.jour].toLowerCase()}` : ""}.`;
         setEnvoi(true);
         try {
-            navigate(`/besoins/${await prevenirLesJeunes(utilisateur, compris, compris.texte)}`);
+            navigate(`/besoins/${await prevenirLesJeunes(utilisateur, besoin, texte)}`);
         } catch (err) {
             setAide(err.message);
             setEnvoi(false);
@@ -227,8 +229,8 @@ const Recherche = () => {
                     <div className="vide">
                         <span className="vide-icone"><Icone nom={estJeune ? "heart" : "search"} /></span>
                         <strong>{estJeune ? "Aucun besoin pour ces critères pour le moment." : compris ? `Personne n'est libre ${compris.aujourdhui ? "aujourd'hui" : compris.jour ? `le ${NOMS_JOURS[compris.jour].toLowerCase()}` : ""}${compris.service ? ` pour ${nomService(compris.service).toLowerCase()}` : ""}.` : "Personne pour ces critères pour le moment."}</strong>
-                        <p>{estJeune ? "Élargissez la distance ou choisissez un autre service." : compris ? "Prévenez les jeunes du quartier : ceux qui peuvent vous proposeront leur aide." : "Élargissez la distance ou changez de jour."}</p>
-                        {!estJeune && compris && <button type="button" className="primary" disabled={envoi} onClick={prevenir}>Prévenir les jeunes du quartier</button>}
+                        <p>{estJeune ? "Élargissez la distance ou choisissez un autre service." : compris || filtres.service ? "Prévenez les jeunes du quartier : ceux qui peuvent vous proposeront leur aide." : "Élargissez la distance ou changez de jour."}</p>
+                        {!estJeune && (compris || filtres.service) && <button type="button" className="primary" disabled={envoi} onClick={prevenir}>Prévenir les jeunes du quartier</button>}
                         {!estJeune && !compris && <Link className="secondary" to="/besoins/nouveau">Publier mon besoin</Link>}
                         {!estJeune && compris && compris.jour && <button type="button" className="secondary" onClick={autresJours}>Voir les autres jours</button>}
                     </div>
