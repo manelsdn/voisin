@@ -2,7 +2,7 @@ import * as firebase from "./stockageFirebase";
 import * as test from "./stockageTest";
 import * as supa from "./stockageSupabase";
 import { distanceKm, geocoder, prochaineDate } from "./geo";
-import { NOMS_JOURS, SERVICES, nomService, texteCreneau } from "./constantes";
+import { NOMS_JOURS, SERVICES, majuscule, nomService, texteCreneau } from "./constantes";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const s = process.env.REACT_APP_MODE === "test" ? test : process.env.REACT_APP_BACKEND === "supabase" ? supa : firebase;
@@ -13,7 +13,14 @@ export const lireUtilisateur = (id) => s.lire("users", id);
 
 export const emailExiste = async (email) => (await s.chercher("users", "email", email.trim().toLowerCase())).length > 0;
 
+const nomsPropres = (donnees) => ({
+    ...donnees,
+    ...(donnees.prenom !== undefined && { prenom: majuscule(donnees.prenom) }),
+    ...(donnees.nom !== undefined && { nom: majuscule(donnees.nom) })
+});
+
 export const creerUtilisateur = async (uid, donnees) => {
+    donnees = nomsPropres(donnees);
     const position = await geocoder(donnees);
     const utilisateur = {
         ...donnees,
@@ -31,7 +38,7 @@ export const creerUtilisateur = async (uid, donnees) => {
 
 export const modifierUtilisateur = async (utilisateur, changements) => {
     const adresseChangee = ["adresse", "codePostal", "ville"].some((c) => changements[c] !== undefined && changements[c] !== utilisateur[c]);
-    let donnees = { ...changements };
+    let donnees = nomsPropres(changements);
     try {
         if (changements.email && changements.email.trim().toLowerCase() !== utilisateur.email) {
             const email = changements.email.trim().toLowerCase();
@@ -59,6 +66,7 @@ export const modifierUtilisateur = async (utilisateur, changements) => {
 export const listerProches = (accompagnantId) => s.chercher("users", "accompagnantId", accompagnantId);
 
 export const ajouterProche = async (accompagnant, proche) => {
+    proche = nomsPropres(proche);
     const position = await geocoder(proche);
     return s.ajouter("users", {
         ...proche,
@@ -71,7 +79,7 @@ export const ajouterProche = async (accompagnant, proche) => {
 };
 
 export const modifierProche = async (accompagnant, proche, donnees) => {
-    donnees = { ...donnees, nom: donnees.nom || "" };
+    donnees = nomsPropres({ ...donnees, nom: donnees.nom || "" });
     if (!donnees.prenom || !donnees.adresse || !donnees.codePostal || !donnees.ville) throw new Error("Le prénom et l'adresse de votre proche sont obligatoires.");
     if (proche.accompagnantId !== accompagnant.id) throw new Error("Vous ne pouvez modifier que votre proche.");
     const adresseChangee = donnees.adresse !== proche.adresse || donnees.codePostal !== proche.codePostal || donnees.ville !== proche.ville;

@@ -73,10 +73,12 @@ test("US18 · Annulation : le demandeur annule une demande en attente", async ({
     await expect(page.getByRole("button", { name: "Annuler ma demande" })).toHaveCount(0);
 });
 
-test("US14 · Accueil jeune : les demandes reçues en attente sont affichées", async ({ page }) => {
+test("US14 · Accueil jeune : les demandes reçues en attente sont affichées en haut et peuvent être masquées", async ({ page }) => {
     await connecter(page, "lucas.martin@exemple.fr");
-    await expect(page.getByText("Demandes reçues")).toBeVisible();
-    await expect(page.getByRole("link", { name: /Madeleine · Courses/ })).toBeVisible();
+    const bandeau = page.locator(".bandeau-boite").filter({ hasText: "Madeleine vous demande de l'aide" });
+    await expect(bandeau).toContainText("Courses");
+    await bandeau.getByRole("button", { name: "Masquer ce message" }).click();
+    await expect(page.getByText("Madeleine vous demande de l'aide")).toHaveCount(0);
 });
 
 test("US13 · Navigation : la barre du bas mène aux bons écrans", async ({ page }) => {

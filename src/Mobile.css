@@ -736,3 +736,6 @@
 #vdo .notice-proche{margin-bottom:6px}
 #vdo .bandeau-boite{position:relative;margin-top:12px}
 #vdo .bandeau-boite .bandeau-attente{margin-top:0;padding-right:56px}
+#vdo .explorer .filtres-jeune{margin:2px -16px 4px;padding:2px 16px 4px;gap:7px}
+#vdo .filtres-jeune .puces-services{margin:0;padding:0;overflow:visible}
+#vdo .filtres-jeune select{min-height:44px}

@@ -44,7 +44,9 @@ export const nomService = (code) => (SERVICES.find((s) => s.code === code) || { 
 
 export const texteCreneau = (c) => c ? `${NOMS_JOURS[c.jour]} ${c.heureDebut}-${c.heureFin}` : "";
 
-export const texteDistance = (km) => km === null || km === undefined ? "" : km < 1 ? `${Math.round(km * 1000)} m` : `${km.toFixed(1).replace(".", ",")} km`;
+export const texteDistance = (km) => km === null || km === undefined ? "" : km < 0.05 ? "Tout près" : km < 1 ? `${Math.round(km * 1000)} m` : `${km.toFixed(1).replace(".", ",")} km`;
+
+export const majuscule = (texte) => String(texte || "").trim().replace(/(^|[\s'-])(\p{L})/gu, (_, avant, lettre) => avant + lettre.toLocaleUpperCase("fr"));
 
 export const ICONES_SERVICES = { COURSES: "bag", MENAGE: "clean", BRICOLAGE: "tool", INFORMATIQUE: "laptop", JARDINAGE: "leaf", CUISINE: "pot" };
 

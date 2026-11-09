@@ -161,7 +161,7 @@ test("Distance : 2 km au maximum", async ({ page }) => {
 test("Accueil jeune : le message « voisins aiment votre annonce » peut être masqué", async ({ page }) => {
     await connecter(page, "lucas.martin@exemple.fr");
     await expect(page.getByText(/voisins aiment votre annonce/)).toBeVisible();
-    await page.getByRole("button", { name: "Masquer ce message" }).click();
+    await page.locator(".bandeau-likes-boite").getByRole("button", { name: "Masquer ce message" }).click();
     await expect(page.getByText(/voisins aiment votre annonce/)).toHaveCount(0);
     await page.reload();
     await expect(page.getByRole("heading", { name: "Ce que vous pouvez proposer" })).toBeVisible();

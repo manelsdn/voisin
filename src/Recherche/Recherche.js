@@ -217,11 +217,20 @@ const Recherche = () => {
                             <Message erreur={aide} />
                         </form>
                     )}
-                    <PucesServices actif={filtres.service} choisir={(code) => manuel({ ...filtres, service: code })} />
-                    <div className="filtres-ligne">
-                        <label><span className="sr-only">Distance</span><select name="rayon" value={filtres.rayon} onChange={changer("rayon")}>{RAYONS.map((r) => <option key={r} value={r}>{"< "}{texteRayon(r)}</option>)}</select></label>
-                        {!estJeune && <label><span className="sr-only">Disponibilité</span><select name="jour" value={filtres.jour} onChange={changer("jour")}><option value="">Tous les jours</option>{JOURS.map((j) => <option key={j} value={j}>{NOMS_JOURS[j]}</option>)}</select></label>}
-                    </div>
+                    {estJeune ? (
+                        <div className="filtres-ligne filtres-jeune">
+                            <label><span className="sr-only">Distance</span><select name="rayon" value={filtres.rayon} onChange={changer("rayon")}>{RAYONS.map((r) => <option key={r} value={r}>{"< "}{texteRayon(r)}</option>)}</select></label>
+                            <PucesServices actif={filtres.service} choisir={(code) => manuel({ ...filtres, service: code })} />
+                        </div>
+                    ) : (
+                        <>
+                            <PucesServices actif={filtres.service} choisir={(code) => manuel({ ...filtres, service: code })} />
+                            <div className="filtres-ligne">
+                                <label><span className="sr-only">Distance</span><select name="rayon" value={filtres.rayon} onChange={changer("rayon")}>{RAYONS.map((r) => <option key={r} value={r}>{"< "}{texteRayon(r)}</option>)}</select></label>
+                                <label><span className="sr-only">Disponibilité</span><select name="jour" value={filtres.jour} onChange={changer("jour")}><option value="">Tous les jours</option>{JOURS.map((j) => <option key={j} value={j}>{NOMS_JOURS[j]}</option>)}</select></label>
+                            </div>
+                        </>
+                    )}
                 </header>
 
                 {resultats === null && <div className="squelettes" aria-label="Chargement">{[0, 1, 2, 3].map((i) => <span key={i} className="squelette" />)}</div>}

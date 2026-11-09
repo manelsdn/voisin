@@ -4,7 +4,7 @@ import { useSession } from "../composants/Session";
 import { Avatar, IconesServices, Navigation } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { avisEnAttente, besoinsProches, dateDuJour, likesDuJeune, mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
-import { ROLES, SERVICES, iconeService, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { ROLES, SERVICES, iconeService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
 const heureCourte = (h) => {
     const [heures, minutes] = String(h || "").split(":");
@@ -140,6 +140,16 @@ const Accueil = () => {
                         </Link>
                     )}
 
+                    {estJeune && attente.filter((d) => !masques.includes(`recue-${d.id}`)).map((d) => (
+                        <div key={d.id} className="bandeau-boite">
+                            <Link className="bandeau-attente bandeau-recue" to={`/demandes/${d.id}`}>
+                                <span className="bandeau-point" aria-hidden="true" />
+                                <span><strong>{d.beneficiairePrenom} vous demande de l'aide</strong>{nomService(d.service)} · {texteCreneau(d.creneau)}{d.distanceKm != null ? ` · ${texteDistance(d.distanceKm)}` : ""}</span>
+                            </Link>
+                            {fermer(`recue-${d.id}`)}
+                        </div>
+                    ))}
+
                     {rappels.filter((r) => !masques.includes(`rappel-${r.cle}`)).map((r) => (
                         <div key={r.cle} className="bandeau-boite">
                             <Link className="bandeau-attente bandeau-rappel" to={`/demandes/${r.id}`}>
@@ -217,25 +227,6 @@ const Accueil = () => {
                                 ))}
                         </div>
                     )}
-
-                    {estJeune && attente.length > 0 && (
-                        <>
-                            <h2 className="vitrine-titre">Demandes reçues</h2>
-                            <div className="liste-cartes">
-                                {attente.map((d) => (
-                                    <Link key={d.id} to={`/demandes/${d.id}`} className="carte-profil">
-                                        <span className="carte-photo carte-service"><img src={imageService(d.service)} alt="" /></span>
-                                        <span className="carte-corps">
-                                            <span className="carte-ligne"><strong>{d.beneficiairePrenom} · {nomService(d.service)}</strong></span>
-                                            <small>{texteDistance(d.distanceKm)} · {texteCreneau(d.creneau)}</small>
-                                        </span>
-                                        <Icone nom="chevron" />
-                                    </Link>
-                                ))}
-                            </div>
-                        </>
-                    )}
-
                 </div>
             </main>
             <Navigation />
