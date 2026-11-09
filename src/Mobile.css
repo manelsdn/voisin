@@ -734,3 +734,5 @@
 #vdo .creneau-auto span{display:grid;gap:2px}
 #vdo .creneau-auto small{font:700 12.5px Nunito;color:#0E7F6D}
 #vdo .notice-proche{margin-bottom:6px}
+#vdo .bandeau-boite{position:relative;margin-top:12px}
+#vdo .bandeau-boite .bandeau-attente{margin-top:0;padding-right:56px}

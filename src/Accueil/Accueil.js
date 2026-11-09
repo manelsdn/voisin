@@ -43,6 +43,25 @@ const Accueil = () => {
     const [attente, setAttente] = useState([]);
     const [aNoter, setANoter] = useState([]);
     const [rappels, setRappels] = useState([]);
+    const cleMasques = `vdo-bandeaux-masques-${utilisateur.id}`;
+    const [masques, setMasques] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem(cleMasques) || "[]");
+        } catch (e) {
+            return [];
+        }
+    });
+    const masquer = (cle) => {
+        const suite = [...masques, cle].slice(-50);
+        setMasques(suite);
+        try {
+            localStorage.setItem(cleMasques, JSON.stringify(suite));
+        } catch (e) {
+            return;
+        }
+    };
+    const fermer = (cle) => <button type="button" className="bandeau-fermer" aria-label="Masquer ce message" onClick={() => masquer(cle)}>×</button>;
+    const cleAttente = `attente-${attente.map((d) => d.id).sort().join(",")}`;
     const [fans, setFans] = useState([]);
     const cleFans = `vdo-fans-vus-${utilisateur.id}`;
     const [fansVus, setFansVus] = useState(() => {
@@ -121,28 +140,34 @@ const Accueil = () => {
                         </Link>
                     )}
 
-                    {rappels.map((r) => (
-                        <Link key={r.cle} className="bandeau-attente bandeau-rappel" to={`/demandes/${r.id}`}>
-                            <span className="bandeau-etoile" aria-hidden="true"><Icone nom="calendar" /></span>
-                            <span><strong>{r.texte}</strong>Rappel du rendez-vous. Pensez à vous appeler si besoin.</span>
-                            <Icone nom="chevron" />
-                        </Link>
+                    {rappels.filter((r) => !masques.includes(`rappel-${r.cle}`)).map((r) => (
+                        <div key={r.cle} className="bandeau-boite">
+                            <Link className="bandeau-attente bandeau-rappel" to={`/demandes/${r.id}`}>
+                                <span className="bandeau-etoile" aria-hidden="true"><Icone nom="calendar" /></span>
+                                <span><strong>{r.texte}</strong>Rappel du rendez-vous. Pensez à vous appeler si besoin.</span>
+                            </Link>
+                            {fermer(`rappel-${r.cle}`)}
+                        </div>
                     ))}
 
-                    {!estJeune && aNoter.map((d) => (
-                        <Link key={d.id} className="bandeau-attente bandeau-avis" to={`/demandes/${d.id}`}>
-                            <span className="bandeau-etoile" aria-hidden="true">★</span>
-                            <span><strong>Service terminé avec {d.jeunePrenom}</strong>Laissez-lui un avis.</span>
-                            <Icone nom="chevron" />
-                        </Link>
+                    {!estJeune && aNoter.filter((d) => !masques.includes(`avis-${d.id}`)).map((d) => (
+                        <div key={d.id} className="bandeau-boite">
+                            <Link className="bandeau-attente bandeau-avis" to={`/demandes/${d.id}`}>
+                                <span className="bandeau-etoile" aria-hidden="true">★</span>
+                                <span><strong>Service terminé avec {d.jeunePrenom}</strong>Laissez-lui un avis.</span>
+                            </Link>
+                            {fermer(`avis-${d.id}`)}
+                        </div>
                     ))}
 
-                    {!estJeune && attente.length > 0 && (
-                        <Link className="bandeau-attente" to="/services">
-                            <span className="bandeau-point" aria-hidden="true" />
-                            <span><strong>{attente.length > 1 ? `${attente.length} demandes en attente` : "Demande en attente"}</strong>Le jeune va vous répondre.</span>
-                            <Icone nom="chevron" />
-                        </Link>
+                    {!estJeune && attente.length > 0 && !masques.includes(cleAttente) && (
+                        <div className="bandeau-boite">
+                            <Link className="bandeau-attente" to="/services">
+                                <span className="bandeau-point" aria-hidden="true" />
+                                <span><strong>{attente.length > 1 ? `${attente.length} demandes en attente` : "Demande en attente"}</strong>Le jeune va vous répondre.</span>
+                            </Link>
+                            {fermer(cleAttente)}
+                        </div>
                     )}
 
                     {estJeune && fans.length > fansVus && (

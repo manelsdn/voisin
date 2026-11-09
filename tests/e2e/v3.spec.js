@@ -185,6 +185,11 @@ test("Rappel : la veille du rendez-vous, un bandeau le rappelle au demandeur et 
     await deconnecter(page);
     await connecter(page, "ines.benali@exemple.fr");
     await expect(page.locator(".bandeau-rappel")).toContainText("chez Madeleine");
+    await page.locator(".bandeau-boite").filter({ has: page.locator(".bandeau-rappel") }).getByRole("button", { name: "Masquer ce message" }).click();
+    await expect(page.locator(".bandeau-rappel")).toHaveCount(0);
+    await page.reload();
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.locator(".bandeau-rappel")).toHaveCount(0);
 });
 
 test("Recherche sans assistant : personne ne correspond, on peut quand même prévenir les jeunes", async ({ page }) => {
