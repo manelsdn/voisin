@@ -2,7 +2,7 @@ import * as firebase from "./stockageFirebase";
 import * as test from "./stockageTest";
 import * as supa from "./stockageSupabase";
 import { distanceKm, geocoder, prochaineDate } from "./geo";
-import { NOMS_JOURS, SERVICES, majuscule, nomComplet, nomService, texteQuand } from "./constantes";
+import { NOMS_JOURS, SERVICES, creneauxActifs, majuscule, nomComplet, nomService, texteJour, texteQuand } from "./constantes";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const s = process.env.REACT_APP_MODE === "test" ? test : process.env.REACT_APP_BACKEND === "supabase" ? supa : firebase;
@@ -130,7 +130,7 @@ export const rechercherJeunes = async (position, { service = "", rayon = 2, jour
     const jeunes = await s.chercher("users", "role", "JEUNE");
     return jeunes
         .filter((j) => j.annoncePubliee)
-        .map((j) => ({ ...j, distance: distanceKm(position, j) }))
+        .map((j) => ({ ...j, disponibilites: creneauxActifs(j.disponibilites), distance: distanceKm(position, j) }))
         .filter((j) => !service || (j.services || []).includes(service))
         .filter((j) => !jour || (j.disponibilites || []).some((d) => d.jour === jour))
         .filter((j) => j.distance !== null && j.distance <= rayon)
@@ -351,7 +351,7 @@ export const classerJeunes = async (jeunes, compris, maintenant = new Date()) =>
     const choisis = jeunes
         .map((j) => {
             const creneaux = (j.disponibilites || [])
-                .filter((c) => !compris.jour || c.jour === compris.jour)
+                .filter((c) => (c.date ? !compris.date || c.date === compris.date : !compris.jour || c.jour === compris.jour))
                 .filter((c) => !compris.aujourdhui || enMinutes(c.heureFin) > minute + 30)
                 .map((c) => {
                     const commun = compris.heureDebut ? Math.min(enMinutes(c.heureFin), enMinutes(compris.heureFin)) - Math.max(enMinutes(c.heureDebut), enMinutes(compris.heureDebut)) : 0;
@@ -369,7 +369,7 @@ export const classerJeunes = async (jeunes, compris, maintenant = new Date()) =>
             const moyenne = notes.length ? notes.reduce((t, a) => t + a.note, 0) / notes.length : 0;
             const score = (j.creneau ? 30 + Math.min(j.creneau.commun, 180) / 6 : 0) + (2 - Math.min(j.distance, 2)) * 15 + moyenne * 4 + Math.min(notes.length, 5) * 2;
             const raisons = [
-                j.creneau && `${compris.aujourdhui ? "Libre aujourd'hui" : `Libre le ${NOMS_JOURS[j.creneau.jour].toLowerCase()}`} ${j.creneau.heureDebut}-${j.creneau.heureFin}`,
+                j.creneau && `${compris.aujourdhui ? "Libre aujourd'hui" : j.creneau.date ? `Libre ${texteJour(j.creneau.date).toLowerCase()}` : `Libre le ${NOMS_JOURS[j.creneau.jour].toLowerCase()}`} ${j.creneau.heureDebut}-${j.creneau.heureFin}`,
                 notes.length && `★ ${moyenne.toFixed(1).replace(".", ",")} (${notes.length} avis)`
             ].filter(Boolean);
             return { ...j, score, raisons };

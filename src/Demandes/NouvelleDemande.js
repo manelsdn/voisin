@@ -6,7 +6,7 @@ import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
 import { changerStatutBesoin, dateDuJour, envoyerDemande, lireBesoin, lireUtilisateur, pointDeRecherche, televerserPhotoDemande } from "../services/api";
 import { prochainesDates } from "../services/geo";
-import { SOUS_SERVICES, nomService, texteCreneau, texteJour } from "../services/constantes";
+import { SOUS_SERVICES, creneauxActifs, nomService, texteCreneau, texteJour } from "../services/constantes";
 import { sousServiceDans } from "../services/dictee";
 
 const NouvelleDemande = () => {
@@ -35,7 +35,7 @@ const NouvelleDemande = () => {
         const charger = async () => {
             const j = await lireUtilisateur(id);
             setJeune(j);
-            const dispos = (j && j.disponibilites) || [];
+            const dispos = creneauxActifs(j && j.disponibilites);
             setCreneauId((dispos.find((c) => c.id === creneauDemande) || dispos[0] || { id: "" }).id);
             setService(j && j.services ? (j.services.includes(serviceDemande) ? serviceDemande : j.services[0]) : "");
             setBeneficiaire((await pointDeRecherche(utilisateur)).personne);
@@ -65,8 +65,9 @@ const NouvelleDemande = () => {
     if (utilisateur.role === "JEUNE") return <Ecran titre="Demande" retour><div className="notice">Les demandes sont envoyées par les personnes âgées ou leurs proches.</div></Ecran>;
     if (!jeune || !beneficiaire) return <Ecran retour><p className="soft">Chargement…</p></Ecran>;
 
-    const creneau = (jeune.disponibilites || []).find((c) => c.id === creneauId);
-    const dates = creneau ? prochainesDates(creneau.jour, 4, creneau.heureFin) : [];
+    const disponibles = creneauxActifs(jeune.disponibilites);
+    const creneau = disponibles.find((c) => c.id === creneauId);
+    const dates = !creneau ? [] : creneau.date ? [creneau.date] : prochainesDates(creneau.jour, 4, creneau.heureFin);
     if (creneau && dateDemandee && creneau.id === creneauDemande && !dates.includes(dateDemandee) && new Date(`${dateDemandee}T12:00:00`).getDay() === new Date(`${dates[0]}T12:00:00`).getDay()) dates.unshift(dateDemandee);
     const date = dates.includes(dateChoisie) ? dateChoisie : creneau && dateDemandee && creneau.id === creneauDemande && dates.includes(dateDemandee) ? dateDemandee : dates[0] || "";
 
@@ -116,7 +117,7 @@ const NouvelleDemande = () => {
                         </div>
                     </fieldset>
                 )}
-                <label>Créneau proposé par {jeune.prenom}<select name="creneau" value={creneauId} onChange={(e) => setCreneauId(e.target.value)}>{(jeune.disponibilites || []).map((c) => <option key={c.id} value={c.id}>{texteCreneau(c)}</option>)}</select></label>
+                <label>Créneau proposé par {jeune.prenom}<select name="creneau" value={creneauId} onChange={(e) => setCreneauId(e.target.value)}>{disponibles.map((c) => <option key={c.id} value={c.id}>{texteCreneau(c)}</option>)}</select></label>
                 {creneau && (
                     <label>Quel jour ?<select name="date" value={date} onChange={(e) => setDateChoisie(e.target.value)}>{dates.map((d) => <option key={d} value={d}>{d === dateDuJour() ? `Aujourd'hui, ${texteJour(d).toLowerCase()}` : texteJour(d)}</option>)}</select></label>
                 )}

@@ -75,7 +75,11 @@ export const texteQuand = (creneau, date) => {
     return creneau.heureDebut ? `${texteJour(date)}, ${creneau.heureDebut}-${creneau.heureFin}` : texteJour(date);
 };
 
-export const texteCreneau = (c) => c ? `${NOMS_JOURS[c.jour]} ${c.heureDebut}-${c.heureFin}` : "";
+export const texteCreneau = (c) => c ? `${c.date ? `${texteJour(c.date)},` : NOMS_JOURS[c.jour]} ${c.heureDebut}-${c.heureFin}` : "";
+
+export const aujourdhuiIso = (maintenant = new Date()) => `${maintenant.getFullYear()}-${String(maintenant.getMonth() + 1).padStart(2, "0")}-${String(maintenant.getDate()).padStart(2, "0")}`;
+
+export const creneauxActifs = (liste) => (liste || []).filter((c) => !c.date || c.date >= aujourdhuiIso());
 
 export const texteDistance = (km) => km === null || km === undefined ? "" : km < 0.05 ? "Tout près" : km < 1 ? `${Math.round(km * 1000)} m` : `${km.toFixed(1).replace(".", ",")} km`;
 

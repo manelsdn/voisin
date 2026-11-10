@@ -5,7 +5,7 @@ import { Avatar, Ecran, LienBouton } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { avisDuJeune, basculerFavori, likesDuJeune, lireUtilisateur, mesDemandes, mesFavoris, pointDeRecherche } from "../services/api";
 import { distanceKm } from "../services/geo";
-import { nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { creneauxActifs, nomService, texteCreneau, texteDistance } from "../services/constantes";
 
 const age = (date) => date ? Math.floor((Date.now() - new Date(date)) / 31557600000) : null;
 
@@ -41,7 +41,7 @@ const ProfilJeune = () => {
     if (jeune === null) return <Ecran retour titre="Profil introuvable"><div className="notice">Ce profil n'existe pas ou n'est plus en ligne.</div></Ecran>;
     const a = age(jeune.dateNaissance);
 
-    const creneaux = (jeune.disponibilites || []).map(texteCreneau);
+    const creneaux = creneauxActifs(jeune.disponibilites).map(texteCreneau);
     const favori = favoris.includes(jeune.id);
     const moyenne = avis.length ? avis.reduce((t, x) => t + x.note, 0) / avis.length : 0;
     const basculer = async () => {

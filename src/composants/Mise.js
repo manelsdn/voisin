@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { ecouterMessages, nombreNonLus } from "../services/api";
-import { SERVICES, etatService, iconeService, nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { SERVICES, creneauxActifs, etatService, iconeService, nomService, texteCreneau, texteDistance } from "../services/constantes";
 import { texteDate } from "../services/geo";
 import { DessinService, Icone } from "./Icones";
 import { useSession } from "./Session";
@@ -101,7 +101,7 @@ export const IconesServices = ({ services = [], max = 4 }) => (
 );
 
 export const CarteJeune = ({ jeune, note, classe = "", raisons, lien, ouvrir }) => {
-    const prochain = (jeune.disponibilites || [])[0];
+    const prochain = creneauxActifs(jeune.disponibilites)[0];
     return (
         <Link to={lien || `/jeunes/${jeune.id}`} onClick={ouvrir} className={`carte-profil resultat ${classe}`}>
             <Avatar personne={jeune} classe="carte-photo" />
