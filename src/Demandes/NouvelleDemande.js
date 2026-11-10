@@ -5,17 +5,9 @@ import { Astuce, BanniereService, Ecran, Message } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
 import { changerStatutBesoin, dateDuJour, envoyerDemande, lireBesoin, lireUtilisateur, pointDeRecherche, televerserPhotoDemande } from "../services/api";
-import { prochaineDate, texteDate } from "../services/geo";
-import { nomService, texteCreneau } from "../services/constantes";
-
-const IDEES = {
-    COURSES: ["Une liste courte", "Un gros plein", "La pharmacie", "Porter les sacs"],
-    MENAGE: ["La cuisine", "La salle de bain", "Les vitres", "Le repassage"],
-    BRICOLAGE: ["Changer une ampoule", "Monter un meuble", "Fixer une étagère", "Une petite fuite"],
-    INFORMATIQUE: ["Le téléphone", "La tablette", "Un appel vidéo", "L'imprimante"],
-    JARDINAGE: ["Arroser", "Tondre", "Tailler", "Le balcon"],
-    CUISINE: ["Le repas du midi", "Le repas du soir", "Un gâteau", "Des plats d'avance"]
-};
+import { prochainesDates } from "../services/geo";
+import { SOUS_SERVICES, nomService, texteCreneau, texteJour } from "../services/constantes";
+import { sousServiceDans } from "../services/dictee";
 
 const NouvelleDemande = () => {
     const { id } = useParams();
@@ -32,7 +24,9 @@ const NouvelleDemande = () => {
     const serviceDemande = params.get("service");
     const besoinId = params.get("besoin");
     const creneauDemande = params.get("creneau");
-    const dateDemandee = params.get("date") === dateDuJour() ? params.get("date") : "";
+    const dateDemandee = params.get("date") && params.get("date") >= dateDuJour() ? params.get("date") : "";
+    const [dateChoisie, setDateChoisie] = useState("");
+    const [sous, setSous] = useState("");
     const [besoin, setBesoin] = useState(null);
     const [precisions, setPrecisions] = useState("");
     const navigate = useNavigate();
@@ -50,11 +44,16 @@ const NouvelleDemande = () => {
                 if (b && b.auteurId === utilisateur.id) {
                     setBesoin(b);
                     setPrecisions(b.description || "");
+                    if (b.sousService) setSous(b.sousService);
+                    if (b.date) setDateChoisie(b.date);
                 }
             } else if (creneauDemande) {
                 try {
                     const dit = sessionStorage.getItem("vdo-assistant");
-                    if (dit) setPrecisions(dit.charAt(0).toUpperCase() + dit.slice(1));
+                    if (dit) {
+                        setPrecisions(dit.charAt(0).toUpperCase() + dit.slice(1));
+                        setSous(sousServiceDans(j && j.services && j.services.includes(serviceDemande) ? serviceDemande : "", dit));
+                    }
                 } catch (e) {
                     setPrecisions("");
                 }
@@ -67,7 +66,9 @@ const NouvelleDemande = () => {
     if (!jeune || !beneficiaire) return <Ecran retour><p className="soft">Chargement…</p></Ecran>;
 
     const creneau = (jeune.disponibilites || []).find((c) => c.id === creneauId);
-    const date = creneau && dateDemandee && creneau.id === creneauDemande ? dateDemandee : "";
+    const dates = creneau ? prochainesDates(creneau.jour, 4, creneau.heureFin) : [];
+    if (creneau && dateDemandee && creneau.id === creneauDemande && !dates.includes(dateDemandee) && new Date(`${dateDemandee}T12:00:00`).getDay() === new Date(`${dates[0]}T12:00:00`).getDay()) dates.unshift(dateDemandee);
+    const date = dates.includes(dateChoisie) ? dateChoisie : creneau && dateDemandee && creneau.id === creneauDemande && dates.includes(dateDemandee) ? dateDemandee : dates[0] || "";
 
     const choisirPhoto = (e) => {
         const fichier = e.target.files[0] || null;
@@ -86,6 +87,7 @@ const NouvelleDemande = () => {
                 beneficiaire,
                 jeune,
                 service,
+                sousService: sous,
                 creneau,
                 description: e.target.description.value,
                 photo: urlPhoto,
@@ -105,13 +107,23 @@ const NouvelleDemande = () => {
             <p className="soft">Avec {jeune.prenom}{beneficiaire.id !== utilisateur.id ? ` · pour ${beneficiaire.prenom}` : ""}</p>
             <form className="form-stack" onSubmit={handleSubmit} noValidate>
                 {beneficiaire.id !== utilisateur.id && <label>Pour<input name="beneficiaire" value={beneficiaire.prenom} readOnly /></label>}
-                <label>Service<select name="service" value={service} onChange={(e) => setService(e.target.value)}>{(jeune.services || []).map((c) => <option key={c} value={c}>{nomService(c)}</option>)}</select></label>
+                <label>Service<select name="service" value={service} onChange={(e) => { setService(e.target.value); setSous(""); }}>{(jeune.services || []).map((c) => <option key={c} value={c}>{nomService(c)}</option>)}</select></label>
+                {(SOUS_SERVICES[service] || []).length > 0 && (
+                    <fieldset>
+                        <legend>Plus précisément ? (facultatif)</legend>
+                        <div className="sous-services" role="group" aria-label="Précision du besoin">
+                            {SOUS_SERVICES[service].map((nom) => <button key={nom} type="button" className="puce" aria-pressed={sous === nom} onClick={() => setSous(sous === nom ? "" : nom)}>{nom}</button>)}
+                        </div>
+                    </fieldset>
+                )}
                 <label>Créneau proposé par {jeune.prenom}<select name="creneau" value={creneauId} onChange={(e) => setCreneauId(e.target.value)}>{(jeune.disponibilites || []).map((c) => <option key={c.id} value={c.id}>{texteCreneau(c)}</option>)}</select></label>
-                {creneau && <p className="soft"><small>{date ? `Aujourd'hui, ${texteDate(date)}` : `Prochaine date : ${texteDate(prochaineDate(creneau.jour))}`}</small></p>}
+                {creneau && (
+                    <label>Quel jour ?<select name="date" value={date} onChange={(e) => setDateChoisie(e.target.value)}>{dates.map((d) => <option key={d} value={d}>{d === dateDuJour() ? `Aujourd'hui, ${texteJour(d).toLowerCase()}` : texteJour(d)}</option>)}</select></label>
+                )}
                 <Dictee ajouter={(texte) => setPrecisions((avant) => enPhrase(avant, texte, 400))} libelle="Dicter mes précisions" />
                 <label>Un détail à préciser ? (facultatif)<textarea name="description" maxLength={400} value={precisions} onChange={(e) => setPrecisions(e.target.value)} placeholder="Par exemple : faire les courses du quartier, environ une heure." /></label>
                 <div className="idees" role="group" aria-label="Idées de précisions">
-                    {[...(IDEES[service] || []), "Code et étage"].map((idee) => (
+                    {["Code et étage", "Sonner deux fois", "Prévoir un sac"].map((idee) => (
                         <button key={idee} type="button" className="puce" onClick={() => setPrecisions((avant) => enPhrase(avant, idee, 400))}>{idee}</button>
                     ))}
                 </div>

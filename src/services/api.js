@@ -2,7 +2,7 @@ import * as firebase from "./stockageFirebase";
 import * as test from "./stockageTest";
 import * as supa from "./stockageSupabase";
 import { distanceKm, geocoder, prochaineDate } from "./geo";
-import { NOMS_JOURS, SERVICES, majuscule, nomService, texteCreneau } from "./constantes";
+import { NOMS_JOURS, SERVICES, majuscule, nomComplet, nomService, texteQuand } from "./constantes";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const s = process.env.REACT_APP_MODE === "test" ? test : process.env.REACT_APP_BACKEND === "supabase" ? supa : firebase;
@@ -140,8 +140,10 @@ export const rechercherJeunes = async (position, { service = "", rayon = 2, jour
 const prevenir = (de, a, texte, demandeId, type) =>
     s.ajouter("messages", { de: de.id, dePrenom: de.prenom, a: a.id, aPrenom: a.prenom, texte, evenement: { type, demandeId }, creeAt: new Date().toISOString() }).catch(() => null);
 
-export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, creneau, description, photo, date }) => {
+export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, sousService, creneau, description, photo, date }) => {
     if (!service || !creneau) throw new Error("Choisissez un service et un créneau.");
+    const jourVoulu = date || prochaineDate(creneau.jour);
+    if (jourVoulu < dateDuJour()) throw new Error("Cette date est déjà passée, choisissez-en une autre.");
     const id = await s.ajouter("demandes", {
         demandeurId: demandeur.id,
         demandeurPrenom: demandeur.prenom,
@@ -150,9 +152,10 @@ export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, 
         jeuneId: jeune.id,
         jeunePrenom: jeune.prenom,
         service,
+        ...(sousService ? { sousService } : {}),
         disponibiliteId: creneau.id,
         creneau: { jour: creneau.jour, heureDebut: creneau.heureDebut, heureFin: creneau.heureFin },
-        dateSouhaitee: date || prochaineDate(creneau.jour),
+        dateSouhaitee: jourVoulu,
         description: (description || "").trim(),
         distanceKm: distanceKm(beneficiaire, jeune),
         statut: "ENVOYEE",
@@ -160,7 +163,7 @@ export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, 
         creeAt: new Date().toISOString()
     });
     const pour = beneficiaire.id !== demandeur.id ? ` pour ${beneficiaire.prenom}` : "";
-    await prevenir(demandeur, jeune, `📩 Nouvelle demande${pour} : ${nomService(service)}, ${texteCreneau(creneau)}. Ouvrez-la pour répondre.`, id, "DEMANDE_RECUE");
+    await prevenir(demandeur, jeune, `📩 Nouvelle demande${pour} : ${nomComplet(service, sousService)}, ${texteQuand(creneau, jourVoulu)}. Ouvrez-la pour répondre.`, id, "DEMANDE_RECUE");
     return id;
 };
 
@@ -377,6 +380,8 @@ export const classerJeunes = async (jeunes, compris, maintenant = new Date()) =>
 export const prevenirLesJeunes = (utilisateur, compris, texte) =>
     publierBesoin(utilisateur, {
         service: compris.service,
+        sousService: compris.sous || "",
+        date: compris.date || "",
         jour: compris.jour || "",
         heureDebut: compris.heureDebut || "",
         heureFin: compris.heureFin || "",
@@ -428,7 +433,7 @@ const couper = (texte, max) => {
 
 const liste = (mots) => (mots.length > 1 ? `${mots.slice(0, -1).join(", ")} et ${mots[mots.length - 1]}` : mots[0] || "");
 
-const EN_MOTS = { COURSES: "vos courses", MENAGE: "un coup de ménage", BRICOLAGE: "les petites réparations", INFORMATIQUE: "le téléphone ou l'ordinateur", JARDINAGE: "le jardin", CUISINE: "la cuisine" };
+const EN_MOTS = { COURSES: "vos courses", MENAGE: "un coup de ménage", BRICOLAGE: "les petites réparations", INFORMATIQUE: "le téléphone ou l'ordinateur", JARDINAGE: "le jardin", CUISINE: "la cuisine", COMPAGNIE: "un moment de compagnie", SORTIES: "les sorties et promenades", PAPIERS: "les papiers", ANIMAUX: "vos animaux" };
 
 const momentDe = (c) => {
     const debut = Number(String(c.heureDebut).split(":")[0]);
@@ -527,8 +532,9 @@ export const changerRole = async (utilisateur, role) => {
 
 const arrondi = (x) => (x == null ? null : Math.round(x * 1000) / 1000);
 
-export const publierBesoin = async (utilisateur, { service, jour, heureDebut, heureFin, description }) => {
+export const publierBesoin = async (utilisateur, { service, sousService, date, jour, heureDebut, heureFin, description }) => {
     if (!service) throw new Error("Choisissez le service dont vous avez besoin.");
+    if (date && date < dateDuJour()) throw new Error("Cette date est déjà passée, choisissez-en une autre.");
     const texte = (description || "").trim();
     if (!texte) throw new Error("Décrivez votre besoin en quelques mots.");
     if (texte.length > 300) throw new Error("La description fait 300 caractères maximum.");
@@ -544,6 +550,8 @@ export const publierBesoin = async (utilisateur, { service, jour, heureDebut, he
         latitude: arrondi(personne.latitude),
         longitude: arrondi(personne.longitude),
         service,
+        ...(sousService ? { sousService } : {}),
+        ...(date ? { date } : {}),
         creneau: jour ? { jour, heureDebut: heureDebut || "", heureFin: heureFin || "" } : null,
         description: texte,
         statut: "OUVERTE",
@@ -557,6 +565,7 @@ export const besoinsProches = async (position, { service = "", rayon = 2 } = {})
     (await s.chercher("besoins", "statut", "OUVERTE"))
         .map((b) => ({ ...b, distance: distanceKm(position, b) }))
         .filter((b) => !service || b.service === service)
+        .filter((b) => !b.date || b.date >= dateDuJour())
         .filter((b) => b.distance !== null && b.distance <= rayon)
         .sort((a, b) => a.distance - b.distance);
 

@@ -4,7 +4,7 @@ import { useSession } from "../composants/Session";
 import { Avatar, CartesServices, Ecran } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { besoinsProches, pointDeRecherche } from "../services/api";
-import { depuis, nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { depuis, nomComplet, texteDistance, texteQuand } from "../services/constantes";
 
 const FilAidants = ({ utilisateur, service }) => {
     const [besoins, setBesoins] = useState(null);
@@ -30,8 +30,8 @@ const FilAidants = ({ utilisateur, service }) => {
                         <article className="post post-compact carte-besoin" key={b.id}>
                             <Link className="post-head" to={`/voisins/${b.auteurId}`}>
                                 <Avatar personne={personne} classe="carte-photo" />
-                                <span><strong>{b.beneficiairePrenom}</strong><small>{texteDistance(b.distance)} · {b.ville} · {depuis(b.creeAt)}</small><em className="post-creneau">{b.creneau ? texteCreneau(b.creneau) : "Créneau à convenir"}</em></span>
-                                <em className="post-tag">{nomService(b.service)}</em>
+                                <span><strong>{b.beneficiairePrenom}</strong><small>{texteDistance(b.distance)} · {b.ville} · {depuis(b.creeAt)}</small><em className="post-creneau">{b.creneau || b.date ? texteQuand(b.creneau, b.date) : "Créneau à convenir"}</em></span>
+                                <em className="post-tag">{nomComplet(b.service, b.sousService)}</em>
                             </Link>
                             <p className="post-text">{b.description}</p>
                             <div className="post-actions">

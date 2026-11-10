@@ -4,8 +4,7 @@ import { useSession } from "../composants/Session";
 import { Ecran, EtatService, LienBouton, prochaineEtape } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { mesDemandes } from "../services/api";
-import { imageService, nomService, texteCreneau } from "../services/constantes";
-import { texteDate } from "../services/geo";
+import { imageService, nomComplet, texteQuand } from "../services/constantes";
 
 const PASSES = ["TERMINEE", "REFUSEE", "ANNULEE"];
 
@@ -46,8 +45,8 @@ const MesServices = () => {
                     <Link key={d.id} to={`/demandes/${d.id}`} className={`helper-card helper-card-rich carte-suivi${estJeune && d.statut === "ENVOYEE" ? " a-faire" : ""}`}>
                         <img className="helper-photo" src={imageService(d.service)} alt="" />
                         <span>
-                            <strong>{nomService(d.service)} · {estJeune ? `pour ${d.beneficiairePrenom}` : `avec ${d.jeunePrenom}`}</strong>
-                            <small>{texteCreneau(d.creneau)}{d.dateSouhaitee ? ` · ${texteDate(d.dateSouhaitee)}` : ""}</small>
+                            <strong>{nomComplet(d.service, d.sousService)} · {estJeune ? `pour ${d.beneficiairePrenom}` : `avec ${d.jeunePrenom}`}</strong>
+                            <small>{texteQuand(d.creneau, d.dateSouhaitee)}</small>
                             <span className="slot-row"><EtatService statut={d.statut} estJeune={estJeune} /></span>
                             <small className="prochaine">{prochaineEtape(d, estJeune, true, true)}</small>
                         </span>

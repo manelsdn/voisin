@@ -755,3 +755,5 @@
 #vdo .recherche-carte-champ{position:relative}
 #vdo .dictee-note{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:20;padding:8px 14px;border-radius:14px;background:#FFFDF8;box-shadow:0 6px 18px rgba(42,33,64,.18);font-size:14.5px}
 @media (prefers-reduced-motion:reduce){#vdo .dictee-mini.actif{animation:none}}
+#vdo .sous-services{display:flex;flex-wrap:wrap;gap:8px}
+#vdo .sous-services .puce{min-height:42px;padding:6px 14px;font-size:14.5px}

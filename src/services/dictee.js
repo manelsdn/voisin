@@ -1,4 +1,4 @@
-import { JOURS, NOMS_JOURS } from "./constantes";
+import { JOURS, NOMS_JOURS, texteJour } from "./constantes";
 
 const LEXIQUE = {
     COURSES: {
@@ -18,7 +18,7 @@ const LEXIQUE = {
     },
     INFORMATIQUE: {
         phrases: ["appel video", "mot de passe", "en ligne", "prendre rendez-vous sur internet"],
-        racines: ["ordinateur", "tablette", "telephone", "portable", "smartphone", "internet", "mail", "visio", "wifi", "imprimante", "application", "appli", "whatsapp", "facebook", "zoom", "skype", "doctolib", "ameli", "impots", "informatique", "numerique", "ecran", "clavier", "logiciel", "photos"],
+        racines: ["ordinateur", "tablette", "telephone", "portable", "smartphone", "internet", "mail", "visio", "wifi", "imprimante", "application", "appli", "whatsapp", "facebook", "zoom", "skype", "doctolib", "ameli", "informatique", "numerique", "ecran", "clavier", "logiciel", "photos"],
         mots: ["pc", "box", "sms", "photo"]
     },
     JARDINAGE: {
@@ -30,8 +30,43 @@ const LEXIQUE = {
         phrases: ["preparer a manger", "faire a manger", "preparer le repas", "faire un gateau"],
         racines: ["cuisin", "repas", "recette", "soupe", "gateau", "dejeuner", "diner", "plat", "patisserie", "manger"],
         mots: []
+    },
+    COMPAGNIE: {
+        phrases: ["tenir compagnie", "un peu de compagnie", "discuter un peu", "jouer aux cartes", "jeux de societe", "prendre un cafe", "je me sens seul", "je me sens seule", "lire le journal", "faire la lecture"],
+        racines: ["compagnie", "discut", "bavard", "papot", "convers", "solitude", "scrabble", "belote", "domino", "lecture", "gouter", "visite"],
+        mots: ["seul", "seule", "jeux", "jouer", "cartes", "parler", "cafe", "the"]
+    },
+    SORTIES: {
+        phrases: ["faire une promenade", "faire un tour", "aller me promener", "m accompagner", "accompagner chez", "rendez-vous medical", "chez le medecin", "chez le docteur", "a la banque", "a la mairie", "au cinema", "au musee"],
+        racines: ["promen", "balade", "accompagn", "sortie", "sortir", "medecin", "docteur", "dentiste", "kine", "hopital", "banque", "mairie", "cinema", "musee", "cimetiere", "eglise", "parc"],
+        mots: ["tour"]
+    },
+    PAPIERS: {
+        phrases: ["mes papiers", "un formulaire", "une lettre", "mon courrier", "remplir un dossier", "declaration d impots", "les impots", "demarches administratives"],
+        racines: ["papier", "impot", "courrier", "lettre", "formulaire", "administra", "demarche", "dossier", "facture", "retraite", "mutuelle", "assurance", "classer"],
+        mots: ["caf", "cpam"]
+    },
+    ANIMAUX: {
+        phrases: ["promener le chien", "promener mon chien", "sortir le chien", "sortir mon chien", "nourrir le chat", "nourrir mon chat", "garder mon chat", "garder mon chien"],
+        racines: ["chien", "chat", "animal", "animaux", "veterinaire", "croquette", "litiere", "oiseau", "perruche", "lapin", "poisson"],
+        mots: ["toutou", "minou"]
     }
 };
+
+const SOUS = {
+    COURSES: [["Pharmacie", /pharmac|medicament|ordonnance/], ["Marché", /marche/], ["Boulangerie", /boulang|\bpain\b|croissant/], ["Colis ou poste", /colis|poste|lettre recommandee/], ["Supermarché", /supermarche|hypermarche|carrefour|monoprix|franprix|intermarche|auchan|leclerc|lidl|casino/]],
+    MENAGE: [["Vitres", /vitre|fenetre/], ["Salle de bain", /salle de bain|douche|toilettes|wc/], ["Linge et repassage", /linge|repass|lessive|draps/], ["Rangement", /rang/], ["Cuisine", /cuisine|vaisselle/]],
+    BRICOLAGE: [["Ampoule", /ampoule|lampe/], ["Meuble à monter", /meuble|monter/], ["Étagère ou tableau", /etagere|tableau|cadre|accroch/], ["Petite fuite", /fuite|robinet/], ["Rideaux", /rideau|tringle|store/]],
+    INFORMATIQUE: [["Appel vidéo", /visio|appel video|zoom|skype|whatsapp/], ["Imprimante", /imprim/], ["Tablette", /tablette|ipad/], ["Internet et mails", /internet|mail|wifi|box|doctolib|ameli/], ["Téléphone", /telephone|portable|smartphone|sms/]],
+    JARDINAGE: [["Tonte", /tond|pelouse|gazon/], ["Taille", /taill|haie|rosier/], ["Arrosage", /arros/], ["Potager", /potager|legume|semis/], ["Balcon et plantes", /balcon|plante|fleur|rempot/]],
+    CUISINE: [["Pâtisserie", /gateau|patisserie|tarte/], ["Plats d'avance", /d avance|pour la semaine|congel/], ["Repas du soir", /soir|diner/], ["Repas du midi", /midi|dejeuner/]],
+    COMPAGNIE: [["Jeux de société", /jeu|jouer|cartes|scrabble|belote|domino/], ["Lecture", /lecture|lire|livre|journal/], ["Café ou goûter", /cafe|gouter|\bthe\b/], ["Appel téléphonique", /telephone|appel/], ["Discussion", /discut|parler|bavard|papot|convers|seul/]],
+    SORTIES: [["Rendez-vous médical", /medecin|docteur|dentiste|kine|hopital|medical/], ["Banque ou mairie", /banque|mairie|poste/], ["Sortie culturelle", /cinema|musee|theatre|concert|expo/], ["Promenade", /promen|balade|tour|parc/]],
+    PAPIERS: [["Impôts", /impot/], ["Formulaire", /formulaire|dossier|caf|cpam|retraite|mutuelle/], ["Rendez-vous en ligne", /rendez-vous en ligne|doctolib|en ligne/], ["Classer les papiers", /classer|ranger/], ["Courrier", /courrier|lettre/]],
+    ANIMAUX: [["Promener le chien", /promen|sortir le chien|sortir mon chien|balade/], ["Nourrir le chat", /nourri|croquette|litiere/], ["Vétérinaire", /veterinaire|veto/], ["Garde", /gard|vacances|absent/]]
+};
+
+const MOIS = ["janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"];
 
 const MOMENTS = [
     [/fin de matinee/, "10:30", "12:30", "en fin de matinée"],
@@ -90,6 +125,43 @@ const ajouter = (debut, minutes) => {
 
 const jourDans = (decalage, maintenant) => JOURS[(maintenant.getDay() + 6 + decalage) % 7];
 
+const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+const dansJours = (decalage, maintenant) => {
+    const d = new Date(maintenant);
+    d.setHours(12, 0, 0, 0);
+    d.setDate(d.getDate() + decalage);
+    return iso(d);
+};
+
+const jourDeDate = (texte) => JOURS[(new Date(`${texte}T12:00:00`).getDay() + 6) % 7];
+
+const ecartJusqua = (jour, maintenant, exclureAujourdhui) => {
+    const ecart = (JOURS.indexOf(jour) - ((maintenant.getDay() + 6) % 7) + 7) % 7;
+    return ecart === 0 && exclureAujourdhui ? 7 : ecart;
+};
+
+const dateDans = (t, maintenant) => {
+    const m = t.match(/\b(?:le\s+)?(\d{1,2})(?:\s*(?:er)?\s+(janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)|\s*\/\s*(\d{1,2}))/) || t.match(/\ble\s+(\d{1,2})(?:er)?\b(?!\s*(?:h|heures?|km|m\b|min))/);
+    if (!m) return "";
+    const jour = Number(m[1]);
+    const mois = m[2] ? MOIS.indexOf(m[2]) : m[3] ? Number(m[3]) - 1 : null;
+    if (jour < 1 || jour > 31 || (mois !== null && (mois < 0 || mois > 11))) return "";
+    const aujourdhui = new Date(maintenant);
+    aujourdhui.setHours(12, 0, 0, 0);
+    let d = new Date(aujourdhui.getFullYear(), mois === null ? aujourdhui.getMonth() : mois, jour, 12);
+    if (d < aujourdhui && mois === null) d = new Date(aujourdhui.getFullYear(), aujourdhui.getMonth() + 1, jour, 12);
+    else if (d < aujourdhui) d = new Date(aujourdhui.getFullYear() + 1, mois, jour, 12);
+    if (d.getDate() !== jour) return "";
+    return iso(d);
+};
+
+export const sousServiceDans = (service, texte) => {
+    const t = normaliser(texte);
+    const trouve = (SOUS[service] || []).find(([, motif]) => motif.test(t));
+    return trouve ? trouve[0] : "";
+};
+
 const heuresDans = (t) => {
     const apresMidi = /apres[- ]?midi|du soir/.test(t);
     return [...t.matchAll(/\b(\d{1,2})\s*(?:h|heures?)\s*(\d{2})?\b/g)]
@@ -116,14 +188,34 @@ export const analyser = (texte, maintenant = new Date()) => {
     const meilleur = Object.entries(s).sort((a, b) => b[1] - a[1])[0];
     if (meilleur) trouve.service = meilleur[0];
 
+    if (trouve.service) {
+        const sous = sousServiceDans(trouve.service, t);
+        if (sous) trouve.sous = sous;
+    }
+
+    const precise = dateDans(t, maintenant);
     const jour = JOURS.find((j) => new RegExp(`\\b${j.toLowerCase()}s?\\b`).test(t));
-    if (jour) trouve.jour = jour;
-    else if (/apres[- ]demain/.test(t)) trouve.jour = jourDans(2, maintenant);
-    else if (/\bdemain\b/.test(t)) trouve.jour = jourDans(1, maintenant);
-    else if (/aujourd hui|ce jour|\bce matin\b|\bcet apres[- ]?midi\b|\bcet aprem\b|\bce midi\b|\bce soir\b/.test(t) || URGENT.test(t)) {
+    if (precise) {
+        trouve.date = precise;
+        trouve.jour = jourDeDate(precise);
+        if (precise === dansJours(0, maintenant)) trouve.aujourdhui = true;
+    } else if (jour) {
+        trouve.jour = jour;
+        trouve.date = dansJours(ecartJusqua(jour, maintenant, true), maintenant);
+    } else if (/apres[- ]demain/.test(t)) {
+        trouve.jour = jourDans(2, maintenant);
+        trouve.date = dansJours(2, maintenant);
+    } else if (/\bdemain\b/.test(t)) {
+        trouve.jour = jourDans(1, maintenant);
+        trouve.date = dansJours(1, maintenant);
+    } else if (/aujourd hui|ce jour|\bce matin\b|\bcet apres[- ]?midi\b|\bcet aprem\b|\bce midi\b|\bce soir\b/.test(t) || URGENT.test(t)) {
         trouve.jour = jourDans(0, maintenant);
+        trouve.date = dansJours(0, maintenant);
         trouve.aujourdhui = true;
-    } else if (/week-?end/.test(t)) trouve.jour = "SAMEDI";
+    } else if (/week-?end/.test(t)) {
+        trouve.jour = "SAMEDI";
+        trouve.date = dansJours(ecartJusqua("SAMEDI", maintenant, false), maintenant);
+    }
 
     const heures = heuresDans(t);
     if (heures.length >= 2 && heures[1] > heures[0]) {
@@ -149,7 +241,7 @@ export const analyser = (texte, maintenant = new Date()) => {
 };
 
 export const resumer = (compris) => {
-    const quand = compris.jour ? (compris.aujourdhui ? `aujourd'hui (${NOMS_JOURS[compris.jour].toLowerCase()})` : NOMS_JOURS[compris.jour].toLowerCase()) : "";
+    const quand = compris.jour ? (compris.aujourdhui ? `aujourd'hui (${NOMS_JOURS[compris.jour].toLowerCase()})` : compris.date ? texteJour(compris.date).toLowerCase() : NOMS_JOURS[compris.jour].toLowerCase()) : "";
     const heures = compris.heureDebut ? `${compris.moment ? `${compris.moment}, ` : ""}${compris.heureDebut}-${compris.heureFin}` : "";
     return [quand, heures].filter(Boolean).join(" · ");
 };

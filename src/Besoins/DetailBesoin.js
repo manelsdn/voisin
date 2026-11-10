@@ -6,7 +6,7 @@ import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
 import { changerStatutBesoin, lireBesoin, maProposition, pointDeRecherche, proposerAide, propositionsDuBesoin } from "../services/api";
 import { distanceKm } from "../services/geo";
-import { STATUTS_BESOIN, depuis, nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { STATUTS_BESOIN, depuis, nomComplet, texteDistance, texteQuand } from "../services/constantes";
 
 const DetailBesoin = () => {
     const { id } = useParams();
@@ -67,7 +67,7 @@ const DetailBesoin = () => {
     };
 
     return (
-        <Ecran retour={auteur ? "/besoins" : "/recherche"} titre={<>{nomService(besoin.service)} <br />pour {besoin.beneficiairePrenom}</>}>
+        <Ecran retour={auteur ? "/besoins" : "/recherche"} titre={<>{nomComplet(besoin.service, besoin.sousService)} <br />pour {besoin.beneficiairePrenom}</>}>
             <BanniereService code={besoin.service} />
             <div className="besoin-meta">
                 <em className={`statut ${besoin.statut === "OUVERTE" ? "ACCEPTEE" : "ANNULEE"}`}>{STATUTS_BESOIN[besoin.statut]}</em>
@@ -76,7 +76,7 @@ const DetailBesoin = () => {
             </div>
             <div className="detail-box">
                 <p className="besoin-texte">{besoin.description}</p>
-                <div className="text-row"><span><Icone nom="clock" /> Quand</span><strong>{besoin.creneau ? texteCreneau(besoin.creneau) : "À convenir ensemble"}</strong></div>
+                <div className="text-row"><span><Icone nom="clock" /> Quand</span><strong>{besoin.creneau || besoin.date ? texteQuand(besoin.creneau, besoin.date) : "À convenir ensemble"}</strong></div>
                 {pourQuelquun && <div className="text-row"><span><Icone nom="users" /> Publiée par</span><strong>{besoin.auteurPrenom}, pour {besoin.beneficiairePrenom}</strong></div>}
             </div>
 

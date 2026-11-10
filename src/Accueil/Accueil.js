@@ -4,7 +4,7 @@ import { useSession } from "../composants/Session";
 import { Avatar, IconesServices, Navigation } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { avisEnAttente, besoinsProches, dateDuJour, likesDuJeune, mesDemandes, pointDeRecherche, rechercherJeunes } from "../services/api";
-import { ROLES, SERVICES, iconeService, nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { ROLES, SERVICES, iconeService, nomComplet, nomService, texteDistance, texteQuand } from "../services/constantes";
 
 const heureCourte = (h) => {
     const [heures, minutes] = String(h || "").split(":");
@@ -144,7 +144,7 @@ const Accueil = () => {
                         <div key={d.id} className="bandeau-boite">
                             <Link className="bandeau-attente bandeau-recue" to={`/demandes/${d.id}`}>
                                 <span className="bandeau-point" aria-hidden="true" />
-                                <span><strong>{d.beneficiairePrenom} vous demande de l'aide</strong>{nomService(d.service)} · {texteCreneau(d.creneau)}{d.distanceKm != null ? ` · ${texteDistance(d.distanceKm)}` : ""}</span>
+                                <span><strong>{d.beneficiairePrenom} vous demande de l'aide</strong>{nomComplet(d.service, d.sousService)} · {texteQuand(d.creneau, d.dateSouhaitee)}{d.distanceKm != null ? ` · ${texteDistance(d.distanceKm)}` : ""}</span>
                             </Link>
                             {fermer(`recue-${d.id}`)}
                         </div>
@@ -215,7 +215,7 @@ const Accueil = () => {
                                     <div key={b.id} role="listitem"><Link className="carte-une" to={`/besoins/${b.id}`}>
                                         <span className="carte-une-image"><img src={`/assets/services/plein/${b.service.toLowerCase()}.jpg`} alt="" /><em>{texteDistance(b.distance)}</em></span>
                                         <strong>{b.beneficiairePrenom}</strong>
-                                        <small>{nomService(b.service)} · {b.creneau ? texteCreneau(b.creneau) : "quand vous voulez"}</small>
+                                        <small>{nomComplet(b.service, b.sousService)} · {b.creneau || b.date ? texteQuand(b.creneau, b.date) : "quand vous voulez"}</small>
                                     </Link></div>
                                 ))
                                 : une.map((j) => (

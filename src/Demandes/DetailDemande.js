@@ -4,7 +4,7 @@ import { useSession } from "../composants/Session";
 import { Astuce, BanniereService, Ecran, EtatService, Etapes, Indice, LienBouton, Message, prochaineEtape } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { infosLocales, laisserAvis, lireAvis, lireDemande, lireRendezVous, repondreDemande, terminerDemande } from "../services/api";
-import { nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { nomComplet, nomService, texteDistance, texteQuand } from "../services/constantes";
 import { texteDate } from "../services/geo";
 
 const DetailDemande = () => {
@@ -84,8 +84,8 @@ const DetailDemande = () => {
             <BanniereService code={demande.service} />
             <span className="mini-eyebrow">{entete}</span>
             <div className="detail-box">
-                <h2 className="sous-titre">{nomService(demande.service)}</h2>
-                <p>{texteCreneau(demande.creneau)} · {texteDate(demande.dateSouhaitee)}</p>
+                <h2 className="sous-titre">{nomComplet(demande.service, demande.sousService)}</h2>
+                <p>{texteQuand(demande.creneau, demande.dateSouhaitee)}</p>
                 <p><EtatService statut={demande.statut} estJeune={estJeune} /></p>
                 <Etapes statut={demande.statut} />
                 <div className="text-row numero"><span><Icone nom="phone" /> Numéro</span><strong>{numero ? <a href={`tel:${numero.replace(/\s/g, "")}`}>{numero}</a> : demande.statut === "TERMINEE" ? "Masqué, service terminé" : "Visible après acceptation"}</strong></div>

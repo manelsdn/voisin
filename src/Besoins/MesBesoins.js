@@ -4,7 +4,7 @@ import { useSession } from "../composants/Session";
 import { Ecran } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { mesBesoins, propositionsDuBesoin } from "../services/api";
-import { STATUTS_BESOIN, depuis, iconeService, imageService, nomService, texteCreneau } from "../services/constantes";
+import { STATUTS_BESOIN, depuis, iconeService, imageService, nomComplet, texteQuand } from "../services/constantes";
 
 const MesBesoins = () => {
     const { utilisateur } = useSession();
@@ -31,8 +31,8 @@ const MesBesoins = () => {
                     <Link key={b.id} to={`/besoins/${b.id}`} className="carte-profil carte-besoin">
                         <span className="carte-photo carte-service"><img src={imageService(b.service)} alt="" /><i><Icone nom={iconeService(b.service)} /></i></span>
                         <span className="carte-corps">
-                            <span className="carte-ligne"><strong>{nomService(b.service)} pour {b.beneficiairePrenom}</strong></span>
-                            <small>{depuis(b.creeAt)}{b.creneau ? ` · ${texteCreneau(b.creneau)}` : ""}</small>
+                            <span className="carte-ligne"><strong>{nomComplet(b.service, b.sousService)} pour {b.beneficiairePrenom}</strong></span>
+                            <small>{depuis(b.creeAt)}{b.creneau || b.date ? ` · ${texteQuand(b.creneau, b.date)}` : ""}</small>
                             <span className="carte-bas"><em className={`statut ${b.statut === "OUVERTE" ? "ACCEPTEE" : "ANNULEE"}`}>{STATUTS_BESOIN[b.statut]}</em><em>{b.propositions} proposition{b.propositions > 1 ? "s" : ""}</em></span>
                         </span>
                         <Icone nom="chevron" />

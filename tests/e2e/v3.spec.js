@@ -214,3 +214,27 @@ test("Carte : recherche précise avec la barre au-dessus de la carte", async ({ 
     await expect(page.locator('select[name="jour"]')).toHaveValue("SAMEDI");
     await expect(page.getByRole("region", { name: "Carte des jeunes disponibles" })).toBeVisible();
 });
+
+test("Catégories : nouvelles catégories, sous-catégorie et vraie date dans la demande", async ({ page }) => {
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/besoins/nouveau");
+    for (const nom of ["Compagnie", "Sorties", "Papiers", "Animaux"]) await expect(page.getByRole("button", { name: nom, exact: true })).toBeVisible();
+    await page.getByLabel(/Décrivez votre besoin/).fill("Accompagner chez le médecin samedi prochain à 10h");
+    await expect(page.getByRole("button", { name: "Sorties", exact: true })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("group", { name: "Précision du besoin" }).getByRole("button", { name: "Rendez-vous médical" })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByLabel("Date").locator("option:checked")).toHaveText(/^Samedi \d+/);
+    await page.getByRole("button", { name: /Publier mon annonce/ }).click();
+    await expect(page.getByRole("heading", { name: /Sorties · Rendez-vous médical/ })).toBeVisible();
+    await expect(page.getByText(/Samedi \d+ \S+, 10:00-12:00/)).toBeVisible();
+    await page.goto("/jeunes/jeune-01");
+    await page.getByRole("link", { name: "Envoyer une demande" }).click();
+    await page.getByRole("group", { name: "Précision du besoin" }).getByRole("button", { name: "Pharmacie" }).click();
+    const date = page.getByLabel("Quel jour ?");
+    await expect(date.locator("option")).toHaveCount(4);
+    await date.selectOption({ index: 1 });
+    const choisie = (await date.locator("option:checked").textContent()).trim();
+    await page.getByRole("button", { name: /Envoyer la demande/ }).click();
+    await expect(page.getByText("Votre demande est envoyée !")).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Courses · Pharmacie avec/ })).toBeVisible();
+    await expect(page.getByText(choisie, { exact: false })).toBeVisible();
+});

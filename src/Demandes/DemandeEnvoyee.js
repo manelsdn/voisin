@@ -3,8 +3,7 @@ import { useParams } from "react-router-dom";
 import { Ecran, EtatService, Etapes, LienBouton } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { lireDemande } from "../services/api";
-import { nomService, texteCreneau } from "../services/constantes";
-import { texteDate } from "../services/geo";
+import { nomComplet, texteQuand } from "../services/constantes";
 
 const DemandeEnvoyee = () => {
     const { id } = useParams();
@@ -22,8 +21,8 @@ const DemandeEnvoyee = () => {
             </div>
             {demande && (
                 <div className="detail-box">
-                    <h3>{nomService(demande.service)} avec {demande.jeunePrenom}</h3>
-                    <p>{texteCreneau(demande.creneau)} · {texteDate(demande.dateSouhaitee)}</p>
+                    <h3>{nomComplet(demande.service, demande.sousService)} avec {demande.jeunePrenom}</h3>
+                    <p>{texteQuand(demande.creneau, demande.dateSouhaitee)}</p>
                     <p><EtatService statut={demande.statut} estJeune={false} /></p>
                     <Etapes statut={demande.statut} />
                     <div className="text-row"><span><Icone nom="phone" /> Numéro de {demande.jeunePrenom}</span><strong>Visible après acceptation</strong></div>

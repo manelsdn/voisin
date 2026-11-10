@@ -6,8 +6,8 @@ import { Icone } from "../composants/Icones";
 import CarteJeunes from "./CarteJeunes";
 import Dictee from "../composants/Dictee";
 import { analyser, resumer } from "../services/dictee";
-import { besoinsProches, choisirPositionActuelle, classerJeunes, dateDuJour, pointDeRecherche, prevenirLesJeunes, rechercherJeunes } from "../services/api";
-import { JOURS, NOMS_JOURS, RAYONS, depuis, iconeService, imageService, nomService, texteCreneau, texteDistance } from "../services/constantes";
+import { besoinsProches, choisirPositionActuelle, classerJeunes, pointDeRecherche, prevenirLesJeunes, rechercherJeunes } from "../services/api";
+import { JOURS, NOMS_JOURS, RAYONS, depuis, iconeService, imageService, nomComplet, nomService, texteDistance, texteJour, texteQuand } from "../services/constantes";
 
 const CLE = "vdo-filtres";
 
@@ -25,10 +25,10 @@ export const CarteBesoin = ({ besoin }) => (
     <Link to={`/besoins/${besoin.id}`} className="carte-profil carte-besoin resultat">
         <span className="carte-photo carte-service"><img src={imageService(besoin.service)} alt="" /><i><Icone nom={iconeService(besoin.service)} /></i></span>
         <span className="carte-corps">
-            <span className="carte-ligne"><strong>{nomService(besoin.service)} pour {besoin.beneficiairePrenom}</strong></span>
+            <span className="carte-ligne"><strong>{nomComplet(besoin.service, besoin.sousService)} pour {besoin.beneficiairePrenom}</strong></span>
             <small>{texteDistance(besoin.distance)} · {besoin.ville} · {depuis(besoin.creeAt)}</small>
             <span className="carte-texte">{besoin.description}</span>
-            {besoin.creneau && <span className="carte-bas"><em>{texteCreneau(besoin.creneau)}</em></span>}
+            {(besoin.creneau || besoin.date) && <span className="carte-bas"><em>{texteQuand(besoin.creneau, besoin.date)}</em></span>}
         </span>
         <Icone nom="chevron" />
     </Link>
@@ -39,9 +39,9 @@ export const PostBesoin = ({ besoin }) => (
         <Link className="post-head resultat" to={`/besoins/${besoin.id}`}>
             <img className="carte-photo" src={`/assets/services/plein/${besoin.service.toLowerCase()}.jpg`} alt="" />
             <span>
-                <strong>{nomService(besoin.service)} pour {besoin.beneficiairePrenom}</strong>
+                <strong>{nomComplet(besoin.service, besoin.sousService)} pour {besoin.beneficiairePrenom}</strong>
                 <small>{texteDistance(besoin.distance)} · {besoin.ville} · {depuis(besoin.creeAt)}</small>
-                <em className="post-creneau">{besoin.creneau ? texteCreneau(besoin.creneau) : "Créneau à convenir"}</em>
+                <em className="post-creneau">{besoin.creneau || besoin.date ? texteQuand(besoin.creneau, besoin.date) : "Créneau à convenir"}</em>
             </span>
         </Link>
         <p className="post-text">{besoin.description}</p>
@@ -52,8 +52,8 @@ export const PostBesoin = ({ besoin }) => (
     </article>
 );
 
-const TITRE_BESOIN = (b) => `${nomService(b.service)} pour ${b.beneficiairePrenom}`;
-const DETAIL_BESOIN = (b) => `${texteDistance(b.distance)} · ${b.ville}`;
+const TITRE_BESOIN = (b) => `${nomComplet(b.service, b.sousService)} pour ${b.beneficiairePrenom}`;
+const DETAIL_BESOIN = (b) => [texteDistance(b.distance), b.ville, texteQuand(b.creneau, b.date)].filter(Boolean).join(" · ");
 const IMAGE_BESOIN = (b) => imageService(b.service);
 const LIEN_BESOIN = (b) => `/besoins/${b.id}`;
 
@@ -122,7 +122,7 @@ const Recherche = () => {
             setAide("Précisez le service, par exemple « mes courses », pour prévenir les jeunes.");
             return;
         }
-        const texte = besoin.texte || `Je cherche un jeune pour ${nomService(besoin.service).toLowerCase()}${besoin.jour ? ` le ${NOMS_JOURS[besoin.jour].toLowerCase()}` : ""}.`;
+        const texte = besoin.texte || `Je cherche un jeune pour ${nomService(besoin.service).toLowerCase()}${besoin.date ? ` le ${texteJour(besoin.date).toLowerCase()}` : besoin.jour ? ` le ${NOMS_JOURS[besoin.jour].toLowerCase()}` : ""}.`;
         setEnvoi(true);
         try {
             navigate(`/besoins/${await prevenirLesJeunes(utilisateur, besoin, texte)}`);
@@ -141,7 +141,7 @@ const Recherche = () => {
         if (!compris || !j.creneau) return `/jeunes/${j.id}`;
         const suite = new URLSearchParams({ creneau: j.creneau.id });
         if (compris.service) suite.set("service", compris.service);
-        if (compris.aujourdhui) suite.set("date", dateDuJour());
+        if (compris.date && j.creneau.jour === compris.jour) suite.set("date", compris.date);
         return `/jeunes/${j.id}?${suite}`;
     };
 
@@ -212,7 +212,7 @@ const Recherche = () => {
                             </div>
                             <Dictee ajouter={(t) => { setTexte(t); chercher(t); }} libelle="Le dire au micro" />
                             {compris && (
-                                <p className="devine assistant-compris" aria-live="polite"><Icone nom="sparkles" /><span>J'ai compris : <b>{[compris.service && nomService(compris.service), resumer(compris)].filter(Boolean).join(" · ")}</b></span><button type="button" onClick={() => manuel({ ...filtres, service: "", jour: "" })}>Effacer</button></p>
+                                <p className="devine assistant-compris" aria-live="polite"><Icone nom="sparkles" /><span>J'ai compris : <b>{[compris.service && nomService(compris.service), compris.sous, resumer(compris)].filter(Boolean).join(" · ")}</b></span><button type="button" onClick={() => manuel({ ...filtres, service: "", jour: "" })}>Effacer</button></p>
                             )}
                             <Message erreur={aide} />
                         </form>
@@ -225,7 +225,7 @@ const Recherche = () => {
                                 <Dictee compact ajouter={(t) => { setTexte(t); chercher(t); }} libelle="Rechercher au micro" />
                             </div>
                             {compris && (
-                                <p className="devine assistant-compris" aria-live="polite"><Icone nom="sparkles" /><span>J'ai compris : <b>{[compris.service && nomService(compris.service), resumer(compris)].filter(Boolean).join(" · ")}</b></span><button type="button" onClick={() => { setTexte(""); manuel({ ...filtres, service: "", jour: "" }); }}>Effacer</button></p>
+                                <p className="devine assistant-compris" aria-live="polite"><Icone nom="sparkles" /><span>J'ai compris : <b>{[compris.service && nomService(compris.service), compris.sous, resumer(compris)].filter(Boolean).join(" · ")}</b></span><button type="button" onClick={() => { setTexte(""); manuel({ ...filtres, service: "", jour: "" }); }}>Effacer</button></p>
                             )}
                             <Message erreur={aide} />
                         </form>

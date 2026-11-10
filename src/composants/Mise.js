@@ -133,7 +133,7 @@ export const BanniereService = ({ code }) => {
     return (
         <div className="service-banner">
             <DessinService code={code} />
-            <img className="service-banner-img" src={`/assets/services/${code.toLowerCase()}.svg`} alt="" />
+            <img className="service-banner-img" src={service.banniere || `/assets/services/${code.toLowerCase()}.svg`} alt="" />
         </div>
     );
 };

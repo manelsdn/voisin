@@ -20,7 +20,7 @@ test("US44 · Assistant : personne n'est libre, on prévient les jeunes sans éc
     await page.goto("/recherche");
     await page.getByLabel("Dites ce qu'il vous faut").fill("Un jeune pour monter un petit meuble de chevet vendredi soir");
     await page.getByRole("button", { name: "Chercher" }).click();
-    await expect(page.locator(".assistant-compris")).toContainText("Bricolage · vendredi · le soir, 18:00-20:00");
+    await expect(page.locator(".assistant-compris")).toContainText(/Bricolage · Meuble à monter · vendredi \d+ \S+ · le soir, 18:00-20:00/);
     await expect(page.getByText("Personne n'est libre le vendredi pour bricolage.")).toBeVisible();
     await page.getByRole("button", { name: "Prévenir les jeunes du quartier" }).click();
     await expect(page.getByRole("heading", { name: /Bricolage/ })).toBeVisible();
@@ -38,7 +38,7 @@ test("Assistant : « mes courses samedi matin » montre les jeunes libres, la de
     await expect(page.getByLabel("Dites ce qu'il vous faut")).toBeFocused();
     await page.getByLabel("Dites ce qu'il vous faut").fill("je cherche un jeune pour mes courses samedi matin");
     await page.getByLabel("Dites ce qu'il vous faut").press("Enter");
-    await expect(page.locator(".assistant-compris")).toContainText("Courses · samedi · le matin, 09:00-12:00");
+    await expect(page.locator(".assistant-compris")).toContainText(/Courses · samedi \d+ \S+ · le matin, 09:00-12:00/);
     const premier = page.locator(".carte-profil").first();
     await expect(premier).toContainText("Libre le samedi");
     for (const t of await page.locator(".carte-raisons em:first-child").allTextContents()) expect(t).toMatch(/^Libre le samedi/);
@@ -73,7 +73,7 @@ test("US44 · Publier une annonce de besoin : obligatoire de choisir un service 
     await expect(page.getByRole("alert")).toContainText("Choisissez le service");
     await page.getByRole("button", { name: "Bricolage" }).click();
     await page.getByLabel(/Décrivez votre besoin/).fill("Monter un petit meuble de chevet chez Madeleine.");
-    await page.getByLabel("Jour").selectOption("SAMEDI");
+    await page.getByLabel("Date").selectOption({ label: await page.getByLabel("Date").locator("option", { hasText: /^Samedi/ }).first().textContent() });
     await page.getByRole("button", { name: /Publier mon annonce/ }).click();
     await expect(page.getByRole("heading", { name: /Bricolage/ })).toBeVisible();
     await expect(page.getByText("Pas encore de proposition.")).toBeVisible();
@@ -104,10 +104,10 @@ test("US46 · Dictée vocale dans l'annonce : le senior parle, l'annonce s'écri
     await page.getByRole("button", { name: /Dicter mon besoin/ }).click();
     await expect(page.getByLabel(/Décrivez votre besoin/)).toHaveValue(/^J'ai besoin de quelqu'un pour porter mes courses/);
     await expect(page.getByRole("button", { name: "Courses" })).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByLabel("Jour")).toHaveValue("SAMEDI");
+    await expect(page.getByLabel("Date").locator("option:checked")).toHaveText(/^Samedi/);
     await expect(page.getByLabel("Début")).toHaveValue("10:00");
     await expect(page.getByLabel("Fin")).toHaveValue("12:00");
-    await expect(page.getByText(/Rempli d'après votre texte/)).toContainText("Courses · Samedi · 10:00-12:00");
+    await expect(page.getByText(/Rempli d'après votre texte/)).toContainText(/Courses · Marché · Samedi \d+ \S+ · 10:00-12:00/);
     await page.getByRole("button", { name: "Bricolage" }).click();
     await page.getByLabel(/Décrivez votre besoin/).fill("Porter les courses");
     await expect(page.getByRole("button", { name: "Bricolage" })).toHaveAttribute("aria-pressed", "true");
@@ -152,7 +152,7 @@ test("US46 · Dictée vocale : le senior parle, l'assistant comprend le service,
     await page.goto("/recherche");
     await page.getByRole("button", { name: /Le dire au micro/ }).click();
     await expect(page.getByLabel("Dites ce qu'il vous faut")).toHaveValue(/porter mes courses/);
-    await expect(page.locator(".assistant-compris")).toContainText("Courses · samedi · 10:00-12:00");
+    await expect(page.locator(".assistant-compris")).toContainText(/Courses( · [^·]+)? · samedi \d+ \S+ · 10:00-12:00/);
     await expect(page.locator(".carte-profil").first()).toContainText("Libre le samedi");
 });
 
@@ -163,7 +163,7 @@ test("Dictée absente si le navigateur ne la gère pas, la saisie au clavier suf
     await expect(page.getByRole("button", { name: /Le dire au micro/ })).toHaveCount(0);
     await page.getByLabel("Dites ce qu'il vous faut").fill("Aider ma mère à faire un appel vidéo sur sa tablette lundi après-midi");
     await page.getByRole("button", { name: "Chercher" }).click();
-    await expect(page.locator(".assistant-compris")).toContainText("Informatique · lundi · l'après-midi, 14:00-17:00");
+    await expect(page.locator(".assistant-compris")).toContainText(/Informatique · Appel vidéo · lundi \d+ \S+ · l'après-midi, 14:00-17:00/);
     await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Courses" }).click();
     await expect(page.locator(".assistant-compris")).toHaveCount(0);
 });

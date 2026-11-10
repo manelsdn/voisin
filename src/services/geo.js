@@ -173,4 +173,21 @@ export const prochaineDate = (jour, depuis = new Date()) => {
     return d.toISOString().slice(0, 10);
 };
 
+export const prochainesDates = (jour, combien = 4, heureFin = "", depuis = new Date()) => {
+    const ordre = ["DIMANCHE", "LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI"];
+    const d = new Date(depuis);
+    const minute = d.getHours() * 60 + d.getMinutes();
+    const [h, m] = String(heureFin || "23:59").split(":").map(Number);
+    d.setHours(12, 0, 0, 0);
+    let ecart = (ordre.indexOf(jour) - d.getDay() + 7) % 7;
+    if (ecart === 0 && h * 60 + (m || 0) <= minute) ecart = 7;
+    d.setDate(d.getDate() + ecart);
+    const dates = [];
+    for (let i = 0; i < combien; i += 1) {
+        dates.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`);
+        d.setDate(d.getDate() + 7);
+    }
+    return dates;
+};
+
 export const texteDate = (iso) => iso ? new Date(iso + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }) : "";
