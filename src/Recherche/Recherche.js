@@ -203,33 +203,17 @@ const Recherche = () => {
                         </label>
                     )}
                     {refus && <p className="position-refus" role="status">{refus}</p>}
-                    {!estJeune && vue === "liste" && (
-                        <form className="assistant" onSubmit={(e) => { e.preventDefault(); chercher(texte); }}>
-                            <label className="assistant-titre" htmlFor="assistant-texte"><Icone nom="sparkles" />Dites ce qu'il vous faut</label>
-                            <div className="assistant-champ">
-                                <input id="assistant-texte" type="text" value={texte} onChange={(e) => setTexte(e.target.value)} placeholder="Ex : un jeune pour mes courses aujourd'hui" autoFocus={params.get("assistant") === "1"} />
-                                <button type="submit" aria-label="Chercher"><Icone nom="search" /></button>
-                            </div>
-                            <Dictee ajouter={(t) => { setTexte(t); chercher(t); }} libelle="Le dire au micro" />
-                            {compris && (
-                                <p className="devine assistant-compris" aria-live="polite"><Icone nom="sparkles" /><span>J'ai compris : <b>{[compris.service && nomService(compris.service), compris.sous, resumer(compris)].filter(Boolean).join(" · ")}</b></span><button type="button" onClick={() => manuel({ ...filtres, service: "", jour: "" })}>Effacer</button></p>
-                            )}
-                            <Message erreur={aide} />
-                        </form>
-                    )}
-                    {vue === "carte" && (
-                        <form className="recherche-carte" role="search" onSubmit={(e) => { e.preventDefault(); chercher(texte); }}>
-                            <div className="recherche-carte-champ">
-                                <Icone nom="search" />
-                                <input type="search" aria-label="Rechercher sur la carte" value={texte} onChange={(e) => setTexte(e.target.value)} placeholder={estJeune ? "Ex : courses samedi matin" : "Ex : courses demain matin"} enterKeyHint="search" />
-                                <Dictee compact ajouter={(t) => { setTexte(t); chercher(t); }} libelle="Rechercher au micro" />
-                            </div>
-                            {compris && (
-                                <p className="devine assistant-compris" aria-live="polite"><Icone nom="sparkles" /><span>J'ai compris : <b>{[compris.service && nomService(compris.service), compris.sous, resumer(compris)].filter(Boolean).join(" · ")}</b></span><button type="button" onClick={() => { setTexte(""); manuel({ ...filtres, service: "", jour: "" }); }}>Effacer</button></p>
-                            )}
-                            <Message erreur={aide} />
-                        </form>
-                    )}
+                    <form className="recherche-carte" role="search" onSubmit={(e) => { e.preventDefault(); chercher(texte); }}>
+                        <div className="recherche-carte-champ">
+                            <button type="submit" className="recherche-loupe" aria-label="Chercher"><Icone nom="search" /></button>
+                            <input type="search" aria-label={vue === "carte" ? "Rechercher sur la carte" : estJeune ? "Rechercher un besoin" : "Dites ce qu'il vous faut"} value={texte} onChange={(e) => setTexte(e.target.value)} placeholder={estJeune ? "Ex : courses samedi matin" : "Ex : courses demain matin"} enterKeyHint="search" autoFocus={params.get("assistant") === "1"} />
+                            <Dictee compact ajouter={(t) => { setTexte(t); chercher(t); }} libelle="Le dire au micro" />
+                        </div>
+                        {compris && (
+                            <p className="devine assistant-compris" aria-live="polite"><Icone nom="sparkles" /><span>J'ai compris : <b>{[compris.service && nomService(compris.service), compris.sous, resumer(compris)].filter(Boolean).join(" · ")}</b></span><button type="button" onClick={() => { setTexte(""); manuel({ ...filtres, service: "", jour: "" }); }}>Effacer</button></p>
+                        )}
+                        <Message erreur={aide} />
+                    </form>
                     <div className="filtres-ligne filtres-rangee">
                         <label><span className="sr-only">Distance</span><select name="rayon" value={filtres.rayon} onChange={changer("rayon")}>{RAYONS.map((r) => <option key={r} value={r}>{"< "}{texteRayon(r)}</option>)}</select></label>
                         {!estJeune && <label><span className="sr-only">Disponibilité</span><select name="jour" value={filtres.jour} onChange={changer("jour")}><option value="">Tous les jours</option>{JOURS.map((j) => <option key={j} value={j}>{NOMS_JOURS[j]}</option>)}</select></label>}
@@ -261,10 +245,10 @@ const Recherche = () => {
                     <div className={estJeune ? "liste-cartes feed" : "liste-cartes"}>
                         {estJeune ? resultats.map((b) => <PostBesoin key={b.id} besoin={b} />) : resultats.map((j) => <CarteJeune key={j.id} jeune={j} raisons={compris ? j.raisons : null} lien={lienJeune(j)} ouvrir={() => ouvrirJeune(j)} />)}
                         {!estJeune && compris && <button type="button" className="carte-publier" disabled={envoi} onClick={prevenir}><Icone nom="plus" /><span><strong>Personne ne vous convient ?</strong><small>Prévenez les jeunes du quartier, ils vous proposeront leur aide.</small></span></button>}
-                        {!estJeune && !compris && <Link className="carte-publier" to="/besoins/nouveau"><Icone nom="plus" /><span><strong>Vous ne trouvez pas ?</strong><small>Publiez votre besoin, les jeunes du quartier vous proposeront leur aide.</small></span></Link>}
                     </div>
                 )}
             </main>
+            {!estJeune && vue === "liste" && <Link className="fab" to={filtres.service ? `/besoins/nouveau?service=${filtres.service}` : "/besoins/nouveau"}><Icone nom="plus" /><span>Publier un besoin</span></Link>}
             <Navigation />
         </div>
     );

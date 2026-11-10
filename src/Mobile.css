@@ -757,3 +757,6 @@
 @media (prefers-reduced-motion:reduce){#vdo .dictee-mini.actif{animation:none}}
 #vdo .sous-services{display:flex;flex-wrap:wrap;gap:8px}
 #vdo .sous-services .puce{min-height:42px;padding:6px 14px;font-size:14.5px}
+#vdo .recherche-loupe{flex:none;display:grid;place-items:center;width:32px;height:40px;min-height:40px;margin:0 -4px 0 -6px;padding:0;border:0;background:none;color:#5d5574;cursor:pointer}
+#vdo .recherche-loupe .icon{width:19px;height:19px}
+#vdo .explorer .liste-cartes{padding-bottom:170px}
