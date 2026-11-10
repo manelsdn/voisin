@@ -249,6 +249,7 @@ const Recherche = () => {
                 )}
             </main>
             {!estJeune && vue === "liste" && <Link className="fab" to={filtres.service ? `/besoins/nouveau?service=${filtres.service}` : "/besoins/nouveau"}><Icone nom="plus" /><span>Publier un besoin</span></Link>}
+            {estJeune && vue === "liste" && <Link className="fab" to="/annonce"><Icone nom="plus" /><span>{utilisateur.annoncePubliee ? "Mon annonce" : "Publier mon annonce"}</span></Link>}
             <Navigation />
         </div>
     );

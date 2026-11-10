@@ -249,8 +249,8 @@ test("Annonce jeune : on ajoute plusieurs dates, le formulaire se vide après ch
     for (const [index, debut, fin] of [[2, "10:00", "11:30"], [5, "14:00", "16:00"]]) {
         await date.selectOption({ index });
         textes.push((await date.locator("option:checked").textContent()).trim());
-        await page.getByLabel("Début").selectOption(debut);
-        await page.getByLabel("Fin").selectOption(fin);
+        await page.getByLabel("Début").fill(debut);
+        await page.getByLabel("Fin").fill(fin);
         await page.getByRole("button", { name: "Ajouter ce créneau" }).click();
         await expect(date).toHaveValue("");
         await expect(page.getByLabel("Début")).toHaveValue("");
