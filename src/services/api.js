@@ -562,11 +562,12 @@ export const publierBesoin = async (utilisateur, { service, sousService, date, j
 
 export const lireBesoin = (id) => s.lire("besoins", id);
 
-export const besoinsProches = async (position, { service = "", rayon = 2 } = {}) =>
+export const besoinsProches = async (position, { service = "", rayon = 2, jour = "" } = {}) =>
     (await s.chercher("besoins", "statut", "OUVERTE"))
         .map((b) => ({ ...b, distance: distanceKm(position, b) }))
         .filter((b) => !service || b.service === service)
         .filter((b) => !b.date || b.date >= dateDuJour())
+        .filter((b) => !jour || (b.creneau && b.creneau.jour === jour))
         .filter((b) => b.distance !== null && b.distance <= rayon)
         .sort((a, b) => a.distance - b.distance);
 

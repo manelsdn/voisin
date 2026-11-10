@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { ChoixHeure, Ecran, Indice, Message } from "../composants/Mise";
+import { ChoixHeure, Ecran, Indice, Message, auQuart } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
 import { analyser, servicesDans } from "../services/dictee";
@@ -57,8 +57,10 @@ const MonAnnonce = () => {
         if (!nouveau.date) throw new Error("Choisissez une date.");
         if (nouveau.date < aujourdhuiIso()) throw new Error("Cette date est déjà passée.");
         if (!nouveau.heureDebut || !nouveau.heureFin) throw new Error("Indiquez l'heure de début et l'heure de fin.");
-        if (nouveau.heureFin <= nouveau.heureDebut) throw new Error("L'heure de fin doit être après l'heure de début.");
-        const c = { jour: jourDe(nouveau.date), date: nouveau.date, heureDebut: nouveau.heureDebut, heureFin: nouveau.heureFin };
+        const debut = auQuart(nouveau.heureDebut);
+        const fin = auQuart(nouveau.heureFin);
+        if (fin <= debut) throw new Error("L'heure de fin doit être après l'heure de début.");
+        const c = { jour: jourDe(nouveau.date), date: nouveau.date, heureDebut: debut, heureFin: fin };
         if (creneaux.some((x) => memeCreneau(x, c))) throw new Error("Ce créneau est déjà dans la liste.");
         return { ...c, id: "d" + Date.now() };
     };

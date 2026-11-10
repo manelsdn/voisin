@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { Astuce, ChoixHeure, Ecran, Message, PucesServices } from "../composants/Mise";
+import { Astuce, ChoixHeure, Ecran, Message, PucesServices, auQuart } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
 import { dateDuJour, pointDeRecherche, publierBesoin } from "../services/api";
@@ -67,7 +67,7 @@ const NouveauBesoin = () => {
         setEnvoi(true);
         try {
             const jour = date ? jourDe(date) : "";
-            const id = await publierBesoin(utilisateur, { service, sousService: sous, date, jour, heureDebut: jour ? heureDebut : "", heureFin: jour ? heureFin : "", description });
+            const id = await publierBesoin(utilisateur, { service, sousService: sous, date, jour, heureDebut: jour ? auQuart(heureDebut) : "", heureFin: jour ? auQuart(heureFin) : "", description });
             navigate(`/besoins/${id}`, { replace: true });
         } catch (err) {
             setErreur(err.message);

@@ -261,3 +261,13 @@ test("Annonce jeune : on ajoute plusieurs dates, le formulaire se vide après ch
     await expect(page.getByText(`${textes[0]}, 10:00-11:30`)).toBeVisible();
     await expect(page.getByText(`${textes[1]}, 14:00-16:00`)).toBeVisible();
 });
+
+test("Filtres : distance en km et jour pour tout le monde", async ({ page }) => {
+    await connecter(page, "lucas.martin@exemple.fr");
+    await page.goto("/recherche");
+    await expect(page.getByLabel("Distance").locator("option")).toHaveText(["< 0,5 km", "< 1 km", "< 2 km"]);
+    await page.getByLabel("Disponibilité").selectOption("DIMANCHE");
+    await expect(page.getByText("Courses pour Henri")).toBeVisible();
+    await page.getByLabel("Disponibilité").selectOption("LUNDI");
+    await expect(page.getByText("Courses pour Henri")).toHaveCount(0);
+});

@@ -19,7 +19,7 @@ const lireMemo = () => {
     }
 };
 
-const texteRayon = (r) => (r < 1 ? `${r * 1000} m` : `${r} km`);
+const texteRayon = (r) => `${String(r).replace(".", ",")} km`;
 
 export const CarteBesoin = ({ besoin }) => (
     <Link to={`/besoins/${besoin.id}`} className="carte-profil carte-besoin resultat">
@@ -216,7 +216,7 @@ const Recherche = () => {
                     </form>
                     <div className="filtres-ligne filtres-rangee">
                         <label><span className="sr-only">Distance</span><select name="rayon" value={filtres.rayon} onChange={changer("rayon")}>{RAYONS.map((r) => <option key={r} value={r}>{"< "}{texteRayon(r)}</option>)}</select></label>
-                        {!estJeune && <label><span className="sr-only">Disponibilité</span><select name="jour" value={filtres.jour} onChange={changer("jour")}><option value="">Tous les jours</option>{JOURS.map((j) => <option key={j} value={j}>{NOMS_JOURS[j]}</option>)}</select></label>}
+                        <label><span className="sr-only">Disponibilité</span><select name="jour" value={filtres.jour} onChange={changer("jour")}><option value="">Tous les jours</option>{JOURS.map((j) => <option key={j} value={j}>{NOMS_JOURS[j]}</option>)}</select></label>
                         <PucesServices actif={filtres.service} choisir={(code) => manuel({ ...filtres, service: code })} />
                     </div>
                 </header>

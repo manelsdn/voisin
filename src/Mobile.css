@@ -760,9 +760,3 @@
 #vdo .recherche-loupe{flex:none;display:grid;place-items:center;width:32px;height:40px;min-height:40px;margin:0 -4px 0 -6px;padding:0;border:0;background:none;color:#5d5574;cursor:pointer}
 #vdo .recherche-loupe .icon{width:19px;height:19px}
 #vdo .explorer .liste-cartes{padding-bottom:170px}
-#vdo .choix-heure{display:grid;gap:6px;min-width:0}
-#vdo .choix-heure-titre{font:800 15px Nunito;color:#2A2140}
-#vdo .choix-heure-champs{display:flex;align-items:center;gap:6px}
-#vdo .choix-heure-champs{gap:4px}
-#vdo .choix-heure-champs select{flex:1;min-width:0;padding:0 20px 0 10px!important;background-position:right 5px center;font-size:17px}
-#vdo .choix-heure-champs b{font:800 16px Nunito;color:#2A2140}
