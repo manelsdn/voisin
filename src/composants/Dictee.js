@@ -10,7 +10,7 @@ const ERREURS = {
     "network": "La dictée a besoin d'internet, réessayez."
 };
 
-const Dictee = ({ ajouter, libelle = "Dicter au lieu d'écrire" }) => {
+const Dictee = ({ ajouter, libelle = "Dicter au lieu d'écrire", compact = false }) => {
     const [ecoute, setEcoute] = useState(false);
     const [provisoire, setProvisoire] = useState("");
     const [erreur, setErreur] = useState("");
@@ -59,6 +59,15 @@ const Dictee = ({ ajouter, libelle = "Dicter au lieu d'écrire" }) => {
             setEcoute(false);
         }
     };
+
+    if (compact) {
+        return (
+            <>
+                <button type="button" className={`dictee-mini${ecoute ? " actif" : ""}`} aria-pressed={ecoute} aria-label={ecoute ? "Arrêter la dictée" : libelle} onClick={basculer}><Icone nom="mic" /></button>
+                {(ecoute || erreur) && <p className={erreur ? "dictee-erreur dictee-note" : "dictee-provisoire dictee-note"} role="status">{erreur || (provisoire ? `${provisoire}…` : "Je vous écoute…")}</p>}
+            </>
+        );
+    }
 
     return (
         <div className="dictee">

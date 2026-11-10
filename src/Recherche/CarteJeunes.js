@@ -23,6 +23,7 @@ const CarteJeunes = ({ centre, jeunes, rayon, ouvrir, lienVers = LIEN, titre = T
     const zone = useRef(null);
     const carte = useRef(null);
     const couche = useRef(null);
+    const cadre = useRef(null);
 
     useEffect(() => {
         if (!zone.current || !centre || centre.latitude == null) return undefined;
@@ -33,7 +34,13 @@ const CarteJeunes = ({ centre, jeunes, rayon, ouvrir, lienVers = LIEN, titre = T
         }).addTo(c);
         carte.current = c;
         couche.current = L.layerGroup().addTo(c);
+        const suivi = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => {
+            c.invalidateSize();
+            if (cadre.current) c.fitBounds(cadre.current, { padding: [30, 30], maxZoom: 16 });
+        });
+        if (suivi) suivi.observe(zone.current);
         return () => {
+            if (suivi) suivi.disconnect();
             c.remove();
             carte.current = null;
         };
@@ -67,7 +74,9 @@ const CarteJeunes = ({ centre, jeunes, rayon, ouvrir, lienVers = LIEN, titre = T
             bulle.appendChild(ancre);
             marqueur.bindPopup(bulle).addTo(couche.current);
         });
-        if (points.length > 1) c.fitBounds(L.latLngBounds(points), { padding: [30, 30], maxZoom: 16 });
+        c.invalidateSize();
+        cadre.current = points.length > 1 ? L.latLngBounds(points) : null;
+        if (cadre.current) c.fitBounds(cadre.current, { padding: [30, 30], maxZoom: 16 });
         else c.setView(moi, 14);
     }, [centre, jeunes, rayon, ouvrir, lienVers, titre, detail, image, bouton]);
 

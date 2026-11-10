@@ -102,7 +102,7 @@ const Recherche = () => {
     const chercher = (phrase) => {
         const c = analyser(phrase);
         if (!c.service && !c.jour) {
-            setAide("Je n'ai pas compris le service. Essayez par exemple : « un jeune pour mes courses demain matin ».");
+            setAide(estJeune ? "Je n'ai pas compris. Essayez par exemple : « courses samedi matin »." : "Je n'ai pas compris le service. Essayez par exemple : « un jeune pour mes courses demain matin ».");
             return;
         }
         setAide("");
@@ -213,6 +213,19 @@ const Recherche = () => {
                             <Dictee ajouter={(t) => { setTexte(t); chercher(t); }} libelle="Le dire au micro" />
                             {compris && (
                                 <p className="devine assistant-compris" aria-live="polite"><Icone nom="sparkles" /><span>J'ai compris : <b>{[compris.service && nomService(compris.service), resumer(compris)].filter(Boolean).join(" · ")}</b></span><button type="button" onClick={() => manuel({ ...filtres, service: "", jour: "" })}>Effacer</button></p>
+                            )}
+                            <Message erreur={aide} />
+                        </form>
+                    )}
+                    {vue === "carte" && (
+                        <form className="recherche-carte" role="search" onSubmit={(e) => { e.preventDefault(); chercher(texte); }}>
+                            <div className="recherche-carte-champ">
+                                <Icone nom="search" />
+                                <input type="search" aria-label="Rechercher sur la carte" value={texte} onChange={(e) => setTexte(e.target.value)} placeholder={estJeune ? "Ex : courses samedi matin" : "Ex : courses demain matin"} enterKeyHint="search" />
+                                <Dictee compact ajouter={(t) => { setTexte(t); chercher(t); }} libelle="Rechercher au micro" />
+                            </div>
+                            {compris && (
+                                <p className="devine assistant-compris" aria-live="polite"><Icone nom="sparkles" /><span>J'ai compris : <b>{[compris.service && nomService(compris.service), resumer(compris)].filter(Boolean).join(" · ")}</b></span><button type="button" onClick={() => { setTexte(""); manuel({ ...filtres, service: "", jour: "" }); }}>Effacer</button></p>
                             )}
                             <Message erreur={aide} />
                         </form>

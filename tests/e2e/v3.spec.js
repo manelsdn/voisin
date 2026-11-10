@@ -203,3 +203,14 @@ test("Recherche sans assistant : personne ne correspond, on peut quand même pr�
     await expect(page.getByRole("heading", { name: /Cuisine/ })).toBeVisible();
     await expect(page.getByText("Je cherche un jeune pour cuisine le dimanche.")).toBeVisible();
 });
+
+test("Carte : recherche précise avec la barre au-dessus de la carte", async ({ page }) => {
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/recherche");
+    await page.getByRole("button", { name: "Carte" }).click();
+    await page.getByRole("searchbox", { name: "Rechercher sur la carte" }).fill("un jeune pour du bricolage samedi matin");
+    await page.keyboard.press("Enter");
+    await expect(page.getByText("J'ai compris")).toContainText("Bricolage");
+    await expect(page.locator('select[name="jour"]')).toHaveValue("SAMEDI");
+    await expect(page.getByRole("region", { name: "Carte des jeunes disponibles" })).toBeVisible();
+});
