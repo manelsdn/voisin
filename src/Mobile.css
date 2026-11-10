@@ -760,12 +760,3 @@
 #vdo .recherche-loupe{flex:none;display:grid;place-items:center;width:32px;height:40px;min-height:40px;margin:0 -4px 0 -6px;padding:0;border:0;background:none;color:#5d5574;cursor:pointer}
 #vdo .recherche-loupe .icon{width:19px;height:19px}
 #vdo .explorer .liste-cartes{padding-bottom:170px}
-#vdo .semaine-type{display:grid;grid-template-columns:auto repeat(7,minmax(0,1fr));gap:5px;align-items:center;margin:4px 0 12px}
-#vdo .semaine-ligne{display:contents}
-#vdo .semaine-jour{text-align:center;font:800 12.5px Nunito;color:#5d5574}
-#vdo .semaine-moment{padding-right:4px;font:800 12.5px Nunito;color:#2A2140;white-space:nowrap}
-#vdo .semaine-case{display:grid;place-items:center;height:42px;min-height:42px;padding:0;border:1.5px solid #e3d8e4;border-radius:12px!important;background:#fff;color:#fff;font:900 17px Nunito;cursor:pointer}
-#vdo .semaine-case[aria-pressed="true"]{background:#1FAF98;border-color:#1FAF98}
-#vdo .creneaux li>span{display:grid;gap:2px}
-#vdo .creneaux li>span small{font:700 12.5px Nunito;color:#5d5574}
-#vdo .creneau-perso-titre{margin:10px 0 0;font:800 14.5px Nunito;color:#2A2140}

@@ -239,25 +239,25 @@ test("Catégories : nouvelles catégories, sous-catégorie et vraie date dans la
     await expect(page.getByText(choisie, { exact: false })).toBeVisible();
 });
 
-test("Annonce jeune : semaine type en un toucher et créneau à une date précise", async ({ page }) => {
+test("Annonce jeune : on ajoute plusieurs dates, le formulaire se vide après chaque ajout", async ({ page }) => {
     await connecter(page, "lucas.martin@exemple.fr");
     await page.goto("/annonce");
-    const grille = page.getByRole("group", { name: "Semaine type" });
-    await grille.getByRole("button", { name: /^Mercredi après-midi/ }).click();
-    await grille.getByRole("button", { name: /^Vendredi soir/ }).click();
-    await expect(grille.getByRole("button", { name: /^Mercredi après-midi/ })).toHaveAttribute("aria-pressed", "true");
-    await expect(page.locator(".creneaux")).toContainText("Mercredi 14:00-17:00");
-    await expect(page.locator(".creneaux")).toContainText("Vendredi 18:00-20:00");
-    await page.getByLabel("Répétition").selectOption("UNE");
-    const date = page.locator('.form-stack select[name="date"]');
-    await date.selectOption({ index: 3 });
-    const choisie = (await date.locator("option:checked").textContent()).trim();
-    await page.getByLabel("Début").fill("10:00");
-    await page.getByLabel("Fin").fill("11:30");
-    await page.getByRole("button", { name: "Ajouter un autre créneau" }).click();
-    await expect(page.locator(".creneaux")).toContainText(`${choisie}, 10:00-11:30`);
-    await expect(page.locator(".creneaux")).toContainText("Une seule fois");
+    const date = page.locator('select[name="date"]');
+    await expect(date).toHaveValue("");
+    await expect(page.getByLabel("Début")).toHaveValue("");
+    const textes = [];
+    for (const [index, debut, fin] of [[2, "10:00", "11:30"], [5, "14:00", "16:00"]]) {
+        await date.selectOption({ index });
+        textes.push((await date.locator("option:checked").textContent()).trim());
+        await page.getByLabel("Début").fill(debut);
+        await page.getByLabel("Fin").fill(fin);
+        await page.getByRole("button", { name: "Ajouter ce créneau" }).click();
+        await expect(date).toHaveValue("");
+        await expect(page.getByLabel("Début")).toHaveValue("");
+    }
+    await expect(page.locator(".creneaux")).toContainText(`${textes[0]}, 10:00-11:30`);
+    await expect(page.locator(".creneaux")).toContainText(`${textes[1]}, 14:00-16:00`);
     await page.getByRole("button", { name: /Publier mon annonce|Mettre à jour mon annonce/ }).click();
-    await expect(page.getByText(`${choisie}, 10:00-11:30`)).toBeVisible();
-    await expect(page.getByText("Mercredi 14:00-17:00")).toBeVisible();
+    await expect(page.getByText(`${textes[0]}, 10:00-11:30`)).toBeVisible();
+    await expect(page.getByText(`${textes[1]}, 14:00-16:00`)).toBeVisible();
 });

@@ -216,5 +216,6 @@ test("US46 · Dictée pour le jeune aussi : il dicte son annonce, ses services e
     await expect(page.getByRole("button", { name: /Courses/ })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("button", { name: /Informatique/ })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByLabel("Début")).toHaveValue("09:00");
-    await expect(page.getByText(/Compris/)).toContainText("Samedi 09:00-12:00");
+    await expect(page.getByText(/Compris/)).toContainText(/Samedi \d+ \S+ 09:00-12:00/);
+    await expect(page.locator('select[name="date"] option:checked')).toHaveText(/^Samedi \d+/);
 });
