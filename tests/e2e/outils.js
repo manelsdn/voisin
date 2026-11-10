@@ -34,4 +34,14 @@ const verifierHeure = async (page, libelle, valeur) => {
     await expect(page.getByLabel(`${libelle} : minutes`)).toHaveValue(m);
 };
 
-module.exports = { donnees, preparer, connecter, deconnecter, remplirHeure, verifierHeure };
+const JOURS_TEST = ["DIMANCHE", "LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI"];
+
+const choisirJour = async (page, jour) => {
+    const champ = page.getByLabel("Disponibilité");
+    const valeurs = await champ.locator("option").evaluateAll((options) => options.map((o) => o.value).filter(Boolean));
+    const valeur = valeurs.find((v) => JOURS_TEST[new Date(`${v}T12:00:00`).getDay()] === jour);
+    await champ.selectOption(valeur);
+    return valeur;
+};
+
+module.exports = { donnees, preparer, connecter, deconnecter, remplirHeure, verifierHeure, choisirJour };

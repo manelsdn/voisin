@@ -1,5 +1,5 @@
 const { test, expect } = require("@playwright/test");
-const { preparer, connecter, deconnecter, donnees, remplirHeure, verifierHeure } = require("./outils");
+const { preparer, connecter, deconnecter, donnees, remplirHeure, verifierHeure, choisirJour } = require("./outils");
 
 test.beforeEach(async ({ page }) => preparer(page));
 
@@ -197,11 +197,11 @@ test("Recherche sans assistant : personne ne correspond, on peut quand même pr�
     await page.goto("/recherche");
     await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Cuisine" }).click();
     await page.getByLabel("Distance").selectOption("0.5");
-    await page.getByLabel("Disponibilité").selectOption("DIMANCHE");
+    await choisirJour(page, "DIMANCHE");
     await expect(page.getByText("Personne pour ces critères pour le moment.")).toBeVisible();
     await page.getByRole("button", { name: "Prévenir les jeunes du quartier" }).click();
     await expect(page.getByRole("heading", { name: /Cuisine/ })).toBeVisible();
-    await expect(page.getByText("Je cherche un jeune pour cuisine le dimanche.")).toBeVisible();
+    await expect(page.getByText(/Je cherche un jeune pour cuisine le dimanche \d+ \S+\./)).toBeVisible();
 });
 
 test("Carte : recherche précise avec la barre au-dessus de la carte", async ({ page }) => {
@@ -211,7 +211,7 @@ test("Carte : recherche précise avec la barre au-dessus de la carte", async ({ 
     await page.getByRole("searchbox", { name: "Rechercher sur la carte" }).fill("un jeune pour du bricolage samedi matin");
     await page.keyboard.press("Enter");
     await expect(page.getByText("J'ai compris")).toContainText("Bricolage");
-    await expect(page.locator('select[name="jour"]')).toHaveValue("SAMEDI");
+    await expect(page.locator('select[name="date"]').locator("option:checked")).toHaveText(/^(Samedi|Aujourd'hui|Demain)/);
     await expect(page.getByRole("region", { name: "Carte des jeunes disponibles" })).toBeVisible();
 });
 
@@ -266,8 +266,8 @@ test("Filtres : distance en km et jour pour tout le monde", async ({ page }) => 
     await connecter(page, "lucas.martin@exemple.fr");
     await page.goto("/recherche");
     await expect(page.getByLabel("Distance").locator("option")).toHaveText(["< 0,5 km", "< 1 km", "< 2 km"]);
-    await page.getByLabel("Disponibilité").selectOption("DIMANCHE");
+    await choisirJour(page, "DIMANCHE");
     await expect(page.getByText("Courses pour Henri")).toBeVisible();
-    await page.getByLabel("Disponibilité").selectOption("LUNDI");
+    await choisirJour(page, "LUNDI");
     await expect(page.getByText("Courses pour Henri")).toHaveCount(0);
 });

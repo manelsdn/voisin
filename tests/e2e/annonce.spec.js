@@ -1,5 +1,5 @@
 const { test, expect } = require("@playwright/test");
-const { preparer, connecter, deconnecter, remplirHeure } = require("./outils");
+const { preparer, connecter, deconnecter, remplirHeure, choisirJour } = require("./outils");
 
 test.beforeEach(async ({ page }) => preparer(page));
 
@@ -47,6 +47,6 @@ test("US08 US09 US10 · Annonce : un nouveau jeune publie et apparaît dans la r
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/recherche");
     await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Jardinage" }).click();
-    await page.getByLabel("Disponibilité").selectOption("DIMANCHE");
+    await choisirJour(page, "DIMANCHE");
     await expect(page.getByRole("link", { name: /Zinedine/ })).toBeVisible();
 });

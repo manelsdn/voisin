@@ -126,16 +126,19 @@ export const publierAnnonce = async (jeune, { services, disponibilites, descript
 
 export const retirerAnnonce = (jeune) => s.ecrire("users", jeune.id, { annoncePubliee: false });
 
-export const rechercherJeunes = async (position, { service = "", rayon = 2, jour = "" } = {}) => {
+export const rechercherJeunes = async (position, { service = "", rayon = 2, date = "" } = {}) => {
+    const jour = date ? JOURS_SEMAINE[new Date(`${date}T12:00:00`).getDay()] : "";
     const jeunes = await s.chercher("users", "role", "JEUNE");
     return jeunes
         .filter((j) => j.annoncePubliee)
         .map((j) => ({ ...j, disponibilites: creneauxActifs(j.disponibilites), distance: distanceKm(position, j) }))
         .filter((j) => !service || (j.services || []).includes(service))
-        .filter((j) => !jour || (j.disponibilites || []).some((d) => d.jour === jour))
+        .filter((j) => !date || (j.disponibilites || []).some((d) => (d.date ? d.date === date : d.jour === jour)))
         .filter((j) => j.distance !== null && j.distance <= rayon)
         .sort((a, b) => a.distance - b.distance);
 };
+
+const JOURS_SEMAINE = ["DIMANCHE", "LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI"];
 
 const prevenir = (de, a, texte, demandeId, type) =>
     s.ajouter("messages", { de: de.id, dePrenom: de.prenom, a: a.id, aPrenom: a.prenom, texte, evenement: { type, demandeId }, creeAt: new Date().toISOString() }).catch(() => null);
@@ -562,12 +565,12 @@ export const publierBesoin = async (utilisateur, { service, sousService, date, j
 
 export const lireBesoin = (id) => s.lire("besoins", id);
 
-export const besoinsProches = async (position, { service = "", rayon = 2, jour = "" } = {}) =>
+export const besoinsProches = async (position, { service = "", rayon = 2, date = "" } = {}) =>
     (await s.chercher("besoins", "statut", "OUVERTE"))
         .map((b) => ({ ...b, distance: distanceKm(position, b) }))
         .filter((b) => !service || b.service === service)
         .filter((b) => !b.date || b.date >= dateDuJour())
-        .filter((b) => !jour || (b.creneau && b.creneau.jour === jour))
+        .filter((b) => !date || !b.creneau || (b.date ? b.date === date : b.creneau.jour === JOURS_SEMAINE[new Date(`${date}T12:00:00`).getDay()]))
         .filter((b) => b.distance !== null && b.distance <= rayon)
         .sort((a, b) => a.distance - b.distance);
 

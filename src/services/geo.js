@@ -7,11 +7,6 @@ const CENTRES = {
     "69800" : [44.7177,4.5468]
 };
 
-const VILLES = [
-    "LYON", "VILLEURBANNE", "CALUIRE-ET-CUIRE", "VILLEFRANCHE-SUR-SAÔNE",
-    "VENISSIEUX" , "SAINT-PRIEST", "BRON", "OULLINS", "ECHALAS"
-];
-
 export const distanceKm = (a, b) => {
     if (!a || !b || a.latitude == null || b.latitude == null) return null;
     const r = 6371;
@@ -20,24 +15,6 @@ export const distanceKm = (a, b) => {
     const dLon = rad(b.longitude - a.longitude);
     const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.latitude)) * Math.cos(rad(b.latitude)) * Math.sin(dLon / 2) ** 2;
     return 2 * r * Math.asin(Math.sqrt(h));
-};
-
-// corrigé : petite fonction pour virer les accents et majuscules pour comparer les villes sans prise de tête
-const normaliser = (chaine) =>
-    String(chaine || "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-zA-Z0-9]/g, "")
-        .toUpperCase();
-
-// corrigé : check souple pour choper les arrondissements et variantes (genre Lyon 3e ou Villefranche)
-const estVilleCouverte = (nomVille) => {
-    const villeNorm = normaliser(nomVille);
-    if (!villeNorm) return false;
-    return VILLES.some((v) => {
-        const vNorm = normaliser(v);
-        return villeNorm.includes(vNorm) || vNorm.includes(villeNorm);
-    });
 };
 
 export const geocoder = async (arg1, arg2, arg3) => {
@@ -100,13 +77,6 @@ export const geocoder = async (arg1, arg2, arg3) => {
 
         // corrigé : si BAN trouve un bon score on prend direct les coordonnées GPS
         if (feature && feature.properties.score >= 0.45) {
-            const villeTrouvee = feature.properties.city || ville;
-            // corrigé : si l'adresse est bonne mais hors zone couverte on le dit direct
-            if (!estVilleCouverte(villeTrouvee) && !estVilleCouverte(ville)) {
-                const err = new Error(`La ville « ${villeTrouvee} » n'est pas couverte par nos services. Villes acceptées : Lyon, Villeurbanne, Caluire-et-Cuire, Villefranche-sur-Saône, Vénissieux, Saint-Priest, Bron, Oullins, Échalas.`);
-                err.type = "geocodage";
-                throw err;
-            }
             return {
                 latitude: feature.geometry.coordinates[1],
                 longitude: feature.geometry.coordinates[0]
@@ -144,14 +114,7 @@ export const geocoder = async (arg1, arg2, arg3) => {
             throw err;
         }
 
-        // corrigé : check D - la ville et le CP sont valides mais pas dans nos zones de service
         const communeTrouvee = dataLien.features[0].properties.city || ville;
-        if (!estVilleCouverte(communeTrouvee) && !estVilleCouverte(ville)) {
-            const err = new Error(`La ville « ${communeTrouvee} » n'est pas couverte par nos services. Villes acceptées : Lyon, Villeurbanne, Caluire-et-Cuire, Villefranche-sur-Saône, Vénissieux, Saint-Priest, Bron, Oullins, Échalas.`);
-            err.type = "geocodage";
-            throw err;
-        }
-
         // corrigé : check E - ville et CP ok, donc c'est forcément la rue ou le numéro qui est introuvable
         const err = new Error(`Adresse « ${adresse} » introuvable à ${communeTrouvee} (${codePostal}). Vérifiez le numéro et le nom de la rue.`);
         err.type = "geocodage";

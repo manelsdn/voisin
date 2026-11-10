@@ -7,7 +7,7 @@ import CarteJeunes from "./CarteJeunes";
 import Dictee from "../composants/Dictee";
 import { analyser, resumer } from "../services/dictee";
 import { besoinsProches, choisirPositionActuelle, classerJeunes, pointDeRecherche, prevenirLesJeunes, rechercherJeunes } from "../services/api";
-import { JOURS, NOMS_JOURS, RAYONS, depuis, iconeService, imageService, nomComplet, nomService, texteDistance, texteJour, texteQuand } from "../services/constantes";
+import { JOURS, NOMS_JOURS, RAYONS, aujourdhuiIso, depuis, iconeService, imageService, nomComplet, nomService, texteDistance, texteJour, texteQuand } from "../services/constantes";
 
 const CLE = "vdo-filtres";
 
@@ -17,6 +17,15 @@ const lireMemo = () => {
     } catch (e) {
         return {};
     }
+};
+
+const DATES_FILTRE = () => {
+    const premier = new Date(`${aujourdhuiIso()}T12:00:00`);
+    return Array.from({ length: 21 }, (_, i) => {
+        const d = new Date(premier);
+        d.setDate(d.getDate() + i);
+        return aujourdhuiIso(d);
+    });
 };
 
 const texteRayon = (r) => `${String(r).replace(".", ",")} km`;
@@ -64,7 +73,7 @@ const Recherche = () => {
     const [params] = useSearchParams();
     const navigate = useNavigate();
     const memo = lireMemo();
-    const [filtres, setFiltres] = useState({ service: params.get("service") || memo.service || "", rayon: RAYONS.includes(memo.rayon) ? memo.rayon : 2, jour: memo.jour || "" });
+    const [filtres, setFiltres] = useState({ service: params.get("service") || memo.service || "", rayon: RAYONS.includes(memo.rayon) ? memo.rayon : 2, date: memo.date && memo.date >= aujourdhuiIso() ? memo.date : "" });
     const [vue, setVue] = useState(params.get("vue") === "carte" ? "carte" : "liste");
     const [pour, setPour] = useState(null);
     const [position, setPosition] = useState(null);
@@ -108,7 +117,7 @@ const Recherche = () => {
         }
         setAide("");
         setCompris({ ...c, texte: phrase.trim() });
-        setFiltres({ ...filtres, rayon: 2, service: c.service || "", jour: c.jour || "" });
+        setFiltres({ ...filtres, rayon: 2, service: c.service || "", date: c.date || "" });
     };
 
     const manuel = (suite) => {
@@ -118,7 +127,7 @@ const Recherche = () => {
     };
 
     const prevenir = async () => {
-        const besoin = compris || { service: filtres.service, jour: filtres.jour };
+        const besoin = compris || { service: filtres.service, date: filtres.date, jour: filtres.date ? JOURS[(new Date(`${filtres.date}T12:00:00`).getDay() + 6) % 7] : "" };
         if (!besoin.service) {
             setAide("Précisez le service, par exemple « mes courses », pour prévenir les jeunes.");
             return;
@@ -134,8 +143,8 @@ const Recherche = () => {
     };
 
     const autresJours = () => {
-        setCompris({ ...compris, jour: "", aujourdhui: false, heureDebut: "", heureFin: "", moment: "" });
-        setFiltres({ ...filtres, jour: "" });
+        setCompris({ ...compris, jour: "", date: "", aujourdhui: false, heureDebut: "", heureFin: "", moment: "" });
+        setFiltres({ ...filtres, date: "" });
     };
 
     const lienJeune = (j) => {
@@ -211,13 +220,13 @@ const Recherche = () => {
                             <Dictee compact ajouter={(t) => { setTexte(t); chercher(t); }} libelle="Le dire au micro" />
                         </div>
                         {compris && (
-                            <p className="devine assistant-compris" aria-live="polite"><Icone nom="sparkles" /><span>J'ai compris : <b>{[compris.service && nomService(compris.service), compris.sous, resumer(compris)].filter(Boolean).join(" · ")}</b></span><button type="button" onClick={() => { setTexte(""); manuel({ ...filtres, service: "", jour: "" }); }}>Effacer</button></p>
+                            <p className="devine assistant-compris" aria-live="polite"><Icone nom="sparkles" /><span>J'ai compris : <b>{[compris.service && nomService(compris.service), compris.sous, resumer(compris)].filter(Boolean).join(" · ")}</b></span><button type="button" onClick={() => { setTexte(""); manuel({ ...filtres, service: "", date: "" }); }}>Effacer</button></p>
                         )}
                         <Message erreur={aide} />
                     </form>
                     <div className="filtres-ligne filtres-rangee">
                         <label><span className="sr-only">Distance</span><select name="rayon" value={filtres.rayon} onChange={changer("rayon")}>{RAYONS.map((r) => <option key={r} value={r}>{"< "}{texteRayon(r)}</option>)}</select></label>
-                        <label><span className="sr-only">Disponibilité</span><select name="jour" value={filtres.jour} onChange={changer("jour")}><option value="">Tous les jours</option>{JOURS.map((j) => <option key={j} value={j}>{NOMS_JOURS[j]}</option>)}</select></label>
+                        <label><span className="sr-only">Disponibilité</span><select name="date" value={filtres.date} onChange={changer("date")}><option value="">Toutes les dates</option>{DATES_FILTRE().map((d, i) => <option key={d} value={d}>{i === 0 ? "Aujourd'hui" : i === 1 ? "Demain" : texteJour(d)}</option>)}</select></label>
                         <PucesServices actif={filtres.service} choisir={(code) => manuel({ ...filtres, service: code })} />
                     </div>
                 </header>
