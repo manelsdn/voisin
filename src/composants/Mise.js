@@ -172,6 +172,12 @@ export const LienBouton = ({ to, children, secondaire, fleche }) => (
     </Link>
 );
 
+const HEURES = Array.from({ length: 31 }, (_, i) => `${String(7 + Math.floor(i / 2)).padStart(2, "0")}:${i % 2 ? "30" : "00"}`);
+
+export const ChoixHeure = ({ libelle, name, value, onChange, disabled }) => (
+    <label>{libelle}<select name={name} aria-label={libelle} value={value} disabled={disabled} onChange={onChange}><option value="">--:--</option>{[...new Set([...HEURES, ...(value ? [value] : [])])].sort().map((h) => <option key={h} value={h}>{h.replace(":", "h")}</option>)}</select></label>
+);
+
 export const Astuce = ({ icone = "heart", children }) => <p className="tip-note"><Icone nom={icone} /><span>{children}</span></p>;
 
 export const Indice = ({ icone = "heart", children }) => <div className="hint"><Icone nom={icone} /><span>{children}</span></div>;

@@ -538,6 +538,7 @@ export const publierBesoin = async (utilisateur, { service, sousService, date, j
     const texte = (description || "").trim();
     if (!texte) throw new Error("Décrivez votre besoin en quelques mots.");
     if (texte.length > 300) throw new Error("La description fait 300 caractères maximum.");
+    if (jour && Boolean(heureDebut) !== Boolean(heureFin)) throw new Error("Indiquez l'heure de début et l'heure de fin.");
     if (jour && heureDebut && heureFin && heureFin <= heureDebut) throw new Error("L'heure de fin doit être après l'heure de début.");
     const { personne } = await pointDeRecherche(utilisateur);
     return s.ajouter("besoins", {

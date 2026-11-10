@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { Ecran, Indice, Message } from "../composants/Mise";
+import { ChoixHeure, Ecran, Indice, Message } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
 import { analyser, servicesDans } from "../services/dictee";
@@ -142,8 +142,8 @@ const MonAnnonce = () => {
                     </ul>
                     <div className="trois">
                         <label>Date<select name="date" value={nouveau.date} onChange={changerNouveau("date")}><option value="">Choisir une date</option>{prochainsJours().map((d) => <option key={d} value={d}>{texteJour(d)}</option>)}</select></label>
-                        <label>Début<input name="heureDebut" type="time" value={nouveau.heureDebut} onChange={changerNouveau("heureDebut")} /></label>
-                        <label>Fin<input name="heureFin" type="time" value={nouveau.heureFin} onChange={changerNouveau("heureFin")} /></label>
+                        <ChoixHeure libelle="Début" name="heureDebut" value={nouveau.heureDebut} onChange={changerNouveau("heureDebut")} />
+                        <ChoixHeure libelle="Fin" name="heureFin" value={nouveau.heureFin} onChange={changerNouveau("heureFin")} />
                     </div>
                     <button type="button" className="secondary" onClick={ajouterCreneau}><Icone nom="plus" />Ajouter ce créneau</button>
                 </fieldset>

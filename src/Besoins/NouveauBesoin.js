@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
-import { Astuce, Ecran, Message, PucesServices } from "../composants/Mise";
+import { Astuce, ChoixHeure, Ecran, Message, PucesServices } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
 import { dateDuJour, pointDeRecherche, publierBesoin } from "../services/api";
@@ -26,8 +26,8 @@ const NouveauBesoin = () => {
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
     const [sous, setSous] = useState("");
-    const [heureDebut, setHeureDebut] = useState("10:00");
-    const [heureFin, setHeureFin] = useState("12:00");
+    const [heureDebut, setHeureDebut] = useState("");
+    const [heureFin, setHeureFin] = useState("");
     const [pour, setPour] = useState(null);
     const [manuel, setManuel] = useState({ service: !!params.get("service"), jour: false, sous: false });
     const [auto, setAuto] = useState({});
@@ -100,8 +100,8 @@ const NouveauBesoin = () => {
                     <legend>Quand ? (facultatif)</legend>
                     <div className="trois">
                         <label>Date<select name="date" value={date} onChange={(e) => { setDate(e.target.value); setManuel((m) => ({ ...m, jour: true })); }}><option value="">Peu importe</option>{[...new Set([...(date ? [date] : []), ...quinzeJours()])].sort().map((d) => <option key={d} value={d}>{d === dateDuJour() ? `Aujourd'hui, ${texteJour(d).toLowerCase()}` : texteJour(d)}</option>)}</select></label>
-                        <label>Début<input name="heureDebut" type="time" value={heureDebut} disabled={!date} onChange={(e) => { setHeureDebut(e.target.value); setManuel((m) => ({ ...m, jour: true })); }} /></label>
-                        <label>Fin<input name="heureFin" type="time" value={heureFin} disabled={!date} onChange={(e) => { setHeureFin(e.target.value); setManuel((m) => ({ ...m, jour: true })); }} /></label>
+                        <ChoixHeure libelle="Début" name="heureDebut" value={heureDebut} disabled={!date} onChange={(e) => { setHeureDebut(e.target.value); setManuel((m) => ({ ...m, jour: true })); }} />
+                        <ChoixHeure libelle="Fin" name="heureFin" value={heureFin} disabled={!date} onChange={(e) => { setHeureFin(e.target.value); setManuel((m) => ({ ...m, jour: true })); }} />
                     </div>
                 </fieldset>
                 <Astuce icone="pin">Votre adresse n'est jamais affichée : seule une distance approximative est visible.</Astuce>
