@@ -54,7 +54,8 @@ export const PostBesoin = ({ besoin }) => (
 
 const TITRE_BESOIN = (b) => `${nomComplet(b.service, b.sousService)} pour ${b.beneficiairePrenom}`;
 const DETAIL_BESOIN = (b) => [texteDistance(b.distance), b.ville, texteQuand(b.creneau, b.date)].filter(Boolean).join(" · ");
-const IMAGE_BESOIN = (b) => imageService(b.service);
+const IMAGE_BESOIN = (b) => b.beneficiairePhoto;
+const SERVICE_BESOIN = (b) => b.service;
 const LIEN_BESOIN = (b) => `/besoins/${b.id}`;
 
 const Recherche = () => {
@@ -236,7 +237,7 @@ const Recherche = () => {
                 {vue === "carte" && centre && resultats && (
                     <div className="explorer-plan">
                         {estJeune
-                            ? <CarteJeunes centre={centre} jeunes={resultats} rayon={filtres.rayon} ouvrir={ouvrir} lienVers={LIEN_BESOIN} titre={TITRE_BESOIN} detail={DETAIL_BESOIN} image={IMAGE_BESOIN} bouton="Voir l'annonce" region="Carte des besoins près de chez vous" />
+                            ? <CarteJeunes centre={centre} jeunes={resultats} rayon={filtres.rayon} ouvrir={ouvrir} lienVers={LIEN_BESOIN} titre={TITRE_BESOIN} detail={DETAIL_BESOIN} image={IMAGE_BESOIN} service={SERVICE_BESOIN} bouton="Voir l'annonce" region="Carte des besoins près de chez vous" />
                             : <CarteJeunes centre={centre} jeunes={resultats} rayon={filtres.rayon} ouvrir={ouvrir} />}
                     </div>
                 )}

@@ -760,3 +760,5 @@
 #vdo .recherche-loupe{flex:none;display:grid;place-items:center;width:32px;height:40px;min-height:40px;margin:0 -4px 0 -6px;padding:0;border:0;background:none;color:#5d5574;cursor:pointer}
 #vdo .recherche-loupe .icon{width:19px;height:19px}
 #vdo .explorer .liste-cartes{padding-bottom:170px}
+#vdo .pin-jeune.pin-icone{background:#1FAF98;border-color:#fff;color:#fff}
+#vdo .pin-jeune.pin-icone svg{width:20px;height:20px}

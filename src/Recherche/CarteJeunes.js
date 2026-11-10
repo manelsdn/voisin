@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
-import { nomService, texteDistance } from "../services/constantes";
-import { svgAvatar } from "../composants/Mise";
+import { iconeService, nomService, texteDistance } from "../services/constantes";
+import { svgIcone } from "../composants/Icones";
 
 const echapper = (t) => String(t || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -18,8 +18,9 @@ const LIEN = (j) => `/jeunes/${j.id}`;
 const TITRE = (j) => j.prenom;
 const DETAIL = (j) => `${texteDistance(j.distance)} · ${(j.services || []).map(nomService).join(", ")}`;
 const IMAGE = (j) => j.photoProfil;
+const SERVICE = (j) => (j.services || [])[0];
 
-const CarteJeunes = ({ centre, jeunes, rayon, ouvrir, lienVers = LIEN, titre = TITRE, detail = DETAIL, image = IMAGE, bouton = "Voir son profil", region = "Carte des jeunes disponibles" }) => {
+const CarteJeunes = ({ centre, jeunes, rayon, ouvrir, lienVers = LIEN, titre = TITRE, detail = DETAIL, image = IMAGE, service = SERVICE, bouton = "Voir son profil", region = "Carte des jeunes disponibles" }) => {
     const zone = useRef(null);
     const carte = useRef(null);
     const couche = useRef(null);
@@ -59,8 +60,8 @@ const CarteJeunes = ({ centre, jeunes, rayon, ouvrir, lienVers = LIEN, titre = T
             const p = positionFloue(j);
             points.push(p);
             const img = image(j);
-            const contenu = img ? `<img src="${echapper(img)}" alt="">` : svgAvatar(j);
-            const marqueur = L.marker(p, { icon: L.divIcon({ className: "", html: `<span class="pin-jeune">${contenu}</span>`, iconSize: [38, 38], iconAnchor: [19, 19] }), title: titre(j) });
+            const contenu = img ? `<img src="${echapper(img)}" alt="">` : svgIcone(iconeService(service(j)));
+            const marqueur = L.marker(p, { icon: L.divIcon({ className: "", html: `<span class="pin-jeune${img ? "" : " pin-icone"}">${contenu}</span>`, iconSize: [38, 38], iconAnchor: [19, 19] }), title: titre(j) });
             const bulle = document.createElement("div");
             bulle.className = "bulle-carte";
             bulle.innerHTML = `<strong>${echapper(titre(j))}</strong><small>${echapper(detail(j))}</small>`;
@@ -78,7 +79,7 @@ const CarteJeunes = ({ centre, jeunes, rayon, ouvrir, lienVers = LIEN, titre = T
         cadre.current = points.length > 1 ? L.latLngBounds(points) : null;
         if (cadre.current) c.fitBounds(cadre.current, { padding: [30, 30], maxZoom: 16 });
         else c.setView(moi, 14);
-    }, [centre, jeunes, rayon, ouvrir, lienVers, titre, detail, image, bouton]);
+    }, [centre, jeunes, rayon, ouvrir, lienVers, titre, detail, image, service, bouton]);
 
     return <div className="carte-leaflet" ref={zone} role="region" aria-label={region}></div>;
 };

@@ -65,6 +65,8 @@ const DESSINS_SERVICES = {
     "CUISINE": "<svg viewBox=\"0 0 160 160\"><rect width=\"160\" height=\"160\" fill=\"#FFD4CC\"/><rect x=\"42\" y=\"76\" width=\"76\" height=\"42\" rx=\"8\" fill=\"#FF6B5B\" stroke=\"#2A2140\" stroke-width=\"3\"/><path d=\"M42 88H28M118 88h14\" stroke=\"#2A2140\" stroke-width=\"5\" stroke-linecap=\"round\"/><path d=\"M52 76c0-10 6-20 28-20s28 10 28 20\" fill=\"none\" stroke=\"#2A2140\" stroke-width=\"3\"/><path d=\"M64 40c-2 6 2 8 0 14M80 36c-2 6 2 8 0 14M96 40c-2 6 2 8 0 14\" stroke=\"#9B6BFF\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>"
 };
 
+export const svgIcone = (nom) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONES[nom] || ICONES.heart}</svg>`;
+
 export const Icone = ({ nom }) => (
     <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" dangerouslySetInnerHTML={{ __html: ICONES[nom] || ICONES.heart }} />
 );
