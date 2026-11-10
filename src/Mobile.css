@@ -739,3 +739,6 @@
 #vdo .explorer .filtres-rangee{margin:2px -16px 4px;padding:2px 16px 4px;gap:7px}
 #vdo .filtres-rangee .puces-services{margin:0;padding:0;overflow:visible}
 #vdo .filtres-rangee select{min-height:44px;padding:6px 28px 6px 12px;background-position:right 9px center}
+#vdo.explorer-carte .corps{height:100dvh;overflow:hidden;padding-bottom:0}
+#vdo.explorer-carte .explorer-plan{flex:1;min-height:0;padding:0}
+#vdo.explorer-carte .explorer-plan .carte-leaflet{flex:1;height:auto;min-height:0;border-radius:0}
