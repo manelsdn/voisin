@@ -173,24 +173,18 @@ export const LienBouton = ({ to, children, secondaire, fleche }) => (
 );
 
 const MINUTES = ["00", "15", "30", "45"];
+const HEURES = Array.from({ length: 16 }, (_, i) => String(7 + i).padStart(2, "0"));
 
 export const ChoixHeure = ({ libelle, name, value, onChange, disabled }) => {
     const [heure, minutes] = value ? value.split(":") : ["", "00"];
-    const [saisie, setSaisie] = useState(heure);
-    useEffect(() => setSaisie((avant) => (avant !== "" && Number(avant) === Number(heure) ? avant : heure)), [heure]);
-    const envoyer = (h, m) => onChange({ target: { name, value: h === "" ? "" : `${String(Math.min(23, Number(h))).padStart(2, "0")}:${m}` } });
-    const taper = (e) => {
-        const chiffres = e.target.value.replace(/\D/g, "").slice(0, 2);
-        setSaisie(chiffres);
-        envoyer(chiffres, minutes);
-    };
+    const envoyer = (h, m) => onChange({ target: { name, value: h ? `${h}:${m}` : "" } });
     return (
         <div className="choix-heure" role="group" aria-label={libelle}>
             <span className="choix-heure-titre">{libelle}</span>
             <span className="choix-heure-champs">
-                <input type="text" inputMode="numeric" maxLength={2} placeholder="--" aria-label={`${libelle} : heure`} value={saisie} disabled={disabled} onChange={taper} />
+                <select aria-label={`${libelle} : heure`} value={heure} disabled={disabled} onChange={(e) => envoyer(e.target.value, minutes)}><option value="">--</option>{[...new Set([...HEURES, ...(heure ? [heure] : [])])].sort().map((h) => <option key={h} value={h}>{h}</option>)}</select>
                 <b aria-hidden="true">h</b>
-                <select aria-label={`${libelle} : minutes`} value={minutes} disabled={disabled} onChange={(e) => envoyer(saisie, e.target.value)}>{[...new Set([...MINUTES, minutes])].sort().map((m) => <option key={m} value={m}>{m}</option>)}</select>
+                <select aria-label={`${libelle} : minutes`} value={minutes} disabled={disabled} onChange={(e) => envoyer(heure, e.target.value)}>{[...new Set([...MINUTES, minutes])].sort().map((m) => <option key={m} value={m}>{m}</option>)}</select>
             </span>
         </div>
     );

@@ -23,7 +23,7 @@ const deconnecter = async (page) => {
 
 const remplirHeure = async (page, libelle, valeur) => {
     const [h, m] = valeur.split(":");
-    await page.getByLabel(`${libelle} : heure`).fill(h);
+    await page.getByLabel(`${libelle} : heure`).selectOption(h);
     await page.getByLabel(`${libelle} : minutes`).selectOption(m);
 };
 
