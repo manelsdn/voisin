@@ -1,5 +1,5 @@
 const { test, expect } = require("@playwright/test");
-const { preparer, connecter, deconnecter } = require("./outils");
+const { preparer, connecter, deconnecter, verifierHeure } = require("./outils");
 
 test.beforeEach(async ({ page }) => preparer(page));
 
@@ -105,8 +105,8 @@ test("US46 · Dictée vocale dans l'annonce : le senior parle, l'annonce s'écri
     await expect(page.getByLabel(/Décrivez votre besoin/)).toHaveValue(/^J'ai besoin de quelqu'un pour porter mes courses/);
     await expect(page.getByRole("button", { name: "Courses" })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByLabel("Date").locator("option:checked")).toHaveText(/^Samedi/);
-    await expect(page.getByLabel("Début")).toHaveValue("10:00");
-    await expect(page.getByLabel("Fin")).toHaveValue("12:00");
+    await verifierHeure(page, "Début", "10:00");
+    await verifierHeure(page, "Fin", "12:00");
     await expect(page.getByText(/Rempli d'après votre texte/)).toContainText(/Courses · Marché · Samedi \d+ \S+ · 10:00-12:00/);
     await page.getByRole("button", { name: "Bricolage" }).click();
     await page.getByLabel(/Décrivez votre besoin/).fill("Porter les courses");
@@ -122,7 +122,7 @@ test("Annonce sans dictée : la saisie au clavier remplit quand même le service
     await expect(page.getByRole("button", { name: /Dicter/ })).toHaveCount(0);
     await page.getByLabel(/Décrivez votre besoin/).fill("Aider ma mère à faire un appel vidéo sur sa tablette demain après-midi");
     await expect(page.getByRole("button", { name: "Informatique" })).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByLabel("Début")).toHaveValue("14:00");
+    await verifierHeure(page, "Début", "14:00");
 });
 
 test("Photos : les profils sans photo ont un avatar illustré, pas une initiale", async ({ page }) => {
@@ -215,7 +215,7 @@ test("US46 · Dictée pour le jeune aussi : il dicte son annonce, ses services e
     await expect(page.getByLabel(/Présentation courte/)).toHaveValue(/Je suis étudiant/);
     await expect(page.getByRole("button", { name: /Courses/ })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("button", { name: /Informatique/ })).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByLabel("Début")).toHaveValue("09:00");
+    await verifierHeure(page, "Début", "09:00");
     await expect(page.getByText(/Compris/)).toContainText(/Samedi \d+ \S+ 09:00-12:00/);
     await expect(page.locator('select[name="date"] option:checked')).toHaveText(/^Samedi \d+/);
 });

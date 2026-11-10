@@ -21,4 +21,17 @@ const deconnecter = async (page) => {
     await page.waitForURL("**/bienvenue");
 };
 
-module.exports = { donnees, preparer, connecter, deconnecter };
+const remplirHeure = async (page, libelle, valeur) => {
+    const [h, m] = valeur.split(":");
+    await page.getByLabel(`${libelle} : heure`).fill(h);
+    await page.getByLabel(`${libelle} : minutes`).selectOption(m);
+};
+
+const verifierHeure = async (page, libelle, valeur) => {
+    const { expect } = require("@playwright/test");
+    const [h, m] = valeur ? valeur.split(":") : ["", "00"];
+    await expect(page.getByLabel(`${libelle} : heure`)).toHaveValue(h);
+    await expect(page.getByLabel(`${libelle} : minutes`)).toHaveValue(m);
+};
+
+module.exports = { donnees, preparer, connecter, deconnecter, remplirHeure, verifierHeure };

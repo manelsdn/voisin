@@ -1,5 +1,5 @@
 const { test, expect } = require("@playwright/test");
-const { preparer, connecter, deconnecter } = require("./outils");
+const { preparer, connecter, deconnecter, remplirHeure } = require("./outils");
 
 test.beforeEach(async ({ page }) => preparer(page));
 
@@ -16,8 +16,8 @@ test("US09 · Créneaux : l'heure de fin doit être après l'heure de début", a
     await connecter(page, "lucas.martin@exemple.fr");
     await page.goto("/annonce");
     await page.locator('select[name="date"]').selectOption({ index: 2 });
-    await page.getByLabel("Début").fill("15:00");
-    await page.getByLabel("Fin").fill("14:00");
+    await remplirHeure(page, "Début", "15:00");
+    await remplirHeure(page, "Fin", "14:00");
     await page.getByRole("button", { name: "Ajouter ce créneau" }).click();
     await expect(page.getByRole("alert")).toContainText("après l'heure de début");
 });
@@ -37,8 +37,8 @@ test("US08 US09 US10 · Annonce : un nouveau jeune publie et apparaît dans la r
     await expect(page.getByRole("alert")).toContainText("au moins un créneau");
     const date = page.locator('select[name="date"]');
     await date.selectOption((await date.locator("option", { hasText: /^Dimanche/ }).first().getAttribute("value")));
-    await page.getByLabel("Début").fill("09:00");
-    await page.getByLabel("Fin").fill("12:00");
+    await remplirHeure(page, "Début", "09:00");
+    await remplirHeure(page, "Fin", "12:00");
     await page.getByLabel(/Présentation courte/).fill("Je m'occupe des plantes du quartier.");
     await page.getByRole("button", { name: /Publier mon annonce|Mettre à jour mon annonce/ }).click();
     await expect(page.getByText("APERÇU DE MON ANNONCE")).toBeVisible();

@@ -1,5 +1,5 @@
 const { test, expect } = require("@playwright/test");
-const { preparer, connecter, deconnecter, donnees } = require("./outils");
+const { preparer, connecter, deconnecter, donnees, remplirHeure, verifierHeure } = require("./outils");
 
 test.beforeEach(async ({ page }) => preparer(page));
 
@@ -244,16 +244,16 @@ test("Annonce jeune : on ajoute plusieurs dates, le formulaire se vide après ch
     await page.goto("/annonce");
     const date = page.locator('select[name="date"]');
     await expect(date).toHaveValue("");
-    await expect(page.getByLabel("Début")).toHaveValue("");
+    await verifierHeure(page, "Début", "");
     const textes = [];
     for (const [index, debut, fin] of [[2, "10:00", "11:30"], [5, "14:00", "16:00"]]) {
         await date.selectOption({ index });
         textes.push((await date.locator("option:checked").textContent()).trim());
-        await page.getByLabel("Début").fill(debut);
-        await page.getByLabel("Fin").fill(fin);
+        await remplirHeure(page, "Début", debut);
+        await remplirHeure(page, "Fin", fin);
         await page.getByRole("button", { name: "Ajouter ce créneau" }).click();
         await expect(date).toHaveValue("");
-        await expect(page.getByLabel("Début")).toHaveValue("");
+        await verifierHeure(page, "Début", "");
     }
     await expect(page.locator(".creneaux")).toContainText(`${textes[0]}, 10:00-11:30`);
     await expect(page.locator(".creneaux")).toContainText(`${textes[1]}, 14:00-16:00`);
