@@ -179,9 +179,23 @@ export const auQuart = (valeur) => {
     return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
 };
 
-export const ChoixHeure = ({ libelle, name, value, onChange, disabled }) => (
-    <label>{libelle}<input name={name} type="time" step="900" value={value} disabled={disabled} onChange={onChange} onBlur={(e) => { const arrondi = auQuart(e.target.value); if (arrondi !== e.target.value) onChange({ target: { name, value: arrondi } }); }} /></label>
-);
+const MINUTES = ["00", "15", "30", "45"];
+const HEURES = Array.from({ length: 16 }, (_, i) => String(7 + i).padStart(2, "0"));
+
+export const ChoixHeure = ({ libelle, name, value, onChange, disabled }) => {
+    const [heure, minutes] = value ? auQuart(value).split(":") : ["", "00"];
+    const envoyer = (h, m) => onChange({ target: { name, value: h ? `${h}:${m}` : "" } });
+    return (
+        <div className="choix-heure" role="group" aria-label={libelle}>
+            <span className="choix-heure-titre">{libelle}</span>
+            <span className="choix-heure-champs">
+                <select aria-label={`${libelle} : heure`} value={heure} disabled={disabled} onChange={(e) => envoyer(e.target.value, minutes)}><option value="">--</option>{[...new Set([...HEURES, ...(heure ? [heure] : [])])].sort().map((h) => <option key={h} value={h}>{h}</option>)}</select>
+                <b aria-hidden="true">h</b>
+                <select aria-label={`${libelle} : minutes`} value={minutes} disabled={disabled} onChange={(e) => envoyer(heure, e.target.value)}>{MINUTES.map((m) => <option key={m} value={m}>{m}</option>)}</select>
+            </span>
+        </div>
+    );
+};
 
 export const Astuce = ({ icone = "heart", children }) => <p className="tip-note"><Icone nom={icone} /><span>{children}</span></p>;
 
