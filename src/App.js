@@ -4,6 +4,7 @@ import "./Mobile.css";
 import "leaflet/dist/leaflet.css";
 import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import { SessionProvider, useSession } from "./composants/Session";
 import Bienvenue from "./Accueil/Bienvenue";
 import Accueil from "./Accueil/Accueil";
@@ -54,6 +55,7 @@ function App() {
             <SessionProvider>
                 <BrowserRouter>
                     <AlerteMessages />
+                    <Analytics />
                     <Routes>
                         <Route path="/" element={<Racine />} />
                         <Route path="/bienvenue" element={<Bienvenue />} />
