@@ -71,7 +71,7 @@ const ModifierProfil = () => {
             <form className="form-stack" onSubmit={handleOnSubmit} noValidate>
                 <div className="apercu-photo">
                     <div className={apercu ? "profile-portrait" : "profile-portrait initiale"}>{apercu ? <img src={apercu} alt="Aperçu de votre portrait" /> : <Avatar personne={utilisateur} classe="" />}</div>
-                    <label htmlFor="photoProfil">Photo de profil<input type="file" onChange={async (e) => { const f = e.target.files[0]; setPhoto(f ? await reduireImage(f, 800) : null); }} id="photoProfil" name="photoProfil" accept="image/*" /></label>
+                    <label htmlFor="photoProfil" className="champ-photo">Photo de profil<span className="bouton-photo"><Icone nom="camera" />{apercu ? "Changer" : "Ajouter"}</span><input className="sr-only" type="file" onChange={async (e) => { const f = e.target.files[0]; setPhoto(f ? await reduireImage(f, 800) : null); }} id="photoProfil" name="photoProfil" accept="image/*" /></label>
                 </div>
                 {photoErreur && <p className="erreur">{photoErreur}</p>}
                 <label>Prénom<input name="prenom" defaultValue={utilisateur.prenom} maxLength={35} /></label>

@@ -71,7 +71,7 @@ const ProfilJeune = () => {
             <div className="detail-box">
                 <span className="mini-eyebrow">JE PEUX VOUS AIDER POUR</span>
                 <p>{(jeune.services || []).map(nomService).join(" · ")}</p>
-                <div className="text-row"><span><Icone nom="clock" /> Ses disponibilités</span><strong>{creneaux.join(" · ")}</strong></div>
+                <div className="text-row"><span><Icone nom="clock" /> Ses disponibilités</span><strong>{creneaux.map((c) => <span key={c} className="ligne">{c}</span>)}</strong></div>
                 <p><small>{jeune.prenom} propose ces créneaux ; vous choisissez celui qui vous convient.</small></p>
             </div>
             {avis.length > 0 && (

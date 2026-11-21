@@ -130,7 +130,7 @@ const NouveauBesoin = () => {
                     </fieldset>
                 )}
                 <fieldset>
-                    <legend>{autres.length ? "Les jours et les heures" : "Le jour et l'heure"} <small className="optionnel">si vous voulez</small></legend>
+                    <legend>Quand ? <small className="optionnel">si vous voulez</small></legend>
                     {autres.length > 0 && (
                         <ul className="creneaux" aria-label="Dates ajoutées">
                             {autres.map((c) => <li key={`${c.date}${c.heureDebut}`}>{texteQuand(c.heureDebut ? c : null, c.date)} <button type="button" onClick={() => setAutres(autres.filter((x) => x !== c))}>Retirer</button></li>)}
