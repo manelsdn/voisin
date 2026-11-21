@@ -126,16 +126,16 @@ const MonAnnonce = () => {
                 {compris && (
                     <p className="devine" aria-live="polite"><Icone nom="sparkles" /><span>Compris : <b>{[compris.services.map(nomService).join(", "), compris.creneau && `créneau ${compris.creneau} prêt à ajouter`].filter(Boolean).join(" · ")}</b>. Vous pouvez tout modifier.</span></p>
                 )}
-                <fieldset aria-labelledby="titre-services">
-                    <p className="legende" id="titre-services">Ce que je peux faire</p>
+                <section className="etape">
+                    <h2 className="etape-titre" id="titre-services">Ce que je peux faire</h2>
                     <div className="puces">
                         {SERVICES.map((s) => (
                             <button key={s.code} type="button" className="puce" aria-pressed={services.includes(s.code)} onClick={() => basculer(s.code)}><img src={s.image} alt="" />{s.nom}</button>
                         ))}
                     </div>
-                </fieldset>
-                <fieldset aria-labelledby="titre-creneaux">
-                    <p className="legende" id="titre-creneaux">Quand je suis libre</p>
+                </section>
+                <section className="etape">
+                    <h2 className="etape-titre" id="titre-creneaux">Quand je suis libre</h2>
                     {creneaux.length === 0 && <p className="soft">Ajoutez au moins une date.</p>}
                     <ul className="creneaux">
                         {creneaux.map((c) => (
@@ -148,13 +148,16 @@ const MonAnnonce = () => {
                         <ChoixHeure libelle="Fin" name="heureFin" value={nouveau.heureFin} onChange={changerNouveau("heureFin")} />
                     </div>
                     <button type="button" className="secondary" onClick={ajouterCreneau}><Icone nom="plus" />Ajouter ce créneau</button>
-                </fieldset>
-                <label>Quelques mots sur moi <small className="optionnel">{description.length}/180</small><textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Exemple : étudiant, disponible après les cours pour les courses et l'informatique." /></label>
+                </section>
+                <section className="etape">
+                <h2 className="etape-titre" id="titre-moi">Quelques mots sur moi <small className="optionnel">{description.length}/180</small></h2>
+                <textarea aria-labelledby="titre-moi" name="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Exemple : étudiant, disponible après les cours pour les courses et l'informatique." />
                 <div className="boutons-texte">
                     <button type="button" className="secondary" onClick={proposer}><Icone nom="sparkles" />{avantProposition !== null ? "Autre proposition" : "Écrire le texte pour moi"}</button>
                     {avantProposition !== null && <button type="button" className="secondary" onClick={refuser}>Garder mon texte</button>}
                 </div>
                 {avantProposition !== null && <p className="soft"><small>Relisez le texte et changez-le si besoin avant de publier.</small></p>}
+                </section>
                 <Message erreur={erreur} info={info} />
                 <button className="primary" type="submit"><span>{utilisateur.annoncePubliee ? "Mettre à jour mon annonce" : "Publier mon annonce"}</span><Icone nom="arrow" /></button>
             </form>

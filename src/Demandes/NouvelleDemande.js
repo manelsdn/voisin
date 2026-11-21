@@ -107,21 +107,29 @@ const NouvelleDemande = () => {
             <BanniereService code={service} />
             <p className="soft">Votre demande à {jeune.prenom}{beneficiaire.id !== utilisateur.id ? `, pour ${beneficiaire.prenom}` : ""}. Seuls le service et la date sont nécessaires.</p>
             <form className="form-stack" onSubmit={handleSubmit} noValidate>
-                <label>Le service<select name="service" value={service} onChange={(e) => { setService(e.target.value); setSous(""); }}>{(jeune.services || []).map((c) => <option key={c} value={c}>{nomService(c)}</option>)}</select></label>
+                <section className="etape">
+                <h2 className="etape-titre" id="titre-service">Le service</h2>
+                <select aria-labelledby="titre-service" name="service" value={service} onChange={(e) => { setService(e.target.value); setSous(""); }}>{(jeune.services || []).map((c) => <option key={c} value={c}>{nomService(c)}</option>)}</select>
                 {(SOUS_SERVICES[service] || []).length > 0 && (
-                    <fieldset aria-labelledby="titre-precision">
+                    <div className="etape-sous">
                         <p className="legende" id="titre-precision">Précisez <small className="optionnel">si vous voulez</small></p>
                         <div className="sous-services" role="group" aria-label="Précision du besoin">
                             {SOUS_SERVICES[service].map((nom) => <button key={nom} type="button" className="puce" aria-pressed={sous === nom} onClick={() => setSous(sous === nom ? "" : nom)}>{nom}</button>)}
                         </div>
-                    </fieldset>
+                    </div>
                 )}
+                </section>
+                <section className="etape">
+                <h2 className="etape-titre" id="titre-quand">Quand ?</h2>
                 <label>Les disponibilités de {jeune.prenom}<select name="creneau" value={creneauId} onChange={(e) => setCreneauId(e.target.value)}>{disponibles.map((c) => <option key={c.id} value={c.id}>{texteCreneau(c)}</option>)}</select></label>
                 {creneau && (
                     <label>Le jour<select name="date" value={date} onChange={(e) => setDateChoisie(e.target.value)}>{dates.map((d) => <option key={d} value={d}>{d === dateDuJour() ? `Aujourd'hui, ${texteJour(d).toLowerCase()}` : texteJour(d)}</option>)}</select></label>
                 )}
+                </section>
+                <section className="etape">
+                <h2 className="etape-titre" id="titre-mot">Un mot pour {jeune.prenom} <small className="optionnel">si vous voulez</small></h2>
                 <Dictee ajouter={(texte) => setPrecisions((avant) => enPhrase(avant, texte, 400))} libelle="Dire un détail au micro" />
-                <label>Un mot pour {jeune.prenom} <small className="optionnel">si vous voulez</small><textarea name="description" maxLength={400} value={precisions} onChange={(e) => setPrecisions(e.target.value)} placeholder="Par exemple : le code de la porte, l'étage, la liste des courses…" /></label>
+                <textarea aria-labelledby="titre-mot" name="description" maxLength={400} value={precisions} onChange={(e) => setPrecisions(e.target.value)} placeholder="Par exemple : le code de la porte, l'étage, la liste des courses…" />
                 <div className="idees" role="group" aria-label="Idées de précisions">
                     {["Code et étage", "Sonner deux fois", "Prévoir un sac"].map((idee) => (
                         <button key={idee} type="button" className="puce" onClick={() => setPrecisions((avant) => enPhrase(avant, idee, 400))}>{idee}</button>
@@ -129,6 +137,7 @@ const NouvelleDemande = () => {
                 </div>
                 <label className="champ-photo">Une photo <small className="optionnel">si vous voulez</small><span className="bouton-photo"><Icone nom="camera" />{apercu ? "Changer la photo" : "Prendre ou choisir une photo"}</span><input className="sr-only" name="photo" type="file" accept="image/*" onChange={choisirPhoto} /></label>
                 {apercu && <img className="demande-photo" src={apercu} alt="Aperçu du besoin à montrer" />}
+                </section>
                 <Astuce icone="phone">Votre numéro sera visible par {jeune.prenom} seulement si la demande est acceptée.</Astuce>
                 <Message erreur={erreur} />
                 <button className="primary" type="submit" disabled={envoi}><span>Envoyer la demande</span><Icone nom="arrow" /></button>
