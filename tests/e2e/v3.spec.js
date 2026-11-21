@@ -33,7 +33,7 @@ test("Notifications : le jeune est prévenu d'une demande, le demandeur de l'acc
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/jeunes/jeune-01");
     await page.getByRole("link", { name: "Envoyer une demande" }).click();
-    await page.getByLabel(/Un détail à préciser/).fill("Les courses au marché.");
+    await page.getByLabel(/Un mot pour/).fill("Les courses au marché.");
     await page.getByRole("button", { name: /Envoyer la demande/ }).click();
     await expect(page.getByText("Votre demande est envoyée !")).toBeVisible();
     await deconnecter(page);
@@ -123,7 +123,7 @@ test("Annonce : le jeune peut retirer son annonce puis la republier", async ({ p
     await deconnecter(page);
     await connecter(page, "lucas.martin@exemple.fr");
     await page.goto("/annonce");
-    await page.getByRole("button", { name: /Publier mon annonce/ }).click();
+    await page.getByRole("button", { name: /Publier mon (annonce|besoin)/ }).click();
     await expect(page).toHaveURL(/jeunes\/jeune-01/);
 });
 
@@ -219,17 +219,17 @@ test("Catégories : nouvelles catégories, sous-catégorie et vraie date dans la
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/besoins/nouveau");
     for (const nom of ["Compagnie", "Sorties", "Papiers", "Animaux"]) await expect(page.getByRole("button", { name: nom, exact: true })).toBeVisible();
-    await page.getByLabel(/Décrivez votre besoin/).fill("Accompagner chez le médecin samedi prochain à 10h");
+    await page.getByLabel(/Le texte de l'annonce/).fill("Accompagner chez le médecin samedi prochain à 10h");
     await expect(page.getByRole("button", { name: "Sorties", exact: true })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("group", { name: "Précision du besoin" }).getByRole("button", { name: "Rendez-vous médical" })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByLabel("Date").locator("option:checked")).toHaveText(/^Samedi \d+/);
-    await page.getByRole("button", { name: /Publier mon annonce/ }).click();
+    await page.getByRole("button", { name: /Publier mon (annonce|besoin)/ }).click();
     await expect(page.getByRole("heading", { name: /Sorties · Rendez-vous médical/ })).toBeVisible();
     await expect(page.getByText(/Samedi \d+ \S+, 10h-12h/)).toBeVisible();
     await page.goto("/jeunes/jeune-01");
     await page.getByRole("link", { name: "Envoyer une demande" }).click();
     await page.getByRole("group", { name: "Précision du besoin" }).getByRole("button", { name: "Pharmacie" }).click();
-    const date = page.getByLabel("Quel jour ?");
+    const date = page.locator('select[name="date"]');
     await expect(date.locator("option")).toHaveCount(4);
     await date.selectOption({ index: 1 });
     const choisie = (await date.locator("option:checked").textContent()).trim();
@@ -276,7 +276,7 @@ test("Besoin : le texte s'écrit tout seul à partir de ce qui est rempli, pour 
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/besoins/nouveau");
     await expect(page.getByText(/Pour Madeleine\./)).toBeVisible();
-    const texte = page.getByLabel(/Décrivez votre besoin/);
+    const texte = page.getByLabel(/Le texte de l'annonce/);
     await expect(texte).toHaveValue("");
     await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Courses" }).click();
     await expect(texte).toHaveValue("Bonjour, je cherche un jeune du quartier pour faire les courses de Madeleine. Merci beaucoup !");
@@ -300,7 +300,7 @@ test("Besoin : pour soi-même, le texte parle à la première personne", async (
     await connecter(page, "henri.lacroix@exemple.fr");
     await page.goto("/besoins/nouveau");
     await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Animaux" }).click();
-    await expect(page.getByLabel(/Décrivez votre besoin/)).toHaveValue("Bonjour, je cherche un jeune du quartier pour m'occuper de mon animal. Merci beaucoup !");
+    await expect(page.getByLabel(/Le texte de l'annonce/)).toHaveValue("Bonjour, je cherche un jeune du quartier pour m'occuper de mon animal. Merci beaucoup !");
 });
 
 test("Demandes : les annonces d'aide ont leur propre onglet", async ({ page }) => {

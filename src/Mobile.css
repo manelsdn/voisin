@@ -785,3 +785,12 @@
 #vdo .presentation-actions button,#vdo .form-stack .secondary{min-height:48px}
 #vdo .boutons-texte{display:flex;flex-wrap:wrap;gap:10px}
 #vdo .boutons-texte>button{flex:1 1 150px;margin:0}
+#vdo .optionnel{margin-left:6px;font:700 13px Nunito;color:#6b6380;text-transform:none;letter-spacing:0}
+#vdo .bouton-photo{display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;margin-top:8px;border:1.5px dashed #d9cde0;border-radius:16px;background:#FFFDF8;font:800 16px Nunito;color:#2A2140;cursor:pointer}
+#vdo .bouton-photo .icon{width:22px;height:22px}
+#vdo .champ-photo:focus-within .bouton-photo{border-color:#1FAF98;box-shadow:0 0 0 4px rgba(31,175,152,.15)}
+#vdo .form-stack textarea{min-height:132px;line-height:1.4;padding:12px 14px;field-sizing:content;max-height:260px}
+#vdo .form-stack fieldset+fieldset,#vdo .form-stack fieldset+label{margin-top:4px}
+#vdo .sous-services{gap:7px}
+#vdo .sous-services .puce{min-height:44px;padding:0 13px;font-size:14.5px}
+#vdo .form-stack .soft{font-size:15px;line-height:1.45}

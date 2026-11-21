@@ -7,8 +7,8 @@ const envoyer = async (page, precisions) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/jeunes/jeune-01");
     await page.getByRole("link", { name: "Envoyer une demande" }).click();
-    await expect(page.getByLabel("Pour")).toHaveValue("Madeleine");
-    if (precisions) await page.getByLabel(/Un détail à préciser/).fill(precisions);
+    await expect(page.getByText(/Votre demande à .*, pour Madeleine/)).toBeVisible();
+    if (precisions) await page.getByLabel(/Un mot pour/).fill(precisions);
     await page.getByRole("button", { name: /Envoyer la demande/ }).click();
 };
 
@@ -17,8 +17,8 @@ test("US17 · Demande : les précisions sont facultatives, une idée se touche p
     await page.goto("/jeunes/jeune-01");
     await page.getByRole("link", { name: "Envoyer une demande" }).click();
     await page.getByRole("group", { name: "Idées de précisions" }).getByRole("button", { name: "Code et étage" }).click();
-    await expect(page.getByLabel(/Un détail à préciser/)).toHaveValue("Code et étage");
-    await page.getByLabel(/Un détail à préciser/).fill("");
+    await expect(page.getByLabel(/Un mot pour/)).toHaveValue("Code et étage");
+    await page.getByLabel(/Un mot pour/).fill("");
     await page.getByRole("button", { name: /Envoyer la demande/ }).click();
     await expect(page.getByText("Votre demande est envoyée !")).toBeVisible();
     await deconnecter(page);

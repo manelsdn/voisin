@@ -39,7 +39,7 @@ test("US08 US09 US10 · Annonce : un nouveau jeune publie et apparaît dans la r
     await date.selectOption((await date.locator("option", { hasText: /^Dimanche/ }).first().getAttribute("value")));
     await remplirHeure(page, "Début", "09:00");
     await remplirHeure(page, "Fin", "12:00");
-    await page.getByLabel(/Présentation courte/).fill("Je m'occupe des plantes du quartier.");
+    await page.getByLabel(/Quelques mots sur moi/).fill("Je m'occupe des plantes du quartier.");
     await page.getByRole("button", { name: /Publier mon annonce|Mettre à jour mon annonce/ }).click();
     await expect(page.getByText("APERÇU DE MON ANNONCE")).toBeVisible();
     await expect(page.getByText(/Dimanche \d+ \S+, 9h-12h/)).toBeVisible();

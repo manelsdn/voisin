@@ -44,9 +44,9 @@ test("Assistant : « mes courses samedi matin » montre les jeunes libres, la de
     for (const t of await page.locator(".carte-raisons em:first-child").allTextContents()) expect(t).toMatch(/^Libre le samedi/);
     await premier.click();
     await page.getByRole("link", { name: /Envoyer une demande/ }).click();
-    await expect(page.getByLabel(/Créneau proposé/)).toHaveValue(/.+/);
-    await expect(page.getByLabel(/Créneau proposé/).locator("option:checked")).toContainText("Samedi");
-    await expect(page.getByLabel(/Un détail à préciser/)).toHaveValue(/Je cherche un jeune pour mes courses samedi matin/);
+    await expect(page.getByLabel(/Les disponibilités de/)).toHaveValue(/.+/);
+    await expect(page.getByLabel(/Les disponibilités de/).locator("option:checked")).toContainText("Samedi");
+    await expect(page.getByLabel(/Un mot pour/)).toHaveValue(/Je cherche un jeune pour mes courses samedi matin/);
 });
 
 test("US45 · Proposer son aide : le demandeur voit la proposition et peut envoyer une demande", async ({ page }) => {
@@ -63,18 +63,18 @@ test("US45 · Proposer son aide : le demandeur voit la proposition et peut envoy
     await expect(page.getByText("j'adore jardiner")).toBeVisible();
     await page.locator(".carte-proposition", { hasText: "Lucas" }).getByRole("link", { name: "Lui envoyer une demande" }).click();
     await expect(page).toHaveURL(/jeunes\/jeune-01\/demande/);
-    await expect(page.getByLabel(/Un détail à préciser/)).toHaveValue(/rosiers/);
+    await expect(page.getByLabel(/Un mot pour/)).toHaveValue(/rosiers/);
 });
 
 test("US44 · Publier une annonce de besoin : obligatoire de choisir un service et décrire, puis visible des jeunes", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/besoins/nouveau");
-    await page.getByRole("button", { name: /Publier mon annonce/ }).click();
+    await page.getByRole("button", { name: /Publier mon (annonce|besoin)/ }).click();
     await expect(page.getByRole("alert")).toContainText("Choisissez le service");
     await page.getByRole("button", { name: "Bricolage" }).click();
-    await page.getByLabel(/Décrivez votre besoin/).fill("Monter un petit meuble de chevet chez Madeleine.");
+    await page.getByLabel(/Le texte de l'annonce/).fill("Monter un petit meuble de chevet chez Madeleine.");
     await page.getByLabel("Date").selectOption({ label: await page.getByLabel("Date").locator("option", { hasText: /^Samedi/ }).first().textContent() });
-    await page.getByRole("button", { name: /Publier mon annonce/ }).click();
+    await page.getByRole("button", { name: /Publier mon (annonce|besoin)/ }).click();
     await expect(page.getByRole("heading", { name: /Bricolage/ })).toBeVisible();
     await expect(page.getByText("Pas encore de proposition.")).toBeVisible();
     await deconnecter(page);
@@ -101,17 +101,17 @@ test("US46 · Dictée vocale dans l'annonce : le senior parle, l'annonce s'écri
     });
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/besoins/nouveau");
-    await page.getByRole("button", { name: /Dicter mon besoin/ }).click();
-    await expect(page.getByLabel(/Décrivez votre besoin/)).toHaveValue(/^J'ai besoin de quelqu'un pour porter mes courses/);
+    await page.getByRole("button", { name: /Dire mon besoin/ }).click();
+    await expect(page.getByLabel(/Le texte de l'annonce/)).toHaveValue(/^J'ai besoin de quelqu'un pour porter mes courses/);
     await expect(page.getByRole("button", { name: "Courses" })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByLabel("Date").locator("option:checked")).toHaveText(/^Samedi/);
     await verifierHeure(page, "Début", "10:00");
     await verifierHeure(page, "Fin", "12:00");
     await expect(page.getByText(/Rempli d'après votre texte/)).toContainText(/Courses · Marché · Samedi \d+ \S+ · 10h-12h/);
     await page.getByRole("button", { name: "Bricolage" }).click();
-    await page.getByLabel(/Décrivez votre besoin/).fill("Porter les courses");
+    await page.getByLabel(/Le texte de l'annonce/).fill("Porter les courses");
     await expect(page.getByRole("button", { name: "Bricolage" })).toHaveAttribute("aria-pressed", "true");
-    await page.getByRole("button", { name: /Publier mon annonce/ }).click();
+    await page.getByRole("button", { name: /Publier mon (annonce|besoin)/ }).click();
     await expect(page.getByRole("heading", { name: /Bricolage/ })).toBeVisible();
 });
 
@@ -120,7 +120,7 @@ test("Annonce sans dictée : la saisie au clavier remplit quand même le service
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/besoins/nouveau");
     await expect(page.getByRole("button", { name: /Dicter/ })).toHaveCount(0);
-    await page.getByLabel(/Décrivez votre besoin/).fill("Aider ma mère à faire un appel vidéo sur sa tablette demain après-midi");
+    await page.getByLabel(/Le texte de l'annonce/).fill("Aider ma mère à faire un appel vidéo sur sa tablette demain après-midi");
     await expect(page.getByRole("button", { name: "Informatique" })).toHaveAttribute("aria-pressed", "true");
     await verifierHeure(page, "Début", "14:00");
 });
@@ -211,8 +211,8 @@ test("US46 · Dictée pour le jeune aussi : il dicte son annonce, ses services e
     });
     await connecter(page, "lucas.martin@exemple.fr");
     await page.goto("/annonce");
-    await page.getByRole("button", { name: /Dicter mon annonce/ }).click();
-    await expect(page.getByLabel(/Présentation courte/)).toHaveValue(/Je suis étudiant/);
+    await page.getByRole("button", { name: /Dire mon annonce/ }).click();
+    await expect(page.getByLabel(/Quelques mots sur moi/)).toHaveValue(/Je suis étudiant/);
     await expect(page.getByRole("button", { name: /Courses/ })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("button", { name: /Informatique/ })).toHaveAttribute("aria-pressed", "true");
     await verifierHeure(page, "Début", "09:00");

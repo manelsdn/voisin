@@ -41,7 +41,7 @@ test("US33 US34 US35 US36 · Service terminé, historique, avis puis redemander"
 
     await page.getByRole("link", { name: /Redemander à Inès/ }).click();
     await expect(page).toHaveURL(/jeunes\/jeune-02\/demande\?service=MENAGE/);
-    await expect(page.getByLabel("Service")).toHaveValue("MENAGE");
+    await expect(page.getByLabel("Le service")).toHaveValue("MENAGE");
 
     await page.goto("/jeunes/jeune-02");
     await expect(page.getByText(/1 avis/)).toBeVisible();
@@ -67,9 +67,9 @@ test("US37 · J'aime : gardé après déconnexion, un deuxième clic le retire",
 test("US38 · Photo dans une demande : visible par le jeune", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/jeunes/jeune-01/demande");
-    await page.getByLabel(/Joindre une photo du besoin/).setInputFiles(path.join(__dirname, "../../public/assets/logo-voisin-dor-icone.svg"));
+    await page.getByLabel(/Une photo/).setInputFiles(path.join(__dirname, "../../public/assets/logo-voisin-dor-icone.svg"));
     await expect(page.getByAltText("Aperçu du besoin à montrer")).toBeVisible();
-    await page.getByLabel(/Un détail à préciser/).fill("La poignée de la porte est cassée.");
+    await page.getByLabel(/Un mot pour/).fill("La poignée de la porte est cassée.");
     await page.getByRole("button", { name: /Envoyer la demande/ }).click();
     await page.waitForURL("**/demande-envoyee/**");
     const id = page.url().split("/").pop();
@@ -100,9 +100,9 @@ test("US39 · Message vocal : envoyé puis écoutable par l'autre personne", asy
 test("US40 · Annonce assistée : texte proposé de 180 caractères maximum, modifiable ou refusé", async ({ page }) => {
     await connecter(page, "lucas.martin@exemple.fr");
     await page.goto("/annonce");
-    const champ = page.getByLabel(/Présentation courte/);
+    const champ = page.getByLabel(/Quelques mots sur moi/);
     await champ.fill("étudiant en L2");
-    await page.getByRole("button", { name: "Proposer un texte" }).click();
+    await page.getByRole("button", { name: "Écrire le texte pour moi" }).click();
     const propose = await champ.inputValue();
     expect(propose.length).toBeLessThanOrEqual(180);
     expect(propose).toContain("Lucas");

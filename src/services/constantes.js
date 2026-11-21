@@ -12,16 +12,16 @@ export const SERVICES = [
 ];
 
 export const SOUS_SERVICES = {
-    COURSES: ["Supermarché", "Pharmacie", "Marché", "Boulangerie", "Colis ou poste"],
-    MENAGE: ["Cuisine", "Salle de bain", "Vitres", "Linge et repassage", "Rangement"],
-    BRICOLAGE: ["Ampoule", "Meuble à monter", "Étagère ou tableau", "Petite fuite", "Rideaux"],
-    INFORMATIQUE: ["Téléphone", "Tablette", "Appel vidéo", "Internet et mails", "Imprimante"],
-    JARDINAGE: ["Arrosage", "Tonte", "Taille", "Balcon et plantes", "Potager"],
-    CUISINE: ["Repas du midi", "Repas du soir", "Pâtisserie", "Plats d'avance"],
-    COMPAGNIE: ["Discussion", "Jeux de société", "Lecture", "Café ou goûter", "Appel téléphonique"],
-    SORTIES: ["Promenade", "Rendez-vous médical", "Banque ou mairie", "Sortie culturelle"],
-    PAPIERS: ["Courrier", "Formulaire", "Impôts", "Rendez-vous en ligne", "Classer les papiers"],
-    ANIMAUX: ["Promener le chien", "Nourrir le chat", "Vétérinaire", "Garde"]
+    COURSES: ["Supermarché", "Pharmacie", "Marché", "Boulangerie", "Boucherie", "Achats lourds", "Pressing", "Colis ou poste"],
+    MENAGE: ["Cuisine", "Salle de bain", "Sols et aspirateur", "Poussière", "Vitres", "Linge et repassage", "Faire le lit", "Rangement", "Poubelles"],
+    BRICOLAGE: ["Ampoule", "Meuble à monter", "Déplacer un meuble", "Étagère ou tableau", "Petite fuite", "Rideaux", "Porte ou serrure", "Piles et détecteur"],
+    INFORMATIQUE: ["Téléphone", "Tablette", "Ordinateur", "Appel vidéo", "Internet et mails", "Photos", "Télévision", "Imprimante"],
+    JARDINAGE: ["Arrosage", "Tonte", "Taille", "Feuilles mortes", "Désherbage", "Balcon et plantes", "Potager"],
+    CUISINE: ["Repas du midi", "Repas du soir", "Soupe", "Pâtisserie", "Plats d'avance", "Cuisiner ensemble"],
+    COMPAGNIE: ["Discussion", "Jeux de société", "Mots croisés", "Lecture", "Musique", "Café ou goûter", "Appel téléphonique"],
+    SORTIES: ["Promenade", "Rendez-vous médical", "Banque ou mairie", "Coiffeur", "Visite à un proche", "Lieu de culte", "Sortie culturelle", "Bus ou tram"],
+    PAPIERS: ["Courrier", "Écrire une lettre", "Formulaire", "Factures", "Impôts", "Rendez-vous en ligne", "Classer les papiers"],
+    ANIMAUX: ["Promener le chien", "Nourrir le chat", "Litière ou cage", "Petits animaux", "Vétérinaire", "Garde"]
 };
 
 export const JOURS = ["LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI", "DIMANCHE"];

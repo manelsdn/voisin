@@ -89,30 +89,30 @@ const NouveauBesoin = () => {
 
     return (
         <Ecran titre={<>De quoi avez-vous <br />besoin ?</>} retour>
-            <p className="soft">{pour && pour.id !== utilisateur.id ? `Pour ${pour.prenom}. ` : ""}Les jeunes du quartier verront votre annonce et vous proposeront leur aide.</p>
+            <p className="soft">{pour && pour.id !== utilisateur.id ? `Pour ${pour.prenom}. ` : ""}Choisissez un service, les jeunes du quartier vous proposeront leur aide.</p>
             <form className="form-stack" onSubmit={publier} noValidate>
-                <Dictee ajouter={(texte) => setDescription((avant) => enPhrase(avant, texte, 300))} libelle="Dicter mon besoin au micro" />
+                <Dictee ajouter={(texte) => setDescription((avant) => enPhrase(avant, texte, 300))} libelle="Dire mon besoin au micro" />
                 <fieldset>
-                    <legend>Service</legend>
+                    <legend>Le service</legend>
                     <PucesServices actif={service} choisir={(code) => { setService(code); setSous(""); setManuel((m) => ({ ...m, service: true, sous: false })); }} tous={false} />
                 </fieldset>
                 {(SOUS_SERVICES[service] || []).length > 0 && (
                     <fieldset>
-                        <legend>Plus précisément ? (facultatif)</legend>
+                        <legend>Précisez <small className="optionnel">si vous voulez</small></legend>
                         <div className="sous-services" role="group" aria-label="Précision du besoin">
                             {SOUS_SERVICES[service].map((nom) => <button key={nom} type="button" className="puce" aria-pressed={sous === nom} onClick={() => { setSous(sous === nom ? "" : nom); setManuel((m) => ({ ...m, sous: true })); }}>{nom}</button>)}
                         </div>
                     </fieldset>
                 )}
                 <fieldset>
-                    <legend>Quand ? (facultatif)</legend>
+                    <legend>Le jour et l'heure <small className="optionnel">si vous voulez</small></legend>
                     <div className="trois">
-                        <label>Date<select name="date" value={date} onChange={(e) => { setDate(e.target.value); setManuel((m) => ({ ...m, jour: true })); }}><option value="">Peu importe</option>{[...new Set([...(date ? [date] : []), ...quinzeJours()])].sort().map((d) => <option key={d} value={d}>{d === dateDuJour() ? `Aujourd'hui, ${texteJour(d).toLowerCase()}` : texteJour(d)}</option>)}</select></label>
+                        <label>Date<select name="date" value={date} onChange={(e) => { setDate(e.target.value); setManuel((m) => ({ ...m, jour: true })); }}><option value="">N'importe quel jour</option>{[...new Set([...(date ? [date] : []), ...quinzeJours()])].sort().map((d) => <option key={d} value={d}>{d === dateDuJour() ? `Aujourd'hui, ${texteJour(d).toLowerCase()}` : texteJour(d)}</option>)}</select></label>
                         <ChoixHeure libelle="Début" name="heureDebut" value={heureDebut} disabled={!date} onChange={(e) => { setHeureDebut(e.target.value); setManuel((m) => ({ ...m, jour: true })); }} />
                         <ChoixHeure libelle="Fin" name="heureFin" value={heureFin} disabled={!date} onChange={(e) => { setHeureFin(e.target.value); setManuel((m) => ({ ...m, jour: true })); }} />
                     </div>
                 </fieldset>
-                <label>Décrivez votre besoin ({description.length}/300)<textarea name="description" maxLength={300} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Par exemple : porter les courses du marché samedi matin." /></label>
+                <label>Le texte de l'annonce <small className="optionnel">{description.length}/300</small><textarea name="description" maxLength={300} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Il s'écrit tout seul dès que vous choisissez le service. Vous pouvez le modifier." /></label>
                 <button type="button" className="secondary" onClick={() => {
                     if (!service) return setErreur("Choisissez d'abord le service dont vous avez besoin.");
                     setErreur("");
@@ -124,7 +124,7 @@ const NouveauBesoin = () => {
                 )}
                 <Astuce icone="pin">Votre adresse n'est jamais affichée : seule une distance approximative est visible.</Astuce>
                 <Message erreur={erreur} />
-                <button className="primary" type="submit" disabled={envoi}><span>{envoi ? "Publication…" : "Publier mon annonce"}</span><Icone nom="arrow" /></button>
+                <button className="primary" type="submit" disabled={envoi}><span>{envoi ? "Publication…" : "Publier mon besoin"}</span><Icone nom="arrow" /></button>
             </form>
         </Ecran>
     );
