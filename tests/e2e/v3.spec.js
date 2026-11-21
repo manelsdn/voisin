@@ -292,6 +292,8 @@ test("Besoin : le texte s'écrit tout seul à partir de ce qui est rempli, pour 
     await texte.fill("Le code de l'immeuble est 1234B.");
     await date.selectOption({ index: 5 });
     await expect(texte).toHaveValue("Le code de l'immeuble est 1234B.");
+    await page.getByRole("button", { name: "Écrire le texte de l'annonce" }).click();
+    await expect(texte).toHaveValue(/faire les courses de Madeleine \(pharmacie\)/);
 });
 
 test("Besoin : pour soi-même, le texte parle à la première personne", async ({ page }) => {

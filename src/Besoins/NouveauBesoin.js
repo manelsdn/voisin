@@ -113,7 +113,12 @@ const NouveauBesoin = () => {
                     </div>
                 </fieldset>
                 <label>Décrivez votre besoin ({description.length}/300)<textarea name="description" maxLength={300} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Par exemple : porter les courses du marché samedi matin." /></label>
-                {description && description === texteAuto.current && <button type="button" className="secondary" onClick={() => setEssai(essai + 1)}><Icone nom="sparkles" />Autre proposition</button>}
+                <button type="button" className="secondary" onClick={() => {
+                    if (!service) return setErreur("Choisissez d'abord le service dont vous avez besoin.");
+                    setErreur("");
+                    if (description && description === texteAuto.current) return setEssai(essai + 1);
+                    setDescription(texteAuto.current);
+                }}><Icone nom="sparkles" />{description && description === texteAuto.current ? "Autre proposition" : "Écrire le texte de l'annonce"}</button>
                 {(auto.service || auto.sous || auto.date) && (
                     <p className="devine" aria-live="polite"><Icone nom="sparkles" /><span>Rempli d'après votre texte : <b>{[auto.service && nomService(auto.service), auto.sous, auto.date && texteJour(auto.date), auto.heures].filter(Boolean).join(" · ")}</b>. Vous pouvez modifier.</span></p>
                 )}
