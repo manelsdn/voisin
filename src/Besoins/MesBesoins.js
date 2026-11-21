@@ -4,14 +4,14 @@ import { useSession } from "../composants/Session";
 import { Ecran } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import { mesBesoins, propositionsDuBesoin } from "../services/api";
-import { STATUTS_BESOIN, depuis, iconeService, imageService, nomComplet, texteQuand } from "../services/constantes";
+import { STATUTS_BESOIN, depuis, iconeService, imageService, nomComplet, texteQuandBesoin } from "../services/constantes";
 
 export const CarteMonBesoin = ({ besoin }) => (
     <Link to={`/besoins/${besoin.id}`} className="carte-profil carte-besoin">
         <span className="carte-photo carte-service"><img src={imageService(besoin.service)} alt="" /><i><Icone nom={iconeService(besoin.service)} /></i></span>
         <span className="carte-corps">
             <span className="carte-ligne"><strong>{nomComplet(besoin.service, besoin.sousService)} pour {besoin.beneficiairePrenom}</strong></span>
-            <small>{depuis(besoin.creeAt)}{besoin.creneau || besoin.date ? ` · ${texteQuand(besoin.creneau, besoin.date)}` : ""}</small>
+            <small>{depuis(besoin.creeAt)}{besoin.creneau || besoin.date ? ` · ${texteQuandBesoin(besoin)}` : ""}</small>
             <span className="carte-bas"><em className={`statut ${besoin.statut === "OUVERTE" ? "ACCEPTEE" : "ANNULEE"}`}>{STATUTS_BESOIN[besoin.statut]}</em><em>{besoin.propositions} proposition{besoin.propositions > 1 ? "s" : ""}</em></span>
         </span>
         <Icone nom="chevron" />

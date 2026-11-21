@@ -6,7 +6,7 @@ import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
 import { dateDuJour, pointDeRecherche, publierBesoin, suggestionBesoin } from "../services/api";
 import { analyser } from "../services/dictee";
-import { JOURS, SOUS_SERVICES, nomService, plageHoraire, texteJour } from "../services/constantes";
+import { JOURS, SOUS_SERVICES, nomService, plageHoraire, texteJour, texteQuand } from "../services/constantes";
 
 const quinzeJours = () => {
     const premier = new Date(`${dateDuJour()}T12:00:00`);
@@ -29,6 +29,7 @@ const NouveauBesoin = () => {
     const [sous, setSous] = useState("");
     const [heureDebut, setHeureDebut] = useState("");
     const [heureFin, setHeureFin] = useState("");
+    const [autres, setAutres] = useState([]);
     const [pour, setPour] = useState(null);
     const [manuel, setManuel] = useState({ service: !!params.get("service"), jour: false, sous: false });
     const [auto, setAuto] = useState({});
@@ -43,10 +44,10 @@ const NouveauBesoin = () => {
 
     useEffect(() => {
         const ancien = texteAuto.current;
-        const texte = suggestionBesoin({ service, sousService: sous, date, heureDebut: auQuart(heureDebut), heureFin: auQuart(heureFin), proche }, essai);
+        const texte = suggestionBesoin({ service, sousService: sous, date, heureDebut: auQuart(heureDebut), heureFin: auQuart(heureFin), proche, autres }, essai);
         texteAuto.current = texte;
         setDescription((avant) => (avant === "" || avant === ancien ? texte : avant));
-    }, [service, sous, date, heureDebut, heureFin, proche, essai]);
+    }, [service, sous, date, heureDebut, heureFin, proche, essai, autres]);
 
     useEffect(() => {
         if (description === texteAuto.current) return;
@@ -74,12 +75,36 @@ const NouveauBesoin = () => {
 
     if (utilisateur.role === "JEUNE") return <Ecran titre="Publier un besoin" retour><div className="notice">Les besoins sont publiés par les personnes âgées ou leurs proches.</div></Ecran>;
 
+    const creneauSaisi = () => {
+        const debut = auQuart(heureDebut);
+        const fin = auQuart(heureFin);
+        if (Boolean(debut) !== Boolean(fin)) throw new Error("Indiquez l'heure de début et l'heure de fin.");
+        if (debut && fin <= debut) throw new Error("L'heure de fin doit être après l'heure de début.");
+        const c = { date, jour: jourDe(date), heureDebut: debut, heureFin: fin };
+        if (autres.some((x) => x.date === c.date && x.heureDebut === c.heureDebut && x.heureFin === c.heureFin)) throw new Error("Cette date est déjà dans la liste.");
+        return c;
+    };
+
+    const ajouterDate = () => {
+        try {
+            const c = creneauSaisi();
+            setAutres([...autres, c].sort((a, b) => a.date.localeCompare(b.date) || a.heureDebut.localeCompare(b.heureDebut)));
+            setDate("");
+            setHeureDebut("");
+            setHeureFin("");
+            setManuel((m) => ({ ...m, jour: true }));
+            setErreur("");
+        } catch (err) {
+            setErreur(err.message);
+        }
+    };
+
     const publier = async (e) => {
         e.preventDefault();
         setEnvoi(true);
         try {
-            const jour = date ? jourDe(date) : "";
-            const id = await publierBesoin(utilisateur, { service, sousService: sous, date, jour, heureDebut: jour ? auQuart(heureDebut) : "", heureFin: jour ? auQuart(heureFin) : "", description });
+            const saisi = date ? creneauSaisi() : null;
+            const id = await publierBesoin(utilisateur, { service, sousService: sous, date: saisi ? saisi.date : "", jour: saisi ? saisi.jour : "", heureDebut: saisi ? saisi.heureDebut : "", heureFin: saisi ? saisi.heureFin : "", creneaux: autres, description });
             navigate(`/besoins/${id}`, { replace: true });
         } catch (err) {
             setErreur(err.message);
@@ -105,12 +130,18 @@ const NouveauBesoin = () => {
                     </fieldset>
                 )}
                 <fieldset>
-                    <legend>Le jour et l'heure <small className="optionnel">si vous voulez</small></legend>
+                    <legend>{autres.length ? "Les jours et les heures" : "Le jour et l'heure"} <small className="optionnel">si vous voulez</small></legend>
+                    {autres.length > 0 && (
+                        <ul className="creneaux" aria-label="Dates ajoutées">
+                            {autres.map((c) => <li key={`${c.date}${c.heureDebut}`}>{texteQuand(c.heureDebut ? c : null, c.date)} <button type="button" onClick={() => setAutres(autres.filter((x) => x !== c))}>Retirer</button></li>)}
+                        </ul>
+                    )}
                     <div className="trois">
-                        <label>Date<select name="date" value={date} onChange={(e) => { setDate(e.target.value); setManuel((m) => ({ ...m, jour: true })); }}><option value="">N'importe quel jour</option>{[...new Set([...(date ? [date] : []), ...quinzeJours()])].sort().map((d) => <option key={d} value={d}>{d === dateDuJour() ? `Aujourd'hui, ${texteJour(d).toLowerCase()}` : texteJour(d)}</option>)}</select></label>
+                        <label>Date<select name="date" value={date} onChange={(e) => { setDate(e.target.value); setManuel((m) => ({ ...m, jour: true })); }}><option value="">{autres.length ? "Choisir une autre date" : "N'importe quel jour"}</option>{[...new Set([...(date ? [date] : []), ...quinzeJours()])].sort().map((d) => <option key={d} value={d}>{d === dateDuJour() ? `Aujourd'hui, ${texteJour(d).toLowerCase()}` : texteJour(d)}</option>)}</select></label>
                         <ChoixHeure libelle="Début" name="heureDebut" value={heureDebut} disabled={!date} onChange={(e) => { setHeureDebut(e.target.value); setManuel((m) => ({ ...m, jour: true })); }} />
                         <ChoixHeure libelle="Fin" name="heureFin" value={heureFin} disabled={!date} onChange={(e) => { setHeureFin(e.target.value); setManuel((m) => ({ ...m, jour: true })); }} />
                     </div>
+                    <button type="button" className="secondary" onClick={ajouterDate} disabled={!date}><Icone nom="plus" />Ajouter une autre date</button>
                 </fieldset>
                 <label>Le texte de l'annonce <small className="optionnel">{description.length}/300</small><textarea name="description" maxLength={300} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Il s'écrit tout seul dès que vous choisissez le service. Vous pouvez le modifier." /></label>
                 <button type="button" className="secondary" onClick={() => {

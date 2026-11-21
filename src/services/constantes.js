@@ -77,6 +77,14 @@ export const texteQuand = (creneau, date) => {
     return creneau.heureDebut ? `${texteJour(date)}, ${plageHoraire(creneau)}` : texteJour(date);
 };
 
+export const texteQuandBesoin = (b, tout = false) => {
+    const liste = b.creneaux && b.creneaux.length ? b.creneaux : null;
+    if (!liste) return texteQuand(b.creneau, b.date);
+    const textes = liste.map((c) => texteQuand(c.jour ? c : null, c.date));
+    if (tout || textes.length === 1) return textes.join(" · ");
+    return `${textes[0]} (+${textes.length - 1} autre${textes.length > 2 ? "s" : ""} date${textes.length > 2 ? "s" : ""})`;
+};
+
 export const heureCourte = (h) => {
     if (!h) return "";
     const [heures, minutes] = h.split(":");

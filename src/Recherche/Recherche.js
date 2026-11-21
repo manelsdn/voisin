@@ -7,7 +7,7 @@ import CarteJeunes from "./CarteJeunes";
 import Dictee from "../composants/Dictee";
 import { analyser, resumer } from "../services/dictee";
 import { besoinsProches, choisirPositionActuelle, classerJeunes, pointDeRecherche, prevenirLesJeunes, rechercherJeunes } from "../services/api";
-import { JOURS, NOMS_JOURS, RAYONS, aujourdhuiIso, depuis, iconeService, imageService, nomComplet, nomService, texteDistance, texteJour, texteQuand } from "../services/constantes";
+import { JOURS, NOMS_JOURS, RAYONS, aujourdhuiIso, depuis, iconeService, imageService, nomComplet, nomService, texteDistance, texteJour, texteQuand, texteQuandBesoin } from "../services/constantes";
 
 const CLE = "vdo-filtres";
 
@@ -37,7 +37,7 @@ export const CarteBesoin = ({ besoin }) => (
             <span className="carte-ligne"><strong>{nomComplet(besoin.service, besoin.sousService)} pour {besoin.beneficiairePrenom}</strong></span>
             <small>{texteDistance(besoin.distance)} · {besoin.ville} · {depuis(besoin.creeAt)}</small>
             <span className="carte-texte">{besoin.description}</span>
-            {(besoin.creneau || besoin.date) && <span className="carte-bas"><em>{texteQuand(besoin.creneau, besoin.date)}</em></span>}
+            {(besoin.creneau || besoin.date) && <span className="carte-bas"><em>{texteQuandBesoin(besoin)}</em></span>}
         </span>
         <Icone nom="chevron" />
     </Link>
@@ -50,7 +50,7 @@ export const PostBesoin = ({ besoin }) => (
             <span>
                 <strong>{nomComplet(besoin.service, besoin.sousService)} pour {besoin.beneficiairePrenom}</strong>
                 <small>{texteDistance(besoin.distance)} · {besoin.ville} · {depuis(besoin.creeAt)}</small>
-                <em className="post-creneau">{besoin.creneau || besoin.date ? texteQuand(besoin.creneau, besoin.date) : "Créneau à convenir"}</em>
+                <em className="post-creneau">{besoin.creneau || besoin.date ? texteQuandBesoin(besoin) : "Créneau à convenir"}</em>
             </span>
         </Link>
         <p className="post-text">{besoin.description}</p>

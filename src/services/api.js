@@ -470,13 +470,13 @@ const BESOIN_MOTS_PROCHE = { COURSES: "faire les courses de {p}", MENAGE: "un pe
 
 const heureParlee = (h) => h.replace(/^0/, "").replace(":00", "h").replace(":", "h");
 
-export const suggestionBesoin = ({ service, sousService, date, heureDebut, heureFin, proche }, essai = 0) => {
+export const suggestionBesoin = ({ service, sousService, date, heureDebut, heureFin, proche, autres = [] }, essai = 0) => {
     if (!service) return "";
     const base = proche ? (BESOIN_MOTS_PROCHE[service] || `${nomService(service).toLowerCase()} pour {p}`).replace("{p}", proche) : BESOIN_MOTS[service] || nomService(service).toLowerCase();
     const quoi = `${base}${sousService ? ` (${sousService.toLowerCase()})` : ""}`;
-    const jour = date ? ` le ${texteJour(date).toLowerCase()}` : "";
-    const heures = date && heureDebut && heureFin ? ` de ${heureParlee(heureDebut)} à ${heureParlee(heureFin)}` : "";
-    const quand = jour + heures;
+    const unJour = (c) => `le ${texteJour(c.date).toLowerCase()}${c.heureDebut && c.heureFin ? ` de ${heureParlee(c.heureDebut)} à ${heureParlee(c.heureFin)}` : ""}`;
+    const jours = [...autres, ...(date ? [{ date, heureDebut, heureFin }] : [])].filter((c) => c.date).sort((a, b) => a.date.localeCompare(b.date));
+    const quand = jours.length ? ` ${jours.length > 1 ? `${jours.slice(0, -1).map(unJour).join(", ")} ou ${unJour(jours[jours.length - 1])}` : unJour(jours[0])}` : "";
     const modeles = [
         `Bonjour, je cherche un jeune du quartier pour ${quoi}${quand}. Merci beaucoup !`,
         `Bonjour, j'aurais besoin d'un coup de main pour ${quoi}${quand}. Je vous remercie par avance.`,
@@ -559,9 +559,13 @@ export const changerRole = async (utilisateur, role) => {
 
 const arrondi = (x) => (x == null ? null : Math.round(x * 1000) / 1000);
 
-export const publierBesoin = async (utilisateur, { service, sousService, date, jour, heureDebut, heureFin, description }) => {
+export const publierBesoin = async (utilisateur, { service, sousService, date, jour, heureDebut, heureFin, description, creneaux = [] }) => {
     if (!service) throw new Error("Choisissez le service dont vous avez besoin.");
     if (date && date < dateDuJour()) throw new Error("Cette date est déjà passée, choisissez-en une autre.");
+    const tous = [...creneaux, ...(date ? [{ date, jour, heureDebut, heureFin }] : [])].sort((a, b) => a.date.localeCompare(b.date) || (a.heureDebut || "").localeCompare(b.heureDebut || ""));
+    if (tous.some((c) => c.date < dateDuJour())) throw new Error("Une des dates est déjà passée, retirez-la.");
+    if (tous.some((c) => c.heureFin && c.heureDebut && c.heureFin <= c.heureDebut)) throw new Error("L'heure de fin doit être après l'heure de début.");
+    const premier = tous[0] || {};
     const texte = (description || "").trim();
     if (!texte) throw new Error("Décrivez votre besoin en quelques mots.");
     if (texte.length > 300) throw new Error("La description fait 300 caractères maximum.");
@@ -579,8 +583,9 @@ export const publierBesoin = async (utilisateur, { service, sousService, date, j
         longitude: arrondi(personne.longitude),
         service,
         ...(sousService ? { sousService } : {}),
-        ...(date ? { date } : {}),
-        creneau: jour ? { jour, heureDebut: heureDebut || "", heureFin: heureFin || "" } : null,
+        ...(premier.date ? { date: premier.date } : {}),
+        creneau: premier.jour ? { jour: premier.jour, heureDebut: premier.heureDebut || "", heureFin: premier.heureFin || "" } : null,
+        ...(tous.length > 1 ? { creneaux: tous.map((c) => ({ date: c.date, jour: c.jour, heureDebut: c.heureDebut || "", heureFin: c.heureFin || "" })) } : {}),
         description: texte,
         statut: "OUVERTE",
         creeAt: new Date().toISOString()
@@ -593,8 +598,8 @@ export const besoinsProches = async (position, { service = "", rayon = 2, date =
     (await s.chercher("besoins", "statut", "OUVERTE"))
         .map((b) => ({ ...b, distance: distanceKm(position, b) }))
         .filter((b) => !service || b.service === service)
-        .filter((b) => !b.date || b.date >= dateDuJour())
-        .filter((b) => !date || !b.creneau || (b.date ? b.date === date : b.creneau.jour === JOURS_SEMAINE[new Date(`${date}T12:00:00`).getDay()]))
+        .filter((b) => !b.date || (b.creneaux || [b]).some((c) => c.date >= dateDuJour()))
+        .filter((b) => !date || !b.creneau || (b.creneaux ? b.creneaux.some((c) => c.date === date) : b.date ? b.date === date : b.creneau.jour === JOURS_SEMAINE[new Date(`${date}T12:00:00`).getDay()]))
         .filter((b) => b.distance !== null && b.distance <= rayon)
         .sort((a, b) => a.distance - b.distance);
 

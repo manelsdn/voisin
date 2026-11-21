@@ -6,7 +6,7 @@ import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
 import { changerStatutBesoin, lireBesoin, maProposition, pointDeRecherche, proposerAide, propositionsDuBesoin } from "../services/api";
 import { distanceKm } from "../services/geo";
-import { STATUTS_BESOIN, depuis, nomComplet, texteDistance, texteQuand } from "../services/constantes";
+import { STATUTS_BESOIN, depuis, nomComplet, texteDistance, texteQuandBesoin } from "../services/constantes";
 
 const DetailBesoin = () => {
     const { id } = useParams();
@@ -76,7 +76,7 @@ const DetailBesoin = () => {
             </div>
             <div className="detail-box">
                 <p className="besoin-texte">{besoin.description}</p>
-                <div className="text-row"><span><Icone nom="clock" /> Quand</span><strong>{besoin.creneau || besoin.date ? texteQuand(besoin.creneau, besoin.date) : "À convenir ensemble"}</strong></div>
+                <div className="text-row"><span><Icone nom="clock" /> Quand</span><strong>{besoin.creneau || besoin.date ? texteQuandBesoin(besoin, true) : "À convenir ensemble"}</strong></div>
                 {pourQuelquun && <div className="text-row"><span><Icone nom="users" /> Publiée par</span><strong>{besoin.auteurPrenom}, pour {besoin.beneficiairePrenom}</strong></div>}
             </div>
 

@@ -219,3 +219,28 @@ test("US46 · Dictée pour le jeune aussi : il dicte son annonce, ses services e
     await expect(page.getByText(/Compris/)).toContainText(/Samedi \d+ \S+ 9h-12h/);
     await expect(page.locator('select[name="date"] option:checked')).toHaveText(/^Samedi \d+/);
 });
+
+test("Besoin sur plusieurs dates : le senior ajoute deux créneaux, le jeune le retrouve sur chacune des dates", async ({ page }) => {
+    const { remplirHeure } = require("./outils");
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/besoins/nouveau");
+    await page.getByRole("button", { name: /Jardinage/ }).first().click();
+    const dates = await page.locator('select[name="date"] option').evaluateAll((o) => o.map((x) => x.value).filter(Boolean));
+    await page.locator('select[name="date"]').selectOption(dates[2]);
+    await remplirHeure(page, "Début", "09:00");
+    await remplirHeure(page, "Fin", "11:00");
+    await page.getByRole("button", { name: "Ajouter une autre date" }).click();
+    await expect(page.getByRole("list", { name: "Dates ajoutées" }).getByRole("listitem")).toHaveCount(1);
+    await page.locator('select[name="date"]').selectOption(dates[5]);
+    await remplirHeure(page, "Début", "14:00");
+    await remplirHeure(page, "Fin", "16:00");
+    await expect(page.getByLabel(/Le texte de l'annonce/)).toHaveValue(/de 9h à 11h ou le .* de 14h à 16h/);
+    await page.getByRole("button", { name: "Publier mon besoin" }).click();
+    await expect(page.getByText(/9h-11h · .*14h-16h/)).toBeVisible();
+    await deconnecter(page);
+    await connecter(page, "lucas.martin@exemple.fr");
+    await page.goto("/recherche");
+    await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Jardinage" }).click();
+    await page.locator('select[name="date"]').selectOption(dates[5]);
+    await expect(page.locator(".post-creneau").filter({ hasText: /9h-11h \(\+1 autre date\)/ }).first()).toBeVisible();
+});
