@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSession } from "../composants/Session";
 import { Astuce, ChoixHeure, Ecran, Message, PucesServices, auQuart } from "../composants/Mise";
@@ -38,7 +38,18 @@ const NouveauBesoin = () => {
 
     useEffect(() => { pointDeRecherche(utilisateur).then(({ personne }) => setPour(personne)); }, [utilisateur]);
 
+    const proche = pour && pour.id !== utilisateur.id ? pour.prenom : "";
+    const texteAuto = useRef("");
+
     useEffect(() => {
+        const ancien = texteAuto.current;
+        const texte = suggestionBesoin({ service, sousService: sous, date, heureDebut: auQuart(heureDebut), heureFin: auQuart(heureFin), proche }, essai);
+        texteAuto.current = texte;
+        setDescription((avant) => (avant === "" || avant === ancien ? texte : avant));
+    }, [service, sous, date, heureDebut, heureFin, proche, essai]);
+
+    useEffect(() => {
+        if (description === texteAuto.current) return;
         const trouve = analyser(description);
         const rempli = {};
         if (trouve.service && !manuel.service) {
@@ -102,16 +113,7 @@ const NouveauBesoin = () => {
                     </div>
                 </fieldset>
                 <label>Décrivez votre besoin ({description.length}/300)<textarea name="description" maxLength={300} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Par exemple : porter les courses du marché samedi matin." /></label>
-                <button type="button" className="secondary" onClick={() => {
-                    try {
-                        setManuel({ service: true, jour: true, sous: true });
-                        setDescription(suggestionBesoin({ service, sousService: sous, date, heureDebut: auQuart(heureDebut), heureFin: auQuart(heureFin) }, essai));
-                        setEssai(essai + 1);
-                        setErreur("");
-                    } catch (err) {
-                        setErreur(err.message);
-                    }
-                }}><Icone nom="sparkles" />{essai ? "Autre proposition" : "Écrire le texte pour moi"}</button>
+                {description && description === texteAuto.current && <button type="button" className="secondary" onClick={() => setEssai(essai + 1)}><Icone nom="sparkles" />Autre proposition</button>}
                 {(auto.service || auto.sous || auto.date) && (
                     <p className="devine" aria-live="polite"><Icone nom="sparkles" /><span>Rempli d'après votre texte : <b>{[auto.service && nomService(auto.service), auto.sous, auto.date && texteJour(auto.date), auto.heures].filter(Boolean).join(" · ")}</b>. Vous pouvez modifier.</span></p>
                 )}

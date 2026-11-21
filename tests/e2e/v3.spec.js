@@ -272,20 +272,39 @@ test("Filtres : distance en km et jour pour tout le monde", async ({ page }) => 
     await expect(page.getByText("Courses pour Henri")).toHaveCount(0);
 });
 
-test("Besoin : le texte s'écrit à partir de ce qui est rempli", async ({ page }) => {
+test("Besoin : le texte s'écrit tout seul à partir de ce qui est rempli, pour un proche", async ({ page }) => {
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/besoins/nouveau");
-    await page.getByRole("button", { name: "Écrire le texte pour moi" }).click();
-    await expect(page.getByText("Choisissez d'abord le service dont vous avez besoin.")).toBeVisible();
+    await expect(page.getByText(/Pour Madeleine\./)).toBeVisible();
+    const texte = page.getByLabel(/Décrivez votre besoin/);
+    await expect(texte).toHaveValue("");
     await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Courses" }).click();
+    await expect(texte).toHaveValue("Bonjour, je cherche un jeune du quartier pour faire les courses de Madeleine. Merci beaucoup !");
     await page.getByRole("group", { name: "Précision du besoin" }).getByRole("button", { name: "Pharmacie" }).click();
     const date = page.locator('select[name="date"]');
     await date.selectOption({ index: 3 });
     const jour = (await date.locator("option:checked").textContent()).trim().toLowerCase();
     await remplirHeure(page, "Début", "10:00");
     await remplirHeure(page, "Fin", "11:30");
-    await page.getByRole("button", { name: "Écrire le texte pour moi" }).click();
-    await expect(page.getByLabel(/Décrivez votre besoin/)).toHaveValue(`Bonjour, je cherche un jeune du quartier pour faire mes courses (pharmacie) le ${jour} de 10h à 11h30. Merci beaucoup !`);
+    await expect(texte).toHaveValue(`Bonjour, je cherche un jeune du quartier pour faire les courses de Madeleine (pharmacie) le ${jour} de 10h à 11h30. Merci beaucoup !`);
     await page.getByRole("button", { name: "Autre proposition" }).click();
-    await expect(page.getByLabel(/Décrivez votre besoin/)).toHaveValue(/coup de main pour faire mes courses \(pharmacie\)/);
+    await expect(texte).toHaveValue(/coup de main pour faire les courses de Madeleine \(pharmacie\)/);
+    await texte.fill("Le code de l'immeuble est 1234B.");
+    await date.selectOption({ index: 5 });
+    await expect(texte).toHaveValue("Le code de l'immeuble est 1234B.");
+});
+
+test("Besoin : pour soi-même, le texte parle à la première personne", async ({ page }) => {
+    await connecter(page, "henri.lacroix@exemple.fr");
+    await page.goto("/besoins/nouveau");
+    await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Animaux" }).click();
+    await expect(page.getByLabel(/Décrivez votre besoin/)).toHaveValue("Bonjour, je cherche un jeune du quartier pour m'occuper de mon animal. Merci beaucoup !");
+});
+
+test("Demandes : les annonces d'aide ont leur propre onglet", async ({ page }) => {
+    await connecter(page, "camille.moreau@exemple.fr");
+    await page.goto("/services");
+    await page.getByRole("tab", { name: /Annonces/ }).click();
+    await expect(page.locator(".carte-besoin").first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Publier un besoin/ })).toBeVisible();
 });

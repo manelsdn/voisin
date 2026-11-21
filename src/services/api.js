@@ -463,20 +463,23 @@ const FINS = ["À l'heure et avec le sourire !", "Écrivez-moi, on s'organise en
 
 const BESOIN_MOTS = { COURSES: "faire mes courses", MENAGE: "un peu de ménage", BRICOLAGE: "un petit bricolage", INFORMATIQUE: "m'aider avec l'informatique", JARDINAGE: "m'aider au jardin", CUISINE: "préparer un repas", COMPAGNIE: "me tenir compagnie", SORTIES: "m'accompagner pour une sortie", PAPIERS: "m'aider avec mes papiers", ANIMAUX: "m'occuper de mon animal" };
 
+const BESOIN_MOTS_PROCHE = { COURSES: "faire les courses de {p}", MENAGE: "un peu de ménage chez {p}", BRICOLAGE: "un petit bricolage chez {p}", INFORMATIQUE: "aider {p} avec l'informatique", JARDINAGE: "aider {p} au jardin", CUISINE: "préparer un repas pour {p}", COMPAGNIE: "tenir compagnie à {p}", SORTIES: "accompagner {p} pour une sortie", PAPIERS: "aider {p} avec ses papiers", ANIMAUX: "s'occuper de l'animal de {p}" };
+
 const heureParlee = (h) => h.replace(/^0/, "").replace(":00", "h").replace(":", "h");
 
-export const suggestionBesoin = ({ service, sousService, date, heureDebut, heureFin }, essai = 0) => {
-    if (!service) throw new Error("Choisissez d'abord le service dont vous avez besoin.");
-    const quoi = `${BESOIN_MOTS[service] || nomService(service).toLowerCase()}${sousService ? ` (${sousService.toLowerCase()})` : ""}`;
+export const suggestionBesoin = ({ service, sousService, date, heureDebut, heureFin, proche }, essai = 0) => {
+    if (!service) return "";
+    const base = proche ? (BESOIN_MOTS_PROCHE[service] || `${nomService(service).toLowerCase()} pour {p}`).replace("{p}", proche) : BESOIN_MOTS[service] || nomService(service).toLowerCase();
+    const quoi = `${base}${sousService ? ` (${sousService.toLowerCase()})` : ""}`;
     const jour = date ? ` le ${texteJour(date).toLowerCase()}` : "";
     const heures = date && heureDebut && heureFin ? ` de ${heureParlee(heureDebut)} à ${heureParlee(heureFin)}` : "";
     const quand = jour + heures;
     const modeles = [
         `Bonjour, je cherche un jeune du quartier pour ${quoi}${quand}. Merci beaucoup !`,
         `Bonjour, j'aurais besoin d'un coup de main pour ${quoi}${quand}. Je vous remercie par avance.`,
-        `Bonjour, est-ce qu'un jeune pourrait venir ${quoi.startsWith("m'") || quoi.startsWith("me ") ? quoi : `m'aider à ${quoi}`}${quand} ? Merci !`
+        `Bonjour, est-ce qu'un jeune pourrait ${proche || quoi.startsWith("m'") || quoi.startsWith("me ") ? quoi : `m'aider à ${quoi}`}${quand} ? Merci !`
     ];
-    return modeles[essai % modeles.length];
+    return modeles[essai % modeles.length].replace("..", ".");
 };
 
 export const suggestionAnnonce = ({ prenom, mots, services, disponibilites }, essai = 0) => {

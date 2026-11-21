@@ -6,17 +6,29 @@ import { Icone } from "../composants/Icones";
 import { mesBesoins, propositionsDuBesoin } from "../services/api";
 import { STATUTS_BESOIN, depuis, iconeService, imageService, nomComplet, texteQuand } from "../services/constantes";
 
+export const CarteMonBesoin = ({ besoin }) => (
+    <Link to={`/besoins/${besoin.id}`} className="carte-profil carte-besoin">
+        <span className="carte-photo carte-service"><img src={imageService(besoin.service)} alt="" /><i><Icone nom={iconeService(besoin.service)} /></i></span>
+        <span className="carte-corps">
+            <span className="carte-ligne"><strong>{nomComplet(besoin.service, besoin.sousService)} pour {besoin.beneficiairePrenom}</strong></span>
+            <small>{depuis(besoin.creeAt)}{besoin.creneau || besoin.date ? ` · ${texteQuand(besoin.creneau, besoin.date)}` : ""}</small>
+            <span className="carte-bas"><em className={`statut ${besoin.statut === "OUVERTE" ? "ACCEPTEE" : "ANNULEE"}`}>{STATUTS_BESOIN[besoin.statut]}</em><em>{besoin.propositions} proposition{besoin.propositions > 1 ? "s" : ""}</em></span>
+        </span>
+        <Icone nom="chevron" />
+    </Link>
+);
+
+export const chargerMesBesoins = async (utilisateur) => {
+    const liste = await mesBesoins(utilisateur);
+    return Promise.all(liste.map(async (b) => ({ ...b, propositions: (await propositionsDuBesoin(b.id).catch(() => [])).length })));
+};
+
 const MesBesoins = () => {
     const { utilisateur } = useSession();
     const [besoins, setBesoins] = useState(null);
 
     useEffect(() => {
-        const charger = async () => {
-            const liste = await mesBesoins(utilisateur);
-            const avecNombre = await Promise.all(liste.map(async (b) => ({ ...b, propositions: (await propositionsDuBesoin(b.id).catch(() => [])).length })));
-            setBesoins(avecNombre);
-        };
-        charger();
+        chargerMesBesoins(utilisateur).then(setBesoins);
     }, [utilisateur]);
 
     return (
@@ -28,15 +40,7 @@ const MesBesoins = () => {
             )}
             <div className="liste-cartes">
                 {besoins && besoins.map((b) => (
-                    <Link key={b.id} to={`/besoins/${b.id}`} className="carte-profil carte-besoin">
-                        <span className="carte-photo carte-service"><img src={imageService(b.service)} alt="" /><i><Icone nom={iconeService(b.service)} /></i></span>
-                        <span className="carte-corps">
-                            <span className="carte-ligne"><strong>{nomComplet(b.service, b.sousService)} pour {b.beneficiairePrenom}</strong></span>
-                            <small>{depuis(b.creeAt)}{b.creneau || b.date ? ` · ${texteQuand(b.creneau, b.date)}` : ""}</small>
-                            <span className="carte-bas"><em className={`statut ${b.statut === "OUVERTE" ? "ACCEPTEE" : "ANNULEE"}`}>{STATUTS_BESOIN[b.statut]}</em><em>{b.propositions} proposition{b.propositions > 1 ? "s" : ""}</em></span>
-                        </span>
-                        <Icone nom="chevron" />
-                    </Link>
+                    <CarteMonBesoin key={b.id} besoin={b} />
                 ))}
             </div>
             <Link className="fab" to="/besoins/nouveau"><Icone nom="plus" /><span>Publier un besoin</span></Link>
