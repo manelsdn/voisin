@@ -106,7 +106,8 @@ test("US40 · Annonce assistée : texte proposé de 180 caractères maximum, mod
     const propose = await champ.inputValue();
     expect(propose.length).toBeLessThanOrEqual(180);
     expect(propose).toContain("Lucas");
-    expect(propose).toContain("étudiant en L2");
+    expect(propose).not.toContain("étudiant en L2");
+    expect(propose).toMatch(/courses|informatique/);
     await page.getByRole("button", { name: "Autre proposition" }).click();
     expect(await champ.inputValue()).not.toBe(propose);
     await page.getByRole("button", { name: "Garder mon texte" }).click();

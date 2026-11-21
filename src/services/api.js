@@ -461,6 +461,24 @@ const CORPS = [
 
 const FINS = ["À l'heure et avec le sourire !", "Écrivez-moi, on s'organise ensemble.", "Patient et ponctuel, promis.", "Au plaisir de vous rendre service !"];
 
+const BESOIN_MOTS = { COURSES: "faire mes courses", MENAGE: "un peu de ménage", BRICOLAGE: "un petit bricolage", INFORMATIQUE: "m'aider avec l'informatique", JARDINAGE: "m'aider au jardin", CUISINE: "préparer un repas", COMPAGNIE: "me tenir compagnie", SORTIES: "m'accompagner pour une sortie", PAPIERS: "m'aider avec mes papiers", ANIMAUX: "m'occuper de mon animal" };
+
+const heureParlee = (h) => h.replace(/^0/, "").replace(":00", "h").replace(":", "h");
+
+export const suggestionBesoin = ({ service, sousService, date, heureDebut, heureFin }, essai = 0) => {
+    if (!service) throw new Error("Choisissez d'abord le service dont vous avez besoin.");
+    const quoi = `${BESOIN_MOTS[service] || nomService(service).toLowerCase()}${sousService ? ` (${sousService.toLowerCase()})` : ""}`;
+    const jour = date ? ` le ${texteJour(date).toLowerCase()}` : "";
+    const heures = date && heureDebut && heureFin ? ` de ${heureParlee(heureDebut)} à ${heureParlee(heureFin)}` : "";
+    const quand = jour + heures;
+    const modeles = [
+        `Bonjour, je cherche un jeune du quartier pour ${quoi}${quand}. Merci beaucoup !`,
+        `Bonjour, j'aurais besoin d'un coup de main pour ${quoi}${quand}. Je vous remercie par avance.`,
+        `Bonjour, est-ce qu'un jeune pourrait venir ${quoi.startsWith("m'") || quoi.startsWith("me ") ? quoi : `m'aider à ${quoi}`}${quand} ? Merci !`
+    ];
+    return modeles[essai % modeles.length];
+};
+
 export const suggestionAnnonce = ({ prenom, mots, services, disponibilites }, essai = 0) => {
     if (!services.length) throw new Error("Choisissez au moins un service pour recevoir une proposition.");
     const propre = (mots || "").trim().replace(/[.!]+$/, "");

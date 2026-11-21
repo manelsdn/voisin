@@ -79,9 +79,9 @@ const MonAnnonce = () => {
 
     const proposer = () => {
         try {
-            const mots = avantProposition !== null ? avantProposition : description;
-            setDescription(suggestionAnnonce({ prenom: utilisateur.prenom, mots, services, disponibilites: creneaux }, essai));
-            setAvantProposition(mots);
+            const avant = avantProposition !== null ? avantProposition : description;
+            setDescription(suggestionAnnonce({ prenom: utilisateur.prenom, mots: "", services, disponibilites: creneaux }, essai));
+            setAvantProposition(avant);
             setEssai(essai + 1);
             setErreur("");
         } catch (err) {

@@ -4,7 +4,7 @@ import { useSession } from "../composants/Session";
 import { Astuce, ChoixHeure, Ecran, Message, PucesServices, auQuart } from "../composants/Mise";
 import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
-import { dateDuJour, pointDeRecherche, publierBesoin } from "../services/api";
+import { dateDuJour, pointDeRecherche, publierBesoin, suggestionBesoin } from "../services/api";
 import { analyser } from "../services/dictee";
 import { JOURS, SOUS_SERVICES, nomService, texteJour } from "../services/constantes";
 
@@ -24,6 +24,7 @@ const NouveauBesoin = () => {
     const [params] = useSearchParams();
     const [service, setService] = useState(params.get("service") || "");
     const [description, setDescription] = useState("");
+    const [essai, setEssai] = useState(0);
     const [date, setDate] = useState("");
     const [sous, setSous] = useState("");
     const [heureDebut, setHeureDebut] = useState("");
@@ -92,10 +93,6 @@ const NouveauBesoin = () => {
                         </div>
                     </fieldset>
                 )}
-                <label>Décrivez votre besoin ({description.length}/300)<textarea name="description" maxLength={300} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Par exemple : porter les courses du marché samedi matin." /></label>
-                {(auto.service || auto.sous || auto.date) && (
-                    <p className="devine" aria-live="polite"><Icone nom="sparkles" /><span>Rempli d'après votre texte : <b>{[auto.service && nomService(auto.service), auto.sous, auto.date && texteJour(auto.date), auto.heures].filter(Boolean).join(" · ")}</b>. Vous pouvez modifier.</span></p>
-                )}
                 <fieldset>
                     <legend>Quand ? (facultatif)</legend>
                     <div className="trois">
@@ -104,6 +101,20 @@ const NouveauBesoin = () => {
                         <ChoixHeure libelle="Fin" name="heureFin" value={heureFin} disabled={!date} onChange={(e) => { setHeureFin(e.target.value); setManuel((m) => ({ ...m, jour: true })); }} />
                     </div>
                 </fieldset>
+                <label>Décrivez votre besoin ({description.length}/300)<textarea name="description" maxLength={300} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Par exemple : porter les courses du marché samedi matin." /></label>
+                <button type="button" className="secondary" onClick={() => {
+                    try {
+                        setManuel({ service: true, jour: true, sous: true });
+                        setDescription(suggestionBesoin({ service, sousService: sous, date, heureDebut: auQuart(heureDebut), heureFin: auQuart(heureFin) }, essai));
+                        setEssai(essai + 1);
+                        setErreur("");
+                    } catch (err) {
+                        setErreur(err.message);
+                    }
+                }}><Icone nom="sparkles" />{essai ? "Autre proposition" : "Écrire le texte pour moi"}</button>
+                {(auto.service || auto.sous || auto.date) && (
+                    <p className="devine" aria-live="polite"><Icone nom="sparkles" /><span>Rempli d'après votre texte : <b>{[auto.service && nomService(auto.service), auto.sous, auto.date && texteJour(auto.date), auto.heures].filter(Boolean).join(" · ")}</b>. Vous pouvez modifier.</span></p>
+                )}
                 <Astuce icone="pin">Votre adresse n'est jamais affichée : seule une distance approximative est visible.</Astuce>
                 <Message erreur={erreur} />
                 <button className="primary" type="submit" disabled={envoi}><span>{envoi ? "Publication…" : "Publier mon annonce"}</span><Icone nom="arrow" /></button>
