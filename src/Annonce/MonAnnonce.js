@@ -150,7 +150,7 @@ const MonAnnonce = () => {
                     <button type="button" className="secondary" onClick={ajouterCreneau}><Icone nom="plus" />Ajouter ce créneau</button>
                 </fieldset>
                 <label>Présentation courte ({description.length}/180)<textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Exemple : étudiant, disponible après les cours pour les courses et l'informatique." /></label>
-                <div className="deux">
+                <div className="boutons-texte">
                     <button type="button" className="secondary" onClick={proposer}><Icone nom="sparkles" />{avantProposition !== null ? "Autre proposition" : "Proposer un texte"}</button>
                     {avantProposition !== null && <button type="button" className="secondary" onClick={refuser}>Garder mon texte</button>}
                 </div>

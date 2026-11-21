@@ -34,6 +34,7 @@ const MesBesoins = () => {
     return (
         <Ecran titre="Mes annonces" retour="/services">
             <p className="soft">Les jeunes du quartier vous proposent leur aide ici.</p>
+            <Link className="publier-rouge" to="/besoins/nouveau"><Icone nom="plus" /><span>Publier un besoin</span></Link>
             {besoins === null && <div className="squelettes">{[0, 1].map((i) => <span key={i} className="squelette" />)}</div>}
             {besoins && besoins.length === 0 && (
                 <div className="vide"><span className="vide-icone"><Icone nom="plus" /></span><strong>Aucune annonce pour le moment.</strong><p>Décrivez votre besoin, les jeunes proches vous répondront.</p></div>
@@ -43,7 +44,6 @@ const MesBesoins = () => {
                     <CarteMonBesoin key={b.id} besoin={b} />
                 ))}
             </div>
-            <Link className="fab" to="/besoins/nouveau"><Icone nom="plus" /><span>Publier un besoin</span></Link>
         </Ecran>
     );
 };
