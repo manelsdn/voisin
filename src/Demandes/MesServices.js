@@ -7,7 +7,7 @@ import { mesDemandes } from "../services/api";
 import { imageService, nomComplet, texteQuand } from "../services/constantes";
 import { CarteMonBesoin, chargerMesBesoins } from "../Besoins/MesBesoins";
 
-const PASSES = ["TERMINEE", "REFUSEE", "ANNULEE"];
+const PASSES = ["TERMINEE", "REFUSEE", "ANNULEE", "EXPIREE"];
 
 const MesServices = () => {
     const { utilisateur } = useSession();

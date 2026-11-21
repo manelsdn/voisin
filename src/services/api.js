@@ -2,7 +2,7 @@ import * as firebase from "./stockageFirebase";
 import * as test from "./stockageTest";
 import * as supa from "./stockageSupabase";
 import { distanceKm, geocoder, prochaineDate } from "./geo";
-import { NOMS_JOURS, SERVICES, creneauxActifs, majuscule, nomComplet, nomService, texteJour, texteQuand } from "./constantes";
+import { NOMS_JOURS, SERVICES, creneauxActifs, majuscule, nomComplet, nomService, plageHoraire, texteJour, texteQuand } from "./constantes";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const s = process.env.REACT_APP_MODE === "test" ? test : process.env.REACT_APP_BACKEND === "supabase" ? supa : firebase;
@@ -170,15 +170,18 @@ export const envoyerDemande = async ({ demandeur, beneficiaire, jeune, service, 
     return id;
 };
 
-export const lireDemande = (id) => s.lire("demandes", id);
+const avecExpiration = (d) => (d && d.statut === "ENVOYEE" && d.dateSouhaitee && d.dateSouhaitee < dateDuJour() ? { ...d, statut: "EXPIREE" } : d);
+
+export const lireDemande = async (id) => avecExpiration(await s.lire("demandes", id));
 
 export const mesDemandes = async (utilisateur) => {
     const champ = utilisateur.role === "JEUNE" ? "jeuneId" : "demandeurId";
     const liste = await s.chercher("demandes", champ, utilisateur.id);
-    return liste.sort((a, b) => (b.creeAt || "").localeCompare(a.creeAt || ""));
+    return liste.map(avecExpiration).sort((a, b) => (b.creeAt || "").localeCompare(a.creeAt || ""));
 };
 
 export const repondreDemande = async (demande, utilisateur, statut) => {
+    if (demande.statut === "EXPIREE") throw new Error("La date de cette demande est passée.");
     if (demande.statut !== "ENVOYEE") throw new Error("Cette demande a déjà une réponse.");
     const estJeune = utilisateur.id === demande.jeuneId;
     if ((statut === "ACCEPTEE" || statut === "REFUSEE") && !estJeune) throw new Error("Seul le jeune peut répondre.");
@@ -372,7 +375,7 @@ export const classerJeunes = async (jeunes, compris, maintenant = new Date()) =>
             const moyenne = notes.length ? notes.reduce((t, a) => t + a.note, 0) / notes.length : 0;
             const score = (j.creneau ? 30 + Math.min(j.creneau.commun, 180) / 6 : 0) + (2 - Math.min(j.distance, 2)) * 15 + moyenne * 4 + Math.min(notes.length, 5) * 2;
             const raisons = [
-                j.creneau && `${compris.aujourdhui ? "Libre aujourd'hui" : j.creneau.date ? `Libre ${texteJour(j.creneau.date).toLowerCase()}` : `Libre le ${NOMS_JOURS[j.creneau.jour].toLowerCase()}`} ${j.creneau.heureDebut}-${j.creneau.heureFin}`,
+                j.creneau && `${compris.aujourdhui ? "Libre aujourd'hui" : j.creneau.date ? `Libre ${texteJour(j.creneau.date).toLowerCase()}` : `Libre le ${NOMS_JOURS[j.creneau.jour].toLowerCase()}`} ${plageHoraire(j.creneau)}`,
                 notes.length && `★ ${moyenne.toFixed(1).replace(".", ",")} (${notes.length} avis)`
             ].filter(Boolean);
             return { ...j, score, raisons };

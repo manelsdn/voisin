@@ -1,10 +1,27 @@
 const path = require("path");
 const donnees = require(path.join(__dirname, "../../specs/donnees.json"));
 
+const ORDRE = ["DIMANCHE", "LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI"];
+
+const prochaineDateDu = (jour) => {
+    const d = new Date();
+    d.setHours(12, 0, 0, 0);
+    d.setDate(d.getDate() + (((ORDRE.indexOf(jour) - d.getDay() + 7) % 7) || 7));
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
+
+const aJour = () => {
+    const copie = JSON.parse(JSON.stringify(donnees));
+    Object.values(copie.demandes).forEach((d) => {
+        if (["ENVOYEE", "ACCEPTEE"].includes(d.statut) && d.creneau && d.creneau.jour) d.dateSouhaitee = prochaineDateDu(d.creneau.jour);
+    });
+    return copie;
+};
+
 const preparer = async (page) => {
     await page.addInitScript((db) => {
         if (!localStorage.getItem("vdo-db")) localStorage.setItem("vdo-db", JSON.stringify(db));
-    }, donnees);
+    }, aJour());
 };
 
 const connecter = async (page, email) => {

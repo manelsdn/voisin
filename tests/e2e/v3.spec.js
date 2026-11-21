@@ -211,7 +211,7 @@ test("Carte : recherche précise avec la barre au-dessus de la carte", async ({ 
     await page.getByRole("searchbox", { name: "Rechercher sur la carte" }).fill("un jeune pour du bricolage samedi matin");
     await page.keyboard.press("Enter");
     await expect(page.getByText("J'ai compris")).toContainText("Bricolage");
-    await expect(page.locator('select[name="date"]').locator("option:checked")).toHaveText(/^(Samedi|Aujourd'hui|Demain)/);
+    await expect(page.locator('select[name="date"]').locator("option:checked")).toHaveText(/^(Sam\.|Aujourd'hui|Demain)/);
     await expect(page.getByRole("region", { name: "Carte des jeunes disponibles" })).toBeVisible();
 });
 
@@ -225,7 +225,7 @@ test("Catégories : nouvelles catégories, sous-catégorie et vraie date dans la
     await expect(page.getByLabel("Date").locator("option:checked")).toHaveText(/^Samedi \d+/);
     await page.getByRole("button", { name: /Publier mon annonce/ }).click();
     await expect(page.getByRole("heading", { name: /Sorties · Rendez-vous médical/ })).toBeVisible();
-    await expect(page.getByText(/Samedi \d+ \S+, 10:00-12:00/)).toBeVisible();
+    await expect(page.getByText(/Samedi \d+ \S+, 10h-12h/)).toBeVisible();
     await page.goto("/jeunes/jeune-01");
     await page.getByRole("link", { name: "Envoyer une demande" }).click();
     await page.getByRole("group", { name: "Précision du besoin" }).getByRole("button", { name: "Pharmacie" }).click();
@@ -255,17 +255,17 @@ test("Annonce jeune : on ajoute plusieurs dates, le formulaire se vide après ch
         await expect(date).toHaveValue("");
         await verifierHeure(page, "Début", "");
     }
-    await expect(page.locator(".creneaux")).toContainText(`${textes[0]}, 10:00-11:30`);
-    await expect(page.locator(".creneaux")).toContainText(`${textes[1]}, 14:00-16:00`);
+    await expect(page.locator(".creneaux")).toContainText(`${textes[0]}, 10h-11h30`);
+    await expect(page.locator(".creneaux")).toContainText(`${textes[1]}, 14h-16h`);
     await page.getByRole("button", { name: /Publier mon annonce|Mettre à jour mon annonce/ }).click();
-    await expect(page.getByText(`${textes[0]}, 10:00-11:30`)).toBeVisible();
-    await expect(page.getByText(`${textes[1]}, 14:00-16:00`)).toBeVisible();
+    await expect(page.getByText(`${textes[0]}, 10h-11h30`)).toBeVisible();
+    await expect(page.getByText(`${textes[1]}, 14h-16h`)).toBeVisible();
 });
 
 test("Filtres : distance en km et jour pour tout le monde", async ({ page }) => {
     await connecter(page, "lucas.martin@exemple.fr");
     await page.goto("/recherche");
-    await expect(page.getByLabel("Distance").locator("option")).toHaveText(["< 0,5 km", "< 1 km", "< 2 km"]);
+    await expect(page.getByLabel("Distance").locator("option")).toHaveText(["0,5 km", "1 km", "2 km"]);
     await choisirJour(page, "DIMANCHE");
     await expect(page.getByText("Courses pour Henri")).toBeVisible();
     await choisirJour(page, "LUNDI");
@@ -309,4 +309,22 @@ test("Demandes : les annonces d'aide ont leur propre onglet", async ({ page }) =
     await page.getByRole("tab", { name: /Annonces/ }).click();
     await expect(page.locator(".carte-besoin").first()).toBeVisible();
     await expect(page.getByRole("link", { name: /Publier un besoin/ })).toBeVisible();
+});
+
+test("Demandes : une demande sans réponse dont la date est passée devient « Expirée »", async ({ page }) => {
+    await page.addInitScript(() => {
+        const db = JSON.parse(localStorage.getItem("vdo-db") || "null");
+        if (db && !db.passe) {
+            db.demandes["demande-01"].dateSouhaitee = "2020-01-04";
+            db.passe = true;
+            localStorage.setItem("vdo-db", JSON.stringify(db));
+        }
+    });
+    await connecter(page, "lucas.martin@exemple.fr");
+    await page.goto("/demandes/demande-01");
+    await expect(page.getByText("Expirée").first()).toBeVisible();
+    await expect(page.getByRole("button", { name: /Accepter/ })).toHaveCount(0);
+    await page.goto("/services");
+    await page.getByRole("tab", { name: "Historique" }).click();
+    await expect(page.locator(".carte-suivi").filter({ hasText: "Expirée" }).first()).toBeVisible();
 });

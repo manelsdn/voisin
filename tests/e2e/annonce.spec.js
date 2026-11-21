@@ -42,7 +42,7 @@ test("US08 US09 US10 · Annonce : un nouveau jeune publie et apparaît dans la r
     await page.getByLabel(/Présentation courte/).fill("Je m'occupe des plantes du quartier.");
     await page.getByRole("button", { name: /Publier mon annonce|Mettre à jour mon annonce/ }).click();
     await expect(page.getByText("APERÇU DE MON ANNONCE")).toBeVisible();
-    await expect(page.getByText(/Dimanche \d+ \S+, 09:00-12:00/)).toBeVisible();
+    await expect(page.getByText(/Dimanche \d+ \S+, 9h-12h/)).toBeVisible();
     await deconnecter(page);
     await connecter(page, "camille.moreau@exemple.fr");
     await page.goto("/recherche");

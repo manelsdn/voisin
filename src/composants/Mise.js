@@ -226,5 +226,6 @@ export const prochaineEtape = (d, estJeune, avis, court) => {
     if (d.statut === "ACCEPTEE") return estJeune ? `Rendez-vous ${jour ? `le ${jour}` : "bientôt"} chez ${d.beneficiairePrenom}. ${court ? "" : "Une fois l'aide faite, appuyez sur « Service terminé »."}` : `${autre} viendra ${jour ? `le ${jour}` : "bientôt"}.${court ? "" : " Son numéro est affiché juste au-dessus."}`;
     if (d.statut === "TERMINEE") return !estJeune && !avis ? `C'est fait ! Laissez un avis pour remercier ${autre}.` : "C'est fait. Merci pour ce coup de main !";
     if (d.statut === "REFUSEE") return estJeune ? "Vous avez refusé cette demande." : `${autre} n'est pas disponible. Vous pouvez choisir un autre jeune.`;
+    if (d.statut === "EXPIREE") return estJeune ? "La date est passée sans réponse." : `La date est passée sans réponse de ${autre}. Vous pouvez refaire une demande.`;
     return "Cette demande a été annulée.";
 };

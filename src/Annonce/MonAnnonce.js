@@ -6,7 +6,7 @@ import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
 import { analyser, servicesDans } from "../services/dictee";
 import { publierAnnonce, retirerAnnonce, suggestionAnnonce } from "../services/api";
-import { JOURS, SERVICES, aujourdhuiIso, creneauxActifs, nomService, texteCreneau, texteJour } from "../services/constantes";
+import { JOURS, SERVICES, aujourdhuiIso, creneauxActifs, nomService, plageHoraire, texteCreneauLong, texteJour } from "../services/constantes";
 
 const VIDE = { date: "", heureDebut: "", heureFin: "" };
 
@@ -44,7 +44,7 @@ const MonAnnonce = () => {
         const detectes = servicesDans(texte);
         if (detectes.length) setServices((avant) => [...new Set([...avant, ...detectes])]);
         if (trouve.date) setNouveau({ date: trouve.date, heureDebut: trouve.heureDebut || "", heureFin: trouve.heureFin || "" });
-        setCompris(detectes.length || trouve.date ? { services: detectes, creneau: trouve.date ? `${texteJour(trouve.date)}${trouve.heureDebut ? ` ${trouve.heureDebut}-${trouve.heureFin}` : ""}` : "" } : null);
+        setCompris(detectes.length || trouve.date ? { services: detectes, creneau: trouve.date ? `${texteJour(trouve.date)}${trouve.heureDebut ? ` ${plageHoraire(trouve)}` : ""}` : "" } : null);
     };
 
     const basculer = (code) => setServices(services.includes(code) ? services.filter((c) => c !== code) : [...services, code]);
@@ -139,7 +139,7 @@ const MonAnnonce = () => {
                     {creneaux.length === 0 && <p className="soft">Aucun créneau pour le moment.</p>}
                     <ul className="creneaux">
                         {creneaux.map((c) => (
-                            <li key={c.id}>{texteCreneau(c)} <button type="button" onClick={() => setCreneaux(creneaux.filter((x) => x.id !== c.id))}>Retirer</button></li>
+                            <li key={c.id}>{texteCreneauLong(c)} <button type="button" onClick={() => setCreneaux(creneaux.filter((x) => x.id !== c.id))}>Retirer</button></li>
                         ))}
                     </ul>
                     <div className="trois">

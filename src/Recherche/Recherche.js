@@ -225,11 +225,15 @@ const Recherche = () => {
                         <Message erreur={aide} />
                     </form>
                     <div className="filtres-ligne filtres-rangee">
-                        <label><span className="sr-only">Distance</span><select name="rayon" value={filtres.rayon} onChange={changer("rayon")}>{RAYONS.map((r) => <option key={r} value={r}>{"< "}{texteRayon(r)}</option>)}</select></label>
-                        <label><span className="sr-only">Disponibilité</span><select name="date" value={filtres.date} onChange={changer("date")}><option value="">Toutes les dates</option>{DATES_FILTRE().map((d, i) => <option key={d} value={d}>{i === 0 ? "Aujourd'hui" : i === 1 ? "Demain" : texteJour(d)}</option>)}</select></label>
+                        <label><span className="sr-only">Distance</span><select name="rayon" value={filtres.rayon} onChange={changer("rayon")}>{RAYONS.map((r) => <option key={r} value={r}>{texteRayon(r)}</option>)}</select></label>
+                        <label><span className="sr-only">Disponibilité</span><select name="date" value={filtres.date} onChange={changer("date")}><option value="">Dates</option>{DATES_FILTRE().map((d, i) => <option key={d} value={d}>{i === 0 ? "Aujourd'hui" : i === 1 ? "Demain" : texteJour(d).replace(/^(\S{3})\S*/, "$1.")}</option>)}</select></label>
                         <PucesServices actif={filtres.service} choisir={(code) => manuel({ ...filtres, service: code })} />
                     </div>
                 </header>
+
+                {vue === "liste" && (estJeune
+                    ? <Link className="publier-rouge" to="/annonce"><Icone nom="plus" /><span>{utilisateur.annoncePubliee ? "Modifier mon annonce" : "Publier mon annonce"}</span></Link>
+                    : <Link className="publier-rouge" to={filtres.service ? `/besoins/nouveau?service=${filtres.service}` : "/besoins/nouveau"}><Icone nom="plus" /><span>Publier un besoin</span></Link>)}
 
                 {resultats === null && <div className="squelettes" aria-label="Chargement">{[0, 1, 2, 3].map((i) => <span key={i} className="squelette" />)}</div>}
                 {resultats && nombre === 0 && (
@@ -258,8 +262,6 @@ const Recherche = () => {
                     </div>
                 )}
             </main>
-            {!estJeune && vue === "liste" && <Link className="fab" to={filtres.service ? `/besoins/nouveau?service=${filtres.service}` : "/besoins/nouveau"}><Icone nom="plus" /><span>Publier un besoin</span></Link>}
-            {estJeune && vue === "liste" && <Link className="fab" to="/annonce"><Icone nom="plus" /><span>{utilisateur.annoncePubliee ? "Mon annonce" : "Publier mon annonce"}</span></Link>}
             <Navigation />
         </div>
     );

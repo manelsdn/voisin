@@ -1,4 +1,4 @@
-import { JOURS, NOMS_JOURS, texteJour } from "./constantes";
+import { JOURS, NOMS_JOURS, plageHoraire, texteJour } from "./constantes";
 
 const LEXIQUE = {
     COURSES: {
@@ -242,6 +242,6 @@ export const analyser = (texte, maintenant = new Date()) => {
 
 export const resumer = (compris) => {
     const quand = compris.jour ? (compris.aujourdhui ? `aujourd'hui (${NOMS_JOURS[compris.jour].toLowerCase()})` : compris.date ? texteJour(compris.date).toLowerCase() : NOMS_JOURS[compris.jour].toLowerCase()) : "";
-    const heures = compris.heureDebut ? `${compris.moment ? `${compris.moment}, ` : ""}${compris.heureDebut}-${compris.heureFin}` : "";
+    const heures = compris.heureDebut ? `${compris.moment ? `${compris.moment}, ` : ""}${plageHoraire(compris)}` : "";
     return [quand, heures].filter(Boolean).join(" · ");
 };

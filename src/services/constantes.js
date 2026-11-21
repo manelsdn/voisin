@@ -42,7 +42,8 @@ export const STATUTS = {
     ACCEPTEE: "Acceptée",
     REFUSEE: "Refusée",
     TERMINEE: "Terminée",
-    ANNULEE: "Annulée"
+    ANNULEE: "Annulée",
+    EXPIREE: "Expirée"
 };
 
 export const etatService = (statut, estJeune) => ({
@@ -50,7 +51,8 @@ export const etatService = (statut, estJeune) => ({
     ACCEPTEE: "Acceptée",
     TERMINEE: "Terminée",
     REFUSEE: "Refusée",
-    ANNULEE: "Annulée"
+    ANNULEE: "Annulée",
+    EXPIREE: "Expirée"
 }[statut] || STATUTS[statut]);
 
 export const RAYONS = [0.5, 1, 2];
@@ -72,10 +74,20 @@ export const texteJour = (iso) => {
 export const texteQuand = (creneau, date) => {
     if (!creneau) return date ? texteJour(date) : "";
     if (!date) return texteCreneau(creneau);
-    return creneau.heureDebut ? `${texteJour(date)}, ${creneau.heureDebut}-${creneau.heureFin}` : texteJour(date);
+    return creneau.heureDebut ? `${texteJour(date)}, ${plageHoraire(creneau)}` : texteJour(date);
 };
 
-export const texteCreneau = (c) => c ? `${c.date ? `${texteJour(c.date)},` : NOMS_JOURS[c.jour]} ${c.heureDebut}-${c.heureFin}` : "";
+export const heureCourte = (h) => {
+    if (!h) return "";
+    const [heures, minutes] = h.split(":");
+    return `${Number(heures)}h${minutes && minutes !== "00" ? minutes : ""}`;
+};
+
+export const plageHoraire = (c) => (c && c.heureDebut ? `${heureCourte(c.heureDebut)}-${heureCourte(c.heureFin)}` : "");
+
+export const texteCreneau = (c) => c ? `${c.date ? `${texteJour(c.date)},` : NOMS_JOURS[c.jour]} ${plageHoraire(c)}` : "";
+
+export const texteCreneauLong = (c) => c ? (c.date ? texteCreneau(c) : `Chaque ${NOMS_JOURS[c.jour].toLowerCase()}, ${plageHoraire(c)}`) : "";
 
 export const aujourdhuiIso = (maintenant = new Date()) => `${maintenant.getFullYear()}-${String(maintenant.getMonth() + 1).padStart(2, "0")}-${String(maintenant.getDate()).padStart(2, "0")}`;
 

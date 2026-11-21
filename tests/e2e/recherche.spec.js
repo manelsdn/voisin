@@ -59,7 +59,7 @@ test("US16 · Profil d'un jeune : services, distance et créneaux visibles, sans
     await page.goto("/jeunes/jeune-01");
     await expect(page.getByRole("heading", { name: /Lucas/ })).toBeVisible();
     await expect(page.getByText("Courses · Informatique")).toBeVisible();
-    await expect(page.getByText("Samedi 09:00-12:00")).toBeVisible();
+    await expect(page.getByText("Chaque samedi, 9h-12h")).toBeVisible();
     await expect(page.getByText(/À .* · Lyon/)).toBeVisible();
     await expect(page.locator("body")).not.toContainText("06 ");
 });

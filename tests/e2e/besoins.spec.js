@@ -20,7 +20,7 @@ test("US44 · Assistant : personne n'est libre, on prévient les jeunes sans éc
     await page.goto("/recherche");
     await page.getByLabel("Dites ce qu'il vous faut").fill("Un jeune pour monter un petit meuble de chevet vendredi soir");
     await page.getByRole("button", { name: "Chercher" }).click();
-    await expect(page.locator(".assistant-compris")).toContainText(/Bricolage · Meuble à monter · vendredi \d+ \S+ · le soir, 18:00-20:00/);
+    await expect(page.locator(".assistant-compris")).toContainText(/Bricolage · Meuble à monter · vendredi \d+ \S+ · le soir, 18h-20h/);
     await expect(page.getByText("Personne n'est libre le vendredi pour bricolage.")).toBeVisible();
     await page.getByRole("button", { name: "Prévenir les jeunes du quartier" }).click();
     await expect(page.getByRole("heading", { name: /Bricolage/ })).toBeVisible();
@@ -38,7 +38,7 @@ test("Assistant : « mes courses samedi matin » montre les jeunes libres, la de
     await expect(page.getByLabel("Dites ce qu'il vous faut")).toBeFocused();
     await page.getByLabel("Dites ce qu'il vous faut").fill("je cherche un jeune pour mes courses samedi matin");
     await page.getByLabel("Dites ce qu'il vous faut").press("Enter");
-    await expect(page.locator(".assistant-compris")).toContainText(/Courses · samedi \d+ \S+ · le matin, 09:00-12:00/);
+    await expect(page.locator(".assistant-compris")).toContainText(/Courses · samedi \d+ \S+ · le matin, 9h-12h/);
     const premier = page.locator(".carte-profil").first();
     await expect(premier).toContainText("Libre le samedi");
     for (const t of await page.locator(".carte-raisons em:first-child").allTextContents()) expect(t).toMatch(/^Libre le samedi/);
@@ -107,7 +107,7 @@ test("US46 · Dictée vocale dans l'annonce : le senior parle, l'annonce s'écri
     await expect(page.getByLabel("Date").locator("option:checked")).toHaveText(/^Samedi/);
     await verifierHeure(page, "Début", "10:00");
     await verifierHeure(page, "Fin", "12:00");
-    await expect(page.getByText(/Rempli d'après votre texte/)).toContainText(/Courses · Marché · Samedi \d+ \S+ · 10:00-12:00/);
+    await expect(page.getByText(/Rempli d'après votre texte/)).toContainText(/Courses · Marché · Samedi \d+ \S+ · 10h-12h/);
     await page.getByRole("button", { name: "Bricolage" }).click();
     await page.getByLabel(/Décrivez votre besoin/).fill("Porter les courses");
     await expect(page.getByRole("button", { name: "Bricolage" })).toHaveAttribute("aria-pressed", "true");
@@ -152,7 +152,7 @@ test("US46 · Dictée vocale : le senior parle, l'assistant comprend le service,
     await page.goto("/recherche");
     await page.getByRole("button", { name: /Le dire au micro/ }).click();
     await expect(page.getByLabel("Dites ce qu'il vous faut")).toHaveValue(/porter mes courses/);
-    await expect(page.locator(".assistant-compris")).toContainText(/Courses( · [^·]+)? · samedi \d+ \S+ · 10:00-12:00/);
+    await expect(page.locator(".assistant-compris")).toContainText(/Courses( · [^·]+)? · samedi \d+ \S+ · 10h-12h/);
     await expect(page.locator(".carte-profil").first()).toContainText("Libre le samedi");
 });
 
@@ -163,7 +163,7 @@ test("Dictée absente si le navigateur ne la gère pas, la saisie au clavier suf
     await expect(page.getByRole("button", { name: /Le dire au micro/ })).toHaveCount(0);
     await page.getByLabel("Dites ce qu'il vous faut").fill("Aider ma mère à faire un appel vidéo sur sa tablette lundi après-midi");
     await page.getByRole("button", { name: "Chercher" }).click();
-    await expect(page.locator(".assistant-compris")).toContainText(/Informatique · Appel vidéo · lundi \d+ \S+ · l'après-midi, 14:00-17:00/);
+    await expect(page.locator(".assistant-compris")).toContainText(/Informatique · Appel vidéo · lundi \d+ \S+ · l'après-midi, 14h-17h/);
     await page.getByRole("group", { name: "Filtrer par service" }).getByRole("button", { name: "Courses" }).click();
     await expect(page.locator(".assistant-compris")).toHaveCount(0);
 });
@@ -216,6 +216,6 @@ test("US46 · Dictée pour le jeune aussi : il dicte son annonce, ses services e
     await expect(page.getByRole("button", { name: /Courses/ })).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("button", { name: /Informatique/ })).toHaveAttribute("aria-pressed", "true");
     await verifierHeure(page, "Début", "09:00");
-    await expect(page.getByText(/Compris/)).toContainText(/Samedi \d+ \S+ 09:00-12:00/);
+    await expect(page.getByText(/Compris/)).toContainText(/Samedi \d+ \S+ 9h-12h/);
     await expect(page.locator('select[name="date"] option:checked')).toHaveText(/^Samedi \d+/);
 });

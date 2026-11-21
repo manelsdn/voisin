@@ -6,7 +6,7 @@ import { Icone } from "../composants/Icones";
 import Dictee, { enPhrase } from "../composants/Dictee";
 import { dateDuJour, pointDeRecherche, publierBesoin, suggestionBesoin } from "../services/api";
 import { analyser } from "../services/dictee";
-import { JOURS, SOUS_SERVICES, nomService, texteJour } from "../services/constantes";
+import { JOURS, SOUS_SERVICES, nomService, plageHoraire, texteJour } from "../services/constantes";
 
 const quinzeJours = () => {
     const premier = new Date(`${dateDuJour()}T12:00:00`);
@@ -66,7 +66,7 @@ const NouveauBesoin = () => {
             if (trouve.heureDebut) {
                 setHeureDebut(trouve.heureDebut);
                 setHeureFin(trouve.heureFin);
-                rempli.heures = `${trouve.heureDebut}-${trouve.heureFin}`;
+                rempli.heures = plageHoraire(trouve);
             }
         }
         setAuto(rempli);
