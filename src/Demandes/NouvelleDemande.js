@@ -109,8 +109,8 @@ const NouvelleDemande = () => {
             <form className="form-stack" onSubmit={handleSubmit} noValidate>
                 <label>Le service<select name="service" value={service} onChange={(e) => { setService(e.target.value); setSous(""); }}>{(jeune.services || []).map((c) => <option key={c} value={c}>{nomService(c)}</option>)}</select></label>
                 {(SOUS_SERVICES[service] || []).length > 0 && (
-                    <fieldset>
-                        <legend>Précisez <small className="optionnel">si vous voulez</small></legend>
+                    <fieldset aria-labelledby="titre-precision">
+                        <p className="legende" id="titre-precision">Précisez <small className="optionnel">si vous voulez</small></p>
                         <div className="sous-services" role="group" aria-label="Précision du besoin">
                             {SOUS_SERVICES[service].map((nom) => <button key={nom} type="button" className="puce" aria-pressed={sous === nom} onClick={() => setSous(sous === nom ? "" : nom)}>{nom}</button>)}
                         </div>

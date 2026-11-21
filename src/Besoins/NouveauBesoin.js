@@ -117,20 +117,20 @@ const NouveauBesoin = () => {
             <p className="soft">{pour && pour.id !== utilisateur.id ? `Pour ${pour.prenom}. ` : ""}Choisissez un service, les jeunes du quartier vous proposeront leur aide.</p>
             <form className="form-stack" onSubmit={publier} noValidate>
                 <Dictee ajouter={(texte) => setDescription((avant) => enPhrase(avant, texte, 300))} libelle="Dire mon besoin au micro" />
-                <fieldset>
-                    <legend>Le service</legend>
+                <fieldset aria-labelledby="titre-service">
+                    <p className="legende" id="titre-service">Le service</p>
                     <PucesServices actif={service} choisir={(code) => { setService(code); setSous(""); setManuel((m) => ({ ...m, service: true, sous: false })); }} tous={false} />
                 </fieldset>
                 {(SOUS_SERVICES[service] || []).length > 0 && (
-                    <fieldset>
-                        <legend>Précisez <small className="optionnel">si vous voulez</small></legend>
+                    <fieldset aria-labelledby="titre-precision">
+                        <p className="legende" id="titre-precision">Précisez <small className="optionnel">si vous voulez</small></p>
                         <div className="sous-services" role="group" aria-label="Précision du besoin">
                             {SOUS_SERVICES[service].map((nom) => <button key={nom} type="button" className="puce" aria-pressed={sous === nom} onClick={() => { setSous(sous === nom ? "" : nom); setManuel((m) => ({ ...m, sous: true })); }}>{nom}</button>)}
                         </div>
                     </fieldset>
                 )}
-                <fieldset>
-                    <legend>Quand ? <small className="optionnel">si vous voulez</small></legend>
+                <fieldset aria-labelledby="titre-quand">
+                    <p className="legende" id="titre-quand">Quand ? <small className="optionnel">si vous voulez</small></p>
                     {autres.length > 0 && (
                         <ul className="creneaux" aria-label="Dates ajoutées">
                             {autres.map((c) => <li key={`${c.date}${c.heureDebut}`}>{texteQuand(c.heureDebut ? c : null, c.date)} <button type="button" onClick={() => setAutres(autres.filter((x) => x !== c))}>Retirer</button></li>)}

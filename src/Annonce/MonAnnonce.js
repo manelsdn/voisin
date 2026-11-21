@@ -126,16 +126,16 @@ const MonAnnonce = () => {
                 {compris && (
                     <p className="devine" aria-live="polite"><Icone nom="sparkles" /><span>Compris : <b>{[compris.services.map(nomService).join(", "), compris.creneau && `créneau ${compris.creneau} prêt à ajouter`].filter(Boolean).join(" · ")}</b>. Vous pouvez tout modifier.</span></p>
                 )}
-                <fieldset>
-                    <legend>Ce que je peux faire</legend>
+                <fieldset aria-labelledby="titre-services">
+                    <p className="legende" id="titre-services">Ce que je peux faire</p>
                     <div className="puces">
                         {SERVICES.map((s) => (
                             <button key={s.code} type="button" className="puce" aria-pressed={services.includes(s.code)} onClick={() => basculer(s.code)}><img src={s.image} alt="" />{s.nom}</button>
                         ))}
                     </div>
                 </fieldset>
-                <fieldset>
-                    <legend>Quand je suis libre</legend>
+                <fieldset aria-labelledby="titre-creneaux">
+                    <p className="legende" id="titre-creneaux">Quand je suis libre</p>
                     {creneaux.length === 0 && <p className="soft">Ajoutez au moins une date.</p>}
                     <ul className="creneaux">
                         {creneaux.map((c) => (
